@@ -8,6 +8,7 @@ function Homepage() {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
+        flex: 1,
       }}
     >
       <h1>Witaj w Zielonym Koszyczku</h1>

@@ -1,33 +1,55 @@
-import { Box } from "@mui/material";
+import React from "react";
+import { Box, Grid, Link, Typography } from "@mui/material";
 
-function Footer() {
+const Footer: React.FC = () => {
   return (
-    <footer id="app-footer">
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          gap: 2,
-          padding: 2,
-          backgroundColor: "lightgray",
-          "& img": {
-            width: 50,
-            height: 50,
-            objectFit: "cover",
-          },
-          "& div": {
-            cursor: "pointer",
-          },
-        }}
-      >
-        <Box>Strona główna</Box>
-        <Box>Produkty</Box>
-        <Box>O nas</Box>
-        <Box>Kontakt</Box>
-      </Box>
-    </footer>
+    <Box
+      component="footer"
+      sx={{ bgcolor: "background.primary", padding: "20px", marginTop: "auto" }}
+    >
+      <Grid container spacing={2}>
+        <Grid item xs={12} sm={3}>
+          <Typography variant="h6" gutterBottom>
+            Zielony koszyk
+          </Typography>
+          <Typography variant="body2">
+            Zielony Koszyczek oferuje warzywa i owoce, jak również susze,
+            grochy, przyprawy, oliwę z oliwek oraz inne produkty greckie.
+          </Typography>
+        </Grid>
+        <Grid item xs={12} sm={3}>
+          <Typography variant="h6" gutterBottom>
+            Oferujemy m.in:
+          </Typography>
+          <Typography variant="body2">Ziemniaki</Typography>
+          <Typography variant="body2">Kapustę</Typography>
+          <Typography variant="body2">Jabłka</Typography>
+        </Grid>
+        <Grid item xs={12} sm={3}>
+          <Typography variant="h6" gutterBottom>
+            Szybka dostawa
+          </Typography>
+          <Link href="#" underline="hover">
+            Dostawa i płatność
+          </Link>
+          <Link href="#" underline="hover">
+            Polityka prywatności
+          </Link>
+          <Link href="#" underline="hover">
+            Regulamin
+          </Link>
+        </Grid>
+        <Grid item xs={12} sm={3}>
+          <Typography variant="h6" gutterBottom>
+            Znajdź nas:
+          </Typography>
+          <Link href="https://www.facebook.com" underline="hover">
+            Facebook
+          </Link>
+        </Grid>
+      </Grid>
+    </Box>
   );
-}
+};
 
 export default Footer;

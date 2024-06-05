@@ -15,7 +15,7 @@ function Nav() {
         },
         "& a": {
           textDecoration: "none",
-          color: "black",
+          color: "text.primary",
         },
       }}
     >
