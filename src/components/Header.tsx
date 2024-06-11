@@ -14,6 +14,11 @@ function Header() {
         padding: 2,
         bgcolor: "background.paper",
         color: "text.primary",
+        position: "fixed",
+        top: 0,
+        left: 0,
+        right: 0,
+        zIndex: 1000,
         "& img": {
           width: 50,
           height: 50,

@@ -5,7 +5,12 @@ const Footer: React.FC = () => {
   return (
     <Box
       component="footer"
-      sx={{ bgcolor: "background.primary", padding: "20px", marginTop: "auto" }}
+      sx={{
+        bgcolor: "background.paper",
+        padding: "20px",
+        marginTop: "auto",
+        textAlign: "center",
+      }}
     >
       <Grid container spacing={2}>
         <Grid item xs={12} sm={3}>
@@ -13,8 +18,8 @@ const Footer: React.FC = () => {
             Zielony koszyk
           </Typography>
           <Typography variant="body2">
-            Zielony Koszyczek oferuje warzywa i owoce, jak również susze,
-            grochy, przyprawy, oliwę z oliwek oraz inne produkty greckie.
+            Zielony Koszyk oferuje warzywa i owoce, jak również susze, grochy,
+            przyprawy, oliwę z oliwek oraz inne produkty greckie.
           </Typography>
         </Grid>
         <Grid item xs={12} sm={3}>

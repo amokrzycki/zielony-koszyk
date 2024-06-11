@@ -1,4 +1,4 @@
-interface UserType {
+interface User {
   id: number;
   role: string;
   username: string;
@@ -11,4 +11,4 @@ interface UserType {
   createdAt: Date;
 }
 
-export default UserType;
+export default User;

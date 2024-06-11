@@ -9,3 +9,7 @@ html, body {
     height: 100%;
     margin: 0;
 }
+
+#main-wrapper {
+    margin-top: 84px;
+}

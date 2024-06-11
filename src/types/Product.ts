@@ -1,4 +1,4 @@
-interface ProductType {
+interface Product {
   product_id: number;
   name: string;
   description: string;
@@ -8,4 +8,4 @@ interface ProductType {
   created_at: Date;
 }
 
-export default ProductType;
+export default Product;

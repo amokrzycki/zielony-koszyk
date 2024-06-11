@@ -1,6 +1,7 @@
+import { Params, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { getProducts } from "../api.ts";
 import Product from "../types/Product.ts";
+import { getProducts } from "../api.ts";
 import {
   Box,
   Button,
@@ -10,7 +11,8 @@ import {
   Typography,
 } from "@mui/material";
 
-function Products() {
+function Category() {
+  const { categoryId }: Readonly<Params> = useParams();
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -18,7 +20,10 @@ function Products() {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const products = await getProducts();
+        let products = await getProducts();
+        products = products.filter(
+          (product: Product) => product.category === categoryId,
+        );
         setProducts(products);
       } catch (e) {
         setError(
@@ -32,7 +37,7 @@ function Products() {
     fetchProducts().then(() => {
       console.log("Products fetched");
     });
-  }, []);
+  }, [categoryId]);
 
   if (loading) {
     return <CircularProgress />;
@@ -82,4 +87,4 @@ function Products() {
   );
 }
 
-export default Products;
+export default Category;

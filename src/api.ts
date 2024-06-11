@@ -1,5 +1,5 @@
 import axios from "axios";
-import UserType from "./types/UserType.ts";
+import User from "./types/User.ts";
 
 const API_URL = "http://localhost:3000";
 export const getUsers = async () => {
@@ -12,12 +12,12 @@ export const getUser = async (id: number) => {
   return response.data;
 };
 
-export const createUser = async (user: Partial<UserType>) => {
+export const createUser = async (user: Partial<User>) => {
   const response = await axios.post(`${API_URL}/users`, user);
   return response.data;
 };
 
-export const updateUser = async (id: number, user: Partial<UserType>) => {
+export const updateUser = async (id: number, user: Partial<User>) => {
   const response = await axios.put(`${API_URL}/users/${id}`, user);
   return response.data;
 };

@@ -3,6 +3,7 @@ import Homepage from "../components/Homepage.tsx";
 import Products from "../components/Products.tsx";
 import About from "../components/About.tsx";
 import Contact from "../components/Contact.tsx";
+import Category from "../components/Category.tsx";
 
 const router = createBrowserRouter([
   {
@@ -20,6 +21,16 @@ const router = createBrowserRouter([
   {
     path: "/kontakt",
     element: <Contact />,
+  },
+  {
+    path: "/kategoria/:categoryId",
+    element: <Category />,
+    children: [
+      {
+        path: ":productId",
+        element: <h1>Product</h1>,
+      },
+    ],
   },
 ]);
 
