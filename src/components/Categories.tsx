@@ -1,35 +1,42 @@
 import { Box, ButtonBase, styled, Typography } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 function Categories() {
+  const navigate = useNavigate();
   // refactor this, it should use also description
   const categories = [
     {
       name: "Owoce",
       description: "Warzywa sprzedajemy w cenie hurtowej",
       image: "/images/fruits.jpeg",
+      category: "owoce",
     },
     {
       name: "Warzywa",
       description: "Oferujemy warzywa pochodzące z ekologicznych upraw",
       image: "/images/vegatables.jpeg",
+      category: "warzywa",
     },
     {
       name: "Artykuły spożywcze",
       description:
         "W ofercie posiadamy również produkty greckie m.in. oliwy, miody, herbaty",
       image: "/images/others.jpeg",
+      category: "inne",
     },
     {
       name: "Produkty sezonowe",
       description:
         "Susze, kasze, Grochy czyli produkty, które warto mieć w swojej kuchni",
       image: "/images/seasonal.jpeg",
+      category: "sezonowe",
     },
     {
       name: "Opakowania zbiorcze",
       description:
         "Produkty pakowane w workach oraz skrzynkach w niższych cenach",
       image: "/images/collective.jpeg",
+      category: "worki",
     },
   ];
 
@@ -112,10 +119,11 @@ function Categories() {
         {categories.map((category, index) => (
           <ImageButton
             focusRipple
-            key={index}
             style={{
               width: "30%",
             }}
+            key={index}
+            onClick={() => navigate(`/kategoria/${category.category}`)}
           >
             <ImageSrc
               style={{

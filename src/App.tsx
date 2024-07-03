@@ -8,7 +8,7 @@ import { darkTheme, lightTheme } from "../theme.ts";
 import { useEffect, useState } from "react";
 
 function App() {
-  const [theme, setTheme] = useState("light"); // ['light', 'dark']
+  const [theme, setTheme] = useState("light");
 
   useEffect(() => {
     if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
