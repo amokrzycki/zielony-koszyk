@@ -3,17 +3,35 @@ import { getProducts } from "../api.ts";
 import Product from "../types/Product.ts";
 import { Box, CircularProgress, Typography } from "@mui/material";
 import ProductCard from "./ProductCard.tsx";
+import Search from "./Search.tsx";
+import { useSearchParams } from "react-router-dom";
 
 function Products() {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const [searchParams] = useSearchParams();
+  const searchQuery = searchParams.get("search");
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
         const products = await getProducts();
-        setProducts(products);
+        if (searchQuery) {
+          const lowerCaseSearchQuery = searchQuery.toLowerCase();
+          setProducts(
+            products.filter(
+              (product: Product) =>
+                product.name.toLowerCase().includes(lowerCaseSearchQuery) ||
+                product.description
+                  .toLowerCase()
+                  .includes(lowerCaseSearchQuery) ||
+                product.category.toLowerCase().includes(lowerCaseSearchQuery),
+            ),
+          );
+        } else {
+          setProducts(products);
+        }
       } catch (e) {
         setError(
           "Wystąpił błąd podczas pobierania produktów. Spróbuj ponownie później.",
@@ -30,7 +48,7 @@ function Products() {
       .catch((e) => {
         console.error(e);
       });
-  }, []);
+  }, [searchQuery]);
 
   if (loading) {
     return (
@@ -67,19 +85,37 @@ function Products() {
   }
 
   return (
-    <Box
-      sx={{
-        display: "flex",
-        flexWrap: "wrap",
-        gap: 2,
-        justifyContent: "center",
-        padding: 2,
-      }}
-      id="main-wrapper"
-    >
-      {products.map((product, index) => (
-        <ProductCard key={index} product={product} />
-      ))}
+    <Box id="main-wrapper">
+      <Box
+        id="search-wrapper"
+        sx={{
+          width: "100%",
+          display: "flex",
+          justifyContent: "center",
+        }}
+      >
+        <Search />
+      </Box>
+      <Box
+        sx={{
+          display: "flex",
+          flexWrap: "wrap",
+          gap: 2,
+          justifyContent: "center",
+          padding: 2,
+        }}
+      >
+        {searchQuery && products.length === 0 ? (
+          <Typography variant="h5" component="h2">
+            Brak produktów spełniających kryteria wyszukiwania dla frazy: "
+            {searchQuery}".
+          </Typography>
+        ) : (
+          products.map((product, index) => (
+            <ProductCard key={index} product={product} />
+          ))
+        )}
+      </Box>
     </Box>
   );
 }
