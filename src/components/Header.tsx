@@ -1,5 +1,6 @@
 import { Box } from "@mui/material";
 import Nav from "./Nav.tsx";
+import CartBadge from "./CartBadge.tsx";
 
 function Header() {
   return (
@@ -19,14 +20,6 @@ function Header() {
         left: 0,
         right: 0,
         zIndex: 1000,
-        "& img": {
-          width: 50,
-          height: 50,
-          objectFit: "cover",
-        },
-        "& div": {
-          cursor: "pointer",
-        },
       }}
     >
       <img src="logo192.png" alt="logo" />
@@ -47,7 +40,9 @@ function Header() {
           },
         }}
       >
-        <Box>Koszyk</Box>
+        <Box>
+          <CartBadge />
+        </Box>
         <Box>Logowanie</Box>
       </Box>
     </Box>

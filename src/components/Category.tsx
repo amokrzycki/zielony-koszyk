@@ -2,14 +2,8 @@ import { Params, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Product from "../types/Product.ts";
 import { getProducts } from "../api.ts";
-import {
-  Box,
-  Button,
-  Card,
-  CardContent,
-  CircularProgress,
-  Typography,
-} from "@mui/material";
+import { Box, CircularProgress, Typography } from "@mui/material";
+import ProductCard from "./ProductCard.tsx";
 
 function Category() {
   const { categoryId }: Readonly<Params> = useParams();
@@ -40,14 +34,36 @@ function Category() {
   }, [categoryId]);
 
   if (loading) {
-    return <CircularProgress />;
+    return (
+      <Box
+        id="main-wrapper"
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "calc(100vh - 72px - 156px - 30px)",
+        }}
+      >
+        <CircularProgress sx={{ color: "#FFF" }} />
+      </Box>
+    );
   }
 
   if (error) {
     return (
-      <Typography variant="h5" component="h2">
-        {error}
-      </Typography>
+      <Box
+        id="main-wrapper"
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "calc(100vh - 72px - 156px - 30px)",
+        }}
+      >
+        <Typography variant="h5" component="h2">
+          {error}
+        </Typography>
+      </Box>
     );
   }
 
@@ -62,26 +78,8 @@ function Category() {
       }}
       id="main-wrapper"
     >
-      {products.map((product) => (
-        <Card key={product.product_id}>
-          <CardContent>
-            <Typography variant="h5" component="h2">
-              {product.name}
-            </Typography>
-            <Typography variant="body2" color="textSecondary" component="p">
-              {product.description}
-            </Typography>
-            <Typography variant="body1" component="p">
-              Cena: {product.price} zł
-            </Typography>
-            <Typography variant="body1" component="p">
-              Stan: {product.stock_quantity}
-            </Typography>
-            <Box>
-              <Button>Dodaj do koszyka</Button>
-            </Box>
-          </CardContent>
-        </Card>
+      {products.map((product, index) => (
+        <ProductCard key={index} product={product} />
       ))}
     </Box>
   );
