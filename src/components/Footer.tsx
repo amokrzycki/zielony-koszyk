@@ -1,7 +1,6 @@
-import React from "react";
 import { Box, Grid, Link, Typography } from "@mui/material";
 
-const Footer: React.FC = () => {
+function Footer() {
   return (
     <Box
       component="footer"
@@ -55,6 +54,6 @@ const Footer: React.FC = () => {
       </Grid>
     </Box>
   );
-};
+}
 
 export default Footer;

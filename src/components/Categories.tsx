@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 
 function Categories() {
   const navigate = useNavigate();
-  // refactor this, it should use also description
   const categories = [
     {
       name: "Owoce",
