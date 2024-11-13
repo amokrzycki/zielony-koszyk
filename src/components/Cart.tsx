@@ -17,10 +17,12 @@ import {
 import CartItem from "../types/CartItem.ts";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Divider from "@mui/material/Divider";
+import { useMode } from "../providers/ModeProvider.tsx";
 
 function Cart() {
   const cart = useSelector((state: RootState) => state.cart.items);
   const dispatch = useDispatch();
+  const { mode } = useMode();
 
   return (
     <Box
@@ -77,7 +79,15 @@ function Cart() {
                     <TableCell align="right" width="50">
                       <Button
                         onClick={() => dispatch(removeItem(item.productId))}
-                        startIcon={<DeleteIcon sx={{ color: "#FFF" }} />}
+                        startIcon={
+                          <DeleteIcon
+                            sx={
+                              mode === "light"
+                                ? { color: "#000" }
+                                : { color: "#FFF" }
+                            }
+                          />
+                        }
                       />
                     </TableCell>
                   </TableRow>

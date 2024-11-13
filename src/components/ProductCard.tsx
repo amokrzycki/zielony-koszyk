@@ -11,6 +11,7 @@ import { useDispatch } from "react-redux";
 import { useState } from "react";
 import { addItem } from "../store/appSlice.ts";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import { useMode } from "../providers/ModeProvider.tsx";
 
 interface ProductCardProps {
   product: Product;
@@ -19,6 +20,7 @@ interface ProductCardProps {
 function ProductCard({ product }: ProductCardProps) {
   const [quantity, setQuantity] = useState(1);
   const dispatch = useDispatch();
+  const { mode } = useMode();
 
   const handleAddToCart = () => {
     dispatch(
@@ -78,7 +80,12 @@ function ProductCard({ product }: ProductCardProps) {
         <Box>
           <Button
             onClick={handleAddToCart}
-            startIcon={<ShoppingCartIcon sx={{ color: "#FFF" }} />}
+            variant="contained"
+            startIcon={
+              <ShoppingCartIcon
+                sx={mode === "light" ? { color: "#000" } : { color: "#FFF" }}
+              />
+            }
           >
             Dodaj do koszyka
           </Button>
