@@ -1,20 +1,20 @@
-import { Box } from "@mui/material";
+import { AppBar, Box } from "@mui/material";
 import Nav from "./Nav.tsx";
 import CartBadge from "./CartBadge.tsx";
+import ModeSwitcher from "./ModeSwitcher.tsx";
 
 function Header() {
   return (
-    <Box
-      component="header"
-      id="app-header"
+    <AppBar
+      position="static"
       sx={{
-        display: "flex",
+        bgcolor: "primary.main",
+        color: "text.primary",
         justifyContent: "space-between",
         alignItems: "center",
+        padding: "0.5rem",
+        flexDirection: "row",
         gap: 2,
-        padding: 2,
-        bgcolor: "background.paper",
-        color: "text.primary",
         position: "fixed",
         top: 0,
         left: 0,
@@ -22,7 +22,7 @@ function Header() {
         zIndex: 1000,
       }}
     >
-      <img src="logo192.png" alt="logo" />
+      <img src="logo.png" alt="logo" height="60px" />
       <Nav />
       <Box
         id="user-actions-wrapper"
@@ -40,12 +40,13 @@ function Header() {
           },
         }}
       >
+        <ModeSwitcher />
         <Box>
           <CartBadge />
         </Box>
         <Box>Logowanie</Box>
       </Box>
-    </Box>
+    </AppBar>
   );
 }
 

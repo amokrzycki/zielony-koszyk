@@ -1,24 +1,14 @@
 import "./App.css";
 import Header from "./components/Header.tsx";
 import Footer from "./components/Footer.tsx";
-import { Box, CssBaseline, ThemeProvider } from "@mui/material";
-import { darkTheme, lightTheme } from "../theme.ts";
-import { useEffect, useState } from "react";
+import { Box } from "@mui/material";
 import { RouterProvider } from "react-router-dom";
 import router from "./router/router.tsx";
+import { ModeProvider } from "./providers/ModeProvider.tsx";
 
 function App() {
-  const [theme, setTheme] = useState("light");
-
-  useEffect(() => {
-    if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
-      setTheme("dark");
-    }
-  }, []);
-
   return (
-    <ThemeProvider theme={theme === "light" ? lightTheme : darkTheme}>
-      <CssBaseline />
+    <ModeProvider>
       <Box
         className="App"
         sx={{
@@ -31,7 +21,7 @@ function App() {
         <RouterProvider router={router} />
         <Footer />
       </Box>
-    </ThemeProvider>
+    </ModeProvider>
   );
 }
 
