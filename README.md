@@ -1,30 +1,40 @@
-# React + TypeScript + Vite
+# Zielony Koszyk - sklep internetowy
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+### Praca inżynierska na kierunku Informatyka na Wydziale Informatyki Wyższej Szkoły Informatyki i Zarządzania w Rzeszowie.
 
-Currently, two official plugins are available:
+Witamy w **Zielony Koszyk**! To aplikacja umożliwiająca zakup świeżych warzyw online bez wychodzenia z domu.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Funkcjonalności
 
-## Expanding the ESLint configuration
+- **Przegląd produktów**: Przeglądaj szeroki asortyment świeżych warzyw.
+- **Koszyk**: Dodawaj produkty do koszyka i zarządzaj nimi przed zakupem.
+- **Bezpieczne płatności**: Dokonuj płatności online za pomocą zaufanych metod.
+- **Rejestracja i logowanie**: Twórz konto, aby śledzić swoje zamówienia i historię zakupów.
+- **Powiadomienia**: Otrzymuj aktualizacje o nowych produktach i promocjach.
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+## Technologie
 
-- Configure the top-level `parserOptions` property like this:
+- **Frontend**: HTML, CSS, JavaScript, React.js
+- **Backend**: Node.js, Express.js
+- **Baza danych**: MongoDB
+- **Płatności**: Integracja z PayPal/Stripe
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
+## Wymagania
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+- **Node.js**: <= v16.14.0
+- **npm**: <= 8.0.0
+- **Docker**
+- **Docker Compose**
+
+## Instalacja
+
+1. Sklonuj repozytorium: `git@github.com:amokrzycki/zielony-koszyk-frontend.git`
+2. Przejdź do katalogu: `cd zielony-koszyk-frontend`
+3. Zainstaluj zależności: `npm install`
+4. Uruchom aplikację: `npm run start`
+4. Sklonuj repozytorium z backendem: `git@github.com:amokrzycki/zielony-koszyk-backend.git`
+5. Przejdź do katalogu: `cd zielony-koszyk-backend`
+6. Zainstaluj zależności: `npm install`
+7. Uruchom i zbuduj obraz dockera: `sudo docker-compose up --build`
+8. Backend będzie dostępny pod adresem: `http://localhost:3000`
+9. Gotowe!
