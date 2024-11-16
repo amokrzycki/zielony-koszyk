@@ -36,6 +36,7 @@ function Products() {
         setError(
           "Wystąpił błąd podczas pobierania produktów. Spróbuj ponownie później.",
         );
+        console.error(e);
       } finally {
         setLoading(false);
       }

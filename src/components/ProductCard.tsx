@@ -7,11 +7,11 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { useDispatch } from "react-redux";
 import { useState } from "react";
-import { addItem } from "../store/appSlice.ts";
+import { addItem } from "./Cart/cartSlice.ts";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { useMode } from "../providers/ModeProvider.tsx";
+import { useAppDispatch } from "../hooks/hooks.ts";
 
 interface ProductCardProps {
   product: Product;
@@ -19,7 +19,7 @@ interface ProductCardProps {
 
 function ProductCard({ product }: ProductCardProps) {
   const [quantity, setQuantity] = useState(1);
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const { mode } = useMode();
 
   const handleAddToCart = () => {

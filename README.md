@@ -32,9 +32,9 @@ Witamy w **Zielony Koszyk**! To aplikacja umożliwiająca zakup świeżych warzy
 2. Przejdź do katalogu: `cd zielony-koszyk-frontend`
 3. Zainstaluj zależności: `npm install`
 4. Uruchom aplikację: `npm run start`
-4. Sklonuj repozytorium z backendem: `git@github.com:amokrzycki/zielony-koszyk-backend.git`
-5. Przejdź do katalogu: `cd zielony-koszyk-backend`
-6. Zainstaluj zależności: `npm install`
-7. Uruchom i zbuduj obraz dockera: `sudo docker-compose up --build`
-8. Backend będzie dostępny pod adresem: `http://localhost:3000`
-9. Gotowe!
+5. Sklonuj repozytorium z backendem: `git@github.com:amokrzycki/zielony-koszyk-backend.git`
+6. Przejdź do katalogu: `cd zielony-koszyk-backend`
+7. Zainstaluj zależności: `npm install`
+8. Uruchom i zbuduj obraz dockera: `sudo docker-compose up --build`
+9. Backend będzie dostępny pod adresem: `http://localhost:3000`
+10. Gotowe!

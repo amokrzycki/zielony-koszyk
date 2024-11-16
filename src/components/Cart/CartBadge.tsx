@@ -1,7 +1,7 @@
 import { Badge, BadgeProps, IconButton, styled } from "@mui/material";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { useSelector } from "react-redux";
-import { RootState } from "../store/store.ts";
+import { RootState } from "../../store/store.ts";
 
 function CartBadge() {
   const cartItemCounts = useSelector(

@@ -1,6 +1,6 @@
 import { AppBar, Box } from "@mui/material";
 import Nav from "./Nav.tsx";
-import CartBadge from "./CartBadge.tsx";
+import CartBadge from "./Cart/CartBadge.tsx";
 import ModeSwitcher from "./ModeSwitcher.tsx";
 
 function Header() {
@@ -22,7 +22,7 @@ function Header() {
         zIndex: 1000,
       }}
     >
-      <img src="logo.png" alt="logo" height="60px" />
+      <img src="/logo.png" alt="logo" height="60px" />
       <Nav />
       <Box
         id="user-actions-wrapper"

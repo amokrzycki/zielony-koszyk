@@ -26,8 +26,8 @@ const lightTheme = createTheme({
       light: "#007d4e", // Darker shade of #00ce7c
     },
     background: {
-      default: "#fff", // Dark background color
-      paper: "#e1dada", // Slightly lighter background color
+      default: "#e1dada",
+      paper: "#ffffff",
     },
     text: {
       primary: "#000000", // Text color
