@@ -7,6 +7,7 @@ import {
 } from "react";
 import { ThemeProvider, CssBaseline } from "@mui/material";
 import { darkTheme, lightTheme } from "../../theme.ts";
+import { MantineProvider } from "@mantine/core";
 
 const ModeContext = createContext({
   mode: "light",
@@ -30,11 +31,13 @@ export const ModeProvider = ({ children }: { children: ReactNode }) => {
   };
 
   return (
-    <ModeContext.Provider value={{ mode, toggleMode }}>
-      <ThemeProvider theme={mode === "light" ? lightTheme : darkTheme}>
-        <CssBaseline />
-        {children}
-      </ThemeProvider>
-    </ModeContext.Provider>
+    <MantineProvider>
+      <ModeContext.Provider value={{ mode, toggleMode }}>
+        <ThemeProvider theme={mode === "light" ? lightTheme : darkTheme}>
+          <CssBaseline />
+          {children}
+        </ThemeProvider>
+      </ModeContext.Provider>
+    </MantineProvider>
   );
 };

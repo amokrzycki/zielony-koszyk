@@ -4,7 +4,11 @@ import Products from "../components/Products.tsx";
 import About from "../components/About.tsx";
 import Contact from "../components/Contact.tsx";
 import Category from "../components/Category.tsx";
-import Cart from "../components/Cart.tsx";
+import Cart from "../components/Cart/Cart.tsx";
+import OrderDetails from "../components/Order/OrderDetails.tsx";
+import Login from "../components/Login/Login.tsx";
+import OrderSummary from "../components/Order/OrderSummary.tsx";
+import OrderConfirm from "../components/Order/OrderConfirm.tsx";
 
 const router = createBrowserRouter([
   {
@@ -36,6 +40,22 @@ const router = createBrowserRouter([
         element: <h1>Product</h1>,
       },
     ],
+  },
+  {
+    path: "/zamowienie",
+    element: <OrderDetails />,
+  },
+  {
+    path: "/zamowienie/podsumowanie",
+    element: <OrderSummary />,
+  },
+  {
+    path: "/zamowienie/potwierdzenie",
+    element: <OrderConfirm />,
+  },
+  {
+    path: "/login",
+    element: <Login />,
   },
 ]);
 

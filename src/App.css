@@ -12,3 +12,13 @@ html, body {
 #main-wrapper {
     margin-top: 84px;
 }
+
+.main-container {
+    margin: 60px auto;
+    max-width: 90%;
+    position: relative;
+    border-radius: 1em;
+    overflow: hidden;
+    width: 100%;
+    padding: 1em;
+}
