@@ -14,10 +14,9 @@ Witamy w **Zielony Koszyk**! To aplikacja umożliwiająca zakup świeżych warzy
 
 ## Technologie
 
-- **Frontend**: HTML, CSS, JavaScript, React.js
-- **Backend**: Node.js, Express.js
-- **Baza danych**: MongoDB
-- **Płatności**: Integracja z PayPal/Stripe
+- **Frontend**: React + TypeScript
+- **Backend**: Next.js + TypeScript
+- **Baza danych**: MySQL
 
 ## Wymagania
 
