@@ -28,9 +28,9 @@ function Cart() {
 
   const handleOrder = () => {
     // check if user is logged in
-    // if not, redirect to login
+    // if not, redirect to cart-login
     // else navigate to /zamowienie
-    navigate("/login");
+    navigate("/cart-login");
   };
 
   return (

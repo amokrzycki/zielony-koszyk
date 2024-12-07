@@ -1,8 +1,8 @@
-import { Box, Button } from "@mui/material";
-import LoginBox from "./LoginBox.tsx";
+import { Box, Button, Typography } from "@mui/material";
 import OrderNoAccount from "../Order/OrderNoAccount.tsx";
+import LoginForm from "../Accounts/LoginForm.tsx";
 
-function Login() {
+function CartLogin() {
   return (
     <Box id="main-wrapper">
       <Box
@@ -24,7 +24,17 @@ function Login() {
                 flexWrap: "wrap",
               }}
             >
-              <LoginBox />
+              <Box
+                sx={{
+                  flex: "0 0 33.333333%",
+                  maxWidth: "33.333333%",
+                }}
+              >
+                <Typography variant={"h4"} gutterBottom>
+                  Mam konto
+                </Typography>
+                <LoginForm />
+              </Box>
               <Box
                 className="separator"
                 sx={{
@@ -60,4 +70,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default CartLogin;

@@ -1,7 +1,8 @@
-import { AppBar, Box } from "@mui/material";
+import { AppBar, Box, IconButton } from "@mui/material";
 import Nav from "./Nav.tsx";
 import CartBadge from "./Cart/CartBadge.tsx";
 import ModeSwitcher from "./ModeSwitcher.tsx";
+import PersonIcon from "@mui/icons-material/Person";
 
 function Header() {
   return (
@@ -44,7 +45,9 @@ function Header() {
         <Box>
           <CartBadge />
         </Box>
-        <Box>Logowanie</Box>
+        <IconButton href={"/login"}>
+          <PersonIcon />
+        </IconButton>
       </Box>
     </AppBar>
   );

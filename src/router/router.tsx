@@ -6,9 +6,10 @@ import Contact from "../components/Contact.tsx";
 import Category from "../components/Category.tsx";
 import Cart from "../components/Cart/Cart.tsx";
 import OrderDetails from "../components/Order/OrderDetails.tsx";
-import Login from "../components/Login/Login.tsx";
+import CartLogin from "../components/Cart/CartLogin.tsx";
 import OrderSummary from "../components/Order/OrderSummary.tsx";
 import OrderConfirm from "../components/Order/OrderConfirm.tsx";
+import Login from "../components/Accounts/Login.tsx";
 
 const router = createBrowserRouter([
   {
@@ -52,6 +53,10 @@ const router = createBrowserRouter([
   {
     path: "/zamowienie/potwierdzenie",
     element: <OrderConfirm />,
+  },
+  {
+    path: "/cart-login",
+    element: <CartLogin />,
   },
   {
     path: "/login",
