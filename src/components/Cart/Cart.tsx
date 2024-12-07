@@ -1,4 +1,4 @@
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { RootState } from "../../store/store.ts";
 import { changeQuantity, removeItem } from "./cartSlice.ts";
 import {
@@ -19,18 +19,22 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import Divider from "@mui/material/Divider";
 import { useMode } from "../../providers/ModeProvider.tsx";
 import { useNavigate } from "react-router-dom";
+import { useAppSelector } from "../../hooks/hooks.ts";
+import { AccountState } from "../../reducers/accountReducers.ts";
 
 function Cart() {
   const navigate = useNavigate();
-  const cart = useSelector((state: RootState) => state.cart.items);
+  const cart = useAppSelector((state: RootState) => state.cart.items);
+  const auth = useAppSelector((state: RootState): AccountState => state.auth);
   const dispatch = useDispatch();
   const { mode } = useMode();
 
   const handleOrder = () => {
-    // check if user is logged in
-    // if not, redirect to cart-login
-    // else navigate to /zamowienie
-    navigate("/cart-login");
+    if (auth.token) {
+      navigate("/zamowienie");
+    } else {
+      navigate("/cart-login");
+    }
   };
 
   return (

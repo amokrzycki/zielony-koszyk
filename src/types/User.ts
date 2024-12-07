@@ -1,11 +1,9 @@
 interface User {
-  id: number;
+  user_id: string;
   role: string;
-  username: string;
-  password: string;
   email: string;
-  firstName: string;
-  lastName: string;
+  first_name: string;
+  last_name: string;
   address: string;
   phone: string;
   createdAt: Date;

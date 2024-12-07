@@ -1,9 +1,8 @@
 import { Box, Tab, Tabs } from "@mui/material";
 import React, { useState } from "react";
-import RegisterForm from "./RegisterForm.tsx";
-import LoginForm from "./LoginForm.tsx";
+import MyAccount from "./MyAccount.tsx";
 
-function Login() {
+function AccountView() {
   const [tab, setTab] = useState<number>(0);
 
   const handleTabChange = (_: React.SyntheticEvent, tabNumber: number) => {
@@ -19,10 +18,7 @@ function Login() {
           bgcolor: "background.paper",
         }}
       >
-        <Box className="main-container">
-          <Box>
-            <img src="logo.png" alt="logo" height="120px" />
-          </Box>
+        <Box className="main-container" sx={{ mt: 0 }}>
           <Box>
             <Tabs
               value={tab}
@@ -31,8 +27,8 @@ function Login() {
               centered
               sx={{ mb: "1em" }}
             >
-              <Tab label={"Logowanie"} />
-              <Tab label={"Nowe konto"} />
+              <Tab label={"Twoje konto"} />
+              <Tab label={"Zamówienia"} />
             </Tabs>
             <Box
               sx={{
@@ -41,7 +37,7 @@ function Login() {
                 flexWrap: "wrap",
               }}
             >
-              {tab === 0 ? <LoginForm /> : <RegisterForm />}
+              {tab === 0 ? <MyAccount /> : <h1>Zamowienia ez</h1>}
             </Box>
           </Box>
         </Box>
@@ -50,4 +46,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default AccountView;

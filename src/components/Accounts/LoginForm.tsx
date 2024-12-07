@@ -1,31 +1,47 @@
 import { useNavigate } from "react-router-dom";
 import { useForm } from "@mantine/form";
-import { validateLogin } from "./Login.ts";
 import { Box, Button, TextField } from "@mui/material";
+import { validateEmail, validatePassword } from "../../utils/validators.ts";
+import { useLoginMutation } from "./accountsApiSlice.ts";
+import { loginUser } from "./accountSlice.ts";
+import { useAppDispatch } from "../../hooks/hooks.ts";
 
-interface ILoginFormValues {
+export interface ILoginFormValues {
   email: string;
   password: string;
 }
 
 function LoginForm() {
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const [login] = useLoginMutation();
+
+  const validate = {
+    email: validateEmail,
+    password: validatePassword,
+  };
 
   const form = useForm<ILoginFormValues>({
     initialValues: {
       email: "",
       password: "",
     },
-    validate: validateLogin,
+    validate,
     validateInputOnBlur: true,
     clearInputErrorOnChange: true,
   });
 
   const isValid = form.isValid();
 
-  const handleSubmit = (values: ILoginFormValues) => {
-    console.log(values);
-    navigate("/");
+  const handleSubmit = async (values: ILoginFormValues) => {
+    try {
+      const result = await login(values).unwrap();
+      const { access_token } = result;
+      dispatch(loginUser({ accessToken: access_token, user: result.user }));
+      navigate("/");
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   return (

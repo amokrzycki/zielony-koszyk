@@ -1,6 +1,5 @@
 import { useNavigate } from "react-router-dom";
 import { useForm } from "@mantine/form";
-import { validateRegister } from "./Register.ts";
 import {
   Box,
   Button,
@@ -11,25 +10,69 @@ import {
   TextField,
 } from "@mui/material";
 import Checkbox from "@mui/material/Checkbox";
+import {
+  validateBuildingNumber,
+  validateCity,
+  validateEmail,
+  validateFirstName,
+  validateLastName,
+  validateNumber,
+  validatePasswordConfirmation,
+  validateRegisterPassword,
+  validateStreet,
+  validateTermsAccepted,
+  validateZip,
+} from "../../utils/validators.ts";
+import { CreateUser } from "../../types/CreateUser.ts";
+import { useRegisterMutation } from "./accountsApiSlice.ts";
 
 export interface IRegisterFormValues {
+  firstName: string;
+  lastName: string;
   email: string;
+  phone: string;
   password: string;
   passwordConfirmation: string;
+  street: string;
+  buildingNumber: string;
+  city: string;
+  zip: string;
   termsAccepted: boolean;
 }
 
 function RegisterForm() {
   const navigate = useNavigate();
+  const [register] = useRegisterMutation();
+
+  const validate = {
+    firstName: validateFirstName,
+    lastName: validateLastName,
+    email: validateEmail,
+    phone: validateNumber,
+    password: validateRegisterPassword,
+    passwordConfirmation: validatePasswordConfirmation,
+    street: validateStreet,
+    buildingNumber: validateBuildingNumber,
+    city: validateCity,
+    zip: validateZip,
+    termsAccepted: validateTermsAccepted,
+  };
 
   const form = useForm<IRegisterFormValues>({
     initialValues: {
+      firstName: "",
+      lastName: "",
       email: "",
+      phone: "",
       password: "",
       passwordConfirmation: "",
+      street: "",
+      buildingNumber: "",
+      city: "",
+      zip: "",
       termsAccepted: false,
     },
-    validate: validateRegister,
+    validate,
     validateInputOnBlur: true,
     clearInputErrorOnChange: true,
   });
@@ -37,8 +80,16 @@ function RegisterForm() {
   const isValid = form.isValid();
 
   const handleSubmit = (values: IRegisterFormValues) => {
-    console.log(values);
-    navigate("/");
+    const registerData: CreateUser = {
+      first_name: values.firstName,
+      last_name: values.lastName,
+      email: values.email,
+      phone: values.phone,
+      password: values.password,
+      address: `${values.street} ${values.buildingNumber}, ${values.zip} ${values.city}`,
+    };
+    register(registerData);
+    navigate("/login");
   };
 
   return (
@@ -55,6 +106,27 @@ function RegisterForm() {
           alignItems: "center",
         }}
       >
+        <Box>
+          <TextField
+            variant="outlined"
+            label="Imię"
+            placeholder={"Jan"}
+            {...form.getInputProps("firstName")}
+            error={
+              Boolean(form.errors.firstName) && form.isTouched("firstName")
+            }
+            helperText={form.errors.firstName}
+            sx={{ marginRight: "1em" }}
+          />
+          <TextField
+            variant="outlined"
+            label="Nazwisko"
+            placeholder={"Kowalski"}
+            {...form.getInputProps("lastName")}
+            error={Boolean(form.errors.lastName) && form.isTouched("lastName")}
+            helperText={form.errors.lastName}
+          />
+        </Box>
         <TextField
           variant={"outlined"}
           label={"Email"}
@@ -65,12 +137,20 @@ function RegisterForm() {
         />
         <TextField
           variant={"outlined"}
+          label={"Numer telefonu"}
+          {...form.getInputProps("phone")}
+          error={Boolean(form.errors.phone) && form.isTouched("phone")}
+          helperText={form.errors.phone}
+          sx={{ width: "300px" }}
+        />
+        <TextField
+          variant={"outlined"}
           label={"Hasło"}
           type={"password"}
           {...form.getInputProps("password")}
           error={Boolean(form.errors.password) && form.isTouched("password")}
           helperText={form.errors.password}
-          sx={{ width: "300px" }}
+          sx={{ mt: "1em", width: "300px" }}
         />
         <TextField
           variant={"outlined"}
@@ -84,6 +164,47 @@ function RegisterForm() {
           helperText={form.errors.passwordConfirmation}
           sx={{ m: "1em 0", width: "300px" }}
         />
+        <Box>
+          <TextField
+            variant="outlined"
+            label="Ulica"
+            placeholder={"ul. Przykładowa"}
+            {...form.getInputProps("street")}
+            helperText={form.errors.street}
+            error={Boolean(form.errors.street) && form.isTouched("street")}
+            sx={{ marginRight: "1em" }}
+          />
+          <TextField
+            variant="outlined"
+            label="Numer domu/lokalu"
+            placeholder={"1A/2"}
+            {...form.getInputProps("buildingNumber")}
+            helperText={form.errors.buldingNumber}
+            error={
+              Boolean(form.errors.buildingNumber) &&
+              form.isTouched("buildingNumber")
+            }
+          />
+        </Box>
+        <Box>
+          <TextField
+            variant="outlined"
+            label="Kod pocztowy"
+            placeholder={"00-000"}
+            {...form.getInputProps("zip")}
+            helperText={form.errors.zip}
+            error={Boolean(form.errors.zip) && form.isTouched("zip")}
+            sx={{ marginRight: "1em" }}
+          />
+          <TextField
+            variant="outlined"
+            label="Miejscowość"
+            placeholder={"Warszawa"}
+            {...form.getInputProps("city")}
+            helperText={form.errors.city}
+            error={Boolean(form.errors.city) && form.isTouched("city")}
+          />
+        </Box>
         <FormControl
           required
           error={

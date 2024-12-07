@@ -1,6 +1,5 @@
 import { useForm } from "@mantine/form";
 import { Box, Button, TextField, Typography } from "@mui/material";
-import { validate } from "./Order.ts";
 import { Order } from "../../types/Order.ts";
 import { OrderStatuses } from "../../enums/OrderStatuses.ts";
 import { useSelector } from "react-redux";
@@ -10,6 +9,16 @@ import { setOrder } from "./orderSlice.ts";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from "../../hooks/hooks.ts";
 import { calculateTotalAmount } from "../Cart/cartSlice.ts";
+import {
+  validateBuildingNumber,
+  validateCity,
+  validateEmail,
+  validateFirstName,
+  validateLastName,
+  validateNumber,
+  validateStreet,
+  validateZip,
+} from "../../utils/validators.ts";
 
 interface IFormValues {
   firstName: string;
@@ -26,6 +35,17 @@ function OrderForm() {
   const cart = useSelector((state: RootState) => state.cart.items);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+
+  const validate = {
+    firstName: validateFirstName,
+    lastName: validateLastName,
+    email: validateEmail,
+    number: validateNumber,
+    street: validateStreet,
+    buildingNumber: validateBuildingNumber,
+    city: validateCity,
+    zip: validateZip,
+  };
 
   const form = useForm<IFormValues>({
     initialValues: {

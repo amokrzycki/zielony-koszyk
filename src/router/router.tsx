@@ -10,6 +10,7 @@ import CartLogin from "../components/Cart/CartLogin.tsx";
 import OrderSummary from "../components/Order/OrderSummary.tsx";
 import OrderConfirm from "../components/Order/OrderConfirm.tsx";
 import Login from "../components/Accounts/Login.tsx";
+import AccountView from "../components/Accounts/AccountView.tsx";
 
 const router = createBrowserRouter([
   {
@@ -61,6 +62,10 @@ const router = createBrowserRouter([
   {
     path: "/login",
     element: <Login />,
+  },
+  {
+    path: "/konto",
+    element: <AccountView />,
   },
 ]);
 
