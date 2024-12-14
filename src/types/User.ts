@@ -4,7 +4,10 @@ interface User {
   email: string;
   first_name: string;
   last_name: string;
-  address: string;
+  street: string;
+  building_number: string;
+  city: string;
+  zip: string;
   phone: string;
   createdAt: Date;
 }

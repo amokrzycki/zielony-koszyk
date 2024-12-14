@@ -4,5 +4,8 @@ export interface CreateUser {
   email: string;
   phone: string;
   password: string;
-  address: string;
+  street: string;
+  building_number: string;
+  city: string;
+  zip: string;
 }

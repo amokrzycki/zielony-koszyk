@@ -1,4 +1,4 @@
-function capitalizeFirstLetter(str: string | undefined): string | undefined {
+function capitalizeFirstLetter(str: string): string {
   if (!str) return str;
   return str.charAt(0).toUpperCase() + str.slice(1);
 }

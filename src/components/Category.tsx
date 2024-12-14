@@ -99,7 +99,7 @@ function Category() {
         }}
       >
         <Typography variant="h5" component="h2" gutterBottom>
-          {capitalizeFirstLetter(categoryId)}
+          {capitalizeFirstLetter(categoryId || "")}
         </Typography>
         <Search />
       </Box>

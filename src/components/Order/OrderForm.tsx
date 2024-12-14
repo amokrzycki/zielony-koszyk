@@ -19,6 +19,7 @@ import {
   validateStreet,
   validateZip,
 } from "../../utils/validators.ts";
+import User from "../../types/User.ts";
 
 interface IFormValues {
   firstName: string;
@@ -33,6 +34,7 @@ interface IFormValues {
 
 function OrderForm() {
   const cart = useSelector((state: RootState) => state.cart.items);
+  const user: User = useSelector((state: RootState) => state.auth.user);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
@@ -49,14 +51,14 @@ function OrderForm() {
 
   const form = useForm<IFormValues>({
     initialValues: {
-      firstName: "",
-      lastName: "",
-      email: "",
-      number: "",
-      street: "",
-      buildingNumber: "",
-      city: "",
-      zip: "",
+      firstName: user?.first_name || "",
+      lastName: user?.last_name || "",
+      email: user?.email || "",
+      number: user?.phone || "",
+      street: user?.street || "",
+      buildingNumber: user?.building_number || "",
+      city: user?.city || "",
+      zip: user?.zip || "",
     },
     validate,
     validateInputOnBlur: true,
@@ -67,6 +69,7 @@ function OrderForm() {
 
   const handleSubmit = (values: IFormValues) => {
     const order: Order = {
+      user_id: user.user_id,
       customer_name: `${values.firstName} ${values.lastName}`,
       customer_email: values.email,
       customer_phone: values.number,
@@ -81,7 +84,6 @@ function OrderForm() {
 
     dispatch(setOrder(order));
     dispatch(calculateTotalAmount());
-
     navigate("/zamowienie/podsumowanie");
   };
 

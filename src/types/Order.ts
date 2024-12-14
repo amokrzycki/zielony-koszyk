@@ -1,9 +1,8 @@
-import User from "./User.ts";
 import { OrderStatuses } from "../enums/OrderStatuses.ts";
 import { OrderDetail } from "./OrderDetail.ts";
 
 export interface Order {
-  user?: User;
+  user_id?: string;
   customer_name?: string;
   customer_email?: string;
   customer_phone?: string;

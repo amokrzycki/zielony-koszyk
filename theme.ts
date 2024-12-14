@@ -31,7 +31,7 @@ const lightTheme = createTheme({
     },
     text: {
       primary: "#000000", // Text color
-      secondary: "#111010", // Secondary text color
+      secondary: "#837878", // Secondary text color
     },
   },
 });

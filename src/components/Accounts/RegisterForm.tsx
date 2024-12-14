@@ -86,9 +86,13 @@ function RegisterForm() {
       email: values.email,
       phone: values.phone,
       password: values.password,
-      address: `${values.street} ${values.buildingNumber}, ${values.zip} ${values.city}`,
+      street: values.street,
+      building_number: values.buildingNumber,
+      city: values.city,
+      zip: values.zip,
     };
     register(registerData);
+    // TODO: Register success message view
     navigate("/login");
   };
 
