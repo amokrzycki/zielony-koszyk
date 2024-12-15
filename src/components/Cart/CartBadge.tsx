@@ -22,9 +22,9 @@ function CartBadge() {
   };
 
   return (
-    <IconButton aria-label="cart" onClick={handleClick}>
+    <IconButton aria-label="cart" onClick={handleClick} sx={{ mr: 0.5 }}>
       <StyledBadge badgeContent={cartItemCounts} color="secondary">
-        <ShoppingCartIcon />
+        <ShoppingCartIcon sx={{ color: "text.primary" }} />
       </StyledBadge>
     </IconButton>
   );

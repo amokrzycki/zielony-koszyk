@@ -1,4 +1,5 @@
 import { IRegisterFormValues } from "../components/Accounts/RegisterForm.tsx";
+import { IPasswordChangeFormValues } from "../components/Accounts/PasswordChange.tsx";
 
 const validateEmail = (email: string) => {
   return email && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
@@ -14,6 +15,19 @@ const validatePassword = (password: string) => {
   return password && password.length > 0 ? undefined : "Podaj prawidłowe hasło";
 };
 
+const validateNewPassword = (
+  password: string,
+  values: IPasswordChangeFormValues,
+) => {
+  if (password === values.oldPassword) {
+    return "Nowe hasło musi się różnić od starego";
+  }
+  return password &&
+    /^(?=.*[0-9])(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/.test(password)
+    ? undefined
+    : "Hasło musi mieć co najmniej 8 znaków, zawierać przynajmniej jedną cyfrę i jeden znak specjalny.";
+};
+
 const validateRegisterPassword = (password: string) => {
   return password &&
     /^(?=.*[0-9])(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/.test(password)
@@ -23,7 +37,7 @@ const validateRegisterPassword = (password: string) => {
 
 const validatePasswordConfirmation = (
   value: string,
-  values: IRegisterFormValues,
+  values: IRegisterFormValues | IPasswordChangeFormValues,
 ) => {
   return value === values.password ? undefined : "Hasła nie są takie same";
 };
@@ -66,6 +80,7 @@ export {
   validateLastName,
   validateNumber,
   validatePassword,
+  validateNewPassword,
   validateRegisterPassword,
   validatePasswordConfirmation,
   validateStreet,

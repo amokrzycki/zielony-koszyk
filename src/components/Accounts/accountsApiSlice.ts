@@ -1,6 +1,7 @@
 import { baseApi } from "../../api/api.ts";
 import { CreateUser } from "../../types/CreateUser.ts";
 import { ILoginFormValues } from "./LoginForm.tsx";
+import { UpdatePasswordBody } from "../../types/UpdatePasswordBody.ts";
 
 export const accountsApiSlice = baseApi.injectEndpoints({
   endpoints: (builder) => ({
@@ -27,8 +28,27 @@ export const accountsApiSlice = baseApi.injectEndpoints({
         method: "GET",
       }),
     }),
+    changePassword: builder.mutation({
+      query: (body: UpdatePasswordBody) => ({
+        url: "users/password-change/" + body.user_id,
+        method: "PUT",
+        body,
+      }),
+    }),
+    changeEmail: builder.mutation({
+      query: (body: { user_id: string; email: string }) => ({
+        url: "users/" + body.user_id,
+        method: "PUT",
+        body,
+      }),
+    }),
   }),
 });
 
-export const { useRegisterMutation, useLoginMutation, useGetAccountInfoQuery } =
-  accountsApiSlice;
+export const {
+  useRegisterMutation,
+  useLoginMutation,
+  useGetAccountInfoQuery,
+  useChangePasswordMutation,
+  useChangeEmailMutation,
+} = accountsApiSlice;

@@ -14,6 +14,8 @@ import AccountView from "../components/Accounts/AccountView.tsx";
 import AccountOrdersView from "../components/Accounts/AccountOrdersView.tsx";
 import MyAccount from "../components/Accounts/MyAccount.tsx";
 import AccountOptions from "../components/Accounts/AccountOptions.tsx";
+import PasswordChange from "../components/Accounts/PasswordChange.tsx";
+import EmailChange from "../components/Accounts/EmailChange.tsx";
 
 const router = createBrowserRouter([
   {
@@ -78,12 +80,20 @@ const router = createBrowserRouter([
             element: <AccountOptions />,
           },
           {
-            path: "dane",
+            path: "ksiazka-adresowa",
             element: <MyAccount />,
           },
           {
             path: "zamowienia",
             element: <AccountOrdersView />,
+          },
+          {
+            path: "zmiana-email",
+            element: <EmailChange />,
+          },
+          {
+            path: "zmiana-hasla",
+            element: <PasswordChange />,
           },
         ],
       },

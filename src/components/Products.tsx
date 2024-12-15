@@ -62,7 +62,7 @@ function Products() {
           height: "calc(100vh - 72px - 156px - 30px)",
         }}
       >
-        <CircularProgress sx={{ color: "#FFF" }} />
+        <CircularProgress sx={{ color: "primary" }} />
       </Box>
     );
   }

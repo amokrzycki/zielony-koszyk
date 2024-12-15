@@ -31,20 +31,10 @@ function Header() {
           display: "flex",
           gap: 2,
           alignItems: "center",
-          "& img": {
-            width: 20,
-            height: 20,
-            objectFit: "cover",
-          },
-          "& div": {
-            cursor: "pointer",
-          },
         }}
       >
         <ModeSwitcher />
-        <Box>
-          <CartBadge />
-        </Box>
+        <CartBadge />
         <UserBadge />
       </Box>
     </AppBar>

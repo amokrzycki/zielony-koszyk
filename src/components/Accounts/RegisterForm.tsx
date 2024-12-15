@@ -228,7 +228,6 @@ function RegisterForm() {
             {form.errors.termsAccepted}
           </FormHelperText>
         </FormControl>
-        {/* TODO: newsletter? */}
         <Button
           type={"submit"}
           variant={"contained"}

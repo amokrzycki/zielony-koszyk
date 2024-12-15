@@ -1,6 +1,8 @@
+import { Roles } from "../enums/Roles.ts";
+
 interface User {
   user_id: string;
-  role: string;
+  role: Roles;
   email: string;
   first_name: string;
   last_name: string;
