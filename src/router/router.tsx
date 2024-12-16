@@ -12,14 +12,17 @@ import OrderConfirm from "../components/Order/OrderConfirm.tsx";
 import Login from "../components/Accounts/Login.tsx";
 import AccountView from "../components/Accounts/AccountView.tsx";
 import AccountOrdersView from "../components/Accounts/AccountOrdersView.tsx";
-import MyAccount from "../components/Accounts/MyAccount.tsx";
+import AddressBook from "../components/Accounts/AddressBook.tsx";
 import AccountOptions from "../components/Accounts/AccountOptions.tsx";
 import PasswordChange from "../components/Accounts/PasswordChange.tsx";
 import EmailChange from "../components/Accounts/EmailChange.tsx";
+import Page from "../components/Page.tsx";
+import ChangeAddresses from "../components/Accounts/ChangeAddresses.tsx";
 
 const router = createBrowserRouter([
   {
     path: "/*",
+    element: <Page />,
     children: [
       {
         path: "*",
@@ -80,8 +83,17 @@ const router = createBrowserRouter([
             element: <AccountOptions />,
           },
           {
-            path: "ksiazka-adresowa",
-            element: <MyAccount />,
+            path: "ksiazka-adresowa/*",
+            children: [
+              {
+                path: "*",
+                element: <AddressBook />,
+              },
+              {
+                path: "edytuj-dane",
+                element: <ChangeAddresses />,
+              },
+            ],
           },
           {
             path: "zamowienia",

@@ -41,7 +41,7 @@ function Login() {
                 flexWrap: "wrap",
               }}
             >
-              {tab === 0 ? <LoginForm /> : <RegisterForm />}
+              {tab === 0 ? <LoginForm /> : <RegisterForm setTab={setTab} />}
             </Box>
           </Box>
         </Box>

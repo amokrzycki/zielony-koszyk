@@ -4,4 +4,5 @@ export const friendlyRoutingNames: Record<string, string> = {
   zamowienia: "Moje zamówienia",
   "zmiana-email": "Zmiana email",
   "zmiana-hasla": "Zmiana hasła",
+  "edytuj-dane": "Edytuj dane",
 };

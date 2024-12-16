@@ -5,6 +5,7 @@ import { validateEmail, validatePassword } from "../../utils/validators.ts";
 import { useLoginMutation } from "./accountsApiSlice.ts";
 import { loginUser } from "./accountSlice.ts";
 import { useAppDispatch } from "../../hooks/hooks.ts";
+import toast from "react-hot-toast";
 
 export interface ILoginFormValues {
   email: string;
@@ -39,8 +40,10 @@ function LoginForm() {
       const { access_token } = result;
       dispatch(loginUser({ accessToken: access_token, user: result.user }));
       navigate("/");
+      toast.success("Zalogowano pomyślnie");
     } catch (err) {
       console.error(err);
+      toast.error("Niepoprawne dane logowania");
     }
   };
 

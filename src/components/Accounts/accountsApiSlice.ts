@@ -2,6 +2,7 @@ import { baseApi } from "../../api/api.ts";
 import { CreateUser } from "../../types/CreateUser.ts";
 import { ILoginFormValues } from "./LoginForm.tsx";
 import { UpdatePasswordBody } from "../../types/UpdatePasswordBody.ts";
+import User from "../../types/User.ts";
 
 export const accountsApiSlice = baseApi.injectEndpoints({
   endpoints: (builder) => ({
@@ -42,6 +43,13 @@ export const accountsApiSlice = baseApi.injectEndpoints({
         body,
       }),
     }),
+    changeUserData: builder.mutation({
+      query: (body: Partial<User> & { user_id: string }) => ({
+        url: "users/" + body.user_id,
+        method: "PUT",
+        body,
+      }),
+    }),
   }),
 });
 
@@ -51,4 +59,5 @@ export const {
   useGetAccountInfoQuery,
   useChangePasswordMutation,
   useChangeEmailMutation,
+  useChangeUserDataMutation,
 } = accountsApiSlice;

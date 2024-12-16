@@ -1,6 +1,8 @@
 import { Box } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 function Nav() {
+  const navigate = useNavigate();
   return (
     <Box
       id="navigation-wrapper"
@@ -19,10 +21,42 @@ function Nav() {
         },
       }}
     >
-      <a href="/">Strona Główna</a>
-      <a href="/produkty">Produkty</a>
-      <a href="/o-nas">O nas</a>
-      <a href="/kontakt">Kontakt</a>
+      <a
+        href="/"
+        onClick={(e) => {
+          e.preventDefault();
+          navigate("/");
+        }}
+      >
+        Strona główna
+      </a>
+      <a
+        href="/produkty"
+        onClick={(e) => {
+          e.preventDefault();
+          navigate("/produkty");
+        }}
+      >
+        Produkty
+      </a>
+      <a
+        href="/kontakt"
+        onClick={(e) => {
+          e.preventDefault();
+          navigate("/kontakt");
+        }}
+      >
+        Kontakt
+      </a>
+      <a
+        href="/o-nas"
+        onClick={(e) => {
+          e.preventDefault();
+          navigate("/o-nas");
+        }}
+      >
+        O nas
+      </a>
     </Box>
   );
 }

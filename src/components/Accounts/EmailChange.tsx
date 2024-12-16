@@ -6,6 +6,7 @@ import { useForm } from "@mantine/form";
 import { validateEmail } from "../../utils/validators.ts";
 import { useChangeEmailMutation } from "./accountsApiSlice.ts";
 import { logoutUser } from "./accountSlice.ts";
+import toast from "react-hot-toast";
 
 export interface IEmailChangeFormValues {
   email: string;
@@ -49,16 +50,17 @@ function EmailChange() {
   const isValid = form.isValid();
 
   const handleSubmit = (values: IEmailChangeFormValues) => {
-    changeEmail({ user_id: user.user_id, email: values.newEmail })
-      .then(() => {
-        console.log("Email changed");
+    toast
+      .promise(changeEmail({ user_id: user.user_id, email: values.newEmail }), {
+        loading: "Zmieniam adres email...",
+        success: "Adres email został zmieniony",
+        error: "Nie udało się zmienić adresu email",
       })
-      .catch((error) => {
-        console.error(error);
+      .then(() => {
+        dispatch(logoutUser());
+        navigate("/");
+        toast("Zostałeś wylogowany");
       });
-    // TODO: Redirect to success page
-    dispatch(logoutUser());
-    navigate("/");
   };
 
   return (

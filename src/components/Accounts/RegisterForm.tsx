@@ -1,4 +1,3 @@
-import { useNavigate } from "react-router-dom";
 import { useForm } from "@mantine/form";
 import {
   Box,
@@ -25,6 +24,8 @@ import {
 } from "../../utils/validators.ts";
 import { CreateUser } from "../../types/CreateUser.ts";
 import { useRegisterMutation } from "./accountsApiSlice.ts";
+import toast from "react-hot-toast";
+import { Dispatch, SetStateAction } from "react";
 
 export interface IRegisterFormValues {
   firstName: string;
@@ -40,8 +41,11 @@ export interface IRegisterFormValues {
   termsAccepted: boolean;
 }
 
-function RegisterForm() {
-  const navigate = useNavigate();
+interface RegisterFormProps {
+  setTab: Dispatch<SetStateAction<number>>;
+}
+
+function RegisterForm({ setTab }: RegisterFormProps) {
   const [register] = useRegisterMutation();
 
   const validate = {
@@ -91,9 +95,15 @@ function RegisterForm() {
       city: values.city,
       zip: values.zip,
     };
-    register(registerData);
-    // TODO: Register success message view
-    navigate("/login");
+    toast
+      .promise(register(registerData), {
+        loading: "Tworzenie konta...",
+        success: "Konto zostało utworzone",
+        error: "Nie udało się utworzyć konta",
+      })
+      .then(() => {
+        setTab(0);
+      });
   };
 
   return (

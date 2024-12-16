@@ -1,20 +1,14 @@
-import { useAppDispatch, useAppSelector } from "../../hooks/hooks.ts";
-import { logoutUser } from "./accountSlice.ts";
+import { useAppSelector } from "../../hooks/hooks.ts";
 import { Box, Button, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import LogoutIcon from "@mui/icons-material/Logout";
 import User from "../../types/User.ts";
 
-function MyAccount() {
-  const dispatch = useAppDispatch();
+function AddressBook() {
   const user: User = useAppSelector((state) => state.auth.user);
   const navigate = useNavigate();
 
-  // TODO: Implement changing user data
-
-  const handleLogout = () => {
-    dispatch(logoutUser());
-    navigate("/");
+  const handleEditData = () => {
+    navigate("/konto/ksiazka-adresowa/edytuj-dane");
   };
 
   return (
@@ -48,6 +42,7 @@ function MyAccount() {
           {user.zip}, {user.city}
         </Typography>
         <Button
+          onClick={handleEditData}
           variant={"contained"}
           sx={{
             mt: 1,
@@ -79,6 +74,7 @@ function MyAccount() {
           {user.zip}, {user.city}
         </Typography>
         <Button
+          onClick={handleEditData}
           variant={"contained"}
           sx={{
             mt: 1,
@@ -87,18 +83,8 @@ function MyAccount() {
           Edytuj dane
         </Button>
       </Box>
-      <Button
-        variant={"contained"}
-        onClick={handleLogout}
-        startIcon={<LogoutIcon sx={{ color: "text.primary" }} />}
-        sx={{
-          mt: 1,
-        }}
-      >
-        Wyloguj się
-      </Button>
     </Box>
   );
 }
 
-export default MyAccount;
+export default AddressBook;

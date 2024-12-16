@@ -5,8 +5,11 @@ import { RootState } from "../../store/store.ts";
 import { AccountState } from "../../reducers/accountReducers.ts";
 import React, { useState } from "react";
 import { logoutUser } from "./accountSlice.ts";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 function UserBadge() {
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -17,21 +20,22 @@ function UserBadge() {
       setAnchorEl(e.currentTarget);
     }
     if (!auth.token) {
-      window.location.href = "/login";
+      navigate("/login");
     }
   };
 
   const handleClose = (e: React.MouseEvent<HTMLLIElement>) => {
     setAnchorEl(null);
     if (e.currentTarget.dataset.route) {
-      window.location.href = e.currentTarget.dataset.route;
+      navigate(e.currentTarget.dataset.route);
     }
   };
 
   const handleLogout = () => {
-    window.location.href = "/";
     setAnchorEl(null);
     dispatch(logoutUser());
+    toast.success("Zostałeś wylogowany");
+    navigate("/");
   };
 
   return (

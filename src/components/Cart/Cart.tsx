@@ -17,7 +17,6 @@ import {
 import CartItem from "../../types/CartItem.ts";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Divider from "@mui/material/Divider";
-import { useMode } from "../../providers/ModeProvider.tsx";
 import { useNavigate } from "react-router-dom";
 import { useAppSelector } from "../../hooks/hooks.ts";
 import { AccountState } from "../../reducers/accountReducers.ts";
@@ -27,7 +26,6 @@ function Cart() {
   const cart = useAppSelector((state: RootState) => state.cart.items);
   const auth = useAppSelector((state: RootState): AccountState => state.auth);
   const dispatch = useDispatch();
-  const { mode } = useMode();
 
   const handleOrder = () => {
     if (auth.token) {
@@ -95,11 +93,9 @@ function Cart() {
                           onClick={() => dispatch(removeItem(item.productId))}
                           startIcon={
                             <DeleteIcon
-                              sx={
-                                mode === "light"
-                                  ? { color: "#000" }
-                                  : { color: "#FFF" }
-                              }
+                              sx={{
+                                color: "text.primary",
+                              }}
                             />
                           }
                         />
