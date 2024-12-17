@@ -9,11 +9,16 @@ import { useNavigate } from "react-router-dom";
 import { getFormattedDate } from "../../utils/getFormattedDate.ts";
 import { getPolishStatus } from "../../utils/getPolishStatus.ts";
 import { OrderStatuses } from "../../enums/OrderStatuses.ts";
+import { useEffect } from "react";
 
 function AccountOrdersView() {
   const user: User = useAppSelector((state: RootState) => state.auth.user);
   const userOrders = useGetUserOrdersQuery(user.user_id);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    userOrders.refetch();
+  }, []);
 
   const columns: GridColDef[] = [
     { field: "id", headerName: "Numer zamówienia", width: 150 },
@@ -38,7 +43,7 @@ function AccountOrdersView() {
   }));
 
   const handleRowClick = (row: GridRowParams) => {
-    navigate(`/konto/zamowienie/${row.row.id}`);
+    navigate(`/konto/zamowienia/${row.row.id}`);
   };
 
   return (
@@ -54,7 +59,7 @@ function AccountOrdersView() {
       <Typography variant="body1">
         Tutaj znajdziesz listę swoich zamówień
       </Typography>
-      <Paper sx={{ height: 300, width: "45%" }}>
+      <Paper sx={{ height: 500, width: "45%" }}>
         <DataGrid
           rows={rows}
           columns={columns}

@@ -51,13 +51,18 @@ function EmailChange() {
 
   const handleSubmit = (values: IEmailChangeFormValues) => {
     toast
-      .promise(changeEmail({ user_id: user.user_id, email: values.newEmail }), {
-        loading: "Zmieniam adres email...",
-        success: "Adres email został zmieniony",
-        error: "Nie udało się zmienić adresu email",
-      })
+      .promise(
+        changeEmail({ user_id: user.user_id, email: values.newEmail }).unwrap(),
+        {
+          loading: "Zmieniam adres email...",
+          success: "Adres email został zmieniony",
+          error: "Nie udało się zmienić adresu email",
+        },
+      )
       .then(() => {
         dispatch(logoutUser());
+        localStorage.removeItem("token");
+        localStorage.removeItem("user");
         navigate("/");
         toast("Zostałeś wylogowany");
       });

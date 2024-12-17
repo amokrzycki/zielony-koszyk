@@ -18,6 +18,7 @@ import PasswordChange from "../components/Accounts/PasswordChange.tsx";
 import EmailChange from "../components/Accounts/EmailChange.tsx";
 import Page from "../components/Page.tsx";
 import ChangeAddresses from "../components/Accounts/ChangeAddresses.tsx";
+import AccountOrderDetails from "../components/Accounts/AccountOrderDetails.tsx";
 
 const router = createBrowserRouter([
   {
@@ -96,8 +97,17 @@ const router = createBrowserRouter([
             ],
           },
           {
-            path: "zamowienia",
-            element: <AccountOrdersView />,
+            path: "zamowienia/*",
+            children: [
+              {
+                path: "*",
+                element: <AccountOrdersView />,
+              },
+              {
+                path: ":orderId",
+                element: <AccountOrderDetails />,
+              },
+            ],
           },
           {
             path: "zmiana-email",

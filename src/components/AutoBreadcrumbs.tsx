@@ -5,16 +5,22 @@ import { Typography } from "@mui/material";
 import { friendlyRoutingNames } from "../constants/friendlyRoutingNames.ts";
 
 export default function AutoBreadcrumbs() {
+  const numericRegex = /^\d+$/;
   const location = useLocation();
   const pathNames = location.pathname.split("/").filter((x) => x);
 
-  function getFriendlyName(segment: string): string {
+  function getFriendlyName(segment: string, isLast: boolean): string {
     const decoded = decodeURIComponent(segment);
 
-    return (
-      friendlyRoutingNames[decoded] ??
-      decoded.charAt(0).toUpperCase() + decoded.slice(1)
-    );
+    if (isLast && numericRegex.test(decoded)) {
+      return `Zamówienie #${decoded}`;
+    }
+
+    if (friendlyRoutingNames[decoded]) {
+      return friendlyRoutingNames[decoded];
+    }
+
+    return decoded.charAt(0).toUpperCase() + decoded.slice(1);
   }
 
   return (
@@ -32,7 +38,8 @@ export default function AutoBreadcrumbs() {
         const to = `/${pathNames.slice(0, index + 1).join("/")}`;
 
         const isLast = index === pathNames.length - 1;
-        const friendlyName = getFriendlyName(value);
+        const friendlyName = getFriendlyName(value, isLast);
+
         return isLast ? (
           <Typography color="textPrimary" key={to}>
             {friendlyName}

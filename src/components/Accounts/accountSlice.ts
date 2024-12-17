@@ -7,7 +7,7 @@ import User from "../../types/User.ts";
 
 const initialState: AccountState = {
   token: localStorage.getItem("accessToken"),
-  user: {} as User,
+  user: JSON.parse(localStorage.getItem("user") || "{}") as User,
 };
 
 export const accountSlice = createSlice({

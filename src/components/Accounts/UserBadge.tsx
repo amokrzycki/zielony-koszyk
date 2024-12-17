@@ -34,6 +34,8 @@ function UserBadge() {
   const handleLogout = () => {
     setAnchorEl(null);
     dispatch(logoutUser());
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("user");
     toast.success("Zostałeś wylogowany");
     navigate("/");
   };

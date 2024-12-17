@@ -1,15 +1,23 @@
 import { useNavigate } from "react-router-dom";
 import { useForm } from "@mantine/form";
-import { Box, Button, TextField } from "@mui/material";
+import {
+  Box,
+  Button,
+  FormControlLabel,
+  FormGroup,
+  TextField,
+} from "@mui/material";
 import { validateEmail, validatePassword } from "../../utils/validators.ts";
 import { useLoginMutation } from "./accountsApiSlice.ts";
 import { loginUser } from "./accountSlice.ts";
 import { useAppDispatch } from "../../hooks/hooks.ts";
 import toast from "react-hot-toast";
+import Checkbox from "@mui/material/Checkbox";
 
 export interface ILoginFormValues {
   email: string;
   password: string;
+  rememberMe?: boolean;
 }
 
 function LoginForm() {
@@ -26,6 +34,7 @@ function LoginForm() {
     initialValues: {
       email: "",
       password: "",
+      rememberMe: false,
     },
     validate,
     validateInputOnBlur: true,
@@ -39,6 +48,10 @@ function LoginForm() {
       const result = await login(values).unwrap();
       const { access_token } = result;
       dispatch(loginUser({ accessToken: access_token, user: result.user }));
+      if (values.rememberMe) {
+        localStorage.setItem("accessToken", access_token);
+        localStorage.setItem("user", JSON.stringify(result.user));
+      }
       navigate("/");
       toast.success("Zalogowano pomyślnie");
     } catch (err) {
@@ -79,6 +92,13 @@ function LoginForm() {
           sx={{ width: "300px" }}
         />
       </Box>
+      <FormGroup sx={{ mt: 1 }}>
+        <FormControlLabel
+          control={<Checkbox {...form.getInputProps("rememberMe")} />}
+          label={"Zapamiętaj mnie"}
+        />
+      </FormGroup>
+      {/* TODO: forgot password */}
       <Button
         type={"submit"}
         disabled={!isValid && form.isTouched()}

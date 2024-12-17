@@ -16,7 +16,6 @@ export const accountReducers = {
   ) {
     state.token = action.payload.accessToken;
     state.user = action.payload.user;
-    localStorage.setItem("accessToken", action.payload.accessToken);
   },
   updateUserData(state: AccountState, action: PayloadAction<Partial<User>>) {
     state.user = { ...state.user, ...action.payload };
@@ -24,6 +23,5 @@ export const accountReducers = {
   logoutUser(state: AccountState) {
     state.token = null;
     state.user = {} as User;
-    localStorage.removeItem("accessToken");
   },
 };

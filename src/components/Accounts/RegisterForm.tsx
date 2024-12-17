@@ -96,7 +96,7 @@ function RegisterForm({ setTab }: RegisterFormProps) {
       zip: values.zip,
     };
     toast
-      .promise(register(registerData), {
+      .promise(register(registerData).unwrap(), {
         loading: "Tworzenie konta...",
         success: "Konto zostało utworzone",
         error: "Nie udało się utworzyć konta",
