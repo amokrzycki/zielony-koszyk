@@ -8,6 +8,7 @@ import { useCreateOrderMutation } from "./orderApiSlice.ts";
 import { useNavigate } from "react-router-dom";
 import { clearCart } from "../Cart/cartSlice.ts";
 import { clearOrder } from "./orderSlice.ts";
+import toast from "react-hot-toast";
 
 function OrderSummary() {
   const [checked, setChecked] = useState(false);
@@ -19,10 +20,17 @@ function OrderSummary() {
   const [createOrder] = useCreateOrderMutation();
 
   const handleOrder = () => {
-    createOrder(orderInfo);
-    dispatch(clearCart());
-    dispatch(clearOrder());
-    navigate("/zamowienie/potwierdzenie");
+    toast
+      .promise(createOrder(orderInfo).unwrap(), {
+        loading: "Trwa składanie zamówienia...",
+        success: "Zamówienie złożone pomyślnie!",
+        error: "Wystąpił błąd podczas składania zamówienia",
+      })
+      .then(() => {
+        dispatch(clearCart());
+        dispatch(clearOrder());
+        navigate("/zamowienie/potwierdzenie");
+      });
   };
 
   return (

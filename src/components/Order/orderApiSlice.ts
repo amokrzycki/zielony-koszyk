@@ -10,7 +10,30 @@ export const orderApiSlice = baseApi.injectEndpoints({
         body,
       }),
     }),
+    getUserOrders: builder.query({
+      query: (userId: string) => ({
+        url: `orders/user-orders/${userId}`,
+        method: "GET",
+      }),
+    }),
+    getOrder: builder.query({
+      query: (orderId: string) => ({
+        url: `orders/order/${orderId}`,
+        method: "GET",
+      }),
+    }),
+    getOrderDetails: builder.query({
+      query: (orderId: string) => ({
+        url: `order-details/${orderId}`,
+        method: "GET",
+      }),
+    }),
   }),
 });
 
-export const { useCreateOrderMutation } = orderApiSlice;
+export const {
+  useCreateOrderMutation,
+  useGetUserOrdersQuery,
+  useGetOrderQuery,
+  useGetOrderDetailsQuery,
+} = orderApiSlice;

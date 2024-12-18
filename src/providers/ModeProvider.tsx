@@ -13,6 +13,8 @@ const ModeContext = createContext({
   mode: "light",
   toggleMode: () => {},
 });
+
+/* eslint-disable */
 export const useMode = () => useContext(ModeContext);
 
 export const ModeProvider = ({ children }: { children: ReactNode }) => {

@@ -1,6 +1,5 @@
 import { useForm } from "@mantine/form";
 import { Box, Button, TextField, Typography } from "@mui/material";
-import { validate } from "./Order.ts";
 import { Order } from "../../types/Order.ts";
 import { OrderStatuses } from "../../enums/OrderStatuses.ts";
 import { useSelector } from "react-redux";
@@ -10,6 +9,18 @@ import { setOrder } from "./orderSlice.ts";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from "../../hooks/hooks.ts";
 import { calculateTotalAmount } from "../Cart/cartSlice.ts";
+import {
+  validateBuildingNumber,
+  validateCity,
+  validateEmail,
+  validateFirstName,
+  validateLastName,
+  validateNumber,
+  validateStreet,
+  validateZip,
+} from "../../utils/validators.ts";
+import User from "../../types/User.ts";
+import { AddressType } from "../../enums/AddressType.ts";
 
 interface IFormValues {
   firstName: string;
@@ -24,19 +35,35 @@ interface IFormValues {
 
 function OrderForm() {
   const cart = useSelector((state: RootState) => state.cart.items);
+  const user: User = useSelector((state: RootState) => state.auth.user);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
+  const deliveryAddress = user.addresses.find(
+    (address) => address.type === AddressType.DELIVERY,
+  );
+
+  const validate = {
+    firstName: validateFirstName,
+    lastName: validateLastName,
+    email: validateEmail,
+    number: validateNumber,
+    street: validateStreet,
+    buildingNumber: validateBuildingNumber,
+    city: validateCity,
+    zip: validateZip,
+  };
+
   const form = useForm<IFormValues>({
     initialValues: {
-      firstName: "",
-      lastName: "",
-      email: "",
-      number: "",
-      street: "",
-      buildingNumber: "",
-      city: "",
-      zip: "",
+      firstName: user?.first_name || "",
+      lastName: user?.last_name || "",
+      email: user?.email || "",
+      number: user?.phone || "",
+      street: deliveryAddress?.street || "",
+      buildingNumber: deliveryAddress?.building_number || "",
+      city: deliveryAddress?.city || "",
+      zip: deliveryAddress?.zip || "",
     },
     validate,
     validateInputOnBlur: true,
@@ -47,6 +74,7 @@ function OrderForm() {
 
   const handleSubmit = (values: IFormValues) => {
     const order: Order = {
+      user_id: user.user_id,
       customer_name: `${values.firstName} ${values.lastName}`,
       customer_email: values.email,
       customer_phone: values.number,
@@ -61,7 +89,6 @@ function OrderForm() {
 
     dispatch(setOrder(order));
     dispatch(calculateTotalAmount());
-
     navigate("/zamowienie/podsumowanie");
   };
 

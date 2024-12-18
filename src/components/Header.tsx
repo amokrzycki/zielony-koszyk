@@ -2,6 +2,7 @@ import { AppBar, Box } from "@mui/material";
 import Nav from "./Nav.tsx";
 import CartBadge from "./Cart/CartBadge.tsx";
 import ModeSwitcher from "./ModeSwitcher.tsx";
+import UserBadge from "./Accounts/UserBadge.tsx";
 
 function Header() {
   return (
@@ -30,21 +31,11 @@ function Header() {
           display: "flex",
           gap: 2,
           alignItems: "center",
-          "& img": {
-            width: 20,
-            height: 20,
-            objectFit: "cover",
-          },
-          "& div": {
-            cursor: "pointer",
-          },
         }}
       >
         <ModeSwitcher />
-        <Box>
-          <CartBadge />
-        </Box>
-        <Box>Logowanie</Box>
+        <CartBadge />
+        <UserBadge />
       </Box>
     </AppBar>
   );

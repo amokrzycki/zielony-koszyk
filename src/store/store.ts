@@ -4,10 +4,14 @@ import { persistStore, persistReducer } from "redux-persist";
 import { baseApi } from "../api/api.ts";
 import { cartSlice } from "../components/Cart/cartSlice.ts";
 import { orderSlice } from "../components/Order/orderSlice.ts";
+import { accountSlice } from "../components/Accounts/accountSlice.ts";
+import { addressSlice } from "../components/Accounts/Address/addressSlice.ts";
 
 const rootReducer = combineReducers({
   cart: cartSlice.reducer,
   order: orderSlice.reducer,
+  auth: accountSlice.reducer,
+  address: addressSlice.reducer,
   [baseApi.reducerPath]: baseApi.reducer,
 });
 

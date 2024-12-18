@@ -1,12 +1,13 @@
+import { Roles } from "../enums/Roles.ts";
+import { Address } from "./Address.ts";
+
 interface User {
-  id: number;
-  role: string;
-  username: string;
-  password: string;
+  user_id: string;
+  role: Roles;
   email: string;
-  firstName: string;
-  lastName: string;
-  address: string;
+  first_name: string;
+  last_name: string;
+  addresses: Address[];
   phone: string;
   createdAt: Date;
 }
