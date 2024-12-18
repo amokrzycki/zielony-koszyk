@@ -16,6 +16,7 @@ function AccountOrdersView() {
   const userOrders = useGetUserOrdersQuery(user.user_id);
   const navigate = useNavigate();
 
+  /* eslint-disable */
   useEffect(() => {
     userOrders.refetch();
   }, []);

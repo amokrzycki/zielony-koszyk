@@ -13,7 +13,7 @@ export default function AutoBreadcrumbs() {
     const decoded = decodeURIComponent(segment);
 
     if (isLast && numericRegex.test(decoded)) {
-      return `Zamówienie #${decoded}`;
+      return `Szczegóły zamówienia`;
     }
 
     if (friendlyRoutingNames[decoded]) {

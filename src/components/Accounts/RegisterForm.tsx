@@ -36,6 +36,7 @@ export interface IRegisterFormValues {
   passwordConfirmation: string;
   street: string;
   buildingNumber: string;
+  flatNumber: string;
   city: string;
   zip: string;
   termsAccepted: boolean;
@@ -57,6 +58,7 @@ function RegisterForm({ setTab }: RegisterFormProps) {
     passwordConfirmation: validatePasswordConfirmation,
     street: validateStreet,
     buildingNumber: validateBuildingNumber,
+    flatNumber: undefined,
     city: validateCity,
     zip: validateZip,
     termsAccepted: validateTermsAccepted,
@@ -72,6 +74,7 @@ function RegisterForm({ setTab }: RegisterFormProps) {
       passwordConfirmation: "",
       street: "",
       buildingNumber: "",
+      flatNumber: "",
       city: "",
       zip: "",
       termsAccepted: false,
@@ -92,6 +95,7 @@ function RegisterForm({ setTab }: RegisterFormProps) {
       password: values.password,
       street: values.street,
       building_number: values.buildingNumber,
+      flat_number: values.flatNumber,
       city: values.city,
       zip: values.zip,
     };
@@ -190,13 +194,23 @@ function RegisterForm({ setTab }: RegisterFormProps) {
           />
           <TextField
             variant="outlined"
-            label="Numer domu/lokalu"
-            placeholder={"1A/2"}
+            label="Numer domu/budynku"
+            placeholder={"1A"}
             {...form.getInputProps("buildingNumber")}
             helperText={form.errors.buldingNumber}
             error={
               Boolean(form.errors.buildingNumber) &&
               form.isTouched("buildingNumber")
+            }
+          />
+          <TextField
+            variant="outlined"
+            label="Numer mieszkania"
+            placeholder={"150"}
+            {...form.getInputProps("flatNumber")}
+            helperText={form.errors.flatNumber}
+            error={
+              Boolean(form.errors.flatNumber) && form.isTouched("flatNumber")
             }
           />
         </Box>

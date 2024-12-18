@@ -6,6 +6,7 @@ export interface CreateUser {
   password: string;
   street: string;
   building_number: string;
+  flat_number?: string;
   city: string;
   zip: string;
 }

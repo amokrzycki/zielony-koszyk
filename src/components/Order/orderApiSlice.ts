@@ -12,7 +12,13 @@ export const orderApiSlice = baseApi.injectEndpoints({
     }),
     getUserOrders: builder.query({
       query: (userId: string) => ({
-        url: `orders/${userId}`,
+        url: `orders/user-orders/${userId}`,
+        method: "GET",
+      }),
+    }),
+    getOrder: builder.query({
+      query: (orderId: string) => ({
+        url: `orders/order/${orderId}`,
         method: "GET",
       }),
     }),
@@ -28,5 +34,6 @@ export const orderApiSlice = baseApi.injectEndpoints({
 export const {
   useCreateOrderMutation,
   useGetUserOrdersQuery,
+  useGetOrderQuery,
   useGetOrderDetailsQuery,
 } = orderApiSlice;

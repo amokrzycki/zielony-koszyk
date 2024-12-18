@@ -12,12 +12,12 @@ import OrderConfirm from "../components/Order/OrderConfirm.tsx";
 import Login from "../components/Accounts/Login.tsx";
 import AccountView from "../components/Accounts/AccountView.tsx";
 import AccountOrdersView from "../components/Accounts/AccountOrdersView.tsx";
-import AddressBook from "../components/Accounts/AddressBook.tsx";
+import AddressBook from "../components/Accounts/Address/AddressBook.tsx";
 import AccountOptions from "../components/Accounts/AccountOptions.tsx";
 import PasswordChange from "../components/Accounts/PasswordChange.tsx";
 import EmailChange from "../components/Accounts/EmailChange.tsx";
 import Page from "../components/Page.tsx";
-import ChangeAddresses from "../components/Accounts/ChangeAddresses.tsx";
+import ChangeAddresses from "../components/Accounts/Address/ChangeAddresses.tsx";
 import AccountOrderDetails from "../components/Accounts/AccountOrderDetails.tsx";
 
 const router = createBrowserRouter([

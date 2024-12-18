@@ -1,4 +1,4 @@
-import { useAppDispatch, useAppSelector } from "../../hooks/hooks.ts";
+import { useAppDispatch, useAppSelector } from "../../../hooks/hooks.ts";
 import { useForm } from "@mantine/form";
 import {
   validateBuildingNumber,
@@ -6,30 +6,41 @@ import {
   validateNumber,
   validateStreet,
   validateZip,
-} from "../../utils/validators.ts";
+} from "../../../utils/validators.ts";
 import { Box, Button, TextField } from "@mui/material";
-import { useChangeUserDataMutation } from "./accountsApiSlice.ts";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
-import { updateUserData } from "./accountSlice.ts";
+import { useChangeUserDetailsMutation } from "../accountsApiSlice.ts";
+import User from "../../../types/User.ts";
+import { Address } from "../../../types/Address.ts";
+import { RootState } from "../../../store/store.ts";
+import { UpdateDetailsBody } from "../../../types/updateDetailsBody.ts";
+import { AddressType } from "../../../enums/AddressType.ts";
+import { updateUserAddresses, updateUserDetails } from "../accountSlice.ts";
+import { clearAddressToEdit } from "./addressSlice.ts";
 
 interface IChangeAddressesFormValues {
   street: string;
   building_number: string;
+  flat_number: string;
   city: string;
   zip: string;
   phone: string;
 }
 
 function ChangeAddresses() {
-  const user = useAppSelector((state) => state.auth.user);
+  const user: User = useAppSelector((state) => state.auth.user);
+  const userAddress: Address = useAppSelector(
+    (state: RootState) => state.address.addressToEdit,
+  );
   const navigate = useNavigate();
-  const [changeData] = useChangeUserDataMutation();
+  const [changeDetails] = useChangeUserDetailsMutation();
   const dispatch = useAppDispatch();
 
   const validate = {
     street: validateStreet,
     building_number: validateBuildingNumber,
+    flat_number: undefined,
     city: validateCity,
     zip: validateZip,
     phone: validateNumber,
@@ -37,10 +48,11 @@ function ChangeAddresses() {
 
   const form = useForm<IChangeAddressesFormValues>({
     initialValues: {
-      street: user.street,
-      building_number: user.building_number,
-      city: user.city,
-      zip: user.zip,
+      street: userAddress.street,
+      building_number: userAddress.building_number,
+      flat_number: userAddress.flat_number,
+      city: userAddress.city,
+      zip: userAddress.zip,
       phone: user.phone,
     },
     validate,
@@ -51,19 +63,32 @@ function ChangeAddresses() {
   const isValid = form.isValid();
 
   const handleSubmit = (values: IChangeAddressesFormValues) => {
-    const data = {
-      ...values,
+    const updatedDetails: UpdateDetailsBody = {
       user_id: user.user_id,
+      address_id: userAddress.address_id,
+      type: userAddress.type,
+      ...values,
+    };
+
+    const updatedAddress: Address = {
+      ...userAddress,
+      street: values.street,
+      building_number: values.building_number,
+      flat_number: values.flat_number,
+      city: values.city,
+      zip: values.zip,
     };
 
     toast
-      .promise(changeData(data).unwrap(), {
+      .promise(changeDetails(updatedDetails).unwrap(), {
         loading: "Zapisywanie zmian...",
         success: "Zmiany zostały zapisane",
         error: "Wystąpił błąd podczas zapisywania zmian",
       })
       .then(() => {
-        dispatch(updateUserData(data));
+        dispatch(updateUserAddresses(updatedAddress));
+        dispatch(updateUserDetails({ phone: values.phone }));
+        dispatch(clearAddressToEdit());
         navigate("/konto/ksiazka-adresowa");
       });
   };
@@ -83,14 +108,16 @@ function ChangeAddresses() {
           mt: 2,
         }}
       >
-        <TextField
-          variant={"outlined"}
-          label={"Numer telefonu"}
-          {...form.getInputProps("phone")}
-          error={Boolean(form.errors.phone) && form.isTouched("phone")}
-          helperText={form.errors.phone}
-          sx={{ width: "300px", mb: "1em" }}
-        />
+        {userAddress.type === AddressType.BILLING && (
+          <TextField
+            variant={"outlined"}
+            label={"Numer telefonu"}
+            {...form.getInputProps("phone")}
+            error={Boolean(form.errors.phone) && form.isTouched("phone")}
+            helperText={form.errors.phone}
+            sx={{ width: "300px", mb: "1em" }}
+          />
+        )}
         <Box
           sx={{
             mb: "1em",
@@ -107,13 +134,23 @@ function ChangeAddresses() {
           />
           <TextField
             variant="outlined"
-            label="Numer domu/lokalu"
-            placeholder={"1A/2"}
+            label="Numer domu/budynku"
+            placeholder={"1A"}
             {...form.getInputProps("building_number")}
             helperText={form.errors.building_number}
             error={
               Boolean(form.errors.building_number) &&
               form.isTouched("building_number")
+            }
+          />
+          <TextField
+            variant="outlined"
+            label="Numer mieszkania"
+            placeholder={"14"}
+            {...form.getInputProps("flat_number")}
+            helperText={form.errors.flat_number}
+            error={
+              Boolean(form.errors.flat_number) && form.isTouched("flat_number")
             }
           />
         </Box>

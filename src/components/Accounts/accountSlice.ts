@@ -16,4 +16,5 @@ export const accountSlice = createSlice({
   reducers: accountReducers,
 });
 
-export const { loginUser, updateUserData, logoutUser } = accountSlice.actions;
+export const { loginUser, updateUserAddresses, logoutUser, updateUserDetails } =
+  accountSlice.actions;

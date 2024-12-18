@@ -1,4 +1,5 @@
 import { Roles } from "../enums/Roles.ts";
+import { Address } from "./Address.ts";
 
 interface User {
   user_id: string;
@@ -6,10 +7,7 @@ interface User {
   email: string;
   first_name: string;
   last_name: string;
-  street: string;
-  building_number: string;
-  city: string;
-  zip: string;
+  addresses: Address[];
   phone: string;
   createdAt: Date;
 }

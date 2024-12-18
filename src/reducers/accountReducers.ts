@@ -1,5 +1,6 @@
 import { PayloadAction } from "@reduxjs/toolkit";
 import User from "../types/User.ts";
+import { Address } from "../types/Address.ts";
 
 export interface AccountState {
   token: string | null;
@@ -17,7 +18,14 @@ export const accountReducers = {
     state.token = action.payload.accessToken;
     state.user = action.payload.user;
   },
-  updateUserData(state: AccountState, action: PayloadAction<Partial<User>>) {
+  updateUserAddresses(state: AccountState, action: PayloadAction<Address>) {
+    state.user.addresses = state.user.addresses.map((address) =>
+      address.address_id === action.payload.address_id
+        ? action.payload
+        : address,
+    );
+  },
+  updateUserDetails(state: AccountState, action: PayloadAction<Partial<User>>) {
     state.user = { ...state.user, ...action.payload };
   },
   logoutUser(state: AccountState) {

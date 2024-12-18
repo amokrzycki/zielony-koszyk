@@ -20,6 +20,7 @@ import {
   validateZip,
 } from "../../utils/validators.ts";
 import User from "../../types/User.ts";
+import { AddressType } from "../../enums/AddressType.ts";
 
 interface IFormValues {
   firstName: string;
@@ -38,6 +39,10 @@ function OrderForm() {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
+  const deliveryAddress = user.addresses.find(
+    (address) => address.type === AddressType.DELIVERY,
+  );
+
   const validate = {
     firstName: validateFirstName,
     lastName: validateLastName,
@@ -55,10 +60,10 @@ function OrderForm() {
       lastName: user?.last_name || "",
       email: user?.email || "",
       number: user?.phone || "",
-      street: user?.street || "",
-      buildingNumber: user?.building_number || "",
-      city: user?.city || "",
-      zip: user?.zip || "",
+      street: deliveryAddress?.street || "",
+      buildingNumber: deliveryAddress?.building_number || "",
+      city: deliveryAddress?.city || "",
+      zip: deliveryAddress?.zip || "",
     },
     validate,
     validateInputOnBlur: true,
