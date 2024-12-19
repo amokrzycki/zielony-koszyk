@@ -99,15 +99,7 @@ function ChangeAddresses() {
         handleSubmit(values);
       })}
     >
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
-          mt: 2,
-        }}
-      >
+      <Box className={"flex flex-col justify-center items-center mt-2"}>
         {userAddress.type === AddressType.BILLING && (
           <TextField
             variant={"outlined"}
@@ -118,11 +110,7 @@ function ChangeAddresses() {
             sx={{ width: "300px", mb: "1em" }}
           />
         )}
-        <Box
-          sx={{
-            mb: "1em",
-          }}
-        >
+        <Box className={"mb-1"}>
           <TextField
             variant="outlined"
             label="Ulica"

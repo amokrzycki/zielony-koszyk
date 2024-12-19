@@ -3,8 +3,11 @@ import Nav from "./Nav.tsx";
 import CartBadge from "./Cart/CartBadge.tsx";
 import ModeSwitcher from "./ModeSwitcher.tsx";
 import UserBadge from "./Accounts/UserBadge.tsx";
+import { useNavigate } from "react-router-dom";
 
 function Header() {
+  const navigate = useNavigate();
+
   return (
     <AppBar
       position="static"
@@ -23,16 +26,16 @@ function Header() {
         zIndex: 1000,
       }}
     >
-      <img src="/logo.png" alt="logo" height="60px" />
-      <Nav />
-      <Box
-        id="user-actions-wrapper"
-        sx={{
-          display: "flex",
-          gap: 2,
-          alignItems: "center",
+      <img
+        src="/logo.png"
+        alt="logo"
+        className={"h-16 cursor-pointer"}
+        onClick={() => {
+          navigate("/");
         }}
-      >
+      />
+      <Nav />
+      <Box id="user-actions-wrapper" className={"flex items-center gap-2"}>
         <ModeSwitcher />
         <CartBadge />
         <UserBadge />

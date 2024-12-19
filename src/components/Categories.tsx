@@ -41,7 +41,7 @@ function Categories() {
 
   const ImageButton = styled(ButtonBase)(({ theme }) => ({
     position: "relative",
-    height: 200,
+    height: 250,
     [theme.breakpoints.down("sm")]: {
       width: "100% !important",
       height: 100,
@@ -68,6 +68,7 @@ function Categories() {
     bottom: 0,
     backgroundSize: "cover",
     backgroundPosition: "center 40%",
+    borderRadius: 6,
   });
 
   const Image = styled("span")(({ theme }) => ({
@@ -106,20 +107,15 @@ function Categories() {
   return (
     <>
       <Box
-        sx={{
-          display: "flex",
-          flexWrap: "wrap",
-          minWidth: 300,
-          width: "100%",
-          justifyContent: "space-around",
-          height: "500px",
-        }}
+        className={
+          "flex flex-wrap justify-around w-full min-w-[300px] h-full gap-2"
+        }
       >
         {categories.map((category, index) => (
           <ImageButton
             focusRipple
             style={{
-              width: "30%",
+              width: "40%",
             }}
             key={index}
             onClick={() => navigate(`/kategoria/${category.category}`)}

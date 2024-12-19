@@ -5,14 +5,8 @@ function Homepage() {
   return (
     <Box
       id="main-wrapper"
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-      }}
+      className={"flex flex-col items-center h-screen pt-6"}
     >
-      <h1>Witaj w Zielonym Koszyczku</h1>
-      <p>Sklep internetowy z ekologicznymi produktami spożywczymi</p>
       <Categories />
     </Box>
   );

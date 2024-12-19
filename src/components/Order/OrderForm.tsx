@@ -29,6 +29,7 @@ interface IFormValues {
   number: string;
   street: string;
   buildingNumber: string;
+  flatNumber: string;
   city: string;
   zip: string;
 }
@@ -39,7 +40,7 @@ function OrderForm() {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
-  const deliveryAddress = user.addresses.find(
+  const deliveryAddress = user.addresses?.find(
     (address) => address.type === AddressType.DELIVERY,
   );
 
@@ -50,6 +51,7 @@ function OrderForm() {
     number: validateNumber,
     street: validateStreet,
     buildingNumber: validateBuildingNumber,
+    flatNumber: undefined,
     city: validateCity,
     zip: validateZip,
   };
@@ -62,6 +64,7 @@ function OrderForm() {
       number: user?.phone || "",
       street: deliveryAddress?.street || "",
       buildingNumber: deliveryAddress?.building_number || "",
+      flatNumber: deliveryAddress?.flat_number || "",
       city: deliveryAddress?.city || "",
       zip: deliveryAddress?.zip || "",
     },
@@ -78,7 +81,7 @@ function OrderForm() {
       customer_name: `${values.firstName} ${values.lastName}`,
       customer_email: values.email,
       customer_phone: values.number,
-      customer_address: `${values.street} ${values.buildingNumber}, ${values.zip} ${values.city}`,
+      customer_address: `${values.street} ${values.buildingNumber}${values.flatNumber ? `/${values.flatNumber}` : ``}, ${values.zip} ${values.city}`,
       status: OrderStatuses.NEW,
       orderDetails: cart.map((item: CartItem) => ({
         productId: item.productId,
@@ -98,13 +101,7 @@ function OrderForm() {
         handleSubmit(values);
       })}
     >
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          gap: "1em",
-        }}
-      >
+      <Box className={"flex flex-col gap-4"}>
         <Typography variant="h5">Dane do wysyłki</Typography>
         <Box>
           <TextField
@@ -155,13 +152,23 @@ function OrderForm() {
           />
           <TextField
             variant="outlined"
-            label="Numer domu/lokalu"
-            placeholder={"1A/2"}
+            label="Numer domu/budynku"
+            placeholder={"1A"}
             {...form.getInputProps("buildingNumber")}
             helperText={form.errors.buldingNumber}
             error={
               Boolean(form.errors.buildingNumber) &&
               form.isTouched("buildingNumber")
+            }
+          />
+          <TextField
+            variant="outlined"
+            label="Numer mieszkania"
+            placeholder={"150"}
+            {...form.getInputProps("flatNumber")}
+            helperText={form.errors.flatNumber}
+            error={
+              Boolean(form.errors.flatNumber) && form.isTouched("flatNumber")
             }
           />
         </Box>

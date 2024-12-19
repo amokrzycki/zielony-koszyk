@@ -116,14 +116,7 @@ function RegisterForm({ setTab }: RegisterFormProps) {
         handleSubmit(values);
       })}
     >
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
+      <Box className={"flex flex-col justify-center items-center"}>
         <Box>
           <TextField
             variant="outlined"

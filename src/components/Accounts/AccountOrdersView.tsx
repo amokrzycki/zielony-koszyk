@@ -48,14 +48,7 @@ function AccountOrdersView() {
   };
 
   return (
-    <Box
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        gap: 2,
-      }}
-    >
+    <Box className={"flex flex-col items-center gap-2"}>
       <Typography variant="h3">Zamówienia</Typography>
       <Typography variant="body1">
         Tutaj znajdziesz listę swoich zamówień
