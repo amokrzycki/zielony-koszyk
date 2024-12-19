@@ -19,9 +19,9 @@ function Login() {
           bgcolor: "background.paper",
         }}
       >
-        <Box className="main-container">
+        <Box className={"main-container flex-col flex items-center"}>
           <Box>
-            <img src="logo.png" alt="logo" height="120px" />
+            <img src="logo.png" alt="logo" className={"h-[120px]"} />
           </Box>
           <Box>
             <Tabs
@@ -34,13 +34,7 @@ function Login() {
               <Tab label={"Logowanie"} />
               <Tab label={"Nowe konto"} />
             </Tabs>
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "center",
-                flexWrap: "wrap",
-              }}
-            >
+            <Box className={"flex justify-center flex-wrap"}>
               {tab === 0 ? <LoginForm /> : <RegisterForm setTab={setTab} />}
             </Box>
           </Box>

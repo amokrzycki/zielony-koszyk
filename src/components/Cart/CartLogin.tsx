@@ -1,8 +1,10 @@
 import { Box, Button, Typography } from "@mui/material";
 import OrderNoAccount from "../Order/OrderNoAccount.tsx";
 import LoginForm from "../Accounts/LoginForm.tsx";
+import { useNavigate } from "react-router-dom";
 
 function CartLogin() {
+  const navigate = useNavigate();
   return (
     <Box id="main-wrapper">
       <Box
@@ -12,22 +14,16 @@ function CartLogin() {
           bgcolor: "background.paper",
         }}
       >
-        <Box className="main-container">
+        <Box className="main-container flex flex-col items-center">
           <Box>
-            <img src="logo.png" alt="logo" height="120px" />
+            <img src="logo.png" alt="logo" className={"h-[120px]"} />
           </Box>
           <Box>
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "center",
-                flexWrap: "wrap",
-              }}
-            >
+            <Box className={"flex flex-wrap justify-center"}>
               <Box
+                className={"max-w-1/3"}
                 sx={{
                   flex: "0 0 33.333333%",
-                  maxWidth: "33.333333%",
                 }}
               >
                 <Typography variant={"h4"} gutterBottom>
@@ -36,11 +32,9 @@ function CartLogin() {
                 <LoginForm />
               </Box>
               <Box
-                className="separator"
+                className={"separator relative max-w-[8.3%]"}
                 sx={{
-                  position: "relative",
                   flex: "0 0 8.33333%",
-                  maxWidth: "8.333333333%",
                 }}
               >
                 <Box>xd</Box>
@@ -53,12 +47,18 @@ function CartLogin() {
           <Box sx={{ marginBottom: "30px" }}>
             <Box sx={{ display: "flex", flexWrap: "wrap" }}>
               <Box
+                className={"max-w-1/3"}
                 sx={{
                   flex: "0 0 33.333333%",
-                  maxWidth: "33.333333%",
                 }}
               >
-                <Button variant="contained" color="primary" href="/koszyk">
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={() => {
+                    navigate(-1);
+                  }}
+                >
                   Wróć do koszyka
                 </Button>
               </Box>

@@ -55,12 +55,7 @@ function Products() {
     return (
       <Box
         id="main-wrapper"
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          height: "calc(100vh - 72px - 156px - 30px)",
-        }}
+        className={"flex justify-center items-center h-full"}
       >
         <CircularProgress sx={{ color: "primary" }} />
       </Box>
@@ -71,12 +66,7 @@ function Products() {
     return (
       <Box
         id="main-wrapper"
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          height: "calc(100vh - 72px - 156px - 30px)",
-        }}
+        className={"flex justify-center items-center h-full"}
       >
         <Typography variant="h5" component="h2">
           {error}
@@ -87,25 +77,10 @@ function Products() {
 
   return (
     <Box id="main-wrapper">
-      <Box
-        id="search-wrapper"
-        sx={{
-          width: "100%",
-          display: "flex",
-          justifyContent: "center",
-        }}
-      >
+      <Box id="search-wrapper" className={"flex justify-center w-full"}>
         <Search />
       </Box>
-      <Box
-        sx={{
-          display: "flex",
-          flexWrap: "wrap",
-          gap: 2,
-          justifyContent: "center",
-          padding: 2,
-        }}
-      >
+      <Box className={"flex justify-center flex-wrap gap-2 p-2"}>
         {searchQuery && products.length === 0 ? (
           <Typography variant="h5" component="h2">
             Brak produktów spełniających kryteria wyszukiwania dla frazy: "

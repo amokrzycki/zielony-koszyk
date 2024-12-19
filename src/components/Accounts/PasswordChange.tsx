@@ -69,14 +69,7 @@ function PasswordChange() {
 
   return (
     <form onSubmit={form.onSubmit((values) => handleSubmit(values))}>
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
+      <Box className={"flex flex-col justify-center items-center"}>
         <Typography variant={"h4"}>Zmiana hasła</Typography>
         <TextField
           variant={"outlined"}

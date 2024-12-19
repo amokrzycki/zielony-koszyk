@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 body {
     font-family: 'Roboto', sans-serif;
     margin: 0;
@@ -10,7 +14,7 @@ html, body {
 }
 
 #main-wrapper {
-    margin-top: 84px;
+    margin-top: 92px;
 }
 
 .main-container {

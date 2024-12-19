@@ -9,24 +9,11 @@ function AccountOptions() {
   const navigate = useNavigate();
 
   return (
-    <Box
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-      }}
-    >
+    <Box className={"flex flex-col items-center"}>
       <Box>
         <Typography variant="h4">Twoje konto</Typography>
       </Box>
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          gap: "1rem",
-          mt: "1rem",
-        }}
-      >
+      <Box className={"flex justify-center gap-4 mt-4"}>
         <Button
           variant="contained"
           color="primary"

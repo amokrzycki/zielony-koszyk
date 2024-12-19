@@ -34,48 +34,20 @@ function AccountOrderDetails() {
   }
 
   return (
-    <Box
-      sx={{
-        textAlign: "left",
-      }}
-    >
-      <Box
-        id={"order-details"}
-        sx={{
-          mt: 1,
-        }}
-      >
-        <Typography
-          variant={"h5"}
-          sx={{
-            fontWeight: "bold",
-          }}
-        >
+    <Box className={"text-center"}>
+      <Box id={"order-details"} className={"mt-1"}>
+        <Typography variant={"h5"} className={"font-bold"}>
           Zamówienie numer {order.data?.order_id}
         </Typography>
         <Box
+          className={"flex flex-col items-start border rounded p-1 mt-1"}
           sx={{
-            display: "flex",
-            alignItems: "flex-start",
-            flexDirection: "column",
-            border: "1px solid",
             borderColor: "text.primary",
-            borderRadius: 1,
-            p: 1,
-            mt: 1,
           }}
         >
-          <Box
-            sx={{
-              display: "flex",
-            }}
-          >
+          <Box className={"flex"}>
             <Typography>Status zamówienia:</Typography>
-            <Typography
-              sx={{
-                fontWeight: "bold",
-              }}
-            >
+            <Typography className={"font-bold"}>
               {getPolishStatus(order.data?.status)}
             </Typography>
           </Box>
@@ -86,10 +58,8 @@ function AccountOrderDetails() {
       </Box>
       <TableContainer
         component={Paper}
+        className={"mt-2 mb-2 border "}
         sx={{
-          mt: 2,
-          mb: 2,
-          border: "1px solid",
           borderColor: "text.primary",
         }}
       >
@@ -145,6 +115,7 @@ function AccountOrderDetails() {
         </Table>
       </TableContainer>
       <Box
+        className={"flex gap-1 mt-2"}
         sx={{
           display: "flex",
           gap: 1,

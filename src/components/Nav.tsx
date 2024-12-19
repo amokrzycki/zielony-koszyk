@@ -6,10 +6,10 @@ function Nav() {
   return (
     <Box
       id="navigation-wrapper"
+      className={
+        "absolute left-0 gap-2 items-center flex justify-center w-full"
+      }
       sx={{
-        display: "flex",
-        gap: 2,
-        alignItems: "center",
         "& img": {
           width: 20,
           height: 20,
@@ -38,15 +38,6 @@ function Nav() {
         }}
       >
         Produkty
-      </a>
-      <a
-        href="/kontakt"
-        onClick={(e) => {
-          e.preventDefault();
-          navigate("/kontakt");
-        }}
-      >
-        Kontakt
       </a>
       <a
         href="/o-nas"

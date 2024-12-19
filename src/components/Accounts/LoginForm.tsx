@@ -66,14 +66,7 @@ function LoginForm() {
         handleSubmit(values);
       })}
     >
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
+      <Box className={"flex flex-col items-center justify-center"}>
         <TextField
           variant={"outlined"}
           label={"Email"}
@@ -92,7 +85,7 @@ function LoginForm() {
           sx={{ width: "300px" }}
         />
       </Box>
-      <FormGroup sx={{ mt: 1 }}>
+      <FormGroup sx={{ mt: 1 }} className={"items-center"}>
         <FormControlLabel
           control={<Checkbox {...form.getInputProps("rememberMe")} />}
           label={"Zapamiętaj mnie"}

@@ -34,27 +34,14 @@ function OrderSummary() {
   };
 
   return (
-    <Box
-      sx={{
-        display: "flex",
-        flexDirection: "row",
-        gap: "1rem",
-        padding: "1rem",
-        justifyContent: "center",
-      }}
-      id="main-wrapper"
-    >
+    <Box className={"flex flex-row gap-4 p-4 justify-center"} id="main-wrapper">
       <Box
         sx={{
           bgcolor: "background.paper",
           borderRadius: "5px",
         }}
       >
-        <Box
-          sx={{
-            padding: "1rem",
-          }}
-        >
+        <Box className={"p-4"}>
           <Typography variant="h5">Dane zamawiającego:</Typography>
           <Typography>{orderInfo.customer_name}</Typography>
           <Typography>{orderInfo.customer_email}</Typography>
@@ -72,23 +59,12 @@ function OrderSummary() {
         </Box>
       </Box>
       <Box
+        className={"p-4 flex flex-col m-w-[300px] rounded"}
         sx={{
           bgcolor: "background.paper",
-          padding: "1rem",
-          borderRadius: "5px",
-          minWidth: "300px",
-          display: "flex",
-          flexDirection: "column",
         }}
       >
-        <Box
-          id="summary-box"
-          sx={{
-            justifyContent: "space-between",
-            display: "flex",
-            alignItems: "center",
-          }}
-        >
+        <Box id="summary-box" className={"flex flex-row justify-between"}>
           <Typography variant="h6">Do zapłaty: </Typography>
           <Typography variant="h4">{cart.totalAmount} zł</Typography>
         </Box>
@@ -107,9 +83,7 @@ function OrderSummary() {
           variant={"contained"}
           color={"primary"}
           fullWidth
-          sx={{
-            justifySelf: "flex-end",
-          }}
+          className={"justify-end"}
           disabled={!checked}
           onClick={handleOrder}
         >

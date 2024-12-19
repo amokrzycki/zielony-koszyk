@@ -34,16 +34,13 @@ function ProductCard({ product }: ProductCardProps) {
   return (
     <Card>
       <CardContent
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          gap: 1,
-          width: "300px",
-          textAlign: "center",
-        }}
+        className={"flex flex-col items-center gap-1 w-300 text-center"}
       >
-        <img src="/images/fruits.jpeg" height="120px" alt="product-image" />
+        <img
+          src="/images/fruits.jpeg"
+          className={"h-[120px]"}
+          alt="product-image"
+        />
         <Typography variant="h5" component="h2">
           {product.name}
         </Typography>
