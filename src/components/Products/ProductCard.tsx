@@ -1,4 +1,4 @@
-import Product from "../types/Product.ts";
+import Product from "../../types/Product.ts";
 import {
   Box,
   Button,
@@ -8,9 +8,9 @@ import {
   Typography,
 } from "@mui/material";
 import { useState } from "react";
-import { addItem } from "./Cart/cartSlice.ts";
+import { addItem } from "../Cart/cartSlice.ts";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import { useAppDispatch } from "../hooks/hooks.ts";
+import { useAppDispatch } from "../../hooks/hooks.ts";
 
 interface ProductCardProps {
   product: Product;

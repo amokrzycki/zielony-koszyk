@@ -1,9 +1,8 @@
 import { createBrowserRouter } from "react-router-dom";
 import Homepage from "../components/Homepage.tsx";
-import Products from "../components/Products.tsx";
+import Products from "../components/Products/Products.tsx";
 import About from "../components/About.tsx";
-import Contact from "../components/Contact.tsx";
-import Category from "../components/Category.tsx";
+import Category from "../components/Products/Category.tsx";
 import Cart from "../components/Cart/Cart.tsx";
 import OrderDetails from "../components/Order/OrderDetails.tsx";
 import CartLogin from "../components/Cart/CartLogin.tsx";
@@ -36,10 +35,6 @@ const router = createBrowserRouter([
       {
         path: "o-nas",
         element: <About />,
-      },
-      {
-        path: "kontakt",
-        element: <Contact />,
       },
       {
         path: "koszyk",

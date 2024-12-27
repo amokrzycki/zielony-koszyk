@@ -1,59 +1,22 @@
 import { Params, useParams, useSearchParams } from "react-router-dom";
-import { useEffect, useState } from "react";
-import Product from "../types/Product.ts";
-import { getProducts } from "../api.ts";
 import { Box, CircularProgress, Typography } from "@mui/material";
 import ProductCard from "./ProductCard.tsx";
-import capitalizeFirstLetter from "../utils/capitalizeFirstLetter.ts";
+import capitalizeFirstLetter from "../../utils/capitalizeFirstLetter.ts";
 import Search from "./Search.tsx";
+import { useGetProductsByCategoryQuery } from "./productsApiSlice.ts";
+import Product from "../../types/Product.ts";
 
 function Category() {
   const { categoryId }: Readonly<Params> = useParams();
-  const [products, setProducts] = useState<Product[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
   const [searchParams] = useSearchParams();
   const searchQuery = searchParams.get("search");
+  const fetchedProducts = useGetProductsByCategoryQuery({
+    category: categoryId as string,
+    name: searchQuery || "",
+  });
+  const { data, error } = fetchedProducts;
 
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const products = await getProducts();
-        if (searchQuery) {
-          const lowerCaseSearchQuery = searchQuery.toLowerCase();
-          setProducts(
-            products.filter(
-              (product: Product) =>
-                product.category === categoryId &&
-                (product.name.toLowerCase().includes(lowerCaseSearchQuery) ||
-                  product.description
-                    .toLowerCase()
-                    .includes(lowerCaseSearchQuery)),
-            ),
-          );
-        } else {
-          setProducts(
-            products.filter(
-              (product: Product) => product.category === categoryId,
-            ),
-          );
-        }
-      } catch (e) {
-        setError(
-          "Wystąpił błąd podczas pobierania produktów. Spróbuj ponownie później.",
-        );
-        console.error(e);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchProducts().then(() => {
-      console.log("Products fetched");
-    });
-  }, [searchQuery, categoryId]);
-
-  if (loading) {
+  if (fetchedProducts.isLoading) {
     return (
       <Box
         id="main-wrapper"
@@ -81,7 +44,7 @@ function Category() {
         }}
       >
         <Typography variant="h5" component="h2">
-          {error}
+          Wystąpił błąd podczas pobierania produktów.
         </Typography>
       </Box>
     );
@@ -112,13 +75,13 @@ function Category() {
           padding: 2,
         }}
       >
-        {searchQuery && products.length === 0 ? (
+        {searchQuery && data?.length === 0 ? (
           <Typography variant="h5" component="h2">
             Nie znaleziono produktów pasujących do zapytania w tej kategorii dla
             frazy: "{searchQuery}".
           </Typography>
         ) : (
-          products.map((product, index) => (
+          data?.map((product: Product, index: number) => (
             <ProductCard key={index} product={product} />
           ))
         )}

@@ -6,8 +6,10 @@ import React, { useEffect, useState } from "react";
 import { debounce } from "lodash";
 
 function Search() {
-  const [inputValue, setInputValue] = useState("");
-  const [, setSearchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [inputValue, setInputValue] = useState(
+    searchParams.get("search") || "",
+  );
 
   const debouncedSetSearchParams = debounce((value) => {
     setSearchParams(value ? { search: value } : {});
