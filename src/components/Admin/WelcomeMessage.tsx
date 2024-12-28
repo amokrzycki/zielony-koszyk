@@ -1,6 +1,6 @@
 import { Box, Typography } from "@mui/material";
 
-function AdminWelcomeMessage() {
+function WelcomeMessage() {
   return (
     <Box>
       <Typography variant="h4" gutterBottom>
@@ -15,4 +15,4 @@ function AdminWelcomeMessage() {
   );
 }
 
-export default AdminWelcomeMessage;
+export default WelcomeMessage;

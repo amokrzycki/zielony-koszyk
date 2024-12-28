@@ -18,9 +18,9 @@ import EmailChange from "../components/Accounts/EmailChange.tsx";
 import Page from "../components/Page.tsx";
 import ChangeAddresses from "../components/Accounts/Address/ChangeAddresses.tsx";
 import AccountOrderDetails from "../components/Accounts/AccountOrderDetails.tsx";
-import AdminMainView from "../components/Admin/AdminMainView.tsx";
-import AdminWelcomeMessage from "../components/Admin/AdminWelcomeMessage.tsx";
-import AdminProductsView from "../components/Admin/AdminProductsView.tsx";
+import MainView from "../components/Admin/MainView.tsx";
+import WelcomeMessage from "../components/Admin/WelcomeMessage.tsx";
+import ProductsView from "../components/Admin/ProductsView.tsx";
 
 const router = createBrowserRouter([
   {
@@ -75,15 +75,15 @@ const router = createBrowserRouter([
       },
       {
         path: "admin/*",
-        element: <AdminMainView />,
+        element: <MainView />,
         children: [
           {
             path: "*",
-            element: <AdminWelcomeMessage />,
+            element: <WelcomeMessage />,
           },
           {
             path: "zarzadzanie-produktami",
-            element: <AdminProductsView />,
+            element: <ProductsView />,
           },
           {
             path: "zarzadzanie-zamowieniami",

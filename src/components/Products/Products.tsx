@@ -1,9 +1,10 @@
-import { Box, CircularProgress, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import ProductCard from "./ProductCard.tsx";
 import Search from "./Search.tsx";
 import { useSearchParams } from "react-router-dom";
 import Product from "../../types/Product.ts";
 import { useGetProductsLikeNameQuery } from "./productsApiSlice.ts";
+import Loading from "../common/Loading.tsx";
 
 function Products() {
   const [searchParams] = useSearchParams();
@@ -13,11 +14,8 @@ function Products() {
 
   if (fetchedProducts.isLoading) {
     return (
-      <Box
-        id="main-wrapper"
-        className={"flex justify-center items-center h-full"}
-      >
-        <CircularProgress sx={{ color: "primary" }} />
+      <Box className={"h-screen"}>
+        <Loading />
       </Box>
     );
   }

@@ -4,6 +4,7 @@ import { RootState } from "../store/store.ts";
 
 export const baseApi = createApi({
   reducerPath: "api",
+  tagTypes: ["Products"],
   baseQuery: fetchBaseQuery({
     baseUrl: API_URL,
     prepareHeaders: (headers, { getState }) => {

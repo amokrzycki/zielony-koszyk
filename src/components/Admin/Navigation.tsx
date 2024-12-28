@@ -5,7 +5,7 @@ import GroupIcon from "@mui/icons-material/Group";
 import SellIcon from "@mui/icons-material/Sell";
 import SettingsIcon from "@mui/icons-material/Settings";
 
-function AdminNavigation() {
+function Navigation() {
   const navigate = useNavigate();
   return (
     <Box className={"flex flex-col gap-4"}>
@@ -57,4 +57,4 @@ function AdminNavigation() {
   );
 }
 
-export default AdminNavigation;
+export default Navigation;
