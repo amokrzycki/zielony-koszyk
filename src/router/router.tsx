@@ -18,6 +18,9 @@ import EmailChange from "../components/Accounts/EmailChange.tsx";
 import Page from "../components/Page.tsx";
 import ChangeAddresses from "../components/Accounts/Address/ChangeAddresses.tsx";
 import AccountOrderDetails from "../components/Accounts/AccountOrderDetails.tsx";
+import AdminMainView from "../components/Admin/AdminMainView.tsx";
+import AdminWelcomeMessage from "../components/Admin/AdminWelcomeMessage.tsx";
+import AdminProductsView from "../components/Admin/AdminProductsView.tsx";
 
 const router = createBrowserRouter([
   {
@@ -69,6 +72,32 @@ const router = createBrowserRouter([
       {
         path: "login",
         element: <Login />,
+      },
+      {
+        path: "admin/*",
+        element: <AdminMainView />,
+        children: [
+          {
+            path: "*",
+            element: <AdminWelcomeMessage />,
+          },
+          {
+            path: "zarzadzanie-produktami",
+            element: <AdminProductsView />,
+          },
+          {
+            path: "zarzadzanie-zamowieniami",
+            element: <h1>Orders</h1>,
+          },
+          {
+            path: "zarzadzanie-klientami",
+            element: <h1>Customers</h1>,
+          },
+          {
+            path: "ustawienia",
+            element: <h1>Settings</h1>,
+          },
+        ],
       },
       {
         path: "konto/*",
