@@ -21,6 +21,7 @@ import AccountOrderDetails from "../components/Accounts/AccountOrderDetails.tsx"
 import MainView from "../components/Admin/MainView.tsx";
 import WelcomeMessage from "../components/Admin/WelcomeMessage.tsx";
 import ProductsView from "../components/Admin/ProductsView.tsx";
+import OrdersView from "../components/Admin/OrdersView.tsx";
 
 const router = createBrowserRouter([
   {
@@ -87,7 +88,7 @@ const router = createBrowserRouter([
           },
           {
             path: "zarzadzanie-zamowieniami",
-            element: <h1>Orders</h1>,
+            element: <OrdersView />,
           },
           {
             path: "zarzadzanie-klientami",
