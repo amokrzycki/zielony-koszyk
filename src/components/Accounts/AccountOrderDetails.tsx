@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 import {
-  useGetOrderDetailsQuery,
+  useGetOrderItemsQuery,
   useGetOrderQuery,
 } from "../Order/orderApiSlice.ts";
 import {
@@ -22,7 +22,7 @@ import OrderStatusesInfo from "../Order/OrderStatusesInfo.tsx";
 
 function AccountOrderDetails() {
   const { orderId } = useParams();
-  const orderDetails = useGetOrderDetailsQuery(orderId as string);
+  const orderDetails = useGetOrderItemsQuery(orderId as string);
   const order = useGetOrderQuery(orderId as string);
 
   if (orderDetails.isLoading || order.isLoading) {

@@ -150,7 +150,7 @@ function ProductsView() {
             Usuń zaznaczone ({selectedRows.length})
           </Button>
         )}
-        <GridToolbarQuickFilter debounceMs={300} slotProps={{}} />
+        <GridToolbarQuickFilter debounceMs={300} />
       </GridToolbarContainer>
     );
   };

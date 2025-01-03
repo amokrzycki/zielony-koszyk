@@ -48,12 +48,12 @@ function ChangeAddresses() {
 
   const form = useForm<IChangeAddressesFormValues>({
     initialValues: {
-      street: userAddress.street,
-      building_number: userAddress.building_number,
-      flat_number: userAddress.flat_number,
-      city: userAddress.city,
-      zip: userAddress.zip,
-      phone: user.phone,
+      street: userAddress?.street,
+      building_number: userAddress?.building_number,
+      flat_number: userAddress?.flat_number,
+      city: userAddress?.city,
+      zip: userAddress?.zip,
+      phone: user?.phone,
     },
     validate,
     validateInputOnBlur: true,
@@ -100,7 +100,7 @@ function ChangeAddresses() {
       })}
     >
       <Box className={"flex flex-col justify-center items-center mt-2"}>
-        {userAddress.type === AddressType.BILLING && (
+        {userAddress?.type === AddressType.BILLING && (
           <TextField
             variant={"outlined"}
             label={"Numer telefonu"}

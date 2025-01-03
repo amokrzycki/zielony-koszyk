@@ -23,6 +23,7 @@ import RefreshIcon from "@mui/icons-material/Refresh";
 import { getEnglishStatus } from "../../utils/getEnglishStatus.ts";
 import { PolishOrderStatuses } from "../../enums/PolishOrderStatuses.ts";
 import StatusDropdownEditor from "./StatusDropdownEditor.tsx";
+import { useNavigate } from "react-router-dom";
 
 interface Row {
   id: number;
@@ -38,6 +39,7 @@ interface Row {
 
 function OrdersView() {
   const { data: orders, isError, isLoading, refetch } = useGetOrdersQuery();
+  const navigate = useNavigate();
   const [openConfirmDeleteModal, setOpenConfirmDeleteModal] = useState(false);
   const [selectedRows, setSelectedRows] = useState<number[]>([]);
   const [deleteOrder] = useDeleteOrderMutation();
@@ -159,6 +161,25 @@ function OrdersView() {
       editable: true,
       renderEditCell: (params) => <StatusDropdownEditor {...params} />,
     },
+    {
+      field: "actions",
+      headerName: "Akcje",
+      width: 150,
+      sortable: false,
+      disableColumnMenu: true,
+      renderCell: (params) => (
+        <Button
+          variant="outlined"
+          color="primary"
+          size="small"
+          onClick={() =>
+            navigate(`/admin/zarzadzanie-zamowieniami/${params.id}`)
+          }
+        >
+          Szczegóły
+        </Button>
+      ),
+    },
   ];
 
   const rows = orders?.map((order: UserOrder) => ({
@@ -182,7 +203,7 @@ function OrdersView() {
             Usuń zaznaczone ({selectedRows.length})
           </Button>
         )}
-        <GridToolbarQuickFilter debounceMs={300} slotProps={{}} />
+        <GridToolbarQuickFilter debounceMs={300} />
       </GridToolbarContainer>
     );
   };

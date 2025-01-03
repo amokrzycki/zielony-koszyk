@@ -22,6 +22,7 @@ import MainView from "../components/Admin/MainView.tsx";
 import WelcomeMessage from "../components/Admin/WelcomeMessage.tsx";
 import ProductsView from "../components/Admin/ProductsView.tsx";
 import OrdersView from "../components/Admin/OrdersView.tsx";
+import OrderItemsView from "../components/Admin/OrderItemsView.tsx";
 
 const router = createBrowserRouter([
   {
@@ -87,8 +88,17 @@ const router = createBrowserRouter([
             element: <ProductsView />,
           },
           {
-            path: "zarzadzanie-zamowieniami",
-            element: <OrdersView />,
+            path: "zarzadzanie-zamowieniami/*",
+            children: [
+              {
+                path: "*",
+                element: <OrdersView />,
+              },
+              {
+                path: ":orderId",
+                element: <OrderItemsView />,
+              },
+            ],
           },
           {
             path: "zarzadzanie-klientami",
