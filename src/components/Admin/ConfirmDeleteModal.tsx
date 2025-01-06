@@ -18,11 +18,11 @@ function ConfirmDeleteModal({
 }: ConfirmDeleteModalProps) {
   const createDeleteText = () => {
     if (count === 1) {
-      return "produkt";
+      return "element";
     } else if (count > 1 && count < 5) {
-      return "produkty";
+      return "elementy";
     } else {
-      return "produktów";
+      return "elementów";
     }
   };
 

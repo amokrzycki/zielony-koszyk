@@ -1,10 +1,5 @@
 import { useParams } from "react-router-dom";
-import {
-  useGetOrderItemsQuery,
-  useGetOrderQuery,
-  useRemoveOrderItemsMutation,
-  useUpdateOrderItemsMutation,
-} from "../Order/orderApiSlice.ts";
+import { useGetOrderQuery } from "../Order/orderApiSlice.ts";
 import { Box, Button, Typography } from "@mui/material";
 import Loading from "../common/Loading.tsx";
 import {
@@ -18,6 +13,15 @@ import { OrderDetailsResponse } from "../../types/OrderDetailsResponse.ts";
 import ConfirmDeleteModal from "./ConfirmDeleteModal.tsx";
 import { useState } from "react";
 import toast from "react-hot-toast";
+import Error from "../common/Error.tsx";
+import { getFormattedDate } from "../../utils/getFormattedDate.ts";
+import { getPolishStatus } from "../../utils/getPolishStatus.ts";
+import { OrderStatuses } from "../../enums/OrderStatuses.ts";
+import {
+  useGetOrderItemsQuery,
+  useRemoveOrderItemsMutation,
+  useUpdateOrderItemsMutation,
+} from "../Order/orderItemsApiSlice.ts";
 
 interface Row {
   id: number;
@@ -39,8 +43,6 @@ function OrderItemsView() {
   const [deleteOrderItems] = useRemoveOrderItemsMutation();
   const [updateOrderItems] = useUpdateOrderItemsMutation();
 
-  // TODO: TOTAL IS NOT RECALCULATED AFTER EDITING ORDER ITEM
-
   const handleConfirmDeleteModalOpen = () => setOpenConfirmDeleteModal(true);
   const handleConfirmDeleteModalClose = () => setOpenConfirmDeleteModal(false);
 
@@ -48,8 +50,8 @@ function OrderItemsView() {
     return <Loading />;
   }
 
-  if (isError || order.isError || !orderDetails) {
-    return <Box>Wystąpił błąd podczas pobierania zamówień.</Box>;
+  if (isError || order.isError || !orderDetails || !order.data) {
+    return <Error message={"Nie udało się pobrać danych zamówienia."} />;
   }
 
   const onDelete = async () => {
@@ -144,7 +146,30 @@ function OrderItemsView() {
     <Box className={"flex flex-col overflow-x-auto w-full"}>
       <Box className={"flex items-center"}>
         <Typography variant="h4" component="h1">
-          Zamówienia
+          Zamówienie #{order.data.order_id}
+        </Typography>
+      </Box>
+      <Box>
+        <Typography variant="h6" component="h2">
+          Klient: {order.data.customer_name}
+        </Typography>
+        <Typography variant="h6" component="h2">
+          Email: {order.data.customer_email}
+        </Typography>
+        <Typography variant="h6" component="h2">
+          Telefon: {order.data.customer_phone}
+        </Typography>
+        <Typography variant="h6" component="h2">
+          Adres dostawy: {order.data.customer_address}
+        </Typography>
+        <Typography variant="h6" component="h2">
+          Data zamówienia: {getFormattedDate(order.data.order_date)}
+        </Typography>
+        <Typography variant="h6" component="h2">
+          Status: {getPolishStatus(order.data.status as OrderStatuses)}
+        </Typography>
+        <Typography variant="h6" component="h2">
+          Kwota: {order.data.total_amount} PLN
         </Typography>
       </Box>
       <Box className={"w-full overflow-x-auto"}>

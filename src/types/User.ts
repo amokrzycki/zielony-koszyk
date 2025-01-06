@@ -9,7 +9,8 @@ interface User {
   last_name: string;
   addresses: Address[];
   phone: string;
-  createdAt: Date;
+  created_at: string;
+  updated_at: string;
 }
 
 export default User;

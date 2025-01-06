@@ -1,8 +1,5 @@
 import { useParams } from "react-router-dom";
-import {
-  useGetOrderItemsQuery,
-  useGetOrderQuery,
-} from "../Order/orderApiSlice.ts";
+import { useGetOrderQuery } from "../Order/orderApiSlice.ts";
 import {
   Box,
   CircularProgress,
@@ -19,6 +16,8 @@ import { OrderDetailsResponse } from "../../types/OrderDetailsResponse.ts";
 import { getFormattedDate } from "../../utils/getFormattedDate.ts";
 import { getPolishStatus } from "../../utils/getPolishStatus.ts";
 import OrderStatusesInfo from "../Order/OrderStatusesInfo.tsx";
+import { OrderStatuses } from "../../enums/OrderStatuses.ts";
+import { useGetOrderItemsQuery } from "../Order/orderItemsApiSlice.ts";
 
 function AccountOrderDetails() {
   const { orderId } = useParams();
@@ -29,7 +28,12 @@ function AccountOrderDetails() {
     return <CircularProgress />;
   }
 
-  if (orderDetails.isError || order.isError) {
+  if (
+    orderDetails.isError ||
+    order.isError ||
+    !orderDetails.data ||
+    !order.data
+  ) {
     return <div>Wystąpił błąd!</div>;
   }
 
@@ -48,7 +52,7 @@ function AccountOrderDetails() {
           <Box className={"flex"}>
             <Typography>Status zamówienia:</Typography>
             <Typography className={"font-bold"}>
-              {getPolishStatus(order.data?.status)}
+              {getPolishStatus(order.data?.status as OrderStatuses)}
             </Typography>
           </Box>
           <Typography>
@@ -124,18 +128,14 @@ function AccountOrderDetails() {
       >
         <Box>
           <Typography>Dane do faktury:</Typography>
-          <Typography>
-            {order.data?.customer_name} {order.data?.customer_surname}
-          </Typography>
+          <Typography>{order.data?.customer_name}</Typography>
           <Typography>{order.data?.customer_email}</Typography>
           <Typography>{order.data?.customer_phone}</Typography>
         </Box>
         <Box>
           <Typography>Wysyłka:</Typography>
           <Typography>Kurier DPD - 10 zł</Typography>
-          <Typography>
-            {order.data?.customer_name} {order.data?.customer_surname}
-          </Typography>
+          <Typography>{order.data?.customer_name}</Typography>
           <Typography>{order.data?.customer_email}</Typography>
           <Typography>{order.data?.customer_phone}</Typography>
         </Box>

@@ -13,13 +13,13 @@ export const orderApiSlice = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["Orders"],
     }),
-    getUserOrders: builder.query<Order[], string>({
+    getUserOrders: builder.query<UserOrder[], string>({
       query: (userId: string) => ({
         url: `orders/user-orders/${userId}`,
         method: "GET",
       }),
     }),
-    getOrder: builder.query<Order, string>({
+    getOrder: builder.query<UserOrder, string>({
       query: (orderId: string) => ({
         url: `orders/order/${orderId}`,
         method: "GET",
@@ -40,40 +40,6 @@ export const orderApiSlice = baseApi.injectEndpoints({
               { type: "Orders" },
             ]
           : [{ type: "Orders" }],
-    }),
-    getOrderItems: builder.query<OrderDetailsResponse[], string>({
-      query: (orderId: string) => ({
-        url: `order-items/${orderId}`,
-        method: "GET",
-      }),
-      providesTags: (result) =>
-        result
-          ? [
-              ...result.map(({ order_item_id }) => ({
-                type: "OrderItems" as const,
-                order_item_id,
-              })),
-              { type: "OrderItems" },
-            ]
-          : [{ type: "OrderItems" }],
-    }),
-    updateOrderItems: builder.mutation<
-      OrderDetailsResponse,
-      { id: number; order: Partial<OrderDetailsResponse> }
-    >({
-      query: (body: { id: number; order: Partial<OrderDetailsResponse> }) => ({
-        url: `order-items/${body.id}`,
-        method: "PUT",
-        body: body.order,
-      }),
-      invalidatesTags: [{ type: "OrderItems" }],
-    }),
-    removeOrderItems: builder.mutation<OrderDetailsResponse, number>({
-      query: (orderId: number) => ({
-        url: `order-items/${orderId}`,
-        method: "DELETE",
-      }),
-      invalidatesTags: [{ type: "OrderItems" }],
     }),
     updateOrder: builder.mutation<
       OrderDetailsResponse,
@@ -101,9 +67,6 @@ export const {
   useGetUserOrdersQuery,
   useGetOrderQuery,
   useGetOrdersQuery,
-  useGetOrderItemsQuery,
-  useUpdateOrderItemsMutation,
-  useRemoveOrderItemsMutation,
   useUpdateOrderMutation,
   useDeleteOrderMutation,
 } = orderApiSlice;

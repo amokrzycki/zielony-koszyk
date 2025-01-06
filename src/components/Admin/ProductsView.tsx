@@ -21,6 +21,7 @@ import AddProductModal from "./AddProductModal.tsx";
 import toast from "react-hot-toast";
 import { Categories } from "../../enums/Categories.ts";
 import ConfirmDeleteModal from "./ConfirmDeleteModal.tsx";
+import Error from "../common/Error.tsx";
 
 interface Row {
   id: number;
@@ -50,7 +51,7 @@ function ProductsView() {
   }
 
   if (isError) {
-    return <Box>Wystąpił błąd podczas pobierania produktów.</Box>;
+    return <Error message={"Wystąpił błąd podczas pobierania produktów."} />;
   }
 
   const onDelete = async () => {
