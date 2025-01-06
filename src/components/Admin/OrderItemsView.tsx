@@ -30,6 +30,8 @@ interface Row {
   price: string;
 }
 
+// TODO: Add possibility to add new order items
+
 function OrderItemsView() {
   const { orderId } = useParams();
   const {

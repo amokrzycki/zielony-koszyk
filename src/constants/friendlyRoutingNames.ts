@@ -9,4 +9,6 @@ export const friendlyRoutingNames: Record<string, string> = {
   "zarzadzanie-zamowieniami": "Zarządzanie zamówieniami",
   "zarzadzanie-klientami": "Zarządzanie klientami",
   ustawienia: "Ustawienia",
+  admin: "Panel administracyjny",
+  "edycja-klienta": "Edycja klienta",
 };

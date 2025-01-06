@@ -19,9 +19,14 @@ import { AddressType } from "../../enums/AddressType.ts";
 import ConfirmDeleteModal from "./ConfirmDeleteModal.tsx";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import { getFormattedDate } from "../../utils/getFormattedDate.ts";
+import { useAppDispatch } from "../../hooks/hooks.ts";
+import { setUserToEdit } from "../../store/appSlice.ts";
+import { useNavigate } from "react-router-dom";
 
 function UsersView() {
   const { data: users, isError, isLoading, refetch } = useGetUsersQuery();
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const [openConfirmDeleteModal, setOpenConfirmDeleteModal] = useState(false);
   const [selectedRows, setSelectedRows] = useState<string[]>([]);
   const [deleteUsers] = useDeleteUsersMutation();
@@ -59,6 +64,14 @@ function UsersView() {
     }
   };
 
+  const handleEdit = (id: string) => {
+    const user = users.find((user) => user.user_id === id);
+    if (user) {
+      dispatch(setUserToEdit(user));
+      navigate("/admin/zarzadzanie-klientami/edycja-klienta");
+    }
+  };
+
   const columns: GridColDef[] = [
     { field: "id", headerName: "ID", width: 300 },
     { field: "email", headerName: "Email", width: 200 },
@@ -74,7 +87,16 @@ function UsersView() {
       field: "actions",
       headerName: "Akcje",
       width: 150,
-      renderCell: () => <Button>Edytuj</Button>,
+      renderCell: (params) => (
+        <Button
+          variant="outlined"
+          color="primary"
+          size="small"
+          onClick={() => handleEdit(params.row.id as string)}
+        >
+          Edytuj
+        </Button>
+      ),
     },
   ];
 

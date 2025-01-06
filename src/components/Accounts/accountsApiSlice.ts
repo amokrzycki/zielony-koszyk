@@ -56,9 +56,16 @@ export const accountsApiSlice = baseApi.injectEndpoints({
         body,
       }),
     }),
-    changeUserDetails: builder.mutation({
+    changeUserAddress: builder.mutation({
       query: (body: UpdateDetailsBody) => ({
-        url: `users/${body.user_id}/address/${body.address_id}`,
+        url: `users/change-address/${body.user_id}/address/${body.address_id}`,
+        method: "PUT",
+        body,
+      }),
+    }),
+    changeUserDetails: builder.mutation<void, Partial<User>>({
+      query: (body: Partial<User>) => ({
+        url: `users/change-details/${body.user_id}`,
         method: "PUT",
         body,
       }),
@@ -74,5 +81,6 @@ export const {
   useDeleteUsersMutation,
   useChangePasswordMutation,
   useChangeEmailMutation,
+  useChangeUserAddressMutation,
   useChangeUserDetailsMutation,
 } = accountsApiSlice;

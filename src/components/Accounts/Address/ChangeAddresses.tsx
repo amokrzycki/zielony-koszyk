@@ -10,14 +10,14 @@ import {
 import { Box, Button, TextField } from "@mui/material";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
-import { useChangeUserDetailsMutation } from "../accountsApiSlice.ts";
 import User from "../../../types/User.ts";
 import { Address } from "../../../types/Address.ts";
 import { RootState } from "../../../store/store.ts";
 import { UpdateDetailsBody } from "../../../types/updateDetailsBody.ts";
 import { AddressType } from "../../../enums/AddressType.ts";
 import { updateUserAddresses, updateUserDetails } from "../accountSlice.ts";
-import { clearAddressToEdit } from "./addressSlice.ts";
+import { clearAddressToEdit } from "../../../store/appSlice.ts";
+import { useChangeUserAddressMutation } from "../accountsApiSlice.ts";
 
 interface IChangeAddressesFormValues {
   street: string;
@@ -31,10 +31,10 @@ interface IChangeAddressesFormValues {
 function ChangeAddresses() {
   const user: User = useAppSelector((state) => state.auth.user);
   const userAddress: Address = useAppSelector(
-    (state: RootState) => state.address.addressToEdit,
+    (state: RootState) => state.app.addressToEdit,
   );
   const navigate = useNavigate();
-  const [changeDetails] = useChangeUserDetailsMutation();
+  const [changeDetails] = useChangeUserAddressMutation();
   const dispatch = useAppDispatch();
 
   const validate = {
