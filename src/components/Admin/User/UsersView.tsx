@@ -1,9 +1,9 @@
 import {
   useDeleteUsersMutation,
   useGetUsersQuery,
-} from "../Accounts/accountsApiSlice.ts";
-import Loading from "../common/Loading.tsx";
-import Error from "../common/Error.tsx";
+} from "../../Accounts/accountsApiSlice.ts";
+import Loading from "../../common/Loading.tsx";
+import Error from "../../common/Error.tsx";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import {
@@ -14,14 +14,15 @@ import {
   GridToolbarQuickFilter,
 } from "@mui/x-data-grid";
 import { Box, Button, IconButton, Typography } from "@mui/material";
-import User from "../../types/User.ts";
-import { AddressType } from "../../enums/AddressType.ts";
-import ConfirmDeleteModal from "./ConfirmDeleteModal.tsx";
+import User from "../../../types/User.ts";
+import { AddressType } from "../../../enums/AddressType.ts";
+import ConfirmDeleteModal from "../ConfirmDeleteModal.tsx";
 import RefreshIcon from "@mui/icons-material/Refresh";
-import { getFormattedDate } from "../../utils/getFormattedDate.ts";
-import { useAppDispatch } from "../../hooks/hooks.ts";
-import { setUserToEdit } from "../../store/appSlice.ts";
+import { getFormattedDate } from "../../../utils/getFormattedDate.ts";
+import { useAppDispatch } from "../../../hooks/hooks.ts";
+import { setUserToEdit } from "../../../store/appSlice.ts";
 import { useNavigate } from "react-router-dom";
+import AddIcon from "@mui/icons-material/Add";
 
 function UsersView() {
   const { data: users, isError, isLoading, refetch } = useGetUsersQuery();
@@ -68,7 +69,7 @@ function UsersView() {
     const user = users.find((user) => user.user_id === id);
     if (user) {
       dispatch(setUserToEdit(user));
-      navigate("/admin/zarzadzanie-klientami/edycja-klienta");
+      navigate("/admin/zarzadzanie-uzytkownikami/edycja-uzytkownika");
     }
   };
 
@@ -127,6 +128,14 @@ function UsersView() {
     return (
       <GridToolbarContainer className={"flex justify-between"}>
         <GridToolbarColumnsButton />
+        <Button
+          startIcon={<AddIcon />}
+          onClick={() =>
+            navigate("/admin/zarzadzanie-klientami/dodaj-uzytkownika")
+          }
+        >
+          Dodaj użytkownika
+        </Button>
         {selectedRows.length > 0 && (
           <Button color="error" onClick={handleConfirmDeleteModalOpen}>
             Usuń zaznaczone ({selectedRows.length})

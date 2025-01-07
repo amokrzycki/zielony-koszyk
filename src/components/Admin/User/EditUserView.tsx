@@ -1,22 +1,32 @@
-import { useAppDispatch, useAppSelector } from "../../hooks/hooks.ts";
-import User from "../../types/User.ts";
+import { useAppDispatch, useAppSelector } from "../../../hooks/hooks.ts";
+import User from "../../../types/User.ts";
 import { useForm } from "@mantine/form";
-import { Roles } from "../../enums/Roles.ts";
-import { Box, Button, TextField, Typography } from "@mui/material";
+import { Roles } from "../../../enums/Roles.ts";
+import {
+  Box,
+  Button,
+  FormControl,
+  FormHelperText,
+  InputLabel,
+  MenuItem,
+  Select,
+  TextField,
+  Typography,
+} from "@mui/material";
 import ChangeUserAddress from "./ChangeUserAddress.tsx";
-import { AddressType } from "../../enums/AddressType.ts";
-import Error from "../common/Error.tsx";
-import { useChangeUserDetailsMutation } from "../Accounts/accountsApiSlice.ts";
+import { AddressType } from "../../../enums/AddressType.ts";
+import Error from "../../common/Error.tsx";
+import { useChangeUserDetailsMutation } from "../../Accounts/accountsApiSlice.ts";
 import toast from "react-hot-toast";
-import { setUserToEdit } from "../../store/appSlice.ts";
+import { setUserToEdit } from "../../../store/appSlice.ts";
 import {
   validateEmail,
   validateFirstName,
   validateLastName,
   validateNumber,
-} from "../../utils/validators.ts";
+} from "../../../utils/validators.ts";
 
-interface IEditUserFormValues {
+export interface IEditUserFormValues {
   first_name: string;
   last_name: string;
   email: string;
@@ -94,8 +104,6 @@ function EditUserView() {
       });
   };
 
-  // TODO: Implement role selection
-
   return (
     <Box className={"flex gap-4 w-full justify-evenly"}>
       <form
@@ -110,6 +118,7 @@ function EditUserView() {
           <TextField
             variant="outlined"
             label="Imię"
+            required
             placeholder={"Jan"}
             {...form.getInputProps("first_name")}
             error={
@@ -121,6 +130,7 @@ function EditUserView() {
           <TextField
             variant="outlined"
             label="Nazwisko"
+            required
             placeholder={"Kowalski"}
             {...form.getInputProps("last_name")}
             error={
@@ -131,6 +141,7 @@ function EditUserView() {
           <TextField
             variant={"outlined"}
             label={"Email"}
+            required
             {...form.getInputProps("email")}
             error={Boolean(form.errors.email) && form.isTouched("email")}
             helperText={form.errors.email}
@@ -139,11 +150,35 @@ function EditUserView() {
           <TextField
             variant={"outlined"}
             label={"Numer telefonu"}
+            required
             {...form.getInputProps("phone")}
             error={Boolean(form.errors.phone) && form.isTouched("phone")}
             helperText={form.errors.phone}
             sx={{ width: "300px" }}
           />
+          <FormControl
+            variant={"outlined"}
+            margin={"normal"}
+            fullWidth
+            required
+            error={Boolean(form.errors.role) && form.isTouched("role")}
+          >
+            <InputLabel id="role-label">Rola</InputLabel>
+            <Select
+              labelId={"role-label"}
+              label={"Rola"}
+              value={form.values.role}
+              onChange={(e) =>
+                form.setFieldValue("role", e.target.value as Roles)
+              }
+            >
+              <MenuItem value={Roles.ADMIN}>Administrator</MenuItem>
+              <MenuItem value={Roles.USER}>Użytkownik</MenuItem>
+            </Select>
+            {Boolean(form.errors.role) && form.isTouched("role") && (
+              <FormHelperText>{form.errors.role}</FormHelperText>
+            )}
+          </FormControl>
           <Button
             type={"submit"}
             variant={"contained"}

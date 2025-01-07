@@ -7,8 +7,9 @@ export const friendlyRoutingNames: Record<string, string> = {
   "edytuj-dane": "Edytuj dane",
   "zarzadzanie-produktami": "Zarządzanie produktami",
   "zarzadzanie-zamowieniami": "Zarządzanie zamówieniami",
-  "zarzadzanie-klientami": "Zarządzanie klientami",
+  "zarzadzanie-uzytkownikami": "Zarządzanie użytkownikami",
   ustawienia: "Ustawienia",
   admin: "Panel administracyjny",
-  "edycja-klienta": "Edycja klienta",
+  "edycja-uzytkownika": "Edycja użytkownika",
+  "dodaj-uzytkownika": "Dodaj użytkownika",
 };

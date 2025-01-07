@@ -4,12 +4,20 @@ import { ILoginFormValues } from "./LoginForm.tsx";
 import { UpdatePasswordBody } from "../../types/UpdatePasswordBody.ts";
 import { UpdateDetailsBody } from "../../types/updateDetailsBody.ts";
 import User from "../../types/User.ts";
+import { CreateUserFromAdmin } from "../../types/CreateUserFromAdmin.ts";
 
 export const accountsApiSlice = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     register: builder.mutation({
       query: (body: CreateUser) => ({
         url: "users/register",
+        method: "POST",
+        body,
+      }),
+    }),
+    createUserFromAdmin: builder.mutation<void, CreateUserFromAdmin>({
+      query: (body: CreateUserFromAdmin) => ({
+        url: "users/admin-create",
         method: "POST",
         body,
       }),
@@ -75,6 +83,7 @@ export const accountsApiSlice = baseApi.injectEndpoints({
 
 export const {
   useRegisterMutation,
+  useCreateUserFromAdminMutation,
   useLoginMutation,
   useGetAccountInfoQuery,
   useGetUsersQuery,

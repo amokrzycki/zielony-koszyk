@@ -22,6 +22,7 @@ import {
   useRemoveOrderItemsMutation,
   useUpdateOrderItemsMutation,
 } from "../Order/orderItemsApiSlice.ts";
+import AddIcon from "@mui/icons-material/Add";
 
 interface Row {
   id: number;
@@ -134,6 +135,9 @@ function OrderItemsView() {
     return (
       <GridToolbarContainer className={"flex justify-between"}>
         <GridToolbarColumnsButton />
+        <Button startIcon={<AddIcon />} onClick={() => console.log("add")}>
+          Dodaj produkt
+        </Button>
         {selectedRows.length > 0 && (
           <Button color="error" onClick={handleConfirmDeleteModalOpen}>
             Usuń zaznaczone ({selectedRows.length})

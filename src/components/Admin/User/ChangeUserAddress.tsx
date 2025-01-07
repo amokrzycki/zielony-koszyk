@@ -1,18 +1,18 @@
-import User from "../../types/User.ts";
+import User from "../../../types/User.ts";
 import { useForm } from "@mantine/form";
 import { Box, Button, TextField } from "@mui/material";
-import { Address } from "../../types/Address.ts";
+import { Address } from "../../../types/Address.ts";
 import {
   validateBuildingNumber,
   validateCity,
   validateStreet,
   validateZip,
-} from "../../utils/validators.ts";
-import { useChangeUserAddressMutation } from "../Accounts/accountsApiSlice.ts";
+} from "../../../utils/validators.ts";
+import { useChangeUserAddressMutation } from "../../Accounts/accountsApiSlice.ts";
 import toast from "react-hot-toast";
-import { setUserToEdit } from "../../store/appSlice.ts";
-import { useAppDispatch } from "../../hooks/hooks.ts";
-import { UpdateDetailsBody } from "../../types/updateDetailsBody.ts";
+import { setUserToEdit } from "../../../store/appSlice.ts";
+import { useAppDispatch } from "../../../hooks/hooks.ts";
+import { UpdateDetailsBody } from "../../../types/updateDetailsBody.ts";
 
 interface IChangeUserAddressFormValues {
   street: string;
@@ -87,6 +87,7 @@ function ChangeUserAddress({ address, user }: ChangeUserAddressProps) {
         <TextField
           variant="outlined"
           label="Ulica"
+          required
           placeholder={"ul. Przykładowa"}
           {...form.getInputProps("street")}
           helperText={form.errors.street}
@@ -98,6 +99,7 @@ function ChangeUserAddress({ address, user }: ChangeUserAddressProps) {
             variant="outlined"
             label="Numer domu/budynku"
             placeholder={"1A"}
+            required
             {...form.getInputProps("building_number")}
             helperText={form.errors.building_number}
             error={
@@ -122,6 +124,7 @@ function ChangeUserAddress({ address, user }: ChangeUserAddressProps) {
             variant="outlined"
             label="Kod pocztowy"
             placeholder={"00-000"}
+            required
             {...form.getInputProps("zip")}
             helperText={form.errors.zip}
             error={Boolean(form.errors.zip) && form.isTouched("zip")}
@@ -130,6 +133,7 @@ function ChangeUserAddress({ address, user }: ChangeUserAddressProps) {
           <TextField
             variant="outlined"
             label="Miejscowość"
+            required
             placeholder={"Warszawa"}
             {...form.getInputProps("city")}
             helperText={form.errors.city}

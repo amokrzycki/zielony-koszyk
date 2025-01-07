@@ -1,5 +1,5 @@
 import { useForm } from "@mantine/form";
-import { Categories } from "../../enums/Categories.ts";
+import { Categories } from "../../../enums/Categories.ts";
 import {
   Box,
   Button,
@@ -10,7 +10,7 @@ import {
   Select,
   TextField,
 } from "@mui/material";
-import { useCreateProductMutation } from "../Products/productsApiSlice.ts";
+import { useCreateProductMutation } from "../../Products/productsApiSlice.ts";
 import toast from "react-hot-toast";
 
 interface IAddProductFormValues {

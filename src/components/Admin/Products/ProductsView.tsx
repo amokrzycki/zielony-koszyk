@@ -3,8 +3,8 @@ import {
   useDeleteProductMutation,
   useGetProductsQuery,
   useUpdateProductMutation,
-} from "../Products/productsApiSlice.ts";
-import Loading from "../common/Loading.tsx";
+} from "../../Products/productsApiSlice.ts";
+import Loading from "../../common/Loading.tsx";
 import {
   DataGrid,
   GridColDef,
@@ -12,16 +12,16 @@ import {
   GridToolbarContainer,
   GridToolbarQuickFilter,
 } from "@mui/x-data-grid";
-import Product from "../../types/Product.ts";
-import capitalizeFirstLetter from "../../utils/capitalizeFirstLetter.ts";
-import { getFormattedDate } from "../../utils/getFormattedDate.ts";
+import Product from "../../../types/Product.ts";
+import capitalizeFirstLetter from "../../../utils/capitalizeFirstLetter.ts";
+import { getFormattedDate } from "../../../utils/getFormattedDate.ts";
 import AddIcon from "@mui/icons-material/Add";
 import { useState } from "react";
 import AddProductModal from "./AddProductModal.tsx";
 import toast from "react-hot-toast";
-import { Categories } from "../../enums/Categories.ts";
-import ConfirmDeleteModal from "./ConfirmDeleteModal.tsx";
-import Error from "../common/Error.tsx";
+import { Categories } from "../../../enums/Categories.ts";
+import ConfirmDeleteModal from "../ConfirmDeleteModal.tsx";
+import Error from "../../common/Error.tsx";
 
 interface Row {
   id: number;

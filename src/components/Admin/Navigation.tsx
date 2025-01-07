@@ -37,10 +37,10 @@ function Navigation() {
         size={"large"}
         startIcon={<GroupIcon sx={{ color: "text.primary" }} />}
         onClick={() => {
-          navigate("/admin/zarzadzanie-klientami");
+          navigate("/admin/zarzadzanie-uzytkownikami");
         }}
       >
-        Klienci
+        Użytkownicy
       </Button>
       <Button
         variant="contained"
