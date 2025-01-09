@@ -19,6 +19,12 @@ export const productsApiSlice = baseApi.injectEndpoints({
             ]
           : [{ type: "Products", id: "LIST" }],
     }),
+    getProductById: builder.query<Product, number>({
+      query: (id: number) => ({
+        url: `products/${id}`,
+        method: "GET",
+      }),
+    }),
     getProductsByCategory: builder.query({
       query: (body: { category: string; name: string }) => ({
         url: `products/search/${body.category}`,
@@ -61,6 +67,7 @@ export const productsApiSlice = baseApi.injectEndpoints({
 
 export const {
   useGetProductsQuery,
+  useGetProductByIdQuery,
   useGetProductsByCategoryQuery,
   useGetProductsLikeNameQuery,
   useCreateProductMutation,

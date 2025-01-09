@@ -52,7 +52,7 @@ function AccountOrdersView() {
       <Typography variant="body1">
         Tutaj znajdziesz listę swoich zamówień
       </Typography>
-      <Paper sx={{ height: 500, width: "45%" }}>
+      <Paper sx={{ height: 500, width: "75%" }}>
         <DataGrid
           rows={rows}
           columns={columns}

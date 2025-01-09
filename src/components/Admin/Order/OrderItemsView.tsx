@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
-import { useGetOrderQuery } from "../Order/orderApiSlice.ts";
+import { useGetOrderQuery } from "../../Order/orderApiSlice.ts";
 import { Box, Button, Typography } from "@mui/material";
-import Loading from "../common/Loading.tsx";
+import Loading from "../../common/Loading.tsx";
 import {
   DataGrid,
   GridColDef,
@@ -9,20 +9,21 @@ import {
   GridToolbarContainer,
   GridToolbarQuickFilter,
 } from "@mui/x-data-grid";
-import { OrderDetailsResponse } from "../../types/OrderDetailsResponse.ts";
-import ConfirmDeleteModal from "./ConfirmDeleteModal.tsx";
+import { OrderDetailsResponse } from "../../../types/OrderDetailsResponse.ts";
+import ConfirmDeleteModal from "../ConfirmDeleteModal.tsx";
 import { useState } from "react";
 import toast from "react-hot-toast";
-import Error from "../common/Error.tsx";
-import { getFormattedDate } from "../../utils/getFormattedDate.ts";
-import { getPolishStatus } from "../../utils/getPolishStatus.ts";
-import { OrderStatuses } from "../../enums/OrderStatuses.ts";
+import Error from "../../common/Error.tsx";
+import { getFormattedDate } from "../../../utils/getFormattedDate.ts";
+import { getPolishStatus } from "../../../utils/getPolishStatus.ts";
+import { OrderStatuses } from "../../../enums/OrderStatuses.ts";
 import {
   useGetOrderItemsQuery,
   useRemoveOrderItemsMutation,
   useUpdateOrderItemsMutation,
-} from "../Order/orderItemsApiSlice.ts";
+} from "../../Order/orderItemsApiSlice.ts";
 import AddIcon from "@mui/icons-material/Add";
+import AddOrderItemsModal from "./AddOrderItemsModal.tsx";
 
 interface Row {
   id: number;
@@ -41,6 +42,7 @@ function OrderItemsView() {
     isLoading,
   } = useGetOrderItemsQuery(orderId as string);
   const order = useGetOrderQuery(orderId as string);
+  const [openProductModal, setOpenProductModal] = useState(false);
   const [openConfirmDeleteModal, setOpenConfirmDeleteModal] = useState(false);
   const [selectedRows, setSelectedRows] = useState<number[]>([]);
   const [deleteOrderItems] = useRemoveOrderItemsMutation();
@@ -48,6 +50,8 @@ function OrderItemsView() {
 
   const handleConfirmDeleteModalOpen = () => setOpenConfirmDeleteModal(true);
   const handleConfirmDeleteModalClose = () => setOpenConfirmDeleteModal(false);
+  const handleProductModalOpen = () => setOpenProductModal(true);
+  const handleProductModalClose = () => setOpenProductModal(false);
 
   if (isLoading || order.isLoading) {
     return <Loading />;
@@ -135,7 +139,7 @@ function OrderItemsView() {
     return (
       <GridToolbarContainer className={"flex justify-between"}>
         <GridToolbarColumnsButton />
-        <Button startIcon={<AddIcon />} onClick={() => console.log("add")}>
+        <Button startIcon={<AddIcon />} onClick={handleProductModalOpen}>
           Dodaj produkt
         </Button>
         {selectedRows.length > 0 && (
@@ -206,6 +210,11 @@ function OrderItemsView() {
         handleClose={handleConfirmDeleteModalClose}
         onConfirm={onDelete}
         count={selectedRows.length}
+      />
+      <AddOrderItemsModal
+        open={openProductModal}
+        handleClose={handleProductModalClose}
+        orderId={order.data.order_id}
       />
     </Box>
   );

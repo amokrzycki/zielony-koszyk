@@ -121,6 +121,7 @@ function RegisterForm({ setTab }: RegisterFormProps) {
           <TextField
             variant="outlined"
             label="Imię"
+            required
             placeholder={"Jan"}
             {...form.getInputProps("firstName")}
             error={
@@ -132,6 +133,7 @@ function RegisterForm({ setTab }: RegisterFormProps) {
           <TextField
             variant="outlined"
             label="Nazwisko"
+            required
             placeholder={"Kowalski"}
             {...form.getInputProps("lastName")}
             error={Boolean(form.errors.lastName) && form.isTouched("lastName")}
@@ -142,6 +144,7 @@ function RegisterForm({ setTab }: RegisterFormProps) {
           variant={"outlined"}
           label={"Email"}
           {...form.getInputProps("email")}
+          required
           error={Boolean(form.errors.email) && form.isTouched("email")}
           helperText={form.errors.email}
           sx={{ m: "1em 0", width: "300px" }}
@@ -149,6 +152,7 @@ function RegisterForm({ setTab }: RegisterFormProps) {
         <TextField
           variant={"outlined"}
           label={"Numer telefonu"}
+          required
           {...form.getInputProps("phone")}
           error={Boolean(form.errors.phone) && form.isTouched("phone")}
           helperText={form.errors.phone}
@@ -158,6 +162,7 @@ function RegisterForm({ setTab }: RegisterFormProps) {
           variant={"outlined"}
           label={"Hasło"}
           type={"password"}
+          required
           {...form.getInputProps("password")}
           error={Boolean(form.errors.password) && form.isTouched("password")}
           helperText={form.errors.password}
@@ -167,6 +172,7 @@ function RegisterForm({ setTab }: RegisterFormProps) {
           variant={"outlined"}
           label={"Potwierdź hasło"}
           type={"password"}
+          required
           {...form.getInputProps("passwordConfirmation")}
           error={
             Boolean(form.errors.passwordConfirmation) &&
@@ -175,10 +181,11 @@ function RegisterForm({ setTab }: RegisterFormProps) {
           helperText={form.errors.passwordConfirmation}
           sx={{ m: "1em 0", width: "300px" }}
         />
-        <Box>
+        <Box className={"mb-4"}>
           <TextField
             variant="outlined"
             label="Ulica"
+            required
             placeholder={"ul. Przykładowa"}
             {...form.getInputProps("street")}
             helperText={form.errors.street}
@@ -189,12 +196,14 @@ function RegisterForm({ setTab }: RegisterFormProps) {
             variant="outlined"
             label="Numer domu/budynku"
             placeholder={"1A"}
+            required
             {...form.getInputProps("buildingNumber")}
             helperText={form.errors.buldingNumber}
             error={
               Boolean(form.errors.buildingNumber) &&
               form.isTouched("buildingNumber")
             }
+            sx={{ marginRight: "1em" }}
           />
           <TextField
             variant="outlined"
@@ -207,11 +216,12 @@ function RegisterForm({ setTab }: RegisterFormProps) {
             }
           />
         </Box>
-        <Box>
+        <Box className={"mb-4"}>
           <TextField
             variant="outlined"
             label="Kod pocztowy"
             placeholder={"00-000"}
+            required
             {...form.getInputProps("zip")}
             helperText={form.errors.zip}
             error={Boolean(form.errors.zip) && form.isTouched("zip")}
@@ -221,6 +231,7 @@ function RegisterForm({ setTab }: RegisterFormProps) {
             variant="outlined"
             label="Miejscowość"
             placeholder={"Warszawa"}
+            required
             {...form.getInputProps("city")}
             helperText={form.errors.city}
             error={Boolean(form.errors.city) && form.isTouched("city")}
@@ -238,7 +249,7 @@ function RegisterForm({ setTab }: RegisterFormProps) {
           <FormGroup>
             <FormControlLabel
               control={<Checkbox {...form.getInputProps("termsAccepted")} />}
-              label={"Akceptuję regulamin"}
+              label={"Akceptuję regulamin*"}
             />
           </FormGroup>
           <FormHelperText sx={{ m: 0 }}>
