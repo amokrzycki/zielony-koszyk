@@ -1,24 +1,25 @@
 import { OrderStatuses } from "../enums/OrderStatuses.ts";
+import { PolishOrderStatuses } from "../enums/PolishOrderStatuses.ts";
 
 export function getPolishStatus(status: OrderStatuses): string {
   switch (status) {
     case OrderStatuses.NEW:
-      return "Nowe";
+      return PolishOrderStatuses.NOWE;
     case OrderStatuses.WAITING_FOR_PAYMENT:
-      return "Oczekiwanie na płatność";
+      return PolishOrderStatuses.OCZEKIWANIE_NA_PLATNOSC;
     case OrderStatuses.WAITING_FOR_CONFIRMATION:
-      return "Oczekiwanie na potwierdzenie";
+      return PolishOrderStatuses.OCZEKIWANIE_NA_POTWIERDZENIE;
     case OrderStatuses.IN_PROGRESS:
-      return "W trakcie realizacji";
+      return PolishOrderStatuses.W_TRAKCIE_REALIZACJI;
     case OrderStatuses.TO_BE_SHIPPED:
-      return "Do wysyłki";
+      return PolishOrderStatuses.DO_WYSYLKI;
     case OrderStatuses.SHIPPING:
-      return "Wysyłka";
+      return PolishOrderStatuses.WYSYLKA;
     case OrderStatuses.DELIVERED:
-      return "Dostarczone";
+      return PolishOrderStatuses.DOSTARCZONE;
     case OrderStatuses.DONE:
-      return "Zakończone";
+      return PolishOrderStatuses.ZAKONCZONE;
     default:
-      return "Nieznany status";
+      return PolishOrderStatuses.NOWE;
   }
 }

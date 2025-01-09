@@ -1,59 +1,50 @@
-import { useAppDispatch, useAppSelector } from "../../../hooks/hooks.ts";
+import User from "../../../types/User.ts";
 import { useForm } from "@mantine/form";
+import { Box, Button, TextField } from "@mui/material";
+import { Address } from "../../../types/Address.ts";
 import {
   validateBuildingNumber,
   validateCity,
-  validateNumber,
   validateStreet,
   validateZip,
 } from "../../../utils/validators.ts";
-import { Box, Button, TextField } from "@mui/material";
+import { useChangeUserAddressMutation } from "../../Accounts/accountsApiSlice.ts";
 import toast from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
-import User from "../../../types/User.ts";
-import { Address } from "../../../types/Address.ts";
-import { RootState } from "../../../store/store.ts";
+import { setUserToEdit } from "../../../store/appSlice.ts";
+import { useAppDispatch } from "../../../hooks/hooks.ts";
 import { UpdateDetailsBody } from "../../../types/updateDetailsBody.ts";
-import { AddressType } from "../../../enums/AddressType.ts";
-import { updateUserAddresses, updateUserDetails } from "../accountSlice.ts";
-import { clearAddressToEdit } from "../../../store/appSlice.ts";
-import { useChangeUserAddressMutation } from "../accountsApiSlice.ts";
 
-interface IChangeAddressesFormValues {
+interface IChangeUserAddressFormValues {
   street: string;
   building_number: string;
   flat_number: string;
   city: string;
   zip: string;
-  phone: string;
 }
 
-function ChangeAddresses() {
-  const user: User = useAppSelector((state) => state.auth.user);
-  const userAddress: Address = useAppSelector(
-    (state: RootState) => state.app.addressToEdit,
-  );
-  const navigate = useNavigate();
+interface ChangeUserAddressProps {
+  user: User;
+  address: Address;
+}
+
+function ChangeUserAddress({ address, user }: ChangeUserAddressProps) {
   const [changeDetails] = useChangeUserAddressMutation();
   const dispatch = useAppDispatch();
 
   const validate = {
     street: validateStreet,
     building_number: validateBuildingNumber,
-    flat_number: undefined,
     city: validateCity,
     zip: validateZip,
-    phone: validateNumber,
   };
 
-  const form = useForm<IChangeAddressesFormValues>({
+  const form = useForm<IChangeUserAddressFormValues>({
     initialValues: {
-      street: userAddress?.street,
-      building_number: userAddress?.building_number,
-      flat_number: userAddress?.flat_number,
-      city: userAddress?.city,
-      zip: userAddress?.zip,
-      phone: user?.phone,
+      street: address.street,
+      building_number: address.building_number,
+      flat_number: address.flat_number,
+      city: address.city,
+      zip: address.zip,
     },
     validate,
     validateInputOnBlur: true,
@@ -62,21 +53,21 @@ function ChangeAddresses() {
 
   const isValid = form.isValid();
 
-  const handleSubmit = (values: IChangeAddressesFormValues) => {
+  const handleSubmit = (values: IChangeUserAddressFormValues) => {
     const updatedDetails: UpdateDetailsBody = {
       user_id: user.user_id,
-      address_id: userAddress.address_id,
-      type: userAddress.type,
+      address_id: address.address_id,
+      type: address.type,
       ...values,
     };
 
-    const updatedAddress: Address = {
-      ...userAddress,
-      street: values.street,
-      building_number: values.building_number,
-      flat_number: values.flat_number,
-      city: values.city,
-      zip: values.zip,
+    const updatedUser: User = {
+      ...user,
+      addresses: user.addresses.map((userAddress) =>
+        userAddress.address_id === address.address_id
+          ? { ...userAddress, ...values }
+          : userAddress,
+      ),
     };
 
     toast
@@ -86,50 +77,36 @@ function ChangeAddresses() {
         error: "Wystąpił błąd podczas zapisywania zmian",
       })
       .then(() => {
-        dispatch(updateUserAddresses(updatedAddress));
-        dispatch(updateUserDetails({ phone: values.phone }));
-        dispatch(clearAddressToEdit());
-        navigate("/konto/ksiazka-adresowa");
+        dispatch(setUserToEdit(updatedUser));
       });
   };
 
   return (
-    <form
-      onSubmit={form.onSubmit((values) => {
-        handleSubmit(values);
-      })}
-    >
+    <form onSubmit={form.onSubmit((values) => handleSubmit(values))}>
       <Box className={"flex flex-col justify-center items-center mt-2"}>
-        {userAddress?.type === AddressType.BILLING && (
-          <TextField
-            variant={"outlined"}
-            label={"Numer telefonu"}
-            {...form.getInputProps("phone")}
-            error={Boolean(form.errors.phone) && form.isTouched("phone")}
-            helperText={form.errors.phone}
-            sx={{ width: "300px", mb: "1em" }}
-          />
-        )}
-        <Box className={"mb-1"}>
-          <TextField
-            variant="outlined"
-            label="Ulica"
-            placeholder={"ul. Przykładowa"}
-            {...form.getInputProps("street")}
-            helperText={form.errors.street}
-            error={Boolean(form.errors.street) && form.isTouched("street")}
-            sx={{ marginRight: "1em" }}
-          />
+        <TextField
+          variant="outlined"
+          label="Ulica"
+          required
+          placeholder={"ul. Przykładowa"}
+          {...form.getInputProps("street")}
+          helperText={form.errors.street}
+          error={Boolean(form.errors.street) && form.isTouched("street")}
+          sx={{ mb: "1em", width: "300px" }}
+        />
+        <Box className={"flex justify-center items-center mb-4"}>
           <TextField
             variant="outlined"
             label="Numer domu/budynku"
             placeholder={"1A"}
+            required
             {...form.getInputProps("building_number")}
             helperText={form.errors.building_number}
             error={
               Boolean(form.errors.building_number) &&
               form.isTouched("building_number")
             }
+            sx={{ marginRight: "1em" }}
           />
           <TextField
             variant="outlined"
@@ -147,6 +124,7 @@ function ChangeAddresses() {
             variant="outlined"
             label="Kod pocztowy"
             placeholder={"00-000"}
+            required
             {...form.getInputProps("zip")}
             helperText={form.errors.zip}
             error={Boolean(form.errors.zip) && form.isTouched("zip")}
@@ -155,6 +133,7 @@ function ChangeAddresses() {
           <TextField
             variant="outlined"
             label="Miejscowość"
+            required
             placeholder={"Warszawa"}
             {...form.getInputProps("city")}
             helperText={form.errors.city}
@@ -174,4 +153,4 @@ function ChangeAddresses() {
   );
 }
 
-export default ChangeAddresses;
+export default ChangeUserAddress;

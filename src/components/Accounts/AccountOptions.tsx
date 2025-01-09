@@ -4,9 +4,15 @@ import ShoppingBagIcon from "@mui/icons-material/ShoppingBag";
 import AlternateEmailIcon from "@mui/icons-material/AlternateEmail";
 import PasswordIcon from "@mui/icons-material/Password";
 import ImportContactsIcon from "@mui/icons-material/ImportContacts";
+import BuildIcon from "@mui/icons-material/Build";
+import { Roles } from "../../enums/Roles.ts";
+import User from "../../types/User.ts";
+import { useAppSelector } from "../../hooks/hooks.ts";
+import { RootState } from "../../store/store.ts";
 
 function AccountOptions() {
   const navigate = useNavigate();
+  const user: User = useAppSelector((state: RootState) => state.auth.user);
 
   return (
     <Box className={"flex flex-col items-center"}>
@@ -58,6 +64,19 @@ function AccountOptions() {
         >
           Zmiana hasła
         </Button>
+        {user.role === Roles.ADMIN && (
+          <Button
+            variant="contained"
+            color="primary"
+            size={"large"}
+            startIcon={<BuildIcon sx={{ color: "text.primary" }} />}
+            onClick={() => {
+              navigate("/admin");
+            }}
+          >
+            Panel administratora
+          </Button>
+        )}
       </Box>
     </Box>
   );

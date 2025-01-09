@@ -7,4 +7,5 @@ export interface UserOrder {
   order_date: string;
   total_amount: string;
   status: string;
+  user_id?: string;
 }

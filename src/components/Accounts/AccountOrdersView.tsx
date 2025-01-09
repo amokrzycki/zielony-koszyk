@@ -4,7 +4,6 @@ import User from "../../types/User.ts";
 import { useAppSelector } from "../../hooks/hooks.ts";
 import { RootState } from "../../store/store.ts";
 import { DataGrid, GridColDef, GridRowParams } from "@mui/x-data-grid";
-import { UserOrder } from "../../types/UserOrder.ts";
 import { useNavigate } from "react-router-dom";
 import { getFormattedDate } from "../../utils/getFormattedDate.ts";
 import { getPolishStatus } from "../../utils/getPolishStatus.ts";
@@ -28,15 +27,15 @@ function AccountOrdersView() {
     { field: "createdAt", headerName: "Data zamówienia", width: 150 },
   ];
 
-  if (userOrders.isLoading) {
+  if (userOrders.isLoading || userOrders.isFetching) {
     return <CircularProgress />;
   }
 
-  if (userOrders.isError) {
+  if (userOrders.isError || !userOrders.data) {
     return <div>Wystąpił błąd!</div>;
   }
 
-  const rows = userOrders.data.map((order: UserOrder) => ({
+  const rows = userOrders.data.map((order) => ({
     id: order.order_id,
     status: getPolishStatus(order.status as OrderStatuses),
     totalAmount: `${order.total_amount} zł`,
@@ -53,7 +52,7 @@ function AccountOrdersView() {
       <Typography variant="body1">
         Tutaj znajdziesz listę swoich zamówień
       </Typography>
-      <Paper sx={{ height: 500, width: "45%" }}>
+      <Paper sx={{ height: 500, width: "75%" }}>
         <DataGrid
           rows={rows}
           columns={columns}

@@ -7,6 +7,7 @@ import React, { useState } from "react";
 import { logoutUser } from "./accountSlice.ts";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import { Roles } from "../../enums/Roles.ts";
 
 function UserBadge() {
   const navigate = useNavigate();
@@ -69,6 +70,11 @@ function UserBadge() {
         <MenuItem onClick={handleClose} data-route="/konto/zamowienia">
           Zamówienia
         </MenuItem>
+        {auth.user.role === Roles.ADMIN && (
+          <MenuItem onClick={handleClose} data-route="/admin">
+            Panel administracyjny
+          </MenuItem>
+        )}
         <MenuItem onClick={handleLogout}>Wyloguj się</MenuItem>
       </Menu>
     </>

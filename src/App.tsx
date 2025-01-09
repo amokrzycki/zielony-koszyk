@@ -1,7 +1,7 @@
 import "./App.css";
 import { Box } from "@mui/material";
 import { RouterProvider } from "react-router-dom";
-import router from "./router/router.tsx";
+import router from "./routes/Routes.tsx";
 import { ModeProvider } from "./providers/ModeProvider.tsx";
 
 function App() {

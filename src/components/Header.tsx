@@ -29,7 +29,7 @@ function Header() {
       <img
         src="/logo.png"
         alt="logo"
-        className={"h-16 cursor-pointer"}
+        className={"h-16 cursor-pointer z-10"}
         onClick={() => {
           navigate("/");
         }}

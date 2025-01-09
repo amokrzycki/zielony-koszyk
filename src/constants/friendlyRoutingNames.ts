@@ -5,4 +5,10 @@ export const friendlyRoutingNames: Record<string, string> = {
   "zmiana-email": "Zmiana email",
   "zmiana-hasla": "Zmiana hasła",
   "edytuj-dane": "Edytuj dane",
+  "zarzadzanie-produktami": "Zarządzanie produktami",
+  "zarzadzanie-zamowieniami": "Zarządzanie zamówieniami",
+  "zarzadzanie-uzytkownikami": "Zarządzanie użytkownikami",
+  admin: "Panel administracyjny",
+  "edycja-uzytkownika": "Edycja użytkownika",
+  "dodaj-uzytkownika": "Dodaj użytkownika",
 };

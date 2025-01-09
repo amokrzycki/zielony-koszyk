@@ -1,10 +1,11 @@
 import { Params, useParams, useSearchParams } from "react-router-dom";
-import { Box, CircularProgress, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import ProductCard from "./ProductCard.tsx";
 import capitalizeFirstLetter from "../../utils/capitalizeFirstLetter.ts";
 import Search from "./Search.tsx";
 import { useGetProductsByCategoryQuery } from "./productsApiSlice.ts";
 import Product from "../../types/Product.ts";
+import Loading from "../common/Loading.tsx";
 
 function Category() {
   const { categoryId }: Readonly<Params> = useParams();
@@ -18,16 +19,8 @@ function Category() {
 
   if (fetchedProducts.isLoading) {
     return (
-      <Box
-        id="main-wrapper"
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          height: "calc(100vh - 72px - 156px - 30px)",
-        }}
-      >
-        <CircularProgress sx={{ color: "#FFF" }} />
+      <Box className={"h-screen"}>
+        <Loading />
       </Box>
     );
   }

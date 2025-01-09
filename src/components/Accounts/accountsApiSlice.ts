@@ -3,12 +3,21 @@ import { CreateUser } from "../../types/CreateUser.ts";
 import { ILoginFormValues } from "./LoginForm.tsx";
 import { UpdatePasswordBody } from "../../types/UpdatePasswordBody.ts";
 import { UpdateDetailsBody } from "../../types/updateDetailsBody.ts";
+import User from "../../types/User.ts";
+import { CreateUserFromAdmin } from "../../types/CreateUserFromAdmin.ts";
 
 export const accountsApiSlice = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     register: builder.mutation({
       query: (body: CreateUser) => ({
         url: "users/register",
+        method: "POST",
+        body,
+      }),
+    }),
+    createUserFromAdmin: builder.mutation<void, CreateUserFromAdmin>({
+      query: (body: CreateUserFromAdmin) => ({
+        url: "users/admin-create",
         method: "POST",
         body,
       }),
@@ -29,6 +38,18 @@ export const accountsApiSlice = baseApi.injectEndpoints({
         method: "GET",
       }),
     }),
+    getUsers: builder.query<User[], void>({
+      query: () => ({
+        url: "users",
+        method: "GET",
+      }),
+    }),
+    deleteUsers: builder.mutation<void, string>({
+      query: (body: string) => ({
+        url: "users/" + body,
+        method: "DELETE",
+      }),
+    }),
     changePassword: builder.mutation({
       query: (body: UpdatePasswordBody) => ({
         url: "users/password-change/" + body.user_id,
@@ -43,9 +64,16 @@ export const accountsApiSlice = baseApi.injectEndpoints({
         body,
       }),
     }),
-    changeUserDetails: builder.mutation({
+    changeUserAddress: builder.mutation({
       query: (body: UpdateDetailsBody) => ({
-        url: `users/${body.user_id}/address/${body.address_id}`,
+        url: `users/change-address/${body.user_id}/address/${body.address_id}`,
+        method: "PUT",
+        body,
+      }),
+    }),
+    changeUserDetails: builder.mutation<void, Partial<User>>({
+      query: (body: Partial<User>) => ({
+        url: `users/change-details/${body.user_id}`,
         method: "PUT",
         body,
       }),
@@ -55,9 +83,13 @@ export const accountsApiSlice = baseApi.injectEndpoints({
 
 export const {
   useRegisterMutation,
+  useCreateUserFromAdminMutation,
   useLoginMutation,
   useGetAccountInfoQuery,
+  useGetUsersQuery,
+  useDeleteUsersMutation,
   useChangePasswordMutation,
   useChangeEmailMutation,
+  useChangeUserAddressMutation,
   useChangeUserDetailsMutation,
 } = accountsApiSlice;

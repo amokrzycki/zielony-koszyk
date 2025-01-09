@@ -3,8 +3,8 @@ import { Box, Button, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import User from "../../../types/User.ts";
 import { AddressType } from "../../../enums/AddressType.ts";
-import { setAddressToEdit } from "./addressSlice.ts";
 import { Address } from "../../../types/Address.ts";
+import { setAddressToEdit } from "../../../store/appSlice.ts";
 
 function AddressBook() {
   const user: User = useAppSelector((state) => state.auth.user);

@@ -1,83 +1,63 @@
-import { useForm } from "@mantine/form";
+import { useCreateUserFromAdminMutation } from "../../Accounts/accountsApiSlice.ts";
 import {
-  Box,
-  Button,
-  FormControl,
-  FormControlLabel,
-  FormGroup,
-  FormHelperText,
-  TextField,
-} from "@mui/material";
-import Checkbox from "@mui/material/Checkbox";
-import {
-  validateBuildingNumber,
-  validateCity,
   validateEmail,
   validateFirstName,
   validateLastName,
   validateNumber,
-  validatePasswordConfirmation,
-  validateRegisterPassword,
-  validateStreet,
-  validateTermsAccepted,
-  validateZip,
-} from "../../utils/validators.ts";
-import { CreateUser } from "../../types/CreateUser.ts";
-import { useRegisterMutation } from "./accountsApiSlice.ts";
+} from "../../../utils/validators.ts";
+import { useForm } from "@mantine/form";
 import toast from "react-hot-toast";
-import { Dispatch, SetStateAction } from "react";
+import {
+  Box,
+  Button,
+  FormControl,
+  FormHelperText,
+  InputLabel,
+  MenuItem,
+  Select,
+  TextField,
+  Typography,
+} from "@mui/material";
+import { CreateUserFromAdmin } from "../../../types/CreateUserFromAdmin.ts";
+import { useNavigate } from "react-router-dom";
+import { Roles } from "../../../enums/Roles.ts";
 
-export interface IRegisterFormValues {
+export interface ICreateUserFormValues {
   firstName: string;
   lastName: string;
   email: string;
   phone: string;
-  password: string;
-  passwordConfirmation: string;
   street: string;
   buildingNumber: string;
   flatNumber: string;
   city: string;
   zip: string;
-  termsAccepted: boolean;
+  role: Roles;
 }
 
-interface RegisterFormProps {
-  setTab: Dispatch<SetStateAction<number>>;
-}
-
-function RegisterForm({ setTab }: RegisterFormProps) {
-  const [register] = useRegisterMutation();
+function AddUserView() {
+  const [createUser] = useCreateUserFromAdminMutation();
+  const navigate = useNavigate();
 
   const validate = {
     firstName: validateFirstName,
     lastName: validateLastName,
     email: validateEmail,
     phone: validateNumber,
-    password: validateRegisterPassword,
-    passwordConfirmation: validatePasswordConfirmation,
-    street: validateStreet,
-    buildingNumber: validateBuildingNumber,
-    flatNumber: undefined,
-    city: validateCity,
-    zip: validateZip,
-    termsAccepted: validateTermsAccepted,
   };
 
-  const form = useForm<IRegisterFormValues>({
+  const form = useForm<ICreateUserFormValues>({
     initialValues: {
       firstName: "",
       lastName: "",
       email: "",
       phone: "",
-      password: "",
-      passwordConfirmation: "",
-      street: "",
-      buildingNumber: "",
+      street: "placeholder",
+      buildingNumber: "1",
       flatNumber: "",
-      city: "",
-      zip: "",
-      termsAccepted: false,
+      city: "placeholder",
+      zip: "00-000",
+      role: Roles.USER,
     },
     validate,
     validateInputOnBlur: true,
@@ -86,30 +66,30 @@ function RegisterForm({ setTab }: RegisterFormProps) {
 
   const isValid = form.isValid();
 
-  const handleSubmit = (values: IRegisterFormValues) => {
-    const registerData: CreateUser = {
+  const handleSubmit = (values: ICreateUserFormValues) => {
+    const registerData: CreateUserFromAdmin = {
       first_name: values.firstName,
       last_name: values.lastName,
       email: values.email,
       phone: values.phone,
-      password: values.password,
       street: values.street,
       building_number: values.buildingNumber,
       flat_number: values.flatNumber,
       city: values.city,
       zip: values.zip,
+      role: values.role,
     };
+
     toast
-      .promise(register(registerData).unwrap(), {
+      .promise(createUser(registerData).unwrap(), {
         loading: "Tworzenie konta...",
-        success: "Konto zostało utworzone",
+        success: `Konto zostało utworzone dla ${values.email}.`,
         error: "Nie udało się utworzyć konta",
       })
       .then(() => {
-        setTab(0);
+        navigate("admin/zarzadzanie-klientami");
       });
   };
-
   return (
     <form
       onSubmit={form.onSubmit((values) => {
@@ -117,11 +97,13 @@ function RegisterForm({ setTab }: RegisterFormProps) {
       })}
     >
       <Box className={"flex flex-col justify-center items-center"}>
+        <Typography variant="h4" component="h1" gutterBottom>
+          Dodaj użytkownika
+        </Typography>
         <Box>
           <TextField
             variant="outlined"
             label="Imię"
-            required
             placeholder={"Jan"}
             {...form.getInputProps("firstName")}
             error={
@@ -133,18 +115,39 @@ function RegisterForm({ setTab }: RegisterFormProps) {
           <TextField
             variant="outlined"
             label="Nazwisko"
-            required
             placeholder={"Kowalski"}
             {...form.getInputProps("lastName")}
             error={Boolean(form.errors.lastName) && form.isTouched("lastName")}
             helperText={form.errors.lastName}
           />
         </Box>
+        <FormControl
+          variant={"outlined"}
+          margin={"normal"}
+          required
+          error={Boolean(form.errors.role) && form.isTouched("role")}
+          sx={{ width: "300px" }}
+        >
+          <InputLabel id="role-label">Rola</InputLabel>
+          <Select
+            labelId={"role-label"}
+            label={"Rola"}
+            value={form.values.role}
+            onChange={(e) =>
+              form.setFieldValue("role", e.target.value as Roles)
+            }
+          >
+            <MenuItem value={Roles.ADMIN}>Administrator</MenuItem>
+            <MenuItem value={Roles.USER}>Użytkownik</MenuItem>
+          </Select>
+          {Boolean(form.errors.role) && form.isTouched("role") && (
+            <FormHelperText>{form.errors.role}</FormHelperText>
+          )}
+        </FormControl>
         <TextField
           variant={"outlined"}
           label={"Email"}
           {...form.getInputProps("email")}
-          required
           error={Boolean(form.errors.email) && form.isTouched("email")}
           helperText={form.errors.email}
           sx={{ m: "1em 0", width: "300px" }}
@@ -152,40 +155,15 @@ function RegisterForm({ setTab }: RegisterFormProps) {
         <TextField
           variant={"outlined"}
           label={"Numer telefonu"}
-          required
           {...form.getInputProps("phone")}
           error={Boolean(form.errors.phone) && form.isTouched("phone")}
           helperText={form.errors.phone}
-          sx={{ width: "300px" }}
-        />
-        <TextField
-          variant={"outlined"}
-          label={"Hasło"}
-          type={"password"}
-          required
-          {...form.getInputProps("password")}
-          error={Boolean(form.errors.password) && form.isTouched("password")}
-          helperText={form.errors.password}
-          sx={{ mt: "1em", width: "300px" }}
-        />
-        <TextField
-          variant={"outlined"}
-          label={"Potwierdź hasło"}
-          type={"password"}
-          required
-          {...form.getInputProps("passwordConfirmation")}
-          error={
-            Boolean(form.errors.passwordConfirmation) &&
-            form.isTouched("passwordConfirmation")
-          }
-          helperText={form.errors.passwordConfirmation}
-          sx={{ m: "1em 0", width: "300px" }}
+          sx={{ width: "300px", mb: "1em" }}
         />
         <Box className={"mb-4"}>
           <TextField
             variant="outlined"
             label="Ulica"
-            required
             placeholder={"ul. Przykładowa"}
             {...form.getInputProps("street")}
             helperText={form.errors.street}
@@ -196,7 +174,6 @@ function RegisterForm({ setTab }: RegisterFormProps) {
             variant="outlined"
             label="Numer domu/budynku"
             placeholder={"1A"}
-            required
             {...form.getInputProps("buildingNumber")}
             helperText={form.errors.buldingNumber}
             error={
@@ -216,12 +193,11 @@ function RegisterForm({ setTab }: RegisterFormProps) {
             }
           />
         </Box>
-        <Box className={"mb-4"}>
+        <Box>
           <TextField
             variant="outlined"
             label="Kod pocztowy"
             placeholder={"00-000"}
-            required
             {...form.getInputProps("zip")}
             helperText={form.errors.zip}
             error={Boolean(form.errors.zip) && form.isTouched("zip")}
@@ -231,42 +207,22 @@ function RegisterForm({ setTab }: RegisterFormProps) {
             variant="outlined"
             label="Miejscowość"
             placeholder={"Warszawa"}
-            required
             {...form.getInputProps("city")}
             helperText={form.errors.city}
             error={Boolean(form.errors.city) && form.isTouched("city")}
           />
         </Box>
-        <FormControl
-          required
-          error={
-            Boolean(form.errors.termsAccepted) &&
-            form.isTouched("termsAccepted")
-          }
-          component="fieldset"
-          variant={"standard"}
-        >
-          <FormGroup>
-            <FormControlLabel
-              control={<Checkbox {...form.getInputProps("termsAccepted")} />}
-              label={"Akceptuję regulamin*"}
-            />
-          </FormGroup>
-          <FormHelperText sx={{ m: 0 }}>
-            {form.errors.termsAccepted}
-          </FormHelperText>
-        </FormControl>
         <Button
           type={"submit"}
           variant={"contained"}
           sx={{ mt: "1em" }}
           disabled={!isValid && form.isTouched()}
         >
-          Utwórz konto
+          Utwórz użytkownika
         </Button>
       </Box>
     </form>
   );
 }
 
-export default RegisterForm;
+export default AddUserView;

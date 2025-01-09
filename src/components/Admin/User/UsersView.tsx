@@ -1,0 +1,191 @@
+import {
+  useDeleteUsersMutation,
+  useGetUsersQuery,
+} from "../../Accounts/accountsApiSlice.ts";
+import Loading from "../../common/Loading.tsx";
+import Error from "../../common/Error.tsx";
+import { useState } from "react";
+import toast from "react-hot-toast";
+import {
+  DataGrid,
+  GridColDef,
+  GridToolbarColumnsButton,
+  GridToolbarContainer,
+  GridToolbarQuickFilter,
+} from "@mui/x-data-grid";
+import { Box, Button, IconButton, Typography } from "@mui/material";
+import User from "../../../types/User.ts";
+import { AddressType } from "../../../enums/AddressType.ts";
+import ConfirmDeleteModal from "../ConfirmDeleteModal.tsx";
+import RefreshIcon from "@mui/icons-material/Refresh";
+import { getFormattedDate } from "../../../utils/getFormattedDate.ts";
+import { useAppDispatch } from "../../../hooks/hooks.ts";
+import { setUserToEdit } from "../../../store/appSlice.ts";
+import { useNavigate } from "react-router-dom";
+import AddIcon from "@mui/icons-material/Add";
+
+function UsersView() {
+  const { data: users, isError, isLoading, refetch } = useGetUsersQuery();
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  const [openConfirmDeleteModal, setOpenConfirmDeleteModal] = useState(false);
+  const [selectedRows, setSelectedRows] = useState<string[]>([]);
+  const [deleteUsers] = useDeleteUsersMutation();
+
+  const handleConfirmDeleteModalOpen = () => setOpenConfirmDeleteModal(true);
+  const handleConfirmDeleteModalClose = () => setOpenConfirmDeleteModal(false);
+
+  if (isLoading) {
+    return <Loading />;
+  }
+
+  if (isError || !users) {
+    return <Error message={"Nie udało się pobrać użytkowników."} />;
+  }
+
+  const onDelete = async () => {
+    if (selectedRows.length === 0) {
+      toast.error("Nie wybrano zamówień do usunięcia.");
+      return;
+    }
+
+    try {
+      await toast.promise(
+        Promise.all(selectedRows.map((id) => deleteUsers(id).unwrap())),
+        {
+          loading: `Usuwanie ${selectedRows.length >= 1 ? "użytkownika" : "użytkowników"}...`,
+          success: `${selectedRows.length >= 1 ? "Użytkownik został usunięty." : "Użytkownicy zostali ususnięci."}`,
+          error: `Wystąpił błąd podczas usuwania ${selectedRows.length >= 1 ? "użytkownika" : "użytkowników"}.`,
+        },
+      );
+      setSelectedRows([]);
+    } catch (error) {
+      console.error("Delete failed:", error);
+      toast.error("Nie udało się usunąć.");
+    }
+  };
+
+  const handleEdit = (id: string) => {
+    const user = users.find((user) => user.user_id === id);
+    if (user) {
+      dispatch(setUserToEdit(user));
+      navigate("/admin/zarzadzanie-uzytkownikami/edycja-uzytkownika");
+    }
+  };
+
+  const columns: GridColDef[] = [
+    { field: "id", headerName: "ID", width: 300 },
+    { field: "email", headerName: "Email", width: 200 },
+    { field: "first_name", headerName: "Imię", width: 150 },
+    { field: "last_name", headerName: "Nazwisko", width: 150 },
+    { field: "phone", headerName: "Telefon", width: 150 },
+    { field: "delivery_address", headerName: "Adres dostawy", width: 200 },
+    { field: "billing_address", headerName: "Adres do faktury", width: 200 },
+    { field: "role", headerName: "Rola", width: 150 },
+    { field: "created_at", headerName: "Data utworzenia", width: 200 },
+    { field: "updated_at", headerName: "Data aktualizacji", width: 200 },
+    {
+      field: "actions",
+      headerName: "Akcje",
+      width: 150,
+      renderCell: (params) => (
+        <Button
+          variant="outlined"
+          color="primary"
+          size="small"
+          onClick={() => handleEdit(params.row.id as string)}
+        >
+          Edytuj
+        </Button>
+      ),
+    },
+  ];
+
+  const rows = users.map((user: User) => {
+    const billingAddress = user.addresses.find(
+      (address) => address.type === AddressType.BILLING,
+    );
+
+    const shippingAddress = user.addresses.find(
+      (address) => address.type === AddressType.DELIVERY,
+    );
+
+    return {
+      id: user.user_id,
+      email: user.email,
+      first_name: user.first_name,
+      last_name: user.last_name,
+      phone: user.phone,
+      delivery_address: `${shippingAddress?.street} ${shippingAddress?.building_number}${shippingAddress?.flat_number ? `/${shippingAddress?.flat_number}` : ""}, ${shippingAddress?.zip}, ${shippingAddress?.city}`,
+      billing_address: `${billingAddress?.street} ${billingAddress?.building_number}${billingAddress?.flat_number ? `/${billingAddress?.flat_number}` : ""}, ${billingAddress?.zip}, ${billingAddress?.city}`,
+      role: user.role,
+      created_at: getFormattedDate(user.created_at),
+      updated_at: getFormattedDate(user.updated_at),
+    };
+  });
+
+  const CustomToolbar = () => {
+    return (
+      <GridToolbarContainer className={"flex justify-between"}>
+        <GridToolbarColumnsButton />
+        <Button
+          startIcon={<AddIcon />}
+          onClick={() =>
+            navigate("/admin/zarzadzanie-klientami/dodaj-uzytkownika")
+          }
+        >
+          Dodaj użytkownika
+        </Button>
+        {selectedRows.length > 0 && (
+          <Button color="error" onClick={handleConfirmDeleteModalOpen}>
+            Usuń zaznaczone ({selectedRows.length})
+          </Button>
+        )}
+        <GridToolbarQuickFilter debounceMs={300} />
+      </GridToolbarContainer>
+    );
+  };
+
+  return (
+    <Box className={"flex flex-col overflow-x-auto w-full"}>
+      <Box className={"flex items-center"}>
+        <Typography variant="h4" component="h1">
+          Użytkownicy
+        </Typography>
+        <IconButton onClick={() => refetch()} color="primary">
+          <RefreshIcon />
+        </IconButton>
+      </Box>
+      <Box className={"w-full overflow-x-auto"}>
+        <DataGrid
+          disableRowSelectionOnClick
+          checkboxSelection
+          columns={columns}
+          rows={rows}
+          rowHeight={40}
+          pageSizeOptions={[5, 10, 25, 50, 100]}
+          sx={{ border: 0 }}
+          slots={{ toolbar: CustomToolbar }}
+          initialState={{
+            pagination: {
+              paginationModel: {
+                pageSize: 10,
+              },
+            },
+          }}
+          onRowSelectionModelChange={(newSelection) =>
+            setSelectedRows(newSelection as string[])
+          }
+        />
+      </Box>
+      <ConfirmDeleteModal
+        open={openConfirmDeleteModal}
+        handleClose={handleConfirmDeleteModalClose}
+        onConfirm={onDelete}
+        count={selectedRows.length}
+      />
+    </Box>
+  );
+}
+
+export default UsersView;
