@@ -1,7 +1,7 @@
 import { baseApi } from "../../api/api.ts";
 import { Order } from "../../types/Order.ts";
 import { UserOrder } from "../../types/UserOrder.ts";
-import { OrderDetailsResponse } from "../../types/OrderDetailsResponse.ts";
+import { OrderItemResponse } from "../../types/OrderItemResponse.ts";
 
 export const orderApiSlice = baseApi.injectEndpoints({
   endpoints: (builder) => ({
@@ -42,7 +42,7 @@ export const orderApiSlice = baseApi.injectEndpoints({
           : [{ type: "Orders" }],
     }),
     updateOrder: builder.mutation<
-      OrderDetailsResponse,
+      OrderItemResponse,
       { id: number; order: Partial<UserOrder> }
     >({
       query: (body: { id: number; order: Partial<UserOrder> }) => ({
@@ -52,7 +52,7 @@ export const orderApiSlice = baseApi.injectEndpoints({
       }),
       invalidatesTags: [{ type: "Orders" }],
     }),
-    deleteOrder: builder.mutation<OrderDetailsResponse, number>({
+    deleteOrder: builder.mutation<OrderItemResponse, number>({
       query: (orderId: number) => ({
         url: `orders/${orderId}`,
         method: "DELETE",

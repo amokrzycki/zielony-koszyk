@@ -1,5 +1,4 @@
 import { useGetProductsQuery } from "../../Products/productsApiSlice.ts";
-import { useState } from "react";
 import Error from "../../common/Error.tsx";
 import Loading from "../../common/Loading.tsx";
 import {
@@ -9,20 +8,25 @@ import {
   GridToolbarQuickFilter,
 } from "@mui/x-data-grid";
 import Product from "../../../types/Product.ts";
-import { Box, Button } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
+import { useCreateOrderItemsMutation } from "../../Order/orderItemsApiSlice.ts";
+import { OrderItemCreate } from "../../../types/OrderItemCreate.ts";
+import { useState } from "react";
+import toast from "react-hot-toast";
 
-// interface Row {
-//   id: number;
-//   name: string;
-//   category: string;
-//   price: number;
-//   stock_quantity: number;
-// }
+interface AddOrderItemsDataGridProps {
+  orderId: number;
+  handleClose: () => void;
+}
 
-function AddOrderItemsDataGrid() {
+function AddOrderItemsDataGrid({
+  orderId,
+  handleClose,
+}: AddOrderItemsDataGridProps) {
   const { data: products, isError, isLoading } = useGetProductsQuery();
-  const [selectedRows, setSelectedRows] = useState<number[]>([]);
+  const [orderItems, setOrderItems] = useState<OrderItemCreate[]>([]);
+  const [createOrderItems] = useCreateOrderItemsMutation();
 
   if (isLoading) {
     return <Loading />;
@@ -53,6 +57,34 @@ function AddOrderItemsDataGrid() {
       width: 100,
       editable: true,
     },
+    {
+      field: "Akcje",
+      headerName: "Akcje",
+      sortable: false,
+      width: 200,
+      renderCell: (params) => {
+        return (
+          <Button
+            variant="text"
+            color="primary"
+            size="small"
+            startIcon={<AddIcon />}
+            onClick={() => {
+              const orderItem = {
+                order_id: orderId,
+                product_id: params.row.id,
+                product_name: params.row.name,
+                quantity: params.row.quantity,
+                price: params.row.price,
+              };
+              setOrderItems([...orderItems, orderItem]);
+            }}
+          >
+            Wybierz
+          </Button>
+        );
+      },
+    },
   ];
 
   const rows = products.map((product: Product) => ({
@@ -64,58 +96,84 @@ function AddOrderItemsDataGrid() {
     quantity: 1,
   }));
 
-  // TODO: Add possibility to add selected products to order with quantity
   const handleAddProducts = () => {
-    const selectedProducts: Product[] = [];
-    selectedRows.forEach((row) => {
-      selectedProducts.push(products[row]);
-    });
-    console.log(selectedProducts);
+    toast
+      .promise(createOrderItems(orderItems).unwrap(), {
+        loading: `Dodawanie produktów do zamówienia nr ${orderId}...`,
+        success: `Produkty zostały dodane do zamówienia nr ${orderId}.`,
+        error: "Wystąpił błąd podczas dodawania produktów.",
+      })
+      .then(() => {
+        setOrderItems([]);
+        handleClose();
+      });
   };
 
   const CustomToolbar = () => {
     return (
       <GridToolbarContainer className={"flex justify-between"}>
-        {selectedRows.length > 0 && (
-          <Button
-            startIcon={<AddIcon />}
-            variant={"text"}
-            color="primary"
-            onClick={handleAddProducts}
-          >
-            Dodaj produkty do zamówienia ({selectedRows.length})
-          </Button>
-        )}
         <GridToolbarQuickFilter debounceMs={300} />
       </GridToolbarContainer>
     );
   };
 
   return (
-    <Box className={"flex flex-col overflow-x-auto w-full"}>
-      <Box className={"w-full overflow-x-auto"}>
-        <DataGrid
-          disableRowSelectionOnClick
-          checkboxSelection
-          columns={columns}
-          rows={rows}
-          rowHeight={40}
-          pageSizeOptions={[5, 10, 25, 50, 100]}
-          sx={{ border: 0 }}
-          slots={{ toolbar: CustomToolbar }}
-          initialState={{
-            pagination: {
-              paginationModel: {
-                pageSize: 10,
+    <>
+      {orderItems.length > 0 && (
+        <Box className={"mb-4"}>
+          <Typography variant="h6" component="h2" sx={{ mb: 2 }}>
+            Wybrane produkty
+          </Typography>
+          {orderItems.map((orderItem) => (
+            <Box key={orderItem.product_id} className={"flex items-center"}>
+              <Typography variant="body1" sx={{ mr: 2 }}>
+                {orderItem.product_name} - {orderItem.quantity} szt.
+              </Typography>
+              <Button
+                variant="text"
+                color="error"
+                size="small"
+                onClick={() => {
+                  setOrderItems(
+                    orderItems.filter(
+                      (item) => item.product_id !== orderItem.product_id,
+                    ),
+                  );
+                }}
+              >
+                Usuń
+              </Button>
+            </Box>
+          ))}
+        </Box>
+      )}
+
+      <Box className={"flex flex-col overflow-x-auto w-full"}>
+        <Box className={"w-full overflow-x-auto"}>
+          <DataGrid
+            disableRowSelectionOnClick
+            columns={columns}
+            rows={rows}
+            rowHeight={40}
+            pageSizeOptions={[5, 10, 25, 50, 100]}
+            sx={{ border: 0 }}
+            slots={{ toolbar: CustomToolbar }}
+            initialState={{
+              pagination: {
+                paginationModel: {
+                  pageSize: 10,
+                },
               },
-            },
-          }}
-          onRowSelectionModelChange={(newSelection) =>
-            setSelectedRows(newSelection as number[])
-          }
-        />
+            }}
+          />
+        </Box>
+        {orderItems.length > 0 && (
+          <Button variant="text" color="primary" onClick={handleAddProducts}>
+            Dodaj wybrane produkty ({orderItems.length})
+          </Button>
+        )}
       </Box>
-    </Box>
+    </>
   );
 }
 

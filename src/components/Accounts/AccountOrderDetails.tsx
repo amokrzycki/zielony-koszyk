@@ -12,7 +12,7 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
-import { OrderDetailsResponse } from "../../types/OrderDetailsResponse.ts";
+import { OrderItemResponse } from "../../types/OrderItemResponse.ts";
 import { getFormattedDate } from "../../utils/getFormattedDate.ts";
 import { getPolishStatus } from "../../utils/getPolishStatus.ts";
 import OrderStatusesInfo from "../Order/OrderStatusesInfo.tsx";
@@ -78,7 +78,7 @@ function AccountOrderDetails() {
           </TableHead>
           <TableBody>
             {orderDetails.data.map(
-              (product: OrderDetailsResponse, index: number) => (
+              (product: OrderItemResponse, index: number) => (
                 <TableRow
                   key={index}
                   sx={{
@@ -107,7 +107,7 @@ function AccountOrderDetails() {
               <TableCell align="right">
                 {orderDetails.data
                   .reduce(
-                    (acc: number, product: OrderDetailsResponse) =>
+                    (acc: number, product: OrderItemResponse) =>
                       acc + product.quantity * parseFloat(product.price),
                     0,
                   )

@@ -9,7 +9,7 @@ import {
   GridToolbarContainer,
   GridToolbarQuickFilter,
 } from "@mui/x-data-grid";
-import { OrderDetailsResponse } from "../../../types/OrderDetailsResponse.ts";
+import { OrderItemResponse } from "../../../types/OrderItemResponse.ts";
 import ConfirmDeleteModal from "../ConfirmDeleteModal.tsx";
 import { useState } from "react";
 import toast from "react-hot-toast";
@@ -31,8 +31,6 @@ interface Row {
   quantity: number;
   price: string;
 }
-
-// TODO: Add possibility to add new order items
 
 function OrderItemsView() {
   const { orderId } = useParams();
@@ -125,14 +123,20 @@ function OrderItemsView() {
       editable: true,
     },
     { field: "quantity", headerName: "Ilość", width: 130, editable: true },
-    { field: "price", headerName: "Cena", width: 130, flex: 1, editable: true },
+    { field: "price", headerName: "Cena", width: 130, editable: true },
+    {
+      field: "total",
+      headerName: "Suma pozycji",
+      width: 130,
+    },
   ];
 
-  const rows = orderDetails.map((orderDetail: OrderDetailsResponse) => ({
+  const rows = orderDetails.map((orderDetail: OrderItemResponse) => ({
     id: orderDetail.order_item_id,
     product_name: orderDetail.product_name,
     quantity: orderDetail.quantity,
     price: orderDetail.price,
+    total: (orderDetail.quantity * parseFloat(orderDetail.price)).toFixed(2),
   }));
 
   const CustomToolbar = () => {

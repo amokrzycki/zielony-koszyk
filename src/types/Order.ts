@@ -1,5 +1,5 @@
 import { OrderStatuses } from "../enums/OrderStatuses.ts";
-import { OrderDetail } from "./OrderDetail.ts";
+import { OrderItem } from "./OrderItem.ts";
 
 export interface Order {
   order_id?: string;
@@ -9,5 +9,5 @@ export interface Order {
   customer_phone: string;
   customer_address: string;
   status: OrderStatuses;
-  orderDetails: OrderDetail[];
+  orderDetails: OrderItem[];
 }

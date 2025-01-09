@@ -13,11 +13,10 @@ function AddOrderItemsModal({
   handleClose,
   orderId,
 }: AddOrderItemsModalProps) {
-  console.log(orderId);
   return (
     <Modal open={open} onClose={handleClose}>
       <Box
-        className={"absolute top-1/2 left-1/2 w-4/5 shadow p-4 rounded-xl"}
+        className={"absolute top-1/2 left-1/2 w-4/5 shadow p-8 rounded-xl"}
         sx={{
           bgcolor: "background.paper",
           transform: "translate(-50%, -50%)",
@@ -37,7 +36,7 @@ function AddOrderItemsModal({
         <Typography variant="h5" component="h2" sx={{ mb: 2 }}>
           Dodaj produkty do zamówienia
         </Typography>
-        <AddOrderItemsDataGrid />
+        <AddOrderItemsDataGrid orderId={orderId} handleClose={handleClose} />
       </Box>
     </Modal>
   );

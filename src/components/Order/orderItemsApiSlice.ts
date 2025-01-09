@@ -1,11 +1,10 @@
 import { baseApi } from "../../api/api.ts";
-import { OrderDetailsResponse } from "../../types/OrderDetailsResponse.ts";
-
-// TODO: Refresh orders (price) list after deleting/updating order items
+import { OrderItemResponse } from "../../types/OrderItemResponse.ts";
+import { OrderItemCreate } from "../../types/OrderItemCreate.ts";
 
 export const orderItemsApiSlice = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    getOrderItems: builder.query<OrderDetailsResponse[], string>({
+    getOrderItems: builder.query<OrderItemResponse[], string>({
       query: (orderId: string) => ({
         url: `order-items/${orderId}`,
         method: "GET",
@@ -21,18 +20,26 @@ export const orderItemsApiSlice = baseApi.injectEndpoints({
             ]
           : [{ type: "OrderItems" }],
     }),
+    createOrderItems: builder.mutation<OrderItemCreate[], OrderItemCreate[]>({
+      query: (order: OrderItemCreate[]) => ({
+        url: `order-items`,
+        method: "POST",
+        body: order,
+      }),
+      invalidatesTags: [{ type: "OrderItems" }],
+    }),
     updateOrderItems: builder.mutation<
-      OrderDetailsResponse,
-      { id: number; order: Partial<OrderDetailsResponse> }
+      OrderItemResponse,
+      { id: number; order: Partial<OrderItemResponse> }
     >({
-      query: (body: { id: number; order: Partial<OrderDetailsResponse> }) => ({
+      query: (body: { id: number; order: Partial<OrderItemResponse> }) => ({
         url: `order-items/${body.id}`,
         method: "PUT",
         body: body.order,
       }),
       invalidatesTags: ["OrderItems", { type: "Orders", id: "LIST" }],
     }),
-    removeOrderItems: builder.mutation<OrderDetailsResponse, number>({
+    removeOrderItems: builder.mutation<OrderItemResponse, number>({
       query: (orderId: number) => ({
         url: `order-items/${orderId}`,
         method: "DELETE",
@@ -44,6 +51,7 @@ export const orderItemsApiSlice = baseApi.injectEndpoints({
 
 export const {
   useGetOrderItemsQuery,
+  useCreateOrderItemsMutation,
   useUpdateOrderItemsMutation,
   useRemoveOrderItemsMutation,
 } = orderItemsApiSlice;
