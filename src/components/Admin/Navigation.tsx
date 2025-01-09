@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import Inventory2Icon from "@mui/icons-material/Inventory2";
 import GroupIcon from "@mui/icons-material/Group";
 import SellIcon from "@mui/icons-material/Sell";
-import SettingsIcon from "@mui/icons-material/Settings";
 
 function Navigation() {
   const navigate = useNavigate();
@@ -41,17 +40,6 @@ function Navigation() {
         }}
       >
         Użytkownicy
-      </Button>
-      <Button
-        variant="contained"
-        color="primary"
-        size={"large"}
-        startIcon={<SettingsIcon sx={{ color: "text.primary" }} />}
-        onClick={() => {
-          navigate("/admin/ustawienia");
-        }}
-      >
-        Ustawienia
       </Button>
     </Box>
   );

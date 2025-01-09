@@ -46,8 +46,4 @@ export const AdminRoutes: Route[] = [
       },
     ],
   },
-  {
-    path: "ustawienia",
-    element: <h1>Settings</h1>,
-  },
 ];
