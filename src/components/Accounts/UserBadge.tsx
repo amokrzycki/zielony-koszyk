@@ -53,7 +53,7 @@ function UserBadge() {
         onClick={handleClick}
         sx={{ color: "text.primary" }}
       >
-        {auth.token ? `Witaj ${auth.user.first_name}!` : ""}
+        {auth.token ? `Witaj ${auth.user.first_name}!` : "Moje konto"}
       </Button>
       <Menu
         id="user-menu"

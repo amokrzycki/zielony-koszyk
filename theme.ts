@@ -19,6 +19,9 @@ const darkTheme = createTheme(
         secondary: "#a0a0a0", // Secondary text color
       },
     },
+    typography: {
+      fontFamily: "Lato",
+    },
   },
   plPL,
   plPLGrid,
@@ -40,6 +43,9 @@ const lightTheme = createTheme(
         primary: "#000000", // Text color
         secondary: "#837878", // Secondary text color
       },
+    },
+    typography: {
+      fontFamily: "Lato",
     },
   },
   plPL,

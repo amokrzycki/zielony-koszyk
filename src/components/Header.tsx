@@ -12,33 +12,34 @@ function Header() {
     <AppBar
       position="static"
       sx={{
-        bgcolor: "primary.main",
-        color: "text.primary",
-        justifyContent: "space-between",
-        alignItems: "center",
-        padding: "0.5rem",
-        flexDirection: "row",
-        gap: 2,
+        backgroundColor: "background.paper",
         position: "fixed",
+        alignItems: "center",
         top: 0,
         left: 0,
         right: 0,
         zIndex: 1000,
       }}
     >
-      <img
-        src="/logo.png"
-        alt="logo"
-        className={"h-16 cursor-pointer z-10"}
-        onClick={() => {
-          navigate("/");
-        }}
-      />
-      <Nav />
-      <Box id="user-actions-wrapper" className={"flex items-center gap-2"}>
-        <ModeSwitcher />
-        <CartBadge />
-        <UserBadge />
+      <Box
+        className={
+          "justify-between flex items-center gap-2 p-2 w-full 2xl:max-w-screen-2xl xl:max-w-screen-xl lg:max-w-screen-lg"
+        }
+      >
+        <img
+          src="/logo.png"
+          alt="logo"
+          className={"h-16 cursor-pointer z-10"}
+          onClick={() => {
+            navigate("/");
+          }}
+        />
+        <Nav />
+        <Box id="user-actions-wrapper" className={"flex items-center gap-2"}>
+          <ModeSwitcher />
+          <CartBadge />
+          <UserBadge />
+        </Box>
       </Box>
     </AppBar>
   );

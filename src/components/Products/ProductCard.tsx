@@ -1,16 +1,11 @@
 import Product from "../../types/Product.ts";
-import {
-  Box,
-  Button,
-  Card,
-  CardContent,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import { useState } from "react";
 import { addItem } from "../Cart/cartSlice.ts";
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { useAppDispatch } from "../../hooks/hooks.ts";
+import QuantitySelector from "./QuantitySelector.tsx";
+import ProductInfo from "./ProductInfo.tsx";
+import toast from "react-hot-toast";
 
 interface ProductCardProps {
   product: Product;
@@ -29,60 +24,48 @@ function ProductCard({ product }: ProductCardProps) {
         price: product.price,
       }),
     );
+    toast.success("Produkt zostały dodany do koszyka");
   };
 
   return (
-    <Card>
-      <CardContent
-        className={"flex flex-col items-center gap-1 w-300 text-center"}
-      >
-        <img
-          src="/images/fruits.jpeg"
-          className={"h-[120px]"}
-          alt="product-image"
-        />
-        <Typography variant="h5" component="h2">
-          {product.name}
-        </Typography>
-        <Typography variant="body2" color="textSecondary" component="p">
-          {product.description}
-        </Typography>
-        <Typography variant="body1" component="p">
-          Cena: {product.price} zł
-        </Typography>
-        <Typography variant="body1" component="p">
-          Stan: {product.stock_quantity}
-        </Typography>
+    <Box className={"flex w-300 border-b-2 p-4"}>
+      <img
+        src="/images/fruits.jpeg"
+        alt="product-image"
+        width={"250px"}
+        height={"250px"}
+      />
+      <Box className={"grid w-full"}>
+        <ProductInfo product={product} />
         <Box
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            gap: 1,
-          }}
+          className={
+            "flex flex-col justify-between items-center gap-2 justify-self-end"
+          }
         >
-          <Typography variant="body1" component="p">
-            Ilość:
-          </Typography>
-          <TextField
-            type="number"
-            inputProps={{ min: "1", max: `${product.stock_quantity}` }}
-            defaultValue="1"
-            onChange={(e) => setQuantity(parseInt(e.target.value))}
-            size={"small"}
-            sx={{ width: "70px" }}
-          />
-        </Box>
-        <Box>
-          <Button
-            onClick={handleAddToCart}
-            variant="contained"
-            startIcon={<ShoppingCartIcon sx={{ color: "text.primary" }} />}
-          >
-            Dodaj do koszyka
+          <Box>
+            {quantity > 1 ? (
+              <>
+                <Typography variant="h5" component="span" fontWeight={"500"}>
+                  {(product.price * quantity).toFixed(2)}
+                </Typography>{" "}
+                zł x {quantity} szt.
+              </>
+            ) : (
+              <>
+                <Typography variant="h5" component="span" fontWeight={"500"}>
+                  {product.price}
+                </Typography>{" "}
+                zł
+              </>
+            )}
+          </Box>
+          <QuantitySelector quantity={quantity} setQuantity={setQuantity} />
+          <Button onClick={handleAddToCart} variant="contained">
+            Do koszyka
           </Button>
         </Box>
-      </CardContent>
-    </Card>
+      </Box>
+    </Box>
   );
 }
 
