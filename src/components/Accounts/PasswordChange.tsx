@@ -2,7 +2,7 @@ import {
   validateNewPassword,
   validatePassword,
   validatePasswordConfirmation,
-} from "../../utils/validators.ts";
+} from "../../helpers/validators.ts";
 import { useForm } from "@mantine/form";
 import {
   Box,

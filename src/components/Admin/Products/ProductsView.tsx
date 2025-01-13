@@ -13,8 +13,8 @@ import {
   GridToolbarQuickFilter,
 } from "@mui/x-data-grid";
 import Product from "../../../types/Product.ts";
-import capitalizeFirstLetter from "../../../utils/capitalizeFirstLetter.ts";
-import { getFormattedDate } from "../../../utils/getFormattedDate.ts";
+import capitalizeFirstLetter from "../../../helpers/capitalizeFirstLetter.ts";
+import { getFormattedDate } from "../../../helpers/getFormattedDate.ts";
 import AddIcon from "@mui/icons-material/Add";
 import { useState } from "react";
 import AddProductModal from "./AddProductModal.tsx";

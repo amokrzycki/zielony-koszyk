@@ -14,8 +14,8 @@ import ConfirmDeleteModal from "../ConfirmDeleteModal.tsx";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import Error from "../../common/Error.tsx";
-import { getFormattedDate } from "../../../utils/getFormattedDate.ts";
-import { getPolishStatus } from "../../../utils/getPolishStatus.ts";
+import { getFormattedDate } from "../../../helpers/getFormattedDate.ts";
+import { getPolishStatus } from "../../../helpers/getPolishStatus.ts";
 import { OrderStatuses } from "../../../enums/OrderStatuses.ts";
 import {
   useGetOrderItemsQuery,

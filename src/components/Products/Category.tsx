@@ -1,23 +1,24 @@
 import { Params, useParams, useSearchParams } from "react-router-dom";
 import { Box, Typography } from "@mui/material";
 import ProductCard from "./ProductCard.tsx";
-import capitalizeFirstLetter from "../../utils/capitalizeFirstLetter.ts";
-import Search from "./Search.tsx";
-import { useGetProductsByCategoryQuery } from "./productsApiSlice.ts";
-import Product from "../../types/Product.ts";
+import capitalizeFirstLetter from "@/helpers/capitalizeFirstLetter.ts";
+import Search from "../Filters/Search.tsx";
+import { useGetProductsByParamsQuery } from "./productsApiSlice.ts";
+import Product from "@/types/Product.ts";
 import Loading from "../common/Loading.tsx";
 
 function Category() {
   const { categoryId }: Readonly<Params> = useParams();
   const [searchParams] = useSearchParams();
   const searchQuery = searchParams.get("search");
-  const fetchedProducts = useGetProductsByCategoryQuery({
+  const fetchedProducts = useGetProductsByParamsQuery({
     category: categoryId as string,
-    name: searchQuery || "",
+    search: searchQuery || "",
   });
-  const { data, error } = fetchedProducts;
+  const { data, error, isLoading } = fetchedProducts;
+  const products = data?.data || [];
 
-  if (fetchedProducts.isLoading) {
+  if (isLoading) {
     return (
       <Box className={"h-screen"}>
         <Loading />
@@ -68,13 +69,13 @@ function Category() {
           padding: 2,
         }}
       >
-        {searchQuery && data?.length === 0 ? (
+        {searchQuery && products.length === 0 ? (
           <Typography variant="h5" component="h2">
             Nie znaleziono produktów pasujących do zapytania w tej kategorii dla
             frazy: "{searchQuery}".
           </Typography>
         ) : (
-          data?.map((product: Product, index: number) => (
+          products.map((product: Product, index: number) => (
             <ProductCard key={index} product={product} />
           ))
         )}

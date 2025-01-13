@@ -18,7 +18,7 @@ import User from "../../../types/User.ts";
 import { AddressType } from "../../../enums/AddressType.ts";
 import ConfirmDeleteModal from "../ConfirmDeleteModal.tsx";
 import RefreshIcon from "@mui/icons-material/Refresh";
-import { getFormattedDate } from "../../../utils/getFormattedDate.ts";
+import { getFormattedDate } from "../../../helpers/getFormattedDate.ts";
 import { useAppDispatch } from "../../../hooks/hooks.ts";
 import { setUserToEdit } from "../../../store/appSlice.ts";
 import { useNavigate } from "react-router-dom";

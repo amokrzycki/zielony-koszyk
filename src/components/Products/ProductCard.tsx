@@ -2,7 +2,7 @@ import Product from "../../types/Product.ts";
 import { Box, Button, Typography } from "@mui/material";
 import { useState } from "react";
 import { addItem } from "../Cart/cartSlice.ts";
-import { useAppDispatch } from "../../hooks/hooks.ts";
+import { useAppDispatch } from "@/hooks/hooks.ts";
 import QuantitySelector from "./QuantitySelector.tsx";
 import ProductInfo from "./ProductInfo.tsx";
 import toast from "react-hot-toast";

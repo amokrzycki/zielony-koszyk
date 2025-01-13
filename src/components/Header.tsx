@@ -4,9 +4,11 @@ import CartBadge from "./Cart/CartBadge.tsx";
 import ModeSwitcher from "./ModeSwitcher.tsx";
 import UserBadge from "./Accounts/UserBadge.tsx";
 import { useNavigate } from "react-router-dom";
+import { useMode } from "../providers/ModeProvider.tsx";
 
 function Header() {
   const navigate = useNavigate();
+  const { mode } = useMode();
 
   return (
     <AppBar
@@ -27,7 +29,7 @@ function Header() {
         }
       >
         <img
-          src="/logo.png"
+          src={`/${mode}_logo.png`}
           alt="logo"
           className={"h-16 cursor-pointer z-10"}
           onClick={() => {

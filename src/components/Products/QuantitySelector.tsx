@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction } from "react";
-import { Box, IconButton } from "@mui/material";
+import { Box, IconButton, TextField } from "@mui/material";
 import RemoveIcon from "@mui/icons-material/Remove";
 import AddIcon from "@mui/icons-material/Add";
 
@@ -40,15 +40,26 @@ function QuantitySelector({ quantity, setQuantity }: QuantitySelectorProps) {
           borderRight: "1px solid #e5e7eb",
         }}
       >
-        <input
+        <TextField
           type="number"
           value={quantity}
-          className={"text-center"}
           onChange={(e) => setQuantity(parseInt(e.target.value))}
-          style={{
+          sx={{
             width: calcInputWidth(),
-            height: "40px",
+            "& .MuiOutlinedInput-root": {
+              borderRadius: 0,
+              height: "40px",
+              "& fieldset": {
+                border: "none",
+              },
+            },
+            "& .MuiOutlinedInput-input": {
+              padding: "0 12px",
+              textAlign: "center",
+              lineHeight: "40px",
+            },
           }}
+          variant="outlined"
         />
       </Box>
       <IconButton onClick={() => setQuantity((prev) => prev + 1)}>

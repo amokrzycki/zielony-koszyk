@@ -2,9 +2,11 @@ import { Box, Tab, Tabs } from "@mui/material";
 import React, { useState } from "react";
 import RegisterForm from "./RegisterForm.tsx";
 import LoginForm from "./LoginForm.tsx";
+import { useMode } from "@/providers/ModeProvider.tsx";
 
 function Login() {
   const [tab, setTab] = useState<number>(0);
+  const { mode } = useMode();
 
   const handleTabChange = (_: React.SyntheticEvent, tabNumber: number) => {
     setTab(tabNumber);
@@ -21,7 +23,7 @@ function Login() {
       >
         <Box className={"main-container flex-col flex items-center"}>
           <Box>
-            <img src="logo.png" alt="logo" className={"h-[120px]"} />
+            <img src={`/${mode}_logo.png`} alt="logo" className={"h-[120px]"} />
           </Box>
           <Box>
             <Tabs

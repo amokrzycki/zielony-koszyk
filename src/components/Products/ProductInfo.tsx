@@ -1,6 +1,6 @@
 import Product from "../../types/Product.ts";
 import { Box, Typography } from "@mui/material";
-import capitalizeFirstLetter from "../../utils/capitalizeFirstLetter.ts";
+import capitalizeFirstLetter from "@/helpers/capitalizeFirstLetter.ts";
 import Divider from "@mui/material/Divider";
 
 function ProductInfo({ product }: { product: Product }) {

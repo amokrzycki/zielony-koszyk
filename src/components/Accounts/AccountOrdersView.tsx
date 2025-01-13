@@ -1,13 +1,13 @@
 import { Box, CircularProgress, Paper, Typography } from "@mui/material";
 import { useGetUserOrdersQuery } from "../Order/orderApiSlice.ts";
 import User from "../../types/User.ts";
-import { useAppSelector } from "../../hooks/hooks.ts";
-import { RootState } from "../../store/store.ts";
+import { useAppSelector } from "@/hooks/hooks.ts";
+import { RootState } from "@/store/store.ts";
 import { DataGrid, GridColDef, GridRowParams } from "@mui/x-data-grid";
 import { useNavigate } from "react-router-dom";
-import { getFormattedDate } from "../../utils/getFormattedDate.ts";
-import { getPolishStatus } from "../../utils/getPolishStatus.ts";
-import { OrderStatuses } from "../../enums/OrderStatuses.ts";
+import { getFormattedDate } from "@/helpers/getFormattedDate.ts";
+import { getPolishStatus } from "@/helpers/getPolishStatus.ts";
+import { OrderStatuses } from "@/enums/OrderStatuses.ts";
 import { useEffect } from "react";
 
 function AccountOrdersView() {

@@ -1,5 +1,7 @@
 import { baseApi } from "../../api/api.ts";
 import Product from "../../types/Product.ts";
+import { ProductParams } from "../../types/ProductParams.ts";
+import { PageableProducts } from "../../types/PageableProducts.ts";
 
 export const productsApiSlice = baseApi.injectEndpoints({
   endpoints: (builder) => ({
@@ -25,17 +27,10 @@ export const productsApiSlice = baseApi.injectEndpoints({
         method: "GET",
       }),
     }),
-    getProductsByCategory: builder.query({
-      query: (body: { category: string; name: string }) => ({
-        url: `products/search/${body.category}`,
-        params: { name: body.name },
-        method: "GET",
-      }),
-    }),
-    getProductsLikeName: builder.query({
-      query: (name: string) => ({
+    getProductsByParams: builder.query<PageableProducts, ProductParams>({
+      query: (params) => ({
         url: `products/search`,
-        params: { name },
+        params,
         method: "GET",
       }),
     }),
@@ -68,8 +63,7 @@ export const productsApiSlice = baseApi.injectEndpoints({
 export const {
   useGetProductsQuery,
   useGetProductByIdQuery,
-  useGetProductsByCategoryQuery,
-  useGetProductsLikeNameQuery,
+  useGetProductsByParamsQuery,
   useCreateProductMutation,
   useDeleteProductMutation,
   useUpdateProductMutation,

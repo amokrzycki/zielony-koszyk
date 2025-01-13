@@ -1,17 +1,21 @@
 import { Box, Typography } from "@mui/material";
 import ProductCard from "./ProductCard.tsx";
-import { useSearchParams } from "react-router-dom";
-import Product from "../../types/Product.ts";
-import { useGetProductsLikeNameQuery } from "./productsApiSlice.ts";
+import Product from "@/types/Product.ts";
 import Loading from "../common/Loading.tsx";
-import FiltersBar from "../FiltersBar.tsx";
-import FiltersBox from "../FiltersBox.tsx";
+import FiltersBar from "../Filters/FiltersBar.tsx";
+import FiltersBox from "../Filters/FiltersBox.tsx";
+import { useGetProductsByParamsQuery } from "./productsApiSlice.ts";
+import useProductFilters from "@/hooks/useProductFilters.ts";
+import FiltersPagination from "@/components/Filters/FiltersPagination.tsx";
+
+// TODO: Tooltip go to top of the page when clicked
 
 function Products() {
-  const [searchParams] = useSearchParams();
-  const searchQuery = searchParams.get("search");
-  const fetchedProducts = useGetProductsLikeNameQuery(searchQuery || "");
+  const { filters } = useProductFilters();
+  const fetchedProducts = useGetProductsByParamsQuery(filters);
   const { data, error, isLoading, isFetching } = fetchedProducts;
+  const products = data?.data || [];
+  const searchQuery = filters.search;
 
   if (error) {
     return (
@@ -31,7 +35,9 @@ function Products() {
       <Box className={"main-container flex"}>
         <FiltersBox />
         <Box className={"flex flex-col ml-4 w-full"}>
-          <FiltersBar />
+          <FiltersBar
+            pagination={<FiltersPagination totalCount={data?.totalPages} />}
+          />
           {isLoading || isFetching ? (
             <Box
               className={"p-8 rounded-2xl mt-4 h-[50vh]"}
@@ -46,16 +52,19 @@ function Products() {
               }
               sx={{ bgcolor: "background.paper" }}
             >
-              {searchQuery && data?.length === 0 && (
+              {searchQuery && products.length === 0 && (
                 <Typography variant="h5" component="h2">
                   Brak produktów spełniających kryteria wyszukiwania dla frazy:
                   "{searchQuery}".
                 </Typography>
               )}
-              {data.length > 0 &&
-                data?.map((product: Product, index: number) => (
+              {products.length > 0 &&
+                products.map((product: Product, index: number) => (
                   <ProductCard key={index} product={product} />
                 ))}
+              <Box className={"flex w-full justify-center mt-4"}>
+                <FiltersPagination totalCount={data?.totalPages} />
+              </Box>
             </Box>
           )}
         </Box>

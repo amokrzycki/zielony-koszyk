@@ -24,7 +24,7 @@ import {
   validateFirstName,
   validateLastName,
   validateNumber,
-} from "../../../utils/validators.ts";
+} from "../../../helpers/validators.ts";
 
 export interface IEditUserFormValues {
   first_name: string;
