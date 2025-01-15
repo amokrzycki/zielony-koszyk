@@ -45,11 +45,11 @@ function FiltersBox() {
       className={"flex-col p-8 h-1/3 rounded-2xl w-1/4"}
       sx={{ bgcolor: "background.paper" }}
     >
-      <Typography variant="h6" component="h2" gutterBottom>
+      <Typography variant="h5" component="h2" gutterBottom>
         Kategoria
       </Typography>
       <CategoryList />
-      <Typography variant="h6" component="h2" gutterBottom>
+      <Typography variant="h5" component="h2" gutterBottom>
         Zakres cenowy
       </Typography>
       <Stack spacing={2} direction="column" sx={{ mb: 2 }}>

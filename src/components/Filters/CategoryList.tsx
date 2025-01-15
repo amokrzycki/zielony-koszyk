@@ -4,11 +4,11 @@ import { Box, Button } from "@mui/material";
 import { MouseEventHandler } from "react";
 
 const CATEGORIES = [
-  { value: Categories.COLLECTIVE, label: "Worki" },
+  { value: Categories.COLLECTIVE, label: "Zbiorcze" },
   { value: Categories.FRUITS, label: "Owoce" },
   { value: Categories.VEGETABLES, label: "Warzywa" },
   { value: Categories.SEASONAL, label: "Sezonowe" },
-  { value: Categories.OTHERS, label: "Inne" },
+  { value: Categories.OTHERS, label: "Spożywcze" },
 ];
 
 function CategoryList() {

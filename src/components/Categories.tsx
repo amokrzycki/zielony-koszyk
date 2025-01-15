@@ -118,7 +118,7 @@ function Categories() {
               width: "40%",
             }}
             key={index}
-            onClick={() => navigate(`/kategoria/${category.category}`)}
+            onClick={() => navigate(`/produkty/?category=${category.category}`)}
           >
             <ImageSrc
               style={{

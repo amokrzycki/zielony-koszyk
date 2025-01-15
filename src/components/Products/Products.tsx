@@ -7,8 +7,7 @@ import FiltersBox from "../Filters/FiltersBox.tsx";
 import { useGetProductsByParamsQuery } from "./productsApiSlice.ts";
 import useProductFilters from "@/hooks/useProductFilters.ts";
 import FiltersPagination from "@/components/Filters/FiltersPagination.tsx";
-
-// TODO: Tooltip go to top of the page when clicked
+import GoToTop from "@/components/Products/GoToTop.tsx";
 
 function Products() {
   const { filters } = useProductFilters();
@@ -69,6 +68,7 @@ function Products() {
           )}
         </Box>
       </Box>
+      <GoToTop />
     </Box>
   );
 }

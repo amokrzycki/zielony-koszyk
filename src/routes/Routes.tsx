@@ -2,7 +2,6 @@ import { createBrowserRouter } from "react-router-dom";
 import Homepage from "../components/Homepage.tsx";
 import Products from "../components/Products/Products.tsx";
 import About from "../components/About.tsx";
-import Category from "../components/Products/Category.tsx";
 import Cart from "../components/Cart/Cart.tsx";
 import OrderDetails from "../components/Order/OrderDetails.tsx";
 import CartLogin from "../components/Cart/CartLogin.tsx";
@@ -39,16 +38,6 @@ const routes: Route[] = [
   {
     path: "koszyk",
     element: <Cart />,
-  },
-  {
-    path: "kategoria/:categoryId",
-    element: <Category />,
-    children: [
-      {
-        path: ":productId",
-        element: <h1>Product</h1>,
-      },
-    ],
   },
   {
     path: "zamowienie",

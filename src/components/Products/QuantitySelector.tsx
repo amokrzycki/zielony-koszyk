@@ -18,6 +18,7 @@ function QuantitySelector({ quantity, setQuantity }: QuantitySelectorProps) {
     }
     return "40px";
   };
+
   return (
     <Box
       className={"flex"}
