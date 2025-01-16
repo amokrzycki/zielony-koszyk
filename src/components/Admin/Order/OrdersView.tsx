@@ -24,7 +24,7 @@ import { getEnglishStatus } from "../../../helpers/getEnglishStatus.ts";
 import { PolishOrderStatuses } from "../../../enums/PolishOrderStatuses.ts";
 import StatusDropdownEditor from "../StatusDropdownEditor.tsx";
 import { useNavigate } from "react-router-dom";
-import Error from "../../common/Error.tsx";
+import ErrorView from "../../common/ErrorView.tsx";
 
 interface Row {
   id: number;
@@ -54,7 +54,7 @@ function OrdersView() {
   }
 
   if (isError) {
-    return <Error message={"Nie udało się pobrać zamówień."} />;
+    return <ErrorView message={"Nie udało się pobrać zamówień."} />;
   }
 
   const onDelete = async () => {

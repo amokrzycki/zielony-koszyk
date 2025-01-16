@@ -8,6 +8,8 @@ interface Product {
   category: Categories;
   stock_quantity: number;
   created_at: Date;
+  image: string;
+  updated_at: Date;
 }
 
 export default Product;

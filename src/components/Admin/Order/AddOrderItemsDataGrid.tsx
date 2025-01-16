@@ -1,5 +1,5 @@
 import { useGetProductsQuery } from "../../Products/productsApiSlice.ts";
-import Error from "../../common/Error.tsx";
+import ErrorView from "../../common/ErrorView.tsx";
 import Loading from "../../common/Loading.tsx";
 import {
   DataGrid,
@@ -33,7 +33,9 @@ function AddOrderItemsDataGrid({
   }
 
   if (isError || !products) {
-    return <Error message={"Wystąpił błąd podczas pobierania produktów."} />;
+    return (
+      <ErrorView message={"Wystąpił błąd podczas pobierania produktów."} />
+    );
   }
 
   const columns: GridColDef[] = [

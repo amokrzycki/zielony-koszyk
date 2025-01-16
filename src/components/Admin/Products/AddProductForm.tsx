@@ -1,5 +1,5 @@
 import { useForm } from "@mantine/form";
-import { Categories } from "../../../enums/Categories.ts";
+import { Categories } from "@/enums/Categories.ts";
 import {
   Box,
   Button,
@@ -12,6 +12,7 @@ import {
 } from "@mui/material";
 import { useCreateProductMutation } from "../../Products/productsApiSlice.ts";
 import toast from "react-hot-toast";
+import { ChangeEvent, useState } from "react";
 
 interface IAddProductFormValues {
   name: string;
@@ -26,6 +27,7 @@ interface AddProductFormProps {
 }
 
 function AddProductForm({ handleClose }: AddProductFormProps) {
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [createProduct] = useCreateProductMutation();
   const validate = {
     name: (value: string) =>
@@ -54,14 +56,26 @@ function AddProductForm({ handleClose }: AddProductFormProps) {
 
   const handleSubmit = async (values: IAddProductFormValues) => {
     toast
-      .promise(createProduct(values).unwrap(), {
-        loading: "Dodawanie produktu...",
-        success: "Dodano produkt",
-        error: "Błąd dodawania produktu",
-      })
+      .promise(
+        createProduct({
+          product: values,
+          file: selectedFile,
+        }).unwrap(),
+        {
+          loading: "Dodawanie produktu...",
+          success: "Dodano produkt",
+          error: "Błąd dodawania produktu",
+        },
+      )
       .then(() => {
         handleClose();
       });
+  };
+
+  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      setSelectedFile(e.target.files[0]);
+    }
   };
 
   return (
@@ -141,6 +155,11 @@ function AddProductForm({ handleClose }: AddProductFormProps) {
           <FormHelperText>{form.errors.category}</FormHelperText>
         )}
       </FormControl>
+      <input
+        type="file"
+        onChange={handleFileChange}
+        style={{ margin: "1em 0" }}
+      />
       <Box className={"flex w-full justify-center"}>
         <Button
           type="submit"

@@ -5,7 +5,7 @@ interface ErrorProps {
   errorText?: string;
 }
 
-function Error({ message, errorText }: ErrorProps) {
+function ErrorView({ message, errorText }: ErrorProps) {
   return (
     <Box className={"flex w-full h-full items-center justify-center flex-col"}>
       <Typography
@@ -29,4 +29,4 @@ function Error({ message, errorText }: ErrorProps) {
   );
 }
 
-export default Error;
+export default ErrorView;

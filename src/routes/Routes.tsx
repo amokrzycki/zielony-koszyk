@@ -14,6 +14,7 @@ import MainView from "../components/Admin/MainView.tsx";
 import { ReactNode } from "react";
 import { AdminRoutes } from "./AdminRoutes.tsx";
 import { AccountRoutes } from "./AccountRoutes.tsx";
+import ProductDetails from "@/components/Products/ProductDetails.tsx";
 
 export interface Route {
   path: string;
@@ -28,8 +29,17 @@ const routes: Route[] = [
     element: <Homepage />,
   },
   {
-    path: "produkty",
-    element: <Products />,
+    path: "produkty/*",
+    children: [
+      {
+        path: "*",
+        element: <Products />,
+      },
+      {
+        path: ":productId",
+        element: <ProductDetails />,
+      },
+    ],
   },
   {
     path: "o-nas",

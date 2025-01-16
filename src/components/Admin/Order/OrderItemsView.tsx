@@ -13,7 +13,7 @@ import { OrderItemResponse } from "../../../types/OrderItemResponse.ts";
 import ConfirmDeleteModal from "../ConfirmDeleteModal.tsx";
 import { useState } from "react";
 import toast from "react-hot-toast";
-import Error from "../../common/Error.tsx";
+import ErrorView from "../../common/ErrorView.tsx";
 import { getFormattedDate } from "../../../helpers/getFormattedDate.ts";
 import { getPolishStatus } from "../../../helpers/getPolishStatus.ts";
 import { OrderStatuses } from "../../../enums/OrderStatuses.ts";
@@ -56,7 +56,7 @@ function OrderItemsView() {
   }
 
   if (isError || order.isError || !orderDetails || !order.data) {
-    return <Error message={"Nie udało się pobrać danych zamówienia."} />;
+    return <ErrorView message={"Nie udało się pobrać danych zamówienia."} />;
   }
 
   const onDelete = async () => {

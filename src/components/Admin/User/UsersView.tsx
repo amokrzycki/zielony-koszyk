@@ -3,7 +3,7 @@ import {
   useGetUsersQuery,
 } from "../../Accounts/accountsApiSlice.ts";
 import Loading from "../../common/Loading.tsx";
-import Error from "../../common/Error.tsx";
+import ErrorView from "../../common/ErrorView.tsx";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import {
@@ -40,7 +40,7 @@ function UsersView() {
   }
 
   if (isError || !users) {
-    return <Error message={"Nie udało się pobrać użytkowników."} />;
+    return <ErrorView message={"Nie udało się pobrać użytkowników."} />;
   }
 
   const onDelete = async () => {
