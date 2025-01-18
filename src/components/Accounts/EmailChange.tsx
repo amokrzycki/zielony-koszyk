@@ -3,7 +3,7 @@ import { useAppDispatch, useAppSelector } from "../../hooks/hooks.ts";
 import User from "../../types/User.ts";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "@mantine/form";
-import { validateEmail } from "../../utils/validators.ts";
+import { validateEmail } from "../../helpers/validators.ts";
 import { useChangeEmailMutation } from "./accountsApiSlice.ts";
 import { logoutUser } from "./accountSlice.ts";
 import toast from "react-hot-toast";

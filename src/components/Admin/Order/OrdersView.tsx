@@ -16,15 +16,15 @@ import { UserOrder } from "../../../types/UserOrder.ts";
 import { useState } from "react";
 import ConfirmDeleteModal from "../ConfirmDeleteModal.tsx";
 import toast from "react-hot-toast";
-import { getFormattedDate } from "../../../utils/getFormattedDate.ts";
-import { getPolishStatus } from "../../../utils/getPolishStatus.ts";
+import { getFormattedDate } from "../../../helpers/getFormattedDate.ts";
+import { getPolishStatus } from "../../../helpers/getPolishStatus.ts";
 import { OrderStatuses } from "../../../enums/OrderStatuses.ts";
 import RefreshIcon from "@mui/icons-material/Refresh";
-import { getEnglishStatus } from "../../../utils/getEnglishStatus.ts";
+import { getEnglishStatus } from "../../../helpers/getEnglishStatus.ts";
 import { PolishOrderStatuses } from "../../../enums/PolishOrderStatuses.ts";
 import StatusDropdownEditor from "../StatusDropdownEditor.tsx";
 import { useNavigate } from "react-router-dom";
-import Error from "../../common/Error.tsx";
+import ErrorView from "../../common/ErrorView.tsx";
 
 interface Row {
   id: number;
@@ -54,7 +54,7 @@ function OrdersView() {
   }
 
   if (isError) {
-    return <Error message={"Nie udało się pobrać zamówień."} />;
+    return <ErrorView message={"Nie udało się pobrać zamówień."} />;
   }
 
   const onDelete = async () => {

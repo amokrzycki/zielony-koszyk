@@ -7,7 +7,7 @@ import {
   validateCity,
   validateStreet,
   validateZip,
-} from "../../../utils/validators.ts";
+} from "../../../helpers/validators.ts";
 import { useChangeUserAddressMutation } from "../../Accounts/accountsApiSlice.ts";
 import toast from "react-hot-toast";
 import { setUserToEdit } from "../../../store/appSlice.ts";

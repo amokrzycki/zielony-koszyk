@@ -1,9 +1,10 @@
 import { useDispatch } from "react-redux";
-import { RootState } from "../../store/store.ts";
-import { changeQuantity, removeItem } from "./cartSlice.ts";
+import { RootState } from "@/store/store.ts";
+import { changeQuantity, clearCart, removeItem } from "./cartSlice.ts";
 import {
   Box,
   Button,
+  IconButton,
   Paper,
   Table,
   TableBody,
@@ -11,15 +12,15 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  TextField,
   Typography,
 } from "@mui/material";
 import CartItem from "../../types/CartItem.ts";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Divider from "@mui/material/Divider";
 import { useNavigate } from "react-router-dom";
-import { useAppSelector } from "../../hooks/hooks.ts";
-import { AccountState } from "../../reducers/accountReducers.ts";
+import { useAppSelector } from "@/hooks/hooks.ts";
+import { AccountState } from "@/reducers/accountReducers.ts";
+import QuantitySelector from "@/components/Products/QuantitySelector.tsx";
 
 function Cart() {
   const navigate = useNavigate();
@@ -44,13 +45,27 @@ function Cart() {
         }}
       >
         <Box className={"main-container"}>
-          <Typography
-            variant="h4"
-            gutterBottom
-            className={cart.length === 0 ? "text-center" : ""}
+          <Box
+            className={`flex items-center ${cart.length !== 0 ? "justify-between" : "justify-center"}`}
           >
-            {cart.length === 0 ? "Twój koszyk jest pusty" : "Twój koszyk"}
-          </Typography>
+            <Typography
+              variant="h4"
+              gutterBottom
+              className={cart.length === 0 ? "text-center" : ""}
+            >
+              {cart.length === 0 ? "Twój koszyk jest pusty" : "Twój koszyk"}
+            </Typography>
+            {cart.length !== 0 && (
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={() => dispatch(clearCart())}
+                startIcon={<DeleteIcon />}
+              >
+                Wyczyść koszyk
+              </Button>
+            )}
+          </Box>
           {cart.length > 0 && (
             <>
               <TableContainer component={Paper}>
@@ -71,20 +86,16 @@ function Cart() {
                           {item.name}
                         </TableCell>
                         <TableCell align="left" width="80">
-                          <TextField
-                            type="number"
-                            value={item.quantity}
-                            onChange={(e) =>
+                          <QuantitySelector
+                            quantity={item.quantity}
+                            setQuantity={(newVal) =>
                               dispatch(
                                 changeQuantity({
                                   productId: item.productId,
-                                  quantity: parseInt(e.target.value),
+                                  quantity: newVal,
                                 }),
                               )
                             }
-                            inputProps={{ min: 1 }}
-                            size={"small"}
-                            sx={{ width: 80 }}
                           />
                         </TableCell>
                         <TableCell align="right">{item.price}zł</TableCell>
@@ -92,16 +103,15 @@ function Cart() {
                           {item.quantity * item.price}zł
                         </TableCell>
                         <TableCell align="right" width="50">
-                          <Button
+                          <IconButton
                             onClick={() => dispatch(removeItem(item.productId))}
-                            startIcon={
-                              <DeleteIcon
-                                sx={{
-                                  color: "text.primary",
-                                }}
-                              />
-                            }
-                          />
+                          >
+                            <DeleteIcon
+                              sx={{
+                                color: "text.primary",
+                              }}
+                            />
+                          </IconButton>
                         </TableCell>
                       </TableRow>
                     ))}

@@ -4,7 +4,7 @@ import {
   validateFirstName,
   validateLastName,
   validateNumber,
-} from "../../../utils/validators.ts";
+} from "../../../helpers/validators.ts";
 import { useForm } from "@mantine/form";
 import toast from "react-hot-toast";
 import {

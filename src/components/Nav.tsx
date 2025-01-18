@@ -1,53 +1,46 @@
-import { Box } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import HomeIcon from "@mui/icons-material/Home";
+import InventoryIcon from "@mui/icons-material/Inventory";
+import StoreIcon from "@mui/icons-material/Store";
 
 function Nav() {
   const navigate = useNavigate();
   return (
     <Box
       id="navigation-wrapper"
-      className={
-        "absolute left-0 gap-2 items-center flex justify-center w-full"
-      }
-      sx={{
-        "& img": {
-          width: 20,
-          height: 20,
-          objectFit: "cover",
-        },
-        "& a": {
-          textDecoration: "none",
-          color: "text.primary",
-        },
-      }}
+      className={"gap-2 items-center flex justify-center"}
     >
-      <a
-        href="/"
-        onClick={(e) => {
-          e.preventDefault();
+      <Button
+        color={"primary"}
+        startIcon={<HomeIcon sx={{ color: "text.primary" }} />}
+        sx={{ color: "text.primary" }}
+        onClick={() => {
           navigate("/");
         }}
       >
         Strona główna
-      </a>
-      <a
-        href="/produkty"
-        onClick={(e) => {
-          e.preventDefault();
+      </Button>
+      <Button
+        color={"primary"}
+        startIcon={<InventoryIcon sx={{ color: "text.primary" }} />}
+        sx={{ color: "text.primary" }}
+        onClick={() => {
           navigate("/produkty");
         }}
       >
         Produkty
-      </a>
-      <a
-        href="/o-nas"
-        onClick={(e) => {
-          e.preventDefault();
+      </Button>
+      <Button
+        color={"primary"}
+        startIcon={<StoreIcon sx={{ color: "text.primary" }} />}
+        sx={{ color: "text.primary" }}
+        onClick={() => {
           navigate("/o-nas");
         }}
       >
         O nas
-      </a>
+      </Button>
     </Box>
   );
 }

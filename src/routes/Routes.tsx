@@ -2,7 +2,6 @@ import { createBrowserRouter } from "react-router-dom";
 import Homepage from "../components/Homepage.tsx";
 import Products from "../components/Products/Products.tsx";
 import About from "../components/About.tsx";
-import Category from "../components/Products/Category.tsx";
 import Cart from "../components/Cart/Cart.tsx";
 import OrderDetails from "../components/Order/OrderDetails.tsx";
 import CartLogin from "../components/Cart/CartLogin.tsx";
@@ -15,6 +14,7 @@ import MainView from "../components/Admin/MainView.tsx";
 import { ReactNode } from "react";
 import { AdminRoutes } from "./AdminRoutes.tsx";
 import { AccountRoutes } from "./AccountRoutes.tsx";
+import ProductDetails from "@/components/Products/ProductDetails.tsx";
 
 export interface Route {
   path: string;
@@ -29,8 +29,17 @@ const routes: Route[] = [
     element: <Homepage />,
   },
   {
-    path: "produkty",
-    element: <Products />,
+    path: "produkty/*",
+    children: [
+      {
+        path: "*",
+        element: <Products />,
+      },
+      {
+        path: ":productId",
+        element: <ProductDetails />,
+      },
+    ],
   },
   {
     path: "o-nas",
@@ -39,16 +48,6 @@ const routes: Route[] = [
   {
     path: "koszyk",
     element: <Cart />,
-  },
-  {
-    path: "kategoria/:categoryId",
-    element: <Category />,
-    children: [
-      {
-        path: ":productId",
-        element: <h1>Product</h1>,
-      },
-    ],
   },
   {
     path: "zamowienie",

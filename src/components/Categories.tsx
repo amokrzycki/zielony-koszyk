@@ -108,7 +108,7 @@ function Categories() {
     <>
       <Box
         className={
-          "flex flex-wrap justify-around w-full min-w-[300px] h-full gap-2"
+          "flex flex-wrap justify-around w-full min-w-[300px] h-full gap-2 mt-8"
         }
       >
         {categories.map((category, index) => (
@@ -118,7 +118,7 @@ function Categories() {
               width: "40%",
             }}
             key={index}
-            onClick={() => navigate(`/kategoria/${category.category}`)}
+            onClick={() => navigate(`/produkty/?category=${category.category}`)}
           >
             <ImageSrc
               style={{

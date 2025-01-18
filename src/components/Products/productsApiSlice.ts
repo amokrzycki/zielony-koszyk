@@ -1,5 +1,7 @@
-import { baseApi } from "../../api/api.ts";
-import Product from "../../types/Product.ts";
+import { baseApi } from "@/api/api.ts";
+import Product from "@/types/Product.ts";
+import { ProductParams } from "@/types/ProductParams.ts";
+import { PageableProducts } from "@/types/PageableProducts.ts";
 
 export const productsApiSlice = baseApi.injectEndpoints({
   endpoints: (builder) => ({
@@ -25,26 +27,31 @@ export const productsApiSlice = baseApi.injectEndpoints({
         method: "GET",
       }),
     }),
-    getProductsByCategory: builder.query({
-      query: (body: { category: string; name: string }) => ({
-        url: `products/search/${body.category}`,
-        params: { name: body.name },
-        method: "GET",
-      }),
-    }),
-    getProductsLikeName: builder.query({
-      query: (name: string) => ({
+    getProductsByParams: builder.query<PageableProducts, ProductParams>({
+      query: (params) => ({
         url: `products/search`,
-        params: { name },
+        params,
         method: "GET",
       }),
     }),
-    createProduct: builder.mutation<Product, Partial<Product>>({
-      query: (product: Partial<Product>) => ({
-        url: `products`,
-        method: "POST",
-        body: product,
-      }),
+    createProduct: builder.mutation<
+      Product,
+      { product: Partial<Product>; file: File | null }
+    >({
+      query: ({ product, file }) => {
+        const formData = new FormData();
+        formData.append("product", JSON.stringify(product));
+
+        if (file) {
+          formData.append("file", file);
+        }
+
+        return {
+          url: `products`,
+          method: "POST",
+          body: formData,
+        };
+      },
       invalidatesTags: [{ type: "Products", id: "LIST" }],
     }),
     deleteProduct: builder.mutation({
@@ -62,15 +69,26 @@ export const productsApiSlice = baseApi.injectEndpoints({
       }),
       invalidatesTags: [{ type: "Products", id: "LIST" }],
     }),
+    uploadImage: builder.mutation<Product, { id: number; file: File }>({
+      query: (body: { id: number; file: File }) => {
+        const formData = new FormData();
+        formData.append("file", body.file);
+        return {
+          url: `products/${body.id}/image`,
+          method: "POST",
+          body: formData,
+        };
+      },
+    }),
   }),
 });
 
 export const {
   useGetProductsQuery,
   useGetProductByIdQuery,
-  useGetProductsByCategoryQuery,
-  useGetProductsLikeNameQuery,
+  useGetProductsByParamsQuery,
   useCreateProductMutation,
   useDeleteProductMutation,
   useUpdateProductMutation,
+  useUploadImageMutation,
 } = productsApiSlice;

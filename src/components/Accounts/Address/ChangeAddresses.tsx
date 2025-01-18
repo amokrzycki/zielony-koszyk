@@ -6,7 +6,7 @@ import {
   validateNumber,
   validateStreet,
   validateZip,
-} from "../../../utils/validators.ts";
+} from "../../../helpers/validators.ts";
 import { Box, Button, TextField } from "@mui/material";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";

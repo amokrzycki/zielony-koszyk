@@ -13,15 +13,16 @@ import {
   GridToolbarQuickFilter,
 } from "@mui/x-data-grid";
 import Product from "../../../types/Product.ts";
-import capitalizeFirstLetter from "../../../utils/capitalizeFirstLetter.ts";
-import { getFormattedDate } from "../../../utils/getFormattedDate.ts";
+import capitalizeFirstLetter from "../../../helpers/capitalizeFirstLetter.ts";
+import { getFormattedDate } from "@/helpers/getFormattedDate.ts";
 import AddIcon from "@mui/icons-material/Add";
 import { useState } from "react";
 import AddProductModal from "./AddProductModal.tsx";
 import toast from "react-hot-toast";
-import { Categories } from "../../../enums/Categories.ts";
+import { Categories } from "@/enums/Categories.ts";
 import ConfirmDeleteModal from "../ConfirmDeleteModal.tsx";
-import Error from "../../common/Error.tsx";
+import ErrorView from "../../common/ErrorView.tsx";
+import UploadImageModal from "@/components/Admin/Products/UploadImageModal.tsx";
 
 interface Row {
   id: number;
@@ -37,6 +38,8 @@ function ProductsView() {
   const { data: products, isError, isLoading } = useGetProductsQuery();
   const [openProductModal, setOpenProductModal] = useState(false);
   const [openConfirmDeleteModal, setOpenConfirmDeleteModal] = useState(false);
+  const [openUploadModal, setOpenUploadModal] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [selectedRows, setSelectedRows] = useState<number[]>([]);
   const [deleteProduct] = useDeleteProductMutation();
   const [updateProduct] = useUpdateProductMutation();
@@ -45,13 +48,20 @@ function ProductsView() {
   const handleProductModalClose = () => setOpenProductModal(false);
   const handleConfirmDeleteModalOpen = () => setOpenConfirmDeleteModal(true);
   const handleConfirmDeleteModalClose = () => setOpenConfirmDeleteModal(false);
+  const handleUploadModalOpen = () => setOpenUploadModal(true);
+  const handleUploadModalClose = () => {
+    setOpenUploadModal(false);
+    setSelectedProduct(null);
+  };
 
   if (isLoading) {
     return <Loading />;
   }
 
   if (isError) {
-    return <Error message={"Wystąpił błąd podczas pobierania produktów."} />;
+    return (
+      <ErrorView message={"Wystąpił błąd podczas pobierania produktów."} />
+    );
   }
 
   const onDelete = async () => {
@@ -126,7 +136,39 @@ function ProductsView() {
     },
     { field: "stock_quantity", headerName: "Stan", width: 100, editable: true },
     { field: "created_at", headerName: "Data dodania", width: 150 },
+    { field: "updated_at", headerName: "Data aktualizacji", width: 150 },
     { field: "description", headerName: "Opis", width: 350, editable: true },
+    {
+      field: "image",
+      headerName: "Zdjęcie",
+      width: 150,
+      renderCell: (params) => (
+        <img
+          src={`http://localhost:3000/${params.value}`}
+          alt="product"
+          style={{ height: "50px" }}
+        />
+      ),
+    },
+    {
+      field: "actions",
+      headerName: "Akcje",
+      width: 150,
+      renderCell: (params) => (
+        <Button
+          variant="text"
+          color="primary"
+          onClick={() => {
+            setSelectedProduct(
+              products?.find((p) => p.product_id === params.id) || null,
+            );
+            handleUploadModalOpen();
+          }}
+        >
+          Zmień zdjęcie
+        </Button>
+      ),
+    },
   ];
 
   const rows = products?.map((product: Product) => ({
@@ -136,7 +178,9 @@ function ProductsView() {
     price: product.price,
     stock_quantity: product.stock_quantity,
     created_at: getFormattedDate(product.created_at.toString()),
+    updated_at: getFormattedDate(product.updated_at.toString()),
     description: product.description,
+    image: product.image,
   }));
 
   const CustomToolbar = () => {
@@ -194,6 +238,11 @@ function ProductsView() {
         handleClose={handleConfirmDeleteModalClose}
         onConfirm={onDelete}
         count={selectedRows.length}
+      />
+      <UploadImageModal
+        open={openUploadModal}
+        handleClose={handleUploadModalClose}
+        productId={selectedProduct?.product_id || 0}
       />
     </Box>
   );

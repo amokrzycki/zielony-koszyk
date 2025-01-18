@@ -3,7 +3,7 @@ import {
   useGetUsersQuery,
 } from "../../Accounts/accountsApiSlice.ts";
 import Loading from "../../common/Loading.tsx";
-import Error from "../../common/Error.tsx";
+import ErrorView from "../../common/ErrorView.tsx";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import {
@@ -18,7 +18,7 @@ import User from "../../../types/User.ts";
 import { AddressType } from "../../../enums/AddressType.ts";
 import ConfirmDeleteModal from "../ConfirmDeleteModal.tsx";
 import RefreshIcon from "@mui/icons-material/Refresh";
-import { getFormattedDate } from "../../../utils/getFormattedDate.ts";
+import { getFormattedDate } from "../../../helpers/getFormattedDate.ts";
 import { useAppDispatch } from "../../../hooks/hooks.ts";
 import { setUserToEdit } from "../../../store/appSlice.ts";
 import { useNavigate } from "react-router-dom";
@@ -40,7 +40,7 @@ function UsersView() {
   }
 
   if (isError || !users) {
-    return <Error message={"Nie udało się pobrać użytkowników."} />;
+    return <ErrorView message={"Nie udało się pobrać użytkowników."} />;
   }
 
   const onDelete = async () => {

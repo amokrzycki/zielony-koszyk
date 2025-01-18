@@ -15,7 +15,7 @@ import {
 } from "@mui/material";
 import ChangeUserAddress from "./ChangeUserAddress.tsx";
 import { AddressType } from "../../../enums/AddressType.ts";
-import Error from "../../common/Error.tsx";
+import ErrorView from "../../common/ErrorView.tsx";
 import { useChangeUserDetailsMutation } from "../../Accounts/accountsApiSlice.ts";
 import toast from "react-hot-toast";
 import { setUserToEdit } from "../../../store/appSlice.ts";
@@ -24,7 +24,7 @@ import {
   validateFirstName,
   validateLastName,
   validateNumber,
-} from "../../../utils/validators.ts";
+} from "../../../helpers/validators.ts";
 
 export interface IEditUserFormValues {
   first_name: string;
@@ -61,7 +61,7 @@ function EditUserView() {
 
   if (!user) {
     return (
-      <Error
+      <ErrorView
         message={"Nie znaleziono użytkownika."}
         errorText={"Spróbuj ponownie"}
       />
@@ -78,7 +78,7 @@ function EditUserView() {
 
   if (!billingAddress || !shippingAddress) {
     return (
-      <Error
+      <ErrorView
         message={"Nie znaleziono adresów użytkownika."}
         errorText={"Spróbuj ponownie"}
       />

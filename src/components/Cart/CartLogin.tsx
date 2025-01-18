@@ -2,9 +2,11 @@ import { Box, Button, Typography } from "@mui/material";
 import OrderNoAccount from "../Order/OrderNoAccount.tsx";
 import LoginForm from "../Accounts/LoginForm.tsx";
 import { useNavigate } from "react-router-dom";
+import { useMode } from "@/providers/ModeProvider.tsx";
 
 function CartLogin() {
   const navigate = useNavigate();
+  const { mode } = useMode();
   return (
     <Box id="main-wrapper">
       <Box
@@ -16,7 +18,7 @@ function CartLogin() {
       >
         <Box className="main-container flex flex-col items-center">
           <Box>
-            <img src="logo.png" alt="logo" className={"h-[120px]"} />
+            <img src={`/${mode}_logo.png`} alt="logo" className={"h-[120px]"} />
           </Box>
           <Box>
             <Box className={"flex flex-wrap justify-center"}>

@@ -18,7 +18,7 @@ import {
   validateNumber,
   validateStreet,
   validateZip,
-} from "../../utils/validators.ts";
+} from "../../helpers/validators.ts";
 import User from "../../types/User.ts";
 import { AddressType } from "../../enums/AddressType.ts";
 

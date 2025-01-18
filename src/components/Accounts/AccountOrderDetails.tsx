@@ -13,8 +13,8 @@ import {
   Typography,
 } from "@mui/material";
 import { OrderItemResponse } from "../../types/OrderItemResponse.ts";
-import { getFormattedDate } from "../../utils/getFormattedDate.ts";
-import { getPolishStatus } from "../../utils/getPolishStatus.ts";
+import { getFormattedDate } from "../../helpers/getFormattedDate.ts";
+import { getPolishStatus } from "../../helpers/getPolishStatus.ts";
 import OrderStatusesInfo from "../Order/OrderStatusesInfo.tsx";
 import { OrderStatuses } from "../../enums/OrderStatuses.ts";
 import { useGetOrderItemsQuery } from "../Order/orderItemsApiSlice.ts";
