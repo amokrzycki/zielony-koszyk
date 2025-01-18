@@ -3,9 +3,14 @@ import { Box, Typography } from "@mui/material";
 import capitalizeFirstLetter from "@/helpers/capitalizeFirstLetter.ts";
 import Divider from "@mui/material/Divider";
 
-function ProductInfo({ product }: { product: Product }) {
+interface ProductInfoProps {
+  product: Product;
+  classNames?: string;
+}
+
+function ProductInfo({ product, classNames }: ProductInfoProps) {
   return (
-    <Box className={"ml-4"}>
+    <Box className={classNames}>
       <Typography variant="h6" component="h2">
         {product.name}
       </Typography>

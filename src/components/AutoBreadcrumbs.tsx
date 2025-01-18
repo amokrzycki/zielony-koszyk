@@ -12,6 +12,10 @@ export default function AutoBreadcrumbs() {
   function getFriendlyName(segment: string, isLast: boolean): string {
     const decoded = decodeURIComponent(segment);
 
+    if (isLast && pathNames[0] === "produkty" && numericRegex.test(decoded)) {
+      return `Szczegóły produktu`;
+    }
+
     if (isLast && numericRegex.test(decoded)) {
       return `Szczegóły zamówienia`;
     }

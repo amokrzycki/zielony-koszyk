@@ -1,5 +1,5 @@
 import Product from "../../types/Product.ts";
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import { useState } from "react";
 import { addItem } from "../Cart/cartSlice.ts";
 import { useAppDispatch } from "@/hooks/hooks.ts";
@@ -7,6 +7,7 @@ import QuantitySelector from "./QuantitySelector.tsx";
 import ProductInfo from "./ProductInfo.tsx";
 import toast from "react-hot-toast";
 import { NavLink } from "react-router-dom";
+import ProductPrice from "@/components/Products/ProductPrice.tsx";
 
 interface ProductCardProps {
   product: Product;
@@ -40,30 +41,17 @@ function ProductCard({ product }: ProductCardProps) {
         style={{ height: "200px" }}
       />
       <Box className={"grid w-full"}>
-        <ProductInfo product={product} />
+        <ProductInfo product={product} classNames={"ml-4"} />
         <Box
           className={
             "flex flex-col justify-between items-center gap-2 justify-self-end z-10"
           }
         >
-          <Box>
-            {quantity > 1 ? (
-              <>
-                <Typography variant="h5" component="span" fontWeight={"500"}>
-                  {(product.price * quantity).toFixed(2)}
-                </Typography>{" "}
-                zł x {quantity} szt.
-              </>
-            ) : (
-              <>
-                <Typography variant="h5" component="span" fontWeight={"500"}>
-                  {product.price}
-                </Typography>{" "}
-                zł
-              </>
-            )}
-          </Box>
-          <QuantitySelector quantity={quantity} setQuantity={setQuantity} />
+          <ProductPrice price={product.price} quantity={quantity} />
+          <QuantitySelector
+            quantity={quantity}
+            setQuantity={(newVal) => setQuantity(newVal)}
+          />
           <Button onClick={handleAddToCart} variant="contained">
             Do koszyka
           </Button>

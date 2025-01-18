@@ -1,11 +1,10 @@
-import { Dispatch, SetStateAction } from "react";
 import { Box, IconButton, TextField } from "@mui/material";
 import RemoveIcon from "@mui/icons-material/Remove";
 import AddIcon from "@mui/icons-material/Add";
 
 interface QuantitySelectorProps {
   quantity: number;
-  setQuantity: Dispatch<SetStateAction<number>>;
+  setQuantity: (newQuantity: number) => void;
 }
 
 function QuantitySelector({ quantity, setQuantity }: QuantitySelectorProps) {
@@ -26,7 +25,7 @@ function QuantitySelector({ quantity, setQuantity }: QuantitySelectorProps) {
       sx={{ border: "1px solid #e5e7eb" }}
     >
       <IconButton
-        onClick={() => setQuantity((prev) => prev - 1)}
+        onClick={() => setQuantity(Math.max(1, quantity - 1))}
         disabled={quantity === 1}
       >
         <RemoveIcon
@@ -44,7 +43,10 @@ function QuantitySelector({ quantity, setQuantity }: QuantitySelectorProps) {
         <TextField
           type="number"
           value={quantity}
-          onChange={(e) => setQuantity(parseInt(e.target.value))}
+          onChange={(e) => {
+            const value = parseInt(e.target.value, 10);
+            setQuantity(isNaN(value) ? 1 : value);
+          }}
           sx={{
             width: calcInputWidth(),
             "& .MuiOutlinedInput-root": {
@@ -63,7 +65,7 @@ function QuantitySelector({ quantity, setQuantity }: QuantitySelectorProps) {
           variant="outlined"
         />
       </Box>
-      <IconButton onClick={() => setQuantity((prev) => prev + 1)}>
+      <IconButton onClick={() => setQuantity(quantity + 1)}>
         <AddIcon
           sx={{
             color: "primary.main",

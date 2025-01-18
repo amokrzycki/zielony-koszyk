@@ -12,7 +12,6 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  TextField,
   Typography,
 } from "@mui/material";
 import CartItem from "../../types/CartItem.ts";
@@ -21,6 +20,7 @@ import Divider from "@mui/material/Divider";
 import { useNavigate } from "react-router-dom";
 import { useAppSelector } from "@/hooks/hooks.ts";
 import { AccountState } from "@/reducers/accountReducers.ts";
+import QuantitySelector from "@/components/Products/QuantitySelector.tsx";
 
 function Cart() {
   const navigate = useNavigate();
@@ -86,20 +86,16 @@ function Cart() {
                           {item.name}
                         </TableCell>
                         <TableCell align="left" width="80">
-                          <TextField
-                            type="number"
-                            value={item.quantity}
-                            onChange={(e) =>
+                          <QuantitySelector
+                            quantity={item.quantity}
+                            setQuantity={(newVal) =>
                               dispatch(
                                 changeQuantity({
                                   productId: item.productId,
-                                  quantity: parseInt(e.target.value),
+                                  quantity: newVal,
                                 }),
                               )
                             }
-                            inputProps={{ min: 1 }}
-                            size={"small"}
-                            sx={{ width: 80 }}
                           />
                         </TableCell>
                         <TableCell align="right">{item.price}zł</TableCell>

@@ -9,20 +9,18 @@ import {
 } from "@mui/material";
 import { KeyboardArrowLeft, KeyboardArrowRight } from "@mui/icons-material";
 
-// TODO: Autoscrolling + smooth transition
-
 const carouselImages = [
   {
     label: "Codzienne dostawy",
-    imgPath: "/images/collective.jpeg",
+    imgPath: "/images/karuzela1.jpeg",
   },
   {
-    label: "Świeże owoce",
-    imgPath: "/images/fruits.jpeg",
+    label: "Produkty sezonowe z dostawą do domu",
+    imgPath: "/images/karuzela2.jpeg",
   },
   {
     label: "Artykuły spożywcze w zasięgu ręki",
-    imgPath: "/images/others.jpeg",
+    imgPath: "/images/karuzela3.jpeg",
   },
 ];
 
@@ -50,7 +48,6 @@ export default function ImageCarousel() {
       );
     }, 5000);
 
-    // Cleanup
     return () => clearInterval(intervalId);
   }, [maxSteps]);
 
@@ -63,7 +60,7 @@ export default function ImageCarousel() {
         flexDirection: "column",
         alignItems: "center",
         position: "relative",
-        width: "90%",
+        width: "60%",
         margin: "0 auto",
       }}
     >
