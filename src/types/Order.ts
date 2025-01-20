@@ -5,6 +5,7 @@ export interface Order {
   order_id?: string;
   user_id?: string;
   order_type: OrderType;
+  nip?: string;
   customer_name: string;
   customer_email: string;
   customer_phone: string;

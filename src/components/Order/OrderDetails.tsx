@@ -2,8 +2,8 @@ import { Box, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import OrderForm from "./OrderForm.tsx";
 import { useSelector } from "react-redux";
-import { RootState } from "../../store/store.ts";
-import CartItem from "../../types/CartItem.ts";
+import { RootState } from "@/store/store.ts";
+import CartItem from "@/types/CartItem.ts";
 
 function OrderDetails() {
   const cart = useSelector((state: RootState) => state.cart.items);

@@ -1,4 +1,4 @@
-import { cartReducers, CartState } from "../../reducers/cartReducers.ts";
+import { cartReducers, CartState } from "@/reducers/cartReducers.ts";
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState: CartState = {

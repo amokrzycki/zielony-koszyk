@@ -12,12 +12,14 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
-import { OrderItemResponse } from "../../types/OrderItemResponse.ts";
-import { getFormattedDate } from "../../helpers/getFormattedDate.ts";
-import { getPolishStatus } from "../../helpers/getPolishStatus.ts";
+import { OrderItemResponse } from "@/types/OrderItemResponse.ts";
+import { getFormattedDate } from "@/helpers/getFormattedDate.ts";
+import { getPolishStatus } from "@/helpers/getPolishStatus.ts";
 import OrderStatusesInfo from "../Order/OrderStatusesInfo.tsx";
-import { OrderStatuses } from "../../enums/OrderStatuses.ts";
+import { OrderStatuses } from "@/enums/OrderStatuses.ts";
 import { useGetOrderItemsQuery } from "../Order/orderItemsApiSlice.ts";
+
+// TODO: Add invoice
 
 function AccountOrderDetails() {
   const { orderId } = useParams();

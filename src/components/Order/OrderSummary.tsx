@@ -1,7 +1,7 @@
-import { useAppDispatch, useAppSelector } from "../../hooks/hooks.ts";
+import { useAppDispatch, useAppSelector } from "@/hooks/hooks.ts";
 import { Box, Button, FormControlLabel, Typography } from "@mui/material";
 import CartItem from "../../types/CartItem.ts";
-import { Order } from "../../types/Order.ts";
+import { Order } from "@/types/Order.ts";
 import { useState } from "react";
 import Checkbox from "@mui/material/Checkbox";
 import { useCreateOrderMutation } from "./orderApiSlice.ts";
@@ -44,10 +44,12 @@ function OrderSummary() {
         <Box className={"p-4"}>
           <Typography variant="h5">Dane zamawiającego:</Typography>
           <Typography>{orderInfo.customer_name}</Typography>
-          <Typography>{orderInfo.customer_email}</Typography>
-          <Typography>telefon: {orderInfo.customer_phone}</Typography>
-          <Typography>e-mail: {orderInfo.customer_email}</Typography>
-          <Typography>adres: {orderInfo.customer_address}</Typography>
+          {orderInfo.order_type === "COMPANY" && (
+            <Typography>NIP: {orderInfo.nip}</Typography>
+          )}
+          <Typography>Telefon: {orderInfo.customer_phone}</Typography>
+          <Typography>E-mail: {orderInfo.customer_email}</Typography>
+          <Typography>Adres: {orderInfo.customer_address}</Typography>
           <Typography variant="h5">Zamówione produkty:</Typography>
           <ul>
             {cartItems.map((item: CartItem) => (

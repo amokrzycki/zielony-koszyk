@@ -23,7 +23,7 @@ import { clearAddressToEdit } from "@/store/appSlice.ts";
 import { useChangeUserAddressMutation } from "../accountsApiSlice.ts";
 import { CustomerType } from "@/enums/CustomerType.ts";
 import User from "@/types/User.ts";
-import CustomerTypeRadios from "@/components/Accounts/Address/CustomerTypeRadios.tsx";
+import CustomerTypeRadios from "@/components/common/CustomerTypeRadios.tsx";
 import AddressTypeRadios from "@/components/Accounts/Address/AddressTypeRadios.tsx";
 import { useState } from "react";
 
@@ -120,6 +120,11 @@ function ChangeAddresses() {
       });
   };
 
+  const handleCustomerTypeChange = (type: CustomerType) => {
+    setCustomerType(type);
+    form.setFieldValue("customer_type", type);
+  };
+
   return (
     <form
       onSubmit={form.onSubmit((values) => {
@@ -130,7 +135,11 @@ function ChangeAddresses() {
         <Typography variant={"h5"} gutterBottom>
           Dane adresowe
         </Typography>
-        <CustomerTypeRadios form={form} setCustomerType={setCustomerType} />
+        <CustomerTypeRadios
+          customerType={customerType}
+          setCustomerType={handleCustomerTypeChange}
+          touched={form.isTouched("customer_type")}
+        />
         <AddressTypeRadios form={form} />
         {customerType === CustomerType.PERSON && (
           <>

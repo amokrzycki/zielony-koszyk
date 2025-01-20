@@ -1,6 +1,6 @@
-import { orderReducers, OrderState } from "../../reducers/orderReducers.ts";
-import { OrderStatuses } from "../../enums/OrderStatuses.ts";
+import { orderReducers, OrderState } from "@/reducers/orderReducers.ts";
 import { createSlice } from "@reduxjs/toolkit";
+import { OrderType } from "@/enums/OrderType.ts";
 
 export const initialState: OrderState = {
   orderInfo: {
@@ -8,7 +8,7 @@ export const initialState: OrderState = {
     customer_email: "",
     customer_phone: "",
     customer_address: "",
-    status: OrderStatuses.NEW,
+    order_type: OrderType.PRIVATE,
     orderDetails: [],
   },
 };

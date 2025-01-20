@@ -1,6 +1,8 @@
 import { Box, Button, Typography } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 function OrderNoAccount() {
+  const navigate = useNavigate();
   return (
     <Box
       className={"max-w-1/3 text-center"}
@@ -13,7 +15,11 @@ function OrderNoAccount() {
           Nie mam konta
         </Typography>
         <Box className={"flex flex-col gap-2 items-center mt-4"}>
-          <Button variant="contained" color="primary" href="/zamowienie">
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => navigate("/zamowienie")}
+          >
             Kup bez rejestracji
           </Button>
           <Typography variant={"h6"}>lub</Typography>

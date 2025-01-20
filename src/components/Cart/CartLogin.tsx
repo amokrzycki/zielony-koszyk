@@ -3,6 +3,7 @@ import OrderNoAccount from "../Order/OrderNoAccount.tsx";
 import LoginForm from "../Accounts/LoginForm.tsx";
 import { useNavigate } from "react-router-dom";
 import { useMode } from "@/providers/ModeProvider.tsx";
+import Divider from "@mui/material/Divider";
 
 function CartLogin() {
   const navigate = useNavigate();
@@ -34,12 +35,12 @@ function CartLogin() {
                 <LoginForm />
               </Box>
               <Box
-                className={"separator relative max-w-[8.3%]"}
+                className={"separator flex justify-center"}
                 sx={{
                   flex: "0 0 8.33333%",
                 }}
               >
-                <Box>xd</Box>
+                <Divider orientation="vertical" flexItem />
               </Box>
               <OrderNoAccount />
             </Box>
