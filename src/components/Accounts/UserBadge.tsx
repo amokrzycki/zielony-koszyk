@@ -37,6 +37,7 @@ function UserBadge() {
     dispatch(logoutUser());
     localStorage.removeItem("accessToken");
     localStorage.removeItem("user");
+    localStorage.removeItem("rememberMe");
     toast.success("Zostałeś wylogowany");
     navigate("/");
   };

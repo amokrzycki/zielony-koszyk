@@ -74,6 +74,16 @@ const validateZip = (value: string) => {
     : "Podaj prawidłowy kod pocztowy";
 };
 
+const validateCompanyNip = (value: string) => {
+  return value && /^[0-9]{10}$/.test(value)
+    ? undefined
+    : "Podaj prawidłowy numer NIP";
+};
+
+const validateCompany = (value: string) => {
+  return value.length > 3 ? undefined : "Podaj prawidłową nazwę firmy";
+};
+
 export {
   validateEmail,
   validateFirstName,
@@ -88,4 +98,6 @@ export {
   validateCity,
   validateZip,
   validateTermsAccepted,
+  validateCompany,
+  validateCompanyNip,
 };

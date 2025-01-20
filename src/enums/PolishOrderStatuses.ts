@@ -7,5 +7,4 @@ export enum PolishOrderStatuses {
   WYSYLKA = "Wysyłka",
   DOSTARCZONE = "Dostarczone",
   ZAKONCZONE = "Zakończone",
-  NIEZNANY_STATUS = "Nieznany status",
 }

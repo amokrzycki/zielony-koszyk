@@ -63,6 +63,7 @@ function EmailChange() {
         dispatch(logoutUser());
         localStorage.removeItem("token");
         localStorage.removeItem("user");
+        localStorage.removeItem("rememberMe");
         navigate("/");
         toast("Zostałeś wylogowany");
       });

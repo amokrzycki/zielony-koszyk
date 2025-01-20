@@ -1,10 +1,11 @@
-import { useAppDispatch, useAppSelector } from "../../../hooks/hooks.ts";
+import { useAppDispatch, useAppSelector } from "@/hooks/hooks.ts";
 import { Box, Button, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import User from "../../../types/User.ts";
-import { AddressType } from "../../../enums/AddressType.ts";
-import { Address } from "../../../types/Address.ts";
-import { setAddressToEdit } from "../../../store/appSlice.ts";
+import User from "@/types/User.ts";
+import { Address } from "@/types/Address.ts";
+import { setAddressToEdit } from "@/store/appSlice.ts";
+import { AddressType } from "@/enums/AddressType.ts";
+import AddressBox from "@/components/Accounts/Address/AddressBox.tsx";
 
 function AddressBook() {
   const user: User = useAppSelector((state) => state.auth.user);
@@ -16,74 +17,57 @@ function AddressBook() {
     dispatch(setAddressToEdit(address));
   };
 
-  const billingAddress = user.addresses.find(
+  const billingAddresses = user.addresses.filter(
     (address) => address.type === AddressType.BILLING,
   );
 
-  const shippingAddress = user.addresses.find(
+  const deliveryAddresses = user.addresses.filter(
     (address) => address.type === AddressType.DELIVERY,
   );
 
   return (
-    <Box className={"flex flex-col items-center"}>
-      <Typography variant={"h4"} gutterBottom>
-        Dane do rachunku
+    <Box className={"flex flex-col"}>
+      <Typography variant={"h3"} gutterBottom>
+        Książka adresowa
       </Typography>
-      <Box className={"mb-4 p-8 border border-gray-300 rounded-md max-w-md"}>
-        <Typography variant={"h5"} gutterBottom>
-          {user.first_name} {user.last_name}
-        </Typography>
-        <Typography>Telefon: {user.phone}</Typography>
-        <Typography>
-          {billingAddress?.street} {billingAddress?.building_number}
-          {billingAddress?.flat_number ? `/${billingAddress?.flat_number}` : ""}
-        </Typography>
-        <Typography>
-          {billingAddress?.zip}, {billingAddress?.city}
-        </Typography>
+      <Box className={"text-left"}>
         <Button
           onClick={() => {
-            if (billingAddress) {
-              handleEditData(billingAddress);
-            }
+            navigate("/konto/ksiazka-adresowa/dodaj-adres");
           }}
           variant={"contained"}
           sx={{
-            mt: 1,
+            mb: 2,
           }}
         >
-          Edytuj dane
+          Dodaj nowy adres
         </Button>
+        <Typography variant={"h4"} gutterBottom>
+          Dane do rachunku
+        </Typography>
+        <Box className={"flex"}>
+          {billingAddresses.map((address) => (
+            <AddressBox
+              key={address.address_id}
+              address={address}
+              onEdit={handleEditData}
+            />
+          ))}
+        </Box>
       </Box>
-      <Typography variant={"h4"} gutterBottom>
-        Adres dostawy
-      </Typography>
-      <Box className={"mb-4 p-8 border border-gray-300 rounded-md max-w-md"}>
-        <Typography variant={"h5"} gutterBottom>
-          {user.first_name} {user.last_name}
+      <Box className={"text-left"}>
+        <Typography variant={"h4"} gutterBottom>
+          Adresy dostawy
         </Typography>
-        <Typography>
-          {shippingAddress?.street} {shippingAddress?.building_number}
-          {shippingAddress?.flat_number
-            ? `/${shippingAddress?.flat_number}`
-            : ""}
-        </Typography>
-        <Typography>
-          {shippingAddress?.zip}, {shippingAddress?.city}
-        </Typography>
-        <Button
-          onClick={() => {
-            if (shippingAddress) {
-              handleEditData(shippingAddress);
-            }
-          }}
-          variant={"contained"}
-          sx={{
-            mt: 1,
-          }}
-        >
-          Edytuj dane
-        </Button>
+        <Box className={"flex gap-4"}>
+          {deliveryAddresses.map((address) => (
+            <AddressBox
+              key={address.address_id}
+              address={address}
+              onEdit={handleEditData}
+            />
+          ))}
+        </Box>
       </Box>
     </Box>
   );
