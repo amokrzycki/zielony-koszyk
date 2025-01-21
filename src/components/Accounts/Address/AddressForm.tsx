@@ -20,7 +20,10 @@ import { UpdateDetailsBody } from "@/types/updateDetailsBody.ts";
 import { AddressType } from "@/enums/AddressType.ts";
 import { updateUserAddresses, updateUserDetails } from "../accountSlice.ts";
 import { clearAddressToEdit } from "@/store/appSlice.ts";
-import { useChangeUserAddressMutation } from "../accountsApiSlice.ts";
+import {
+  useChangeUserAddressMutation,
+  useCreateNewAddressMutation,
+} from "../accountsApiSlice.ts";
 import { CustomerType } from "@/enums/CustomerType.ts";
 import User from "@/types/User.ts";
 import CustomerTypeRadios from "@/components/common/CustomerTypeRadios.tsx";
@@ -42,16 +45,17 @@ export interface IChangeAddressesFormValues {
   customer_type: CustomerType;
 }
 
-function ChangeAddresses() {
+function AddressForm() {
   const user: User = useAppSelector((state: RootState) => state.auth.user);
   const userAddress: Address = useAppSelector(
     (state: RootState) => state.app.addressToEdit,
   );
   const [customerType, setCustomerType] = useState<CustomerType>(
-    userAddress?.customer_type,
+    userAddress?.customer_type || CustomerType.PERSON,
   );
   const navigate = useNavigate();
   const [changeDetails] = useChangeUserAddressMutation();
+  const [addAddress] = useCreateNewAddressMutation();
   const dispatch = useAppDispatch();
 
   const validate = {
@@ -78,14 +82,14 @@ function ChangeAddresses() {
       last_name: userAddress?.last_name || "",
       company_name: userAddress?.company_name || "",
       nip: userAddress?.nip || "",
-      phone: userAddress?.phone,
-      street: userAddress?.street,
-      building_number: userAddress?.building_number,
-      flat_number: userAddress?.flat_number,
-      city: userAddress?.city,
-      zip: userAddress?.zip,
-      type: userAddress?.type,
-      customer_type: userAddress?.customer_type,
+      phone: userAddress?.phone || "",
+      street: userAddress?.street || "",
+      building_number: userAddress?.building_number || "",
+      flat_number: userAddress?.flat_number || "",
+      city: userAddress?.city || "",
+      zip: userAddress?.zip || "",
+      type: userAddress?.type || AddressType.BILLING,
+      customer_type: userAddress?.customer_type || CustomerType.PERSON,
     },
     validate,
     validateInputOnBlur: true,
@@ -97,7 +101,7 @@ function ChangeAddresses() {
   const handleSubmit = (values: IChangeAddressesFormValues) => {
     const updatedDetails: UpdateDetailsBody = {
       user_id: user.user_id,
-      address_id: userAddress.address_id,
+      address_id: userAddress?.address_id || 1,
       ...values,
     };
 
@@ -106,18 +110,38 @@ function ChangeAddresses() {
       ...values,
     };
 
-    toast
-      .promise(changeDetails(updatedDetails).unwrap(), {
-        loading: "Zapisywanie zmian...",
-        success: "Zmiany zostały zapisane",
-        error: "Wystąpił błąd podczas zapisywania zmian",
-      })
-      .then(() => {
-        dispatch(updateUserAddresses(updatedAddress));
-        dispatch(updateUserDetails({ phone: values.phone }));
-        dispatch(clearAddressToEdit());
-        navigate("/konto/ksiazka-adresowa");
-      });
+    if (!userAddress) {
+      toast
+        .promise(
+          addAddress({
+            user_id: user.user_id,
+            address: values,
+          }).unwrap(),
+          {
+            loading: "Dodawanie adresu...",
+            success: "Adres został dodany",
+            error: "Wystąpił błąd podczas dodawania adresu",
+          },
+        )
+        .then(() => {
+          navigate("/konto/ksiazka-adresowa");
+        });
+    }
+
+    if (userAddress) {
+      toast
+        .promise(changeDetails(updatedDetails).unwrap(), {
+          loading: "Zapisywanie zmian...",
+          success: "Zmiany zostały zapisane",
+          error: "Wystąpił błąd podczas zapisywania zmian",
+        })
+        .then(() => {
+          dispatch(updateUserAddresses(updatedAddress));
+          dispatch(updateUserDetails({ phone: values.phone }));
+          dispatch(clearAddressToEdit());
+          navigate("/konto/ksiazka-adresowa");
+        });
+    }
   };
 
   const handleCustomerTypeChange = (type: CustomerType) => {
@@ -267,4 +291,4 @@ function ChangeAddresses() {
   );
 }
 
-export default ChangeAddresses;
+export default AddressForm;

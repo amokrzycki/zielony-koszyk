@@ -30,6 +30,17 @@ export const accountReducers = {
       action.payload.nip = "";
     }
 
+    const address = state.user.addresses.find(
+      (address) =>
+        address.type === action.payload.type &&
+        address.address_id !== action.payload.address_id &&
+        address.default,
+    );
+
+    if (address) {
+      address.default = false;
+    }
+
     state.user.addresses = state.user.addresses.map((address) =>
       address.address_id === action.payload.address_id
         ? action.payload

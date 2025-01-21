@@ -1,15 +1,18 @@
 import { Address } from "@/types/Address.ts";
 import { Box, Button, Typography } from "@mui/material";
 import { CustomerType } from "@/enums/CustomerType.ts";
+import { ReactNode } from "react";
 
 interface AddressBoxProps {
   address: Address;
   onEdit: (address: Address) => void;
+  checkBox: ReactNode;
 }
 
-function AddressBox({ address, onEdit }: AddressBoxProps) {
+function AddressBox({ address, onEdit, checkBox }: AddressBoxProps) {
   return (
     <Box className={"mb-4 p-8 border border-gray-300 rounded-md max-w-md"}>
+      {checkBox}
       <Typography variant={"h6"} gutterBottom>
         Typ klienta:{" "}
         {address.customer_type === CustomerType.COMPANY

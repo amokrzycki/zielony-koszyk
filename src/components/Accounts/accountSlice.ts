@@ -1,8 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import {
-  accountReducers,
-  AccountState,
-} from "../../reducers/accountReducers.ts";
+import { accountReducers, AccountState } from "@/reducers/accountReducers.ts";
 import User from "../../types/User.ts";
 
 const initialState: AccountState = {

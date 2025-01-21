@@ -6,11 +6,26 @@ import { Address } from "@/types/Address.ts";
 import { setAddressToEdit } from "@/store/appSlice.ts";
 import { AddressType } from "@/enums/AddressType.ts";
 import AddressBox from "@/components/Accounts/Address/AddressBox.tsx";
+import DefaultCheckbox from "@/components/Accounts/Address/DefaultCheckbox.tsx";
+import { useGetAddressesQuery } from "@/components/Accounts/accountsApiSlice.ts";
+import { useEffect } from "react";
+import { updateUserDetails } from "@/components/Accounts/accountSlice.ts";
 
 function AddressBook() {
   const user: User = useAppSelector((state) => state.auth.user);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const { data } = useGetAddressesQuery(user.user_id);
+
+  useEffect(() => {
+    if (data && data !== user.addresses) {
+      const updatedDetails: User = {
+        ...user,
+        addresses: data,
+      };
+      dispatch(updateUserDetails(updatedDetails));
+    }
+  }, [data]);
 
   const handleEditData = (address: Address) => {
     navigate("/konto/ksiazka-adresowa/edytuj-dane");
@@ -45,12 +60,15 @@ function AddressBook() {
         <Typography variant={"h4"} gutterBottom>
           Dane do rachunku
         </Typography>
-        <Box className={"flex"}>
+        <Box className={"flex gap-4"}>
           {billingAddresses.map((address) => (
             <AddressBox
               key={address.address_id}
               address={address}
               onEdit={handleEditData}
+              checkBox={
+                <DefaultCheckbox address={address} userId={user.user_id} />
+              }
             />
           ))}
         </Box>
@@ -65,6 +83,9 @@ function AddressBook() {
               key={address.address_id}
               address={address}
               onEdit={handleEditData}
+              checkBox={
+                <DefaultCheckbox address={address} userId={user.user_id} />
+              }
             />
           ))}
         </Box>

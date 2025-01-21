@@ -1,5 +1,5 @@
 import { UseFormReturnType } from "@mantine/form";
-import { IChangeAddressesFormValues } from "@/components/Accounts/Address/ChangeAddresses.tsx";
+import { IChangeAddressesFormValues } from "@/components/Accounts/Address/AddressForm.tsx";
 import {
   Box,
   FormControl,
