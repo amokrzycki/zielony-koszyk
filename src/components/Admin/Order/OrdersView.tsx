@@ -12,7 +12,7 @@ import {
   GridToolbarContainer,
   GridToolbarQuickFilter,
 } from "@mui/x-data-grid";
-import { UserOrder } from "../../../types/UserOrder.ts";
+import { Order } from "../../../types/Order.ts";
 import { useState } from "react";
 import ConfirmDeleteModal from "../ConfirmDeleteModal.tsx";
 import toast from "react-hot-toast";
@@ -94,7 +94,7 @@ function OrdersView() {
     }
 
     try {
-      const updatedOrder: Partial<UserOrder> = {
+      const updatedOrder: Partial<Order> = {
         customer_name: updatedRow.customer_name,
         customer_email: updatedRow.customer_email,
         customer_phone: updatedRow.customer_phone,
@@ -183,7 +183,7 @@ function OrdersView() {
     },
   ];
 
-  const rows = orders?.map((order: UserOrder) => ({
+  const rows = orders?.map((order: Order) => ({
     id: order.order_id,
     user_id: order.user_id || "Zamówienie bez konta",
     customer_name: order.customer_name,

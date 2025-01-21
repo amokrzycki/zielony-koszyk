@@ -19,17 +19,32 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import Divider from "@mui/material/Divider";
 import { useNavigate } from "react-router-dom";
 import { useAppSelector } from "@/hooks/hooks.ts";
-import { AccountState } from "@/reducers/accountReducers.ts";
 import QuantitySelector from "@/components/Products/QuantitySelector.tsx";
+import User from "@/types/User.ts";
+import { AddressType } from "@/enums/AddressType.ts";
+import {
+  setBillingAddress,
+  setShippingAddress,
+} from "@/components/Order/orderSlice.ts";
 
 function Cart() {
   const navigate = useNavigate();
   const cart = useAppSelector((state: RootState) => state.cart.items);
-  const auth = useAppSelector((state: RootState): AccountState => state.auth);
+  const user: User = useAppSelector((state: RootState) => state.auth.user);
   const dispatch = useDispatch();
 
+  const billingAddress = user.addresses.find(
+    (address) => address.type === AddressType.BILLING && address.default,
+  );
+
+  const deliveryAddress = user.addresses.find(
+    (address) => address.type === AddressType.DELIVERY && address.default,
+  );
+
   const handleOrder = () => {
-    if (auth.token) {
+    if (user && billingAddress && deliveryAddress) {
+      dispatch(setBillingAddress(billingAddress));
+      dispatch(setShippingAddress(deliveryAddress));
       navigate("/zamowienie");
     } else {
       navigate("/cart-login");

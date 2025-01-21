@@ -1,13 +1,13 @@
 import { useForm } from "@mantine/form";
-import { Box, Button, TextField, Typography } from "@mui/material";
-import { Order } from "@/types/Order.ts";
+import { Box, TextField, Typography } from "@mui/material";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store/store.ts";
-import CartItem from "../../types/CartItem.ts";
-import { setOrder } from "./orderSlice.ts";
-import { useNavigate } from "react-router-dom";
+import {
+  setBillingAddress,
+  setOrder,
+  setShippingAddress,
+} from "./orderSlice.ts";
 import { useAppDispatch } from "@/hooks/hooks.ts";
-import { calculateTotalAmount } from "../Cart/cartSlice.ts";
 import {
   validateBuildingNumber,
   validateCity,
@@ -23,9 +23,10 @@ import {
 import User from "../../types/User.ts";
 import { AddressType } from "@/enums/AddressType.ts";
 import { CustomerType } from "@/enums/CustomerType.ts";
-import { OrderType } from "@/enums/OrderType.ts";
 import CustomerTypeRadios from "@/components/common/CustomerTypeRadios.tsx";
 import { useState } from "react";
+import { Address } from "@/types/Address.ts";
+import { CreateOrderDTO } from "@/types/CreateOrderDTO.ts";
 
 export interface IFormValues {
   first_name: string;
@@ -42,18 +43,19 @@ export interface IFormValues {
   zip: string;
 }
 
-function OrderForm() {
-  const cart = useSelector((state: RootState) => state.cart.items);
+interface OrderFormProps {
+  address: Address;
+}
+
+function OrderForm({ address }: OrderFormProps) {
   const user: User = useSelector((state: RootState) => state.auth.user);
-  const navigate = useNavigate();
+  const orderInfo: CreateOrderDTO = useSelector(
+    (state: RootState) => state.order.orderInfo,
+  );
   const dispatch = useAppDispatch();
 
-  const deliveryAddress = user.addresses?.find(
-    (address) => address.type === AddressType.DELIVERY,
-  );
-
   const [customerType, setCustomerType] = useState<CustomerType>(
-    deliveryAddress?.customer_type || CustomerType.PERSON,
+    address?.customer_type || CustomerType.PERSON,
   );
 
   const validate = {
@@ -76,52 +78,42 @@ function OrderForm() {
 
   const form = useForm<IFormValues>({
     initialValues: {
-      first_name: user?.first_name || "",
-      last_name: user?.last_name || "",
+      first_name: address?.first_name || "",
+      last_name: address?.last_name || "",
       email: user?.email || "",
-      phone: user?.phone || "",
-      company_name: deliveryAddress?.company_name || "",
-      nip: deliveryAddress?.nip || "",
-      customer_type: deliveryAddress?.customer_type || CustomerType.PERSON,
-      street: deliveryAddress?.street || "",
-      building_number: deliveryAddress?.building_number || "",
-      flat_number: deliveryAddress?.flat_number || "",
-      city: deliveryAddress?.city || "",
-      zip: deliveryAddress?.zip || "",
+      phone: address?.phone || "",
+      company_name: address?.company_name || "",
+      nip: address?.nip || "",
+      customer_type: address?.customer_type || CustomerType.PERSON,
+      street: address?.street || "",
+      building_number: address?.building_number || "",
+      flat_number: address?.flat_number || "",
+      city: address?.city || "",
+      zip: address?.zip || "",
     },
     validate,
     validateInputOnBlur: true,
     clearInputErrorOnChange: true,
   });
 
-  const isValid = form.isValid();
-
   const handleSubmit = (values: IFormValues) => {
-    const order: Order = {
-      user_id: user.user_id,
-      customer_name:
-        values.customer_type === CustomerType.PERSON
-          ? `${values.first_name} ${values.last_name}`
-          : values.company_name,
-      customer_email: values.email,
-      customer_phone: values.phone,
-      nip:
-        values.customer_type === CustomerType.COMPANY ? values.nip : undefined,
-      customer_address: `${values.street} ${values.building_number}${values.flat_number ? `/${values.flat_number}` : ``}, ${values.zip} ${values.city}`,
-      order_type:
-        values.customer_type === CustomerType.PERSON
-          ? OrderType.PRIVATE
-          : OrderType.COMPANY,
-      orderDetails: cart.map((item: CartItem) => ({
-        productId: item.productId,
-        quantity: item.quantity,
-        price: item.price,
-      })),
+    const type = address?.type || AddressType.DELIVERY;
+
+    const createdAddress: Address = {
+      address_id: address?.address_id || 0,
+      ...values,
+      type,
     };
 
-    dispatch(setOrder(order));
-    dispatch(calculateTotalAmount());
-    navigate("/zamowienie/podsumowanie");
+    dispatch(setOrder({ ...orderInfo, customer_email: values.email }));
+
+    if (type === AddressType.DELIVERY) {
+      dispatch(setShippingAddress(createdAddress));
+    }
+
+    if (type === AddressType.BILLING) {
+      dispatch(setBillingAddress(createdAddress));
+    }
   };
 
   const handleCustomerTypeChange = (type: CustomerType) => {
@@ -263,10 +255,6 @@ function OrderForm() {
             error={Boolean(form.errors.city) && form.isTouched("city")}
           />
         </Box>
-
-        <Button type="submit" disabled={!isValid} variant="contained">
-          Przejdź dalej
-        </Button>
       </Box>
     </form>
   );

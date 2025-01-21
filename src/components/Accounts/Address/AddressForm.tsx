@@ -124,7 +124,7 @@ function AddressForm() {
           },
         )
         .then(() => {
-          navigate("/konto/ksiazka-adresowa");
+          window.location.href = "/konto/ksiazka-adresowa";
         });
     }
 
