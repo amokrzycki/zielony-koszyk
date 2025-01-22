@@ -1,10 +1,10 @@
-import { baseApi } from "../../api/api.ts";
-import { CreateUser } from "../../types/CreateUser.ts";
+import { baseApi } from "@/api/api.ts";
+import { CreateUser } from "@/types/CreateUser.ts";
 import { ILoginFormValues } from "./LoginForm.tsx";
-import { UpdatePasswordBody } from "../../types/UpdatePasswordBody.ts";
-import { UpdateDetailsBody } from "../../types/updateDetailsBody.ts";
+import { UpdatePasswordBody } from "@/types/UpdatePasswordBody.ts";
+import { UpdateDetailsBody } from "@/types/updateDetailsBody.ts";
 import User from "../../types/User.ts";
-import { CreateUserFromAdmin } from "../../types/CreateUserFromAdmin.ts";
+import { CreateUserFromAdmin } from "@/types/CreateUserFromAdmin.ts";
 import { Address } from "@/types/Address.ts";
 
 export const accountsApiSlice = baseApi.injectEndpoints({
@@ -31,12 +31,6 @@ export const accountsApiSlice = baseApi.injectEndpoints({
           email: body.email,
           password: body.password,
         },
-      }),
-    }),
-    getAccountInfo: builder.query<User, string>({
-      query: (body: string) => ({
-        url: "users/" + body,
-        method: "GET",
       }),
     }),
     getUsers: builder.query<User[], void>({
@@ -102,7 +96,6 @@ export const {
   useRegisterMutation,
   useCreateUserFromAdminMutation,
   useLoginMutation,
-  useGetAccountInfoQuery,
   useGetUsersQuery,
   useDeleteUsersMutation,
   useChangePasswordMutation,

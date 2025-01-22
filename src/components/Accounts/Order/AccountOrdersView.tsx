@@ -1,13 +1,12 @@
 import { Box, CircularProgress, Paper, Typography } from "@mui/material";
-import { useGetUserOrdersQuery } from "../Order/orderApiSlice.ts";
-import User from "../../types/User.ts";
+import { useGetUserOrdersQuery } from "../../Order/orderApiSlice.ts";
+import User from "../../../types/User.ts";
 import { useAppSelector } from "@/hooks/hooks.ts";
 import { RootState } from "@/store/store.ts";
 import { DataGrid, GridColDef, GridRowParams } from "@mui/x-data-grid";
 import { useNavigate } from "react-router-dom";
 import { getFormattedDate } from "@/helpers/getFormattedDate.ts";
 import { getPolishStatus } from "@/helpers/getPolishStatus.ts";
-import { OrderStatuses } from "@/enums/OrderStatuses.ts";
 import { useEffect } from "react";
 
 function AccountOrdersView() {
@@ -37,7 +36,7 @@ function AccountOrdersView() {
 
   const rows = userOrders.data.map((order) => ({
     id: order.order_id,
-    status: getPolishStatus(order.status as OrderStatuses),
+    status: getPolishStatus(order.status),
     totalAmount: `${order.total_amount} zł`,
     createdAt: getFormattedDate(order.order_date),
   }));

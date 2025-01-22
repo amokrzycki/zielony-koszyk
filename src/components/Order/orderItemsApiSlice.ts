@@ -1,6 +1,6 @@
-import { baseApi } from "../../api/api.ts";
-import { OrderItemResponse } from "../../types/OrderItemResponse.ts";
-import { OrderItemCreate } from "../../types/OrderItemCreate.ts";
+import { baseApi } from "@/api/api.ts";
+import { OrderItemResponse } from "@/types/OrderItemResponse.ts";
+import { OrderItemCreate } from "@/types/OrderItemCreate.ts";
 
 export const orderItemsApiSlice = baseApi.injectEndpoints({
   endpoints: (builder) => ({

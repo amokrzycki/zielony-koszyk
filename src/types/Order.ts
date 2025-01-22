@@ -8,8 +8,8 @@ export interface Order {
   order_type: OrderType;
   nip?: string;
   customer_email: string;
-  billing_address: Address;
-  shipping_address: Address;
+  billingAddress: Address;
+  shippingAddress: Address;
   order_date: string;
   total_amount: string;
   status: string;

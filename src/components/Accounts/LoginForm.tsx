@@ -7,10 +7,10 @@ import {
   FormGroup,
   TextField,
 } from "@mui/material";
-import { validateEmail, validatePassword } from "../../helpers/validators.ts";
+import { validateEmail, validatePassword } from "@/helpers/validators.ts";
 import { useLoginMutation } from "./accountsApiSlice.ts";
 import { loginUser } from "./accountSlice.ts";
-import { useAppDispatch } from "../../hooks/hooks.ts";
+import { useAppDispatch } from "@/hooks/hooks.ts";
 import toast from "react-hot-toast";
 import Checkbox from "@mui/material/Checkbox";
 

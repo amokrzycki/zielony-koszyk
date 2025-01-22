@@ -2,7 +2,7 @@ import {
   validateNewPassword,
   validatePassword,
   validatePasswordConfirmation,
-} from "../../helpers/validators.ts";
+} from "@/helpers/validators.ts";
 import { useForm } from "@mantine/form";
 import {
   Box,
@@ -13,8 +13,8 @@ import {
 } from "@mui/material";
 import { useChangePasswordMutation } from "./accountsApiSlice.ts";
 import User from "../../types/User.ts";
-import { useAppSelector } from "../../hooks/hooks.ts";
-import { UpdatePasswordBody } from "../../types/UpdatePasswordBody.ts";
+import { useAppSelector } from "@/hooks/hooks.ts";
+import { UpdatePasswordBody } from "@/types/UpdatePasswordBody.ts";
 import { useNavigate } from "react-router-dom";
 
 export interface IPasswordChangeFormValues {

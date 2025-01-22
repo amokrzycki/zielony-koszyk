@@ -11,7 +11,7 @@ import Product from "../../../types/Product.ts";
 import { Box, Button, Typography } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import { useCreateOrderItemsMutation } from "../../Order/orderItemsApiSlice.ts";
-import { OrderItemCreate } from "../../../types/OrderItemCreate.ts";
+import { OrderItemCreate } from "@/types/OrderItemCreate.ts";
 import { useState } from "react";
 import toast from "react-hot-toast";
 

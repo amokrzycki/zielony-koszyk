@@ -21,8 +21,8 @@ import {
   validateStreet,
   validateTermsAccepted,
   validateZip,
-} from "../../helpers/validators.ts";
-import { CreateUser } from "../../types/CreateUser.ts";
+} from "@/helpers/validators.ts";
+import { CreateUser } from "@/types/CreateUser.ts";
 import { useRegisterMutation } from "./accountsApiSlice.ts";
 import toast from "react-hot-toast";
 import { Dispatch, SetStateAction } from "react";

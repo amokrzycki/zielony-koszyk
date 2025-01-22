@@ -1,24 +1,28 @@
-import { CreateOrderDTO } from "../types/CreateOrderDTO.ts";
+import { CreateOrder } from "../types/CreateOrder.ts";
 import { PayloadAction } from "@reduxjs/toolkit";
 import { initialState } from "../components/Order/orderSlice.ts";
+import { CreateAddress } from "@/types/CreateAddress.ts";
 import { Address } from "@/types/Address.ts";
 
 export interface OrderState {
-  orderInfo: CreateOrderDTO;
+  orderInfo: CreateOrder;
 }
 
 export const orderReducers = {
-  setOrder(state: OrderState, action: PayloadAction<CreateOrderDTO>) {
+  setOrder(state: OrderState, action: PayloadAction<CreateOrder>) {
     state.orderInfo = action.payload;
   },
-  setShippingAddress(state: OrderState, action: PayloadAction<Address>) {
-    state.orderInfo.shipping_address = action.payload;
+  setShippingAddress(
+    state: OrderState,
+    action: PayloadAction<CreateAddress | Address>,
+  ) {
+    state.orderInfo.shippingAddress = action.payload;
   },
-  setBillingAddress(state: OrderState, action: PayloadAction<Address>) {
-    state.orderInfo.billing_address = action.payload;
-  },
-  setSameAddress(state: OrderState, action: PayloadAction<boolean>) {
-    state.orderInfo.same_address = action.payload;
+  setBillingAddress(
+    state: OrderState,
+    action: PayloadAction<CreateAddress | Address>,
+  ) {
+    state.orderInfo.billingAddress = action.payload;
   },
   clearOrder: () => initialState,
 };

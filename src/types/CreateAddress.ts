@@ -1,7 +1,7 @@
 import { AddressType } from "@/enums/AddressType.ts";
 import { CustomerType } from "@/enums/CustomerType.ts";
 
-export interface CreateAddressDTO {
+export interface CreateAddress {
   first_name: string;
   last_name: string;
   phone: string;

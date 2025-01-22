@@ -1,7 +1,6 @@
 import {
   useDeleteOrderMutation,
   useGetOrdersQuery,
-  useUpdateOrderMutation,
 } from "../../Order/orderApiSlice.ts";
 import { Box, Button, IconButton, Typography } from "@mui/material";
 import Loading from "../../common/Loading.tsx";
@@ -12,31 +11,18 @@ import {
   GridToolbarContainer,
   GridToolbarQuickFilter,
 } from "@mui/x-data-grid";
-import { Order } from "../../../types/Order.ts";
+import { Order } from "@/types/Order.ts";
 import { useState } from "react";
 import ConfirmDeleteModal from "../ConfirmDeleteModal.tsx";
 import toast from "react-hot-toast";
-import { getFormattedDate } from "../../../helpers/getFormattedDate.ts";
-import { getPolishStatus } from "../../../helpers/getPolishStatus.ts";
-import { OrderStatuses } from "../../../enums/OrderStatuses.ts";
+import { getFormattedDate } from "@/helpers/getFormattedDate.ts";
 import RefreshIcon from "@mui/icons-material/Refresh";
-import { getEnglishStatus } from "../../../helpers/getEnglishStatus.ts";
-import { PolishOrderStatuses } from "../../../enums/PolishOrderStatuses.ts";
-import StatusDropdownEditor from "../StatusDropdownEditor.tsx";
 import { useNavigate } from "react-router-dom";
 import ErrorView from "../../common/ErrorView.tsx";
+import { OrderType } from "@/enums/OrderType.ts";
+import { getPolishStatus } from "@/helpers/getPolishStatus.ts";
 
-interface Row {
-  id: number;
-  user_id: string;
-  customer_name: string;
-  customer_email: string;
-  customer_phone: string;
-  customer_address: string;
-  order_date: string;
-  total_amount: string;
-  status: string;
-}
+// TODO: Add modal to edit order
 
 function OrdersView() {
   const { data: orders, isError, isLoading, refetch } = useGetOrdersQuery();
@@ -44,7 +30,6 @@ function OrdersView() {
   const [openConfirmDeleteModal, setOpenConfirmDeleteModal] = useState(false);
   const [selectedRows, setSelectedRows] = useState<number[]>([]);
   const [deleteOrder] = useDeleteOrderMutation();
-  const [updateOrder] = useUpdateOrderMutation();
 
   const handleConfirmDeleteModalOpen = () => setOpenConfirmDeleteModal(true);
   const handleConfirmDeleteModalClose = () => setOpenConfirmDeleteModal(false);
@@ -53,7 +38,7 @@ function OrdersView() {
     return <Loading />;
   }
 
-  if (isError) {
+  if (isError || !orders) {
     return <ErrorView message={"Nie udało się pobrać zamówień."} />;
   }
 
@@ -68,7 +53,7 @@ function OrdersView() {
         Promise.all(selectedRows.map((id) => deleteOrder(id).unwrap())),
         {
           loading: `Usuwanie ${selectedRows.length >= 1 ? "zamówienia" : "zamówień"}...`,
-          success: `${selectedRows.length >= 1 ? "Zamówienie zostało usunięte." : "Zamówienia zostały ususnięte."}`,
+          success: `${selectedRows.length >= 1 ? "Zamówienie zostało usunięte." : "Zamówienia zostały usunięte."}`,
           error: `Wystąpił błąd podczas usuwania ${selectedRows.length >= 1 ? "zamówienia" : "zamówień"}.`,
         },
       );
@@ -79,46 +64,6 @@ function OrdersView() {
     }
   };
 
-  const handleProcessRowUpdate = async (updatedRow: Row, oldRow: Row) => {
-    if (
-      oldRow.user_id === updatedRow.user_id &&
-      oldRow.customer_name === updatedRow.customer_name &&
-      oldRow.customer_email === updatedRow.customer_email &&
-      oldRow.customer_phone === updatedRow.customer_phone &&
-      oldRow.customer_address === updatedRow.customer_address &&
-      oldRow.order_date === updatedRow.order_date &&
-      oldRow.total_amount === updatedRow.total_amount &&
-      oldRow.status === updatedRow.status
-    ) {
-      return oldRow;
-    }
-
-    try {
-      const updatedOrder: Partial<Order> = {
-        customer_name: updatedRow.customer_name,
-        customer_email: updatedRow.customer_email,
-        customer_phone: updatedRow.customer_phone,
-        customer_address: updatedRow.customer_address,
-        total_amount: updatedRow.total_amount,
-        status: getEnglishStatus(updatedRow.status as PolishOrderStatuses),
-      };
-
-      await toast.promise(
-        updateOrder({ id: updatedRow.id, order: updatedOrder }).unwrap(),
-        {
-          loading: "Aktualizowanie zamówienia...",
-          success: "Zamówienia zostało zaktualizowane.",
-          error: "Wystąpił błąd podczas aktualizacji zamówienia.",
-        },
-      );
-
-      return updatedRow;
-    } catch (error) {
-      toast.error("Nie udało się zaktualizować zamówienia.");
-      throw error;
-    }
-  };
-
   const columns: GridColDef[] = [
     { field: "id", headerName: "ID zamówienia", width: 130 },
     { field: "user_id", headerName: "ID klienta", width: 200 },
@@ -126,41 +71,34 @@ function OrdersView() {
       field: "customer_name",
       headerName: "Imię i nazwisko klienta",
       width: 200,
-      editable: true,
     },
     {
       field: "customer_email",
       headerName: "Email klienta",
       width: 190,
-      editable: true,
     },
     {
       field: "customer_phone",
       headerName: "Telefon klienta",
       width: 150,
-      editable: true,
     },
     {
       field: "customer_address",
       headerName: "Adres klienta",
       width: 200,
       flex: 1,
-      editable: true,
     },
     { field: "order_date", headerName: "Data zamówienia", width: 150 },
     {
       field: "total_amount",
       headerName: "Kwota całkowita",
       width: 150,
-      editable: true,
       sortComparator: (v1, v2) => v1 - v2,
     },
     {
       field: "status",
       headerName: "Status",
       width: 150,
-      editable: true,
-      renderEditCell: (params) => <StatusDropdownEditor {...params} />,
     },
     {
       field: "actions",
@@ -183,17 +121,23 @@ function OrdersView() {
     },
   ];
 
-  const rows = orders?.map((order: Order) => ({
-    id: order.order_id,
-    user_id: order.user_id || "Zamówienie bez konta",
-    customer_name: order.customer_name,
-    customer_email: order.customer_email,
-    customer_phone: order.customer_phone,
-    customer_address: order.customer_address,
-    order_date: getFormattedDate(order.order_date.toString()),
-    total_amount: order.total_amount,
-    status: getPolishStatus(order.status as OrderStatuses),
-  }));
+  const rows = orders?.map((order: Order) => {
+    const customer_name =
+      order.order_type === OrderType.COMPANY
+        ? `${order.billingAddress.company_name || ""}`
+        : `${order.billingAddress.first_name || ""} ${order.billingAddress.last_name || ""}`;
+    return {
+      id: order.order_id,
+      user_id: order.user_id || "Zamówienie bez konta",
+      customer_name,
+      customer_email: order.customer_email,
+      customer_phone: order.billingAddress.phone,
+      customer_address: `${order.billingAddress.street} ${order.billingAddress.building_number}${order.billingAddress.flat_number ? `/${order.billingAddress.flat_number}` : ""} ${order.billingAddress.zip} ${order.billingAddress.city}`,
+      order_date: getFormattedDate(order.order_date.toString()),
+      total_amount: order.total_amount,
+      status: getPolishStatus(order.status),
+    };
+  });
 
   const CustomToolbar = () => {
     return (
@@ -236,7 +180,6 @@ function OrdersView() {
               },
             },
           }}
-          processRowUpdate={handleProcessRowUpdate}
           onRowSelectionModelChange={(newSelection) =>
             setSelectedRows(newSelection as number[])
           }

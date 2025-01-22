@@ -9,14 +9,13 @@ import {
   GridToolbarContainer,
   GridToolbarQuickFilter,
 } from "@mui/x-data-grid";
-import { OrderItemResponse } from "../../../types/OrderItemResponse.ts";
+import { OrderItemResponse } from "@/types/OrderItemResponse.ts";
 import ConfirmDeleteModal from "../ConfirmDeleteModal.tsx";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import ErrorView from "../../common/ErrorView.tsx";
-import { getFormattedDate } from "../../../helpers/getFormattedDate.ts";
-import { getPolishStatus } from "../../../helpers/getPolishStatus.ts";
-import { OrderStatuses } from "../../../enums/OrderStatuses.ts";
+import { getFormattedDate } from "@/helpers/getFormattedDate.ts";
+import { getPolishStatus } from "@/helpers/getPolishStatus.ts";
 import {
   useGetOrderItemsQuery,
   useRemoveOrderItemsMutation,
@@ -24,6 +23,7 @@ import {
 } from "../../Order/orderItemsApiSlice.ts";
 import AddIcon from "@mui/icons-material/Add";
 import AddOrderItemsModal from "./AddOrderItemsModal.tsx";
+import OrderAddresses from "@/components/Accounts/Order/OrderAddresses.tsx";
 
 interface Row {
   id: number;
@@ -39,7 +39,11 @@ function OrderItemsView() {
     isError,
     isLoading,
   } = useGetOrderItemsQuery(orderId as string);
-  const order = useGetOrderQuery(orderId as string);
+  const {
+    data: order,
+    isLoading: isOrderLoading,
+    isError: isOrderError,
+  } = useGetOrderQuery(orderId as string);
   const [openProductModal, setOpenProductModal] = useState(false);
   const [openConfirmDeleteModal, setOpenConfirmDeleteModal] = useState(false);
   const [selectedRows, setSelectedRows] = useState<number[]>([]);
@@ -51,11 +55,11 @@ function OrderItemsView() {
   const handleProductModalOpen = () => setOpenProductModal(true);
   const handleProductModalClose = () => setOpenProductModal(false);
 
-  if (isLoading || order.isLoading) {
+  if (isLoading || isOrderLoading) {
     return <Loading />;
   }
 
-  if (isError || order.isError || !orderDetails || !order.data) {
+  if (isError || isOrderError || !orderDetails || !order) {
     return <ErrorView message={"Nie udało się pobrać danych zamówienia."} />;
   }
 
@@ -70,7 +74,7 @@ function OrderItemsView() {
         Promise.all(selectedRows.map((id) => deleteOrderItems(id).unwrap())),
         {
           loading: `Usuwanie ${selectedRows.length >= 1 ? "elementu zamówienia" : "elementów zamówienia"}...`,
-          success: `${selectedRows.length >= 1 ? "Element zamówienia został usunięty." : "Elementy zamówienia zostały ususnięte."}`,
+          success: `${selectedRows.length >= 1 ? "Element zamówienia został usunięty." : "Elementy zamówienia zostały usunięte."}`,
           error: `Wystąpił błąd podczas usuwania ${selectedRows.length >= 1 ? "elementu zamówienia" : "elementów zamówienia."}.`,
         },
       );
@@ -160,30 +164,19 @@ function OrderItemsView() {
     <Box className={"flex flex-col overflow-x-auto w-full"}>
       <Box className={"flex items-center"}>
         <Typography variant="h4" component="h1">
-          Zamówienie #{order.data.order_id}
+          Zamówienie #{order.order_id}
         </Typography>
       </Box>
       <Box>
+        <OrderAddresses order={order} />
         <Typography variant="h6" component="h2">
-          Klient: {order.data.customer_name}
+          Data zamówienia: {getFormattedDate(order.order_date)}
         </Typography>
         <Typography variant="h6" component="h2">
-          Email: {order.data.customer_email}
+          Status: {getPolishStatus(order.status)}
         </Typography>
         <Typography variant="h6" component="h2">
-          Telefon: {order.data.customer_phone}
-        </Typography>
-        <Typography variant="h6" component="h2">
-          Adres dostawy: {order.data.customer_address}
-        </Typography>
-        <Typography variant="h6" component="h2">
-          Data zamówienia: {getFormattedDate(order.data.order_date)}
-        </Typography>
-        <Typography variant="h6" component="h2">
-          Status: {getPolishStatus(order.data.status as OrderStatuses)}
-        </Typography>
-        <Typography variant="h6" component="h2">
-          Kwota: {order.data.total_amount} PLN
+          Kwota: {order.total_amount} PLN
         </Typography>
       </Box>
       <Box className={"w-full overflow-x-auto"}>
@@ -218,7 +211,7 @@ function OrderItemsView() {
       <AddOrderItemsModal
         open={openProductModal}
         handleClose={handleProductModalClose}
-        orderId={order.data.order_id}
+        orderId={order.order_id}
       />
     </Box>
   );

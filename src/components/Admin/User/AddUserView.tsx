@@ -4,7 +4,7 @@ import {
   validateFirstName,
   validateLastName,
   validateNumber,
-} from "../../../helpers/validators.ts";
+} from "@/helpers/validators.ts";
 import { useForm } from "@mantine/form";
 import toast from "react-hot-toast";
 import {
@@ -18,9 +18,9 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { CreateUserFromAdmin } from "../../../types/CreateUserFromAdmin.ts";
+import { CreateUserFromAdmin } from "@/types/CreateUserFromAdmin.ts";
 import { useNavigate } from "react-router-dom";
-import { Roles } from "../../../enums/Roles.ts";
+import { Roles } from "@/enums/Roles.ts";
 
 export interface ICreateUserFormValues {
   firstName: string;

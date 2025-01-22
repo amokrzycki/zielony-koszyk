@@ -1,12 +1,12 @@
-import { baseApi } from "../../api/api.ts";
-import { CreateOrderDTO } from "../../types/CreateOrderDTO.ts";
-import { Order } from "../../types/Order.ts";
-import { OrderItemResponse } from "../../types/OrderItemResponse.ts";
+import { baseApi } from "@/api/api.ts";
+import { CreateOrder } from "@/types/CreateOrder.ts";
+import { Order } from "@/types/Order.ts";
+import { OrderItemResponse } from "@/types/OrderItemResponse.ts";
 
 export const orderApiSlice = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    createOrder: builder.mutation<CreateOrderDTO, CreateOrderDTO>({
-      query: (body: CreateOrderDTO) => ({
+    createOrder: builder.mutation<CreateOrder, CreateOrder>({
+      query: (body: CreateOrder) => ({
         url: "orders",
         method: "POST",
         body,

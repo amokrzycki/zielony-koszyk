@@ -8,10 +8,8 @@ export const initialState: OrderState = {
   orderInfo: {
     user_id: "",
     order_type: OrderType.PRIVATE,
-    nip: "",
     customer_email: "",
-    billing_address: {
-      address_id: 0,
+    billingAddress: {
       first_name: "",
       last_name: "",
       company_name: "",
@@ -26,8 +24,7 @@ export const initialState: OrderState = {
       city: "",
       zip: "",
     },
-    shipping_address: {
-      address_id: 0,
+    shippingAddress: {
       first_name: "",
       last_name: "",
       company_name: "",
@@ -43,7 +40,7 @@ export const initialState: OrderState = {
       zip: "",
     },
     same_address: true,
-    orderDetails: [],
+    orderItems: [],
   },
 };
 
@@ -53,10 +50,5 @@ export const orderSlice = createSlice({
   reducers: orderReducers,
 });
 
-export const {
-  setOrder,
-  setBillingAddress,
-  setShippingAddress,
-  clearOrder,
-  setSameAddress,
-} = orderSlice.actions;
+export const { setOrder, setBillingAddress, setShippingAddress, clearOrder } =
+  orderSlice.actions;

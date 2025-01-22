@@ -1,6 +1,11 @@
 import { useDispatch } from "react-redux";
 import { RootState } from "@/store/store.ts";
-import { changeQuantity, clearCart, removeItem } from "./cartSlice.ts";
+import {
+  calculateTotalAmount,
+  changeQuantity,
+  clearCart,
+  removeItem,
+} from "./cartSlice.ts";
 import {
   Box,
   Button,
@@ -33,15 +38,16 @@ function Cart() {
   const user: User = useAppSelector((state: RootState) => state.auth.user);
   const dispatch = useDispatch();
 
-  const billingAddress = user.addresses.find(
+  const billingAddress = user.addresses?.find(
     (address) => address.type === AddressType.BILLING && address.default,
   );
 
-  const deliveryAddress = user.addresses.find(
+  const deliveryAddress = user.addresses?.find(
     (address) => address.type === AddressType.DELIVERY && address.default,
   );
 
   const handleOrder = () => {
+    dispatch(calculateTotalAmount());
     if (user && billingAddress && deliveryAddress) {
       dispatch(setBillingAddress(billingAddress));
       dispatch(setShippingAddress(deliveryAddress));

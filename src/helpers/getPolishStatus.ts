@@ -1,7 +1,7 @@
 import { OrderStatuses } from "../enums/OrderStatuses.ts";
 import { PolishOrderStatuses } from "../enums/PolishOrderStatuses.ts";
 
-export function getPolishStatus(status: OrderStatuses): string {
+export function getPolishStatus(status: string): string {
   switch (status) {
     case OrderStatuses.NEW:
       return PolishOrderStatuses.NOWE;

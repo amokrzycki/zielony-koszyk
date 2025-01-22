@@ -1,13 +1,13 @@
 import PersonIcon from "@mui/icons-material/Person";
 import { Button, Menu, MenuItem } from "@mui/material";
-import { useAppDispatch, useAppSelector } from "../../hooks/hooks.ts";
-import { RootState } from "../../store/store.ts";
-import { AccountState } from "../../reducers/accountReducers.ts";
+import { useAppDispatch, useAppSelector } from "@/hooks/hooks.ts";
+import { RootState } from "@/store/store.ts";
+import { AccountState } from "@/reducers/accountReducers.ts";
 import React, { useState } from "react";
 import { logoutUser } from "./accountSlice.ts";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
-import { Roles } from "../../enums/Roles.ts";
+import { Roles } from "@/enums/Roles.ts";
 
 function UserBadge() {
   const navigate = useNavigate();

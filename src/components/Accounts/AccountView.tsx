@@ -2,8 +2,8 @@ import { Box, Button, Typography } from "@mui/material";
 import AutoBreadcrumbs from "../AutoBreadcrumbs.tsx";
 import { Outlet, useNavigate } from "react-router-dom";
 import User from "../../types/User.ts";
-import { useAppSelector } from "../../hooks/hooks.ts";
-import { RootState } from "../../store/store.ts";
+import { useAppSelector } from "@/hooks/hooks.ts";
+import { RootState } from "@/store/store.ts";
 
 function AccountView() {
   const user: User = useAppSelector((state: RootState) => state.auth.user);

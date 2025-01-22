@@ -1,18 +1,18 @@
 import User from "../../../types/User.ts";
 import { useForm } from "@mantine/form";
 import { Box, Button, TextField } from "@mui/material";
-import { Address } from "../../../types/Address.ts";
+import { Address } from "@/types/Address.ts";
 import {
   validateBuildingNumber,
   validateCity,
   validateStreet,
   validateZip,
-} from "../../../helpers/validators.ts";
+} from "@/helpers/validators.ts";
 import { useChangeUserAddressMutation } from "../../Accounts/accountsApiSlice.ts";
 import toast from "react-hot-toast";
-import { setUserToEdit } from "../../../store/appSlice.ts";
-import { useAppDispatch } from "../../../hooks/hooks.ts";
-import { UpdateDetailsBody } from "../../../types/updateDetailsBody.ts";
+import { setUserToEdit } from "@/store/appSlice.ts";
+import { useAppDispatch } from "@/hooks/hooks.ts";
+import { UpdateDetailsBody } from "@/types/updateDetailsBody.ts";
 
 interface IChangeUserAddressFormValues {
   street: string;
