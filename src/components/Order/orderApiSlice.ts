@@ -59,6 +59,12 @@ export const orderApiSlice = baseApi.injectEndpoints({
       }),
       invalidatesTags: [{ type: "Orders" }],
     }),
+    getInvoice: builder.query<Blob, number>({
+      query: (orderId: number) => ({
+        url: `orders/order/${orderId}/invoice`,
+        responseHandler: (response) => response.blob(),
+      }),
+    }),
   }),
 });
 
@@ -69,4 +75,5 @@ export const {
   useGetOrdersQuery,
   useUpdateOrderMutation,
   useDeleteOrderMutation,
+  useGetInvoiceQuery,
 } = orderApiSlice;

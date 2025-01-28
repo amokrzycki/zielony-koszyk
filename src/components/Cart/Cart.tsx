@@ -49,8 +49,8 @@ function Cart() {
   const handleOrder = () => {
     dispatch(calculateTotalAmount());
     if (user && billingAddress && deliveryAddress) {
-      dispatch(setBillingAddress(billingAddress));
-      dispatch(setShippingAddress(deliveryAddress));
+      dispatch(setBillingAddress({ ...billingAddress, address_id: 0 }));
+      dispatch(setShippingAddress({ ...deliveryAddress, address_id: 0 }));
       navigate("/zamowienie");
     } else {
       navigate("/cart-login");

@@ -7,9 +7,10 @@ import { IFormValues } from "@/components/Order/OrderDetails.tsx";
 
 interface Props {
   form: UseFormReturnType<IFormValues>;
+  setCustomerType: (newType: CustomerType) => void;
 }
 
-export default function BillingFormFields({ form }: Props) {
+export default function BillingFormFields({ form, setCustomerType }: Props) {
   const billing = form.values.billing;
   const customerType = billing.customer_type;
 
@@ -18,6 +19,7 @@ export default function BillingFormFields({ form }: Props) {
 
   const handleCustomerTypeChange = (newType: CustomerType) => {
     form.setFieldValue("billing.customer_type", newType);
+    setCustomerType(newType);
   };
 
   return (

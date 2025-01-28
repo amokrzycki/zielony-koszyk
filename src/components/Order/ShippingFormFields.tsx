@@ -7,11 +7,12 @@ import { IFormValues } from "@/components/Order/OrderDetails.tsx";
 
 interface Props {
   form: UseFormReturnType<IFormValues>;
+  setCustomerType: (newType: CustomerType) => void;
 }
 
 // TODO: Add helper text to fields and error handling
 
-export default function ShippingFormFields({ form }: Props) {
+export default function ShippingFormFields({ form, setCustomerType }: Props) {
   const shipping = form.values.shipping;
   const customerType = shipping.customer_type;
 
@@ -20,6 +21,7 @@ export default function ShippingFormFields({ form }: Props) {
 
   const handleCustomerTypeChange = (newType: CustomerType) => {
     form.setFieldValue("shipping.customer_type", newType);
+    setCustomerType(newType);
   };
 
   return (

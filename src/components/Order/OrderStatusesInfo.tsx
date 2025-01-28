@@ -3,7 +3,7 @@ import { Box, Typography } from "@mui/material";
 function OrderStatusesInfo() {
   return (
     <Box
-      className={"flex flex-col items-start gap-4 border  rounded p-4 mt-2"}
+      className={"flex flex-col items-start gap-4 border rounded p-4 mt-2"}
       sx={{
         borderColor: "text.primary",
       }}

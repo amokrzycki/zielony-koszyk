@@ -10,6 +10,7 @@ export interface CreateAddress {
   type: AddressType;
   customer_type: CustomerType;
   default?: boolean;
+  is_user_address?: boolean;
   street: string;
   building_number: string;
   flat_number: string;

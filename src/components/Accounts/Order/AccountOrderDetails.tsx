@@ -8,8 +8,7 @@ import { useGetOrderItemsQuery } from "../../Order/orderItemsApiSlice.ts";
 import ErrorView from "@/components/common/ErrorView.tsx";
 import OrderDetailsTable from "@/components/Accounts/Order/OrderDetailsTable.tsx";
 import OrderAddresses from "@/components/Accounts/Order/OrderAddresses.tsx";
-
-// TODO: Add invoice
+import InvoiceDownloadButton from "@/components/Order/InvoiceDownloadButton.tsx";
 
 function AccountOrderDetails() {
   const { orderId } = useParams();
@@ -39,20 +38,20 @@ function AccountOrderDetails() {
           Zamówienie numer {order?.order_id}
         </Typography>
         <Box
-          className={"flex flex-col items-start border rounded p-1 mt-1"}
+          className={"flex flex-col items-start border rounded p-4 mt-4"}
           sx={{
             borderColor: "text.primary",
           }}
         >
-          <Box className={"flex"}>
-            <Typography>Status zamówienia:</Typography>
-            <Typography className={"font-bold"}>
-              {getPolishStatus(order?.status)}
+          <Box className={"flex flex-col items-start"}>
+            <Typography>
+              Status zamówienia: {getPolishStatus(order?.status)}
+            </Typography>
+            <Typography>
+              Data złożenia zamówienia: {getFormattedDate(order?.order_date)}
             </Typography>
           </Box>
-          <Typography>
-            Data złożenia zamówienia: {getFormattedDate(order?.order_date)}
-          </Typography>
+          <InvoiceDownloadButton orderId={order.order_id} />
         </Box>
       </Box>
       <OrderDetailsTable orderDetails={orderDetails} />

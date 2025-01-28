@@ -7,6 +7,7 @@ export interface CreateOrder {
   user_id?: string;
   order_type: OrderType;
   customer_email: string;
+  nip?: string;
   billingAddress: CreateAddress | Address;
   shippingAddress: CreateAddress | Address;
   same_address?: boolean;

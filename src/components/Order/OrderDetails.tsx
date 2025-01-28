@@ -24,16 +24,16 @@ import User from "@/types/User.ts";
 import { OrderType } from "@/enums/OrderType.ts";
 import { CreateAddress } from "@/types/CreateAddress.ts";
 import {
+  validateBuildingNumber,
+  validateCity,
+  validateCompany,
+  validateCompanyNip,
   validateEmail,
   validateFirstName,
   validateLastName,
   validateNumber,
   validateStreet,
-  validateBuildingNumber,
-  validateCity,
   validateZip,
-  validateCompany,
-  validateCompanyNip,
 } from "@/helpers/validators.ts";
 
 export interface IFormValues {
@@ -53,15 +53,29 @@ function OrderDetails() {
   const user: User = useSelector((state: RootState) => state.auth.user);
 
   const [useDifferentAddress, setUseDifferentAddress] = useState(false);
+  const [shippingType, setShippingType] = useState(
+    orderInfo.shippingAddress.customer_type === CustomerType.COMPANY
+      ? CustomerType.COMPANY
+      : CustomerType.PERSON,
+  );
+  const [billingType, setBillingType] = useState(
+    orderInfo.billingAddress.customer_type === CustomerType.COMPANY
+      ? CustomerType.COMPANY
+      : CustomerType.PERSON,
+  );
 
   const validate = {
     email: validateEmail,
     shipping: {
-      first_name: validateFirstName,
-      last_name: validateLastName,
+      first_name:
+        shippingType === CustomerType.PERSON ? validateFirstName : undefined,
+      last_name:
+        shippingType === CustomerType.PERSON ? validateLastName : undefined,
       phone: validateNumber,
-      company_name: validateCompany,
-      nip: validateCompanyNip,
+      company_name:
+        shippingType === CustomerType.COMPANY ? validateCompany : undefined,
+      nip:
+        shippingType === CustomerType.COMPANY ? validateCompanyNip : undefined,
       street: validateStreet,
       building_number: validateBuildingNumber,
       city: validateCity,
@@ -70,11 +84,15 @@ function OrderDetails() {
       customer_type: undefined,
     },
     billing: {
-      first_name: validateFirstName,
-      last_name: validateLastName,
+      first_name:
+        billingType === CustomerType.PERSON ? validateFirstName : undefined,
+      last_name:
+        billingType === CustomerType.PERSON ? validateLastName : undefined,
       phone: validateNumber,
-      company_name: validateCompany,
-      nip: validateCompanyNip,
+      company_name:
+        billingType === CustomerType.COMPANY ? validateCompany : undefined,
+      nip:
+        billingType === CustomerType.COMPANY ? validateCompanyNip : undefined,
       street: validateStreet,
       building_number: validateBuildingNumber,
       city: validateCity,
@@ -137,19 +155,23 @@ function OrderDetails() {
     clearInputErrorOnChange: true,
   });
 
+  const isValid = form.isValid();
+
   const handleSubmit = (values: IFormValues) => {
     let same_address = !useDifferentAddress;
 
-    const finalShipping = {
+    const finalShipping: CreateAddress = {
       ...values.shipping,
       type: AddressType.DELIVERY,
       default: false,
+      is_user_address: false,
     };
 
-    let finalBilling = {
+    let finalBilling: CreateAddress = {
       ...values.billing,
       type: AddressType.BILLING,
       default: false,
+      is_user_address: false,
     };
 
     if (!useDifferentAddress) {
@@ -165,6 +187,10 @@ function OrderDetails() {
         ...orderInfo,
         shippingAddress: finalShipping,
         billingAddress: finalBilling,
+        nip:
+          finalBilling.customer_type === CustomerType.COMPANY
+            ? finalBilling.nip
+            : "",
         customer_email: values.email,
         user_id: user.user_id,
         same_address: same_address,
@@ -190,7 +216,10 @@ function OrderDetails() {
           <form onSubmit={form.onSubmit(handleSubmit)}>
             <Grid container className={"w-full justify-around"}>
               <Grid>
-                <ShippingFormFields form={form} />
+                <ShippingFormFields
+                  form={form}
+                  setCustomerType={setShippingType}
+                />
                 <FormControlLabel
                   control={
                     <Checkbox
@@ -207,12 +236,22 @@ function OrderDetails() {
                       : "Dane do faktury: domyślne dane z Twojego konta"}
                   </Typography>
                 )}
-                {useDifferentAddress && <BillingFormFields form={form} />}
+                {useDifferentAddress && (
+                  <BillingFormFields
+                    form={form}
+                    setCustomerType={setBillingType}
+                  />
+                )}
               </Grid>
 
               <Grid>
                 <CartSummary />
-                <Button type="submit" variant="contained" sx={{ mt: 2 }}>
+                <Button
+                  type="submit"
+                  variant="contained"
+                  sx={{ mt: 2 }}
+                  disabled={!isValid}
+                >
                   Przejdź dalej
                 </Button>
               </Grid>

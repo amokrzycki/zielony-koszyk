@@ -110,6 +110,8 @@ function AddressForm() {
       ...values,
     };
 
+    const rememberMe = localStorage.getItem("rememberMe") === "true";
+
     if (!userAddress) {
       toast
         .promise(
@@ -124,7 +126,11 @@ function AddressForm() {
           },
         )
         .then(() => {
-          window.location.href = "/konto/ksiazka-adresowa";
+          if (rememberMe) {
+            window.location.href = "/konto/ksiazka-adresowa";
+          } else {
+            navigate("/konto/ksiazka-adresowa", { replace: true });
+          }
         });
     }
 

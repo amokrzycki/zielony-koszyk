@@ -18,7 +18,7 @@ function OrderDetailsTable({ orderDetails }: OrderDetailsTableProps) {
   return (
     <TableContainer
       component={Paper}
-      className={"mt-2 mb-2 border "}
+      className={"mb-2 border border-t-0"}
       sx={{
         borderColor: "text.primary",
       }}
