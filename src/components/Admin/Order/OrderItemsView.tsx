@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useGetOrderQuery } from "../../Order/orderApiSlice.ts";
 import { Box, Button, Typography } from "@mui/material";
 import Loading from "../../common/Loading.tsx";
@@ -9,14 +9,13 @@ import {
   GridToolbarContainer,
   GridToolbarQuickFilter,
 } from "@mui/x-data-grid";
-import { OrderItemResponse } from "../../../types/OrderItemResponse.ts";
+import { OrderItemResponse } from "@/types/OrderItemResponse.ts";
 import ConfirmDeleteModal from "../ConfirmDeleteModal.tsx";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import ErrorView from "../../common/ErrorView.tsx";
-import { getFormattedDate } from "../../../helpers/getFormattedDate.ts";
-import { getPolishStatus } from "../../../helpers/getPolishStatus.ts";
-import { OrderStatuses } from "../../../enums/OrderStatuses.ts";
+import { getFormattedDate } from "@/helpers/getFormattedDate.ts";
+import { getPolishStatus } from "@/helpers/getPolishStatus.ts";
 import {
   useGetOrderItemsQuery,
   useRemoveOrderItemsMutation,
@@ -24,6 +23,8 @@ import {
 } from "../../Order/orderItemsApiSlice.ts";
 import AddIcon from "@mui/icons-material/Add";
 import AddOrderItemsModal from "./AddOrderItemsModal.tsx";
+import OrderAddresses from "@/components/Accounts/Order/OrderAddresses.tsx";
+import InvoiceDownloadButton from "@/components/Order/InvoiceDownloadButton.tsx";
 
 interface Row {
   id: number;
@@ -32,6 +33,8 @@ interface Row {
   price: string;
 }
 
+// TODO: Add modal to edit order
+
 function OrderItemsView() {
   const { orderId } = useParams();
   const {
@@ -39,23 +42,28 @@ function OrderItemsView() {
     isError,
     isLoading,
   } = useGetOrderItemsQuery(orderId as string);
-  const order = useGetOrderQuery(orderId as string);
+  const {
+    data: order,
+    isLoading: isOrderLoading,
+    isError: isOrderError,
+  } = useGetOrderQuery(orderId as string);
   const [openProductModal, setOpenProductModal] = useState(false);
   const [openConfirmDeleteModal, setOpenConfirmDeleteModal] = useState(false);
   const [selectedRows, setSelectedRows] = useState<number[]>([]);
   const [deleteOrderItems] = useRemoveOrderItemsMutation();
   const [updateOrderItems] = useUpdateOrderItemsMutation();
+  const navigate = useNavigate();
 
   const handleConfirmDeleteModalOpen = () => setOpenConfirmDeleteModal(true);
   const handleConfirmDeleteModalClose = () => setOpenConfirmDeleteModal(false);
   const handleProductModalOpen = () => setOpenProductModal(true);
   const handleProductModalClose = () => setOpenProductModal(false);
 
-  if (isLoading || order.isLoading) {
+  if (isLoading || isOrderLoading) {
     return <Loading />;
   }
 
-  if (isError || order.isError || !orderDetails || !order.data) {
+  if (isError || isOrderError || !orderDetails || !order) {
     return <ErrorView message={"Nie udało się pobrać danych zamówienia."} />;
   }
 
@@ -70,7 +78,7 @@ function OrderItemsView() {
         Promise.all(selectedRows.map((id) => deleteOrderItems(id).unwrap())),
         {
           loading: `Usuwanie ${selectedRows.length >= 1 ? "elementu zamówienia" : "elementów zamówienia"}...`,
-          success: `${selectedRows.length >= 1 ? "Element zamówienia został usunięty." : "Elementy zamówienia zostały ususnięte."}`,
+          success: `${selectedRows.length >= 1 ? "Element zamówienia został usunięty." : "Elementy zamówienia zostały usunięte."}`,
           error: `Wystąpił błąd podczas usuwania ${selectedRows.length >= 1 ? "elementu zamówienia" : "elementów zamówienia."}.`,
         },
       );
@@ -160,33 +168,42 @@ function OrderItemsView() {
     <Box className={"flex flex-col overflow-x-auto w-full"}>
       <Box className={"flex items-center"}>
         <Typography variant="h4" component="h1">
-          Zamówienie #{order.data.order_id}
+          Zamówienie #{order.order_id}
         </Typography>
       </Box>
       <Box>
+        <Box className={"flex gap-4 my-4"}>
+          <OrderAddresses order={order} />
+          <Box className={"flex gap-4 justify-end items-center flex-col"}>
+            <Button
+              variant={"outlined"}
+              size={"small"}
+              onClick={() => navigate("edycja-danych-zamowienia")}
+            >
+              Edytuj dane zamówienia
+            </Button>
+            <InvoiceDownloadButton orderId={order.order_id} />
+          </Box>
+        </Box>
+        {!order?.user_id && (
+          <Typography variant="h6" component="h2" sx={{ fontWeight: "bold" }}>
+            Zamówienie bez konta
+          </Typography>
+        )}
         <Typography variant="h6" component="h2">
-          Klient: {order.data.customer_name}
+          Data zamówienia: {getFormattedDate(order.order_date)}
         </Typography>
         <Typography variant="h6" component="h2">
-          Email: {order.data.customer_email}
+          Status: {getPolishStatus(order.status)}
         </Typography>
         <Typography variant="h6" component="h2">
-          Telefon: {order.data.customer_phone}
-        </Typography>
-        <Typography variant="h6" component="h2">
-          Adres dostawy: {order.data.customer_address}
-        </Typography>
-        <Typography variant="h6" component="h2">
-          Data zamówienia: {getFormattedDate(order.data.order_date)}
-        </Typography>
-        <Typography variant="h6" component="h2">
-          Status: {getPolishStatus(order.data.status as OrderStatuses)}
-        </Typography>
-        <Typography variant="h6" component="h2">
-          Kwota: {order.data.total_amount} PLN
+          Kwota: {order.total_amount} PLN
         </Typography>
       </Box>
-      <Box className={"w-full overflow-x-auto"}>
+      <Typography variant="h5" component="h3" sx={{ mt: 2 }}>
+        Zarządzanie produktami w zamówieniu
+      </Typography>
+      <Box className={"w-full overflow-x-auto mt-2"}>
         <DataGrid
           disableRowSelectionOnClick
           checkboxSelection
@@ -218,7 +235,7 @@ function OrderItemsView() {
       <AddOrderItemsModal
         open={openProductModal}
         handleClose={handleProductModalClose}
-        orderId={order.data.order_id}
+        orderId={order.order_id}
       />
     </Box>
   );

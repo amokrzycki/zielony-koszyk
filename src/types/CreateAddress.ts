@@ -1,16 +1,16 @@
-import { AddressType } from "../enums/AddressType.ts";
+import { AddressType } from "@/enums/AddressType.ts";
 import { CustomerType } from "@/enums/CustomerType.ts";
 
-export interface Address {
-  address_id: number;
-  first_name?: string;
-  last_name?: string;
+export interface CreateAddress {
+  first_name: string;
+  last_name: string;
   phone: string;
-  company_name?: string;
-  nip?: string;
+  company_name: string;
+  nip: string;
   type: AddressType;
   customer_type: CustomerType;
-  default: boolean;
+  default?: boolean;
+  is_user_address?: boolean;
   street: string;
   building_number: string;
   flat_number: string;

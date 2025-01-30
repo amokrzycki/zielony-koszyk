@@ -1,9 +1,9 @@
 import { Route } from "./Routes.tsx";
 import AccountOptions from "../components/Accounts/AccountOptions.tsx";
 import AddressBook from "../components/Accounts/Address/AddressBook.tsx";
-import ChangeAddresses from "../components/Accounts/Address/ChangeAddresses.tsx";
-import AccountOrdersView from "../components/Accounts/AccountOrdersView.tsx";
-import AccountOrderDetails from "../components/Accounts/AccountOrderDetails.tsx";
+import AddressForm from "../components/Accounts/Address/AddressForm.tsx";
+import AccountOrdersView from "../components/Accounts/Order/AccountOrdersView.tsx";
+import AccountOrderDetails from "../components/Accounts/Order/AccountOrderDetails.tsx";
 import EmailChange from "../components/Accounts/EmailChange.tsx";
 import PasswordChange from "../components/Accounts/PasswordChange.tsx";
 
@@ -21,7 +21,11 @@ export const AccountRoutes: Route[] = [
       },
       {
         path: "edytuj-dane",
-        element: <ChangeAddresses />,
+        element: <AddressForm />,
+      },
+      {
+        path: "dodaj-adres",
+        element: <AddressForm />,
       },
     ],
   },

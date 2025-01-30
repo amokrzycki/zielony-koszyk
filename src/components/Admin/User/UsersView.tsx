@@ -15,12 +15,12 @@ import {
 } from "@mui/x-data-grid";
 import { Box, Button, IconButton, Typography } from "@mui/material";
 import User from "../../../types/User.ts";
-import { AddressType } from "../../../enums/AddressType.ts";
+import { AddressType } from "@/enums/AddressType.ts";
 import ConfirmDeleteModal from "../ConfirmDeleteModal.tsx";
 import RefreshIcon from "@mui/icons-material/Refresh";
-import { getFormattedDate } from "../../../helpers/getFormattedDate.ts";
-import { useAppDispatch } from "../../../hooks/hooks.ts";
-import { setUserToEdit } from "../../../store/appSlice.ts";
+import { getFormattedDate } from "@/helpers/getFormattedDate.ts";
+import { useAppDispatch } from "@/hooks/hooks.ts";
+import { setUserToEdit } from "@/store/appSlice.ts";
 import { useNavigate } from "react-router-dom";
 import AddIcon from "@mui/icons-material/Add";
 
@@ -54,7 +54,7 @@ function UsersView() {
         Promise.all(selectedRows.map((id) => deleteUsers(id).unwrap())),
         {
           loading: `Usuwanie ${selectedRows.length >= 1 ? "użytkownika" : "użytkowników"}...`,
-          success: `${selectedRows.length >= 1 ? "Użytkownik został usunięty." : "Użytkownicy zostali ususnięci."}`,
+          success: `${selectedRows.length >= 1 ? "Użytkownik został usunięty." : "Użytkownicy zostali usunięci."}`,
           error: `Wystąpił błąd podczas usuwania ${selectedRows.length >= 1 ? "użytkownika" : "użytkowników"}.`,
         },
       );
@@ -131,7 +131,7 @@ function UsersView() {
         <Button
           startIcon={<AddIcon />}
           onClick={() =>
-            navigate("/admin/zarzadzanie-klientami/dodaj-uzytkownika")
+            navigate("/admin/zarzadzanie-uzytkownikami/dodaj-uzytkownika")
           }
         >
           Dodaj użytkownika

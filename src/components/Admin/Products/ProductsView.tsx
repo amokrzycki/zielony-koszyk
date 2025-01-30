@@ -75,7 +75,7 @@ function ProductsView() {
         Promise.all(selectedRows.map((id) => deleteProduct(id).unwrap())),
         {
           loading: `Usuwanie ${selectedRows.length >= 1 ? "produktu" : "produktów"}...`,
-          success: `${selectedRows.length >= 1 ? "Produkt został usunięty." : "Produkty zostały ususnięte."}`,
+          success: `${selectedRows.length >= 1 ? "Produkt został usunięty." : "Produkty zostały usunięte."}`,
           error: `Wystąpił błąd podczas usuwania ${selectedRows.length >= 1 ? "produktu" : "produktów"}.`,
         },
       );

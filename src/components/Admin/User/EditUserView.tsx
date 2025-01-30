@@ -1,7 +1,7 @@
-import { useAppDispatch, useAppSelector } from "../../../hooks/hooks.ts";
+import { useAppDispatch, useAppSelector } from "@/hooks/hooks.ts";
 import User from "../../../types/User.ts";
 import { useForm } from "@mantine/form";
-import { Roles } from "../../../enums/Roles.ts";
+import { Roles } from "@/enums/Roles.ts";
 import {
   Box,
   Button,
@@ -13,18 +13,18 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import ChangeUserAddress from "./ChangeUserAddress.tsx";
-import { AddressType } from "../../../enums/AddressType.ts";
+import ChangeAddress from "./ChangeAddress.tsx";
+import { AddressType } from "@/enums/AddressType.ts";
 import ErrorView from "../../common/ErrorView.tsx";
 import { useChangeUserDetailsMutation } from "../../Accounts/accountsApiSlice.ts";
 import toast from "react-hot-toast";
-import { setUserToEdit } from "../../../store/appSlice.ts";
+import { setUserToEdit } from "@/store/appSlice.ts";
 import {
   validateEmail,
   validateFirstName,
   validateLastName,
   validateNumber,
-} from "../../../helpers/validators.ts";
+} from "@/helpers/validators.ts";
 
 export interface IEditUserFormValues {
   first_name: string;
@@ -193,13 +193,13 @@ function EditUserView() {
         <Typography variant={"h6"} gutterBottom>
           Edytuj adres dostawy
         </Typography>
-        <ChangeUserAddress user={user} address={shippingAddress} />
+        <ChangeAddress user={user} address={shippingAddress} />
       </Box>
       <Box className={"flex flex-col items-center"}>
         <Typography variant={"h6"} gutterBottom>
           Edytuj adres rozliczeniowy
         </Typography>
-        <ChangeUserAddress user={user} address={billingAddress} />
+        <ChangeAddress user={user} address={billingAddress} />
       </Box>
     </Box>
   );

@@ -1,8 +1,8 @@
 import { Box, Button, Typography } from "@mui/material";
 import { Outlet, useNavigate } from "react-router-dom";
 import Navigation from "./Navigation.tsx";
-import { useAppSelector } from "../../hooks/hooks.ts";
-import { RootState } from "../../store/store.ts";
+import { useAppSelector } from "@/hooks/hooks.ts";
+import { RootState } from "@/store/store.ts";
 import AutoBreadcrumbs from "../AutoBreadcrumbs.tsx";
 
 function MainView() {

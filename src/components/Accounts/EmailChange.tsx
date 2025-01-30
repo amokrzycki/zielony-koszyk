@@ -1,9 +1,9 @@
 import { Box, Button, TextField, Typography } from "@mui/material";
-import { useAppDispatch, useAppSelector } from "../../hooks/hooks.ts";
+import { useAppDispatch, useAppSelector } from "@/hooks/hooks.ts";
 import User from "../../types/User.ts";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "@mantine/form";
-import { validateEmail } from "../../helpers/validators.ts";
+import { validateEmail } from "@/helpers/validators.ts";
 import { useChangeEmailMutation } from "./accountsApiSlice.ts";
 import { logoutUser } from "./accountSlice.ts";
 import toast from "react-hot-toast";
@@ -63,6 +63,7 @@ function EmailChange() {
         dispatch(logoutUser());
         localStorage.removeItem("token");
         localStorage.removeItem("user");
+        localStorage.removeItem("rememberMe");
         navigate("/");
         toast("Zostałeś wylogowany");
       });

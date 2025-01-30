@@ -3,9 +3,9 @@ import { Box, Typography } from "@mui/material";
 function OrderStatusesInfo() {
   return (
     <Box
-      className={"flex flex-col items-start gap-4 border  rounded p-4 mt-2"}
+      className={"flex flex-col items-start gap-4 border rounded p-4 mt-4"}
       sx={{
-        borderColor: "text.primary",
+        borderColor: "background.default",
       }}
     >
       <Typography variant={"h5"} className={"font-bold"}>

@@ -6,6 +6,7 @@ import { Route } from "./Routes.tsx";
 import UsersView from "../components/Admin/User/UsersView.tsx";
 import EditUserView from "../components/Admin/User/EditUserView.tsx";
 import AddUserView from "../components/Admin/User/AddUserView.tsx";
+import EditOrderAddresses from "@/components/Admin/Order/EditOrderAddresses.tsx";
 
 export const AdminRoutes: Route[] = [
   {
@@ -24,8 +25,17 @@ export const AdminRoutes: Route[] = [
         element: <OrdersView />,
       },
       {
-        path: ":orderId",
-        element: <OrderItemsView />,
+        path: ":orderId/*",
+        children: [
+          {
+            path: "*",
+            element: <OrderItemsView />,
+          },
+          {
+            path: "edycja-danych-zamowienia",
+            element: <EditOrderAddresses />,
+          },
+        ],
       },
     ],
   },

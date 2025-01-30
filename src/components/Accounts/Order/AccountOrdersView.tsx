@@ -1,13 +1,12 @@
 import { Box, CircularProgress, Paper, Typography } from "@mui/material";
-import { useGetUserOrdersQuery } from "../Order/orderApiSlice.ts";
-import User from "../../types/User.ts";
+import { useGetUserOrdersQuery } from "../../Order/orderApiSlice.ts";
+import User from "../../../types/User.ts";
 import { useAppSelector } from "@/hooks/hooks.ts";
 import { RootState } from "@/store/store.ts";
 import { DataGrid, GridColDef, GridRowParams } from "@mui/x-data-grid";
 import { useNavigate } from "react-router-dom";
 import { getFormattedDate } from "@/helpers/getFormattedDate.ts";
 import { getPolishStatus } from "@/helpers/getPolishStatus.ts";
-import { OrderStatuses } from "@/enums/OrderStatuses.ts";
 import { useEffect } from "react";
 
 function AccountOrdersView() {
@@ -21,10 +20,10 @@ function AccountOrdersView() {
   }, []);
 
   const columns: GridColDef[] = [
-    { field: "id", headerName: "Numer zamówienia", width: 150 },
-    { field: "status", headerName: "Status" },
-    { field: "totalAmount", headerName: "Kwota" },
-    { field: "createdAt", headerName: "Data zamówienia", width: 150 },
+    { field: "id", headerName: "Numer zamówienia", flex: 0.8 },
+    { field: "status", headerName: "Status", flex: 1 },
+    { field: "totalAmount", headerName: "Kwota", flex: 0.5 },
+    { field: "createdAt", headerName: "Data zamówienia", flex: 1 },
   ];
 
   if (userOrders.isLoading || userOrders.isFetching) {
@@ -37,7 +36,7 @@ function AccountOrdersView() {
 
   const rows = userOrders.data.map((order) => ({
     id: order.order_id,
-    status: getPolishStatus(order.status as OrderStatuses),
+    status: getPolishStatus(order.status),
     totalAmount: `${order.total_amount} zł`,
     createdAt: getFormattedDate(order.order_date),
   }));
@@ -52,7 +51,7 @@ function AccountOrdersView() {
       <Typography variant="body1">
         Tutaj znajdziesz listę swoich zamówień
       </Typography>
-      <Paper sx={{ height: 500, width: "75%" }}>
+      <Paper sx={{ height: 500, width: "60%" }}>
         <DataGrid
           rows={rows}
           columns={columns}

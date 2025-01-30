@@ -1,10 +1,11 @@
-import { baseApi } from "../../api/api.ts";
-import { CreateUser } from "../../types/CreateUser.ts";
+import { baseApi } from "@/api/api.ts";
+import { CreateUser } from "@/types/CreateUser.ts";
 import { ILoginFormValues } from "./LoginForm.tsx";
-import { UpdatePasswordBody } from "../../types/UpdatePasswordBody.ts";
-import { UpdateDetailsBody } from "../../types/updateDetailsBody.ts";
+import { UpdatePasswordBody } from "@/types/UpdatePasswordBody.ts";
+import { UpdateDetailsBody } from "@/types/updateDetailsBody.ts";
 import User from "../../types/User.ts";
-import { CreateUserFromAdmin } from "../../types/CreateUserFromAdmin.ts";
+import { CreateUserFromAdmin } from "@/types/CreateUserFromAdmin.ts";
+import { Address } from "@/types/Address.ts";
 
 export const accountsApiSlice = baseApi.injectEndpoints({
   endpoints: (builder) => ({
@@ -30,12 +31,6 @@ export const accountsApiSlice = baseApi.injectEndpoints({
           email: body.email,
           password: body.password,
         },
-      }),
-    }),
-    getAccountInfo: builder.query({
-      query: (body: string) => ({
-        url: "users/" + body,
-        method: "GET",
       }),
     }),
     getUsers: builder.query<User[], void>({
@@ -64,7 +59,7 @@ export const accountsApiSlice = baseApi.injectEndpoints({
         body,
       }),
     }),
-    changeUserAddress: builder.mutation({
+    changeUserAddress: builder.mutation<Address, UpdateDetailsBody>({
       query: (body: UpdateDetailsBody) => ({
         url: `users/change-address/${body.user_id}/address/${body.address_id}`,
         method: "PUT",
@@ -78,6 +73,22 @@ export const accountsApiSlice = baseApi.injectEndpoints({
         body,
       }),
     }),
+    createNewAddress: builder.mutation<
+      void,
+      { user_id: string; address: Partial<Address> }
+    >({
+      query: (body: { user_id: string; address: Partial<Address> }) => ({
+        url: `users/${body.user_id}/address`,
+        method: "POST",
+        body: body.address,
+      }),
+    }),
+    getAddresses: builder.query<Address[], string>({
+      query: (body: string) => ({
+        url: `users/${body}/addresses`,
+        method: "GET",
+      }),
+    }),
   }),
 });
 
@@ -85,11 +96,12 @@ export const {
   useRegisterMutation,
   useCreateUserFromAdminMutation,
   useLoginMutation,
-  useGetAccountInfoQuery,
   useGetUsersQuery,
   useDeleteUsersMutation,
   useChangePasswordMutation,
   useChangeEmailMutation,
   useChangeUserAddressMutation,
   useChangeUserDetailsMutation,
+  useCreateNewAddressMutation,
+  useGetAddressesQuery,
 } = accountsApiSlice;

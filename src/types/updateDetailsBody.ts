@@ -4,4 +4,5 @@ export interface UpdateDetailsBody extends Partial<Address> {
   user_id: string;
   address_id: number;
   phone?: string;
+  default: boolean;
 }

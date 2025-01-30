@@ -5,10 +5,10 @@ import AlternateEmailIcon from "@mui/icons-material/AlternateEmail";
 import PasswordIcon from "@mui/icons-material/Password";
 import ImportContactsIcon from "@mui/icons-material/ImportContacts";
 import BuildIcon from "@mui/icons-material/Build";
-import { Roles } from "../../enums/Roles.ts";
+import { Roles } from "@/enums/Roles.ts";
 import User from "../../types/User.ts";
-import { useAppSelector } from "../../hooks/hooks.ts";
-import { RootState } from "../../store/store.ts";
+import { useAppSelector } from "@/hooks/hooks.ts";
+import { RootState } from "@/store/store.ts";
 
 function AccountOptions() {
   const navigate = useNavigate();
@@ -29,7 +29,7 @@ function AccountOptions() {
             navigate("/konto/ksiazka-adresowa");
           }}
         >
-          Ksiązka adresowa
+          Książka adresowa
         </Button>
         <Button
           variant="contained"
