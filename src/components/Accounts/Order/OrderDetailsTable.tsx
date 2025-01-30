@@ -18,12 +18,12 @@ function OrderDetailsTable({ orderDetails }: OrderDetailsTableProps) {
   return (
     <TableContainer
       component={Paper}
-      className={"mb-2 border border-t-0"}
+      className={"mb-2 border mt-8"}
       sx={{
-        borderColor: "text.primary",
+        borderColor: "background.default",
       }}
     >
-      <Table>
+      <Table size={"small"}>
         <TableHead>
           <TableRow>
             <TableCell>Nazwa produktu</TableCell>

@@ -21,8 +21,7 @@ import { useNavigate } from "react-router-dom";
 import ErrorView from "../../common/ErrorView.tsx";
 import { OrderType } from "@/enums/OrderType.ts";
 import { getPolishStatus } from "@/helpers/getPolishStatus.ts";
-
-// TODO: Add modal to edit order
+import InvoiceDownloadButton from "@/components/Order/InvoiceDownloadButton.tsx";
 
 function OrdersView() {
   const { data: orders, isError, isLoading, refetch } = useGetOrdersQuery();
@@ -66,6 +65,31 @@ function OrdersView() {
 
   const columns: GridColDef[] = [
     { field: "id", headerName: "ID zamówienia", width: 130 },
+    {
+      field: "actions",
+      headerName: "Akcje",
+      width: 350,
+      sortable: false,
+      disableColumnMenu: true,
+      renderCell: (params) => (
+        <Box>
+          <Button
+            variant="outlined"
+            color="primary"
+            size="small"
+            onClick={() =>
+              navigate(`/admin/zarzadzanie-zamowieniami/${params.id}`)
+            }
+            sx={{
+              mr: 2,
+            }}
+          >
+            Szczegóły
+          </Button>
+          <InvoiceDownloadButton orderId={parseInt(params.id.toString())} />
+        </Box>
+      ),
+    },
     { field: "user_id", headerName: "ID klienta", width: 200 },
     {
       field: "customer_name",
@@ -85,8 +109,7 @@ function OrdersView() {
     {
       field: "customer_address",
       headerName: "Adres klienta",
-      width: 200,
-      flex: 1,
+      width: 350,
     },
     { field: "order_date", headerName: "Data zamówienia", width: 150 },
     {
@@ -98,26 +121,7 @@ function OrdersView() {
     {
       field: "status",
       headerName: "Status",
-      width: 150,
-    },
-    {
-      field: "actions",
-      headerName: "Akcje",
-      width: 150,
-      sortable: false,
-      disableColumnMenu: true,
-      renderCell: (params) => (
-        <Button
-          variant="outlined"
-          color="primary"
-          size="small"
-          onClick={() =>
-            navigate(`/admin/zarzadzanie-zamowieniami/${params.id}`)
-          }
-        >
-          Szczegóły
-        </Button>
-      ),
+      width: 250,
     },
   ];
 
@@ -134,7 +138,7 @@ function OrdersView() {
       customer_phone: order.billingAddress.phone,
       customer_address: `${order.billingAddress.street} ${order.billingAddress.building_number}${order.billingAddress.flat_number ? `/${order.billingAddress.flat_number}` : ""} ${order.billingAddress.zip} ${order.billingAddress.city}`,
       order_date: getFormattedDate(order.order_date.toString()),
-      total_amount: order.total_amount,
+      total_amount: `${order.total_amount} zł`,
       status: getPolishStatus(order.status),
     };
   });

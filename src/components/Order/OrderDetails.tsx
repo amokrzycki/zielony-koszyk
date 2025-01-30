@@ -35,10 +35,11 @@ import {
   validateStreet,
   validateZip,
 } from "@/helpers/validators.ts";
+import { Address } from "@/types/Address.ts";
 
 export interface IFormValues {
-  shipping: CreateAddress;
-  billing: CreateAddress;
+  shipping: CreateAddress | Address;
+  billing: CreateAddress | Address;
   email: string;
 }
 
@@ -85,18 +86,26 @@ function OrderDetails() {
     },
     billing: {
       first_name:
-        billingType === CustomerType.PERSON ? validateFirstName : undefined,
+        billingType === CustomerType.PERSON && useDifferentAddress
+          ? validateFirstName
+          : undefined,
       last_name:
-        billingType === CustomerType.PERSON ? validateLastName : undefined,
-      phone: validateNumber,
+        billingType === CustomerType.PERSON && useDifferentAddress
+          ? validateLastName
+          : undefined,
+      phone: useDifferentAddress ? validateNumber : undefined,
       company_name:
-        billingType === CustomerType.COMPANY ? validateCompany : undefined,
+        billingType === CustomerType.COMPANY && useDifferentAddress
+          ? validateCompany
+          : undefined,
       nip:
-        billingType === CustomerType.COMPANY ? validateCompanyNip : undefined,
-      street: validateStreet,
-      building_number: validateBuildingNumber,
-      city: validateCity,
-      zip: validateZip,
+        billingType === CustomerType.COMPANY && useDifferentAddress
+          ? validateCompanyNip
+          : undefined,
+      street: useDifferentAddress ? validateStreet : undefined,
+      building_number: useDifferentAddress ? validateBuildingNumber : undefined,
+      city: useDifferentAddress ? validateCity : undefined,
+      zip: useDifferentAddress ? validateZip : undefined,
       type: undefined,
       customer_type: undefined,
     },
@@ -160,14 +169,14 @@ function OrderDetails() {
   const handleSubmit = (values: IFormValues) => {
     let same_address = !useDifferentAddress;
 
-    const finalShipping: CreateAddress = {
+    const finalShipping = {
       ...values.shipping,
       type: AddressType.DELIVERY,
       default: false,
       is_user_address: false,
     };
 
-    let finalBilling: CreateAddress = {
+    let finalBilling = {
       ...values.billing,
       type: AddressType.BILLING,
       default: false,

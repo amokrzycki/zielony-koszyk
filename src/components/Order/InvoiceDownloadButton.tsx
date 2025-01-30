@@ -29,8 +29,13 @@ function InvoiceDownloadButton({ orderId }: { orderId: number }) {
   if (isError) return <Box sx={{ color: "red" }}>Błąd w ładowaniu faktury</Box>;
 
   return (
-    <Button onClick={handleDownload} disabled={!invoiceBlob}>
-      Pobierz fakturę
+    <Button
+      onClick={handleDownload}
+      variant={"outlined"}
+      size={"small"}
+      disabled={!invoiceBlob}
+    >
+      Faktura elektroniczna
     </Button>
   );
 }

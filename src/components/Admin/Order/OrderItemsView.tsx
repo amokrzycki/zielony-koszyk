@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useGetOrderQuery } from "../../Order/orderApiSlice.ts";
 import { Box, Button, Typography } from "@mui/material";
 import Loading from "../../common/Loading.tsx";
@@ -24,6 +24,7 @@ import {
 import AddIcon from "@mui/icons-material/Add";
 import AddOrderItemsModal from "./AddOrderItemsModal.tsx";
 import OrderAddresses from "@/components/Accounts/Order/OrderAddresses.tsx";
+import InvoiceDownloadButton from "@/components/Order/InvoiceDownloadButton.tsx";
 
 interface Row {
   id: number;
@@ -31,6 +32,8 @@ interface Row {
   quantity: number;
   price: string;
 }
+
+// TODO: Add modal to edit order
 
 function OrderItemsView() {
   const { orderId } = useParams();
@@ -49,6 +52,7 @@ function OrderItemsView() {
   const [selectedRows, setSelectedRows] = useState<number[]>([]);
   const [deleteOrderItems] = useRemoveOrderItemsMutation();
   const [updateOrderItems] = useUpdateOrderItemsMutation();
+  const navigate = useNavigate();
 
   const handleConfirmDeleteModalOpen = () => setOpenConfirmDeleteModal(true);
   const handleConfirmDeleteModalClose = () => setOpenConfirmDeleteModal(false);
@@ -168,7 +172,19 @@ function OrderItemsView() {
         </Typography>
       </Box>
       <Box>
-        <OrderAddresses order={order} />
+        <Box className={"flex gap-4 my-4"}>
+          <OrderAddresses order={order} />
+          <Box className={"flex gap-4 justify-end items-center flex-col"}>
+            <Button
+              variant={"outlined"}
+              size={"small"}
+              onClick={() => navigate("edycja-danych-zamowienia")}
+            >
+              Edytuj dane zamówienia
+            </Button>
+            <InvoiceDownloadButton orderId={order.order_id} />
+          </Box>
+        </Box>
         <Typography variant="h6" component="h2">
           Data zamówienia: {getFormattedDate(order.order_date)}
         </Typography>
@@ -179,7 +195,7 @@ function OrderItemsView() {
           Kwota: {order.total_amount} PLN
         </Typography>
       </Box>
-      <Box className={"w-full overflow-x-auto"}>
+      <Box className={"w-full overflow-x-auto mt-4"}>
         <DataGrid
           disableRowSelectionOnClick
           checkboxSelection

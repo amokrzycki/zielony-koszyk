@@ -13,6 +13,8 @@ import { RootState } from "@/store/store.ts";
 import { CartState } from "@/reducers/cartReducers.ts";
 import { OrderType } from "@/enums/OrderType.ts";
 import ErrorView from "@/components/common/ErrorView.tsx";
+import { generateOrderAddress } from "@/helpers/generateOrderAddress.ts";
+import { CustomerType } from "@/enums/CustomerType.ts";
 
 function OrderSummary() {
   const [checked, setChecked] = useState(false);
@@ -87,7 +89,7 @@ function OrderSummary() {
             {orderInfo.shippingAddress.first_name}{" "}
             {orderInfo.shippingAddress.last_name}
           </Typography>
-          {orderInfo.order_type === OrderType.COMPANY && (
+          {orderInfo.shippingAddress.customer_type === CustomerType.COMPANY && (
             <>
               <Typography>
                 Firma: {orderInfo.shippingAddress.company_name}
@@ -98,7 +100,7 @@ function OrderSummary() {
           <Typography>Telefon: {orderInfo.shippingAddress.phone}</Typography>
           <Typography>E-mail: {orderInfo.customer_email}</Typography>
           <Typography>
-            Adres: {`${orderInfo.shippingAddress.street}`}
+            Adres: {generateOrderAddress(orderInfo.shippingAddress)}
           </Typography>
           <Typography variant="h5">Dane do faktury:</Typography>
           {orderInfo.same_address ? (
@@ -118,9 +120,8 @@ function OrderSummary() {
                 </>
               )}
               <Typography>Telefon: {orderInfo.billingAddress.phone}</Typography>
-              <Typography>E-mail: {orderInfo.customer_email}</Typography>
               <Typography>
-                Adres: {`${orderInfo.billingAddress.street}`}
+                Adres: {generateOrderAddress(orderInfo.billingAddress)}
               </Typography>
             </>
           )}

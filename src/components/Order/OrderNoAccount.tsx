@@ -23,7 +23,11 @@ function OrderNoAccount() {
             Kup bez rejestracji
           </Button>
           <Typography variant={"h6"}>lub</Typography>
-          <Button variant="contained" color="primary" href="/rejestracja">
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => navigate("/login?tab=1")}
+          >
             Utwórz konto
           </Button>
           <Box className="account-notice flex flex-col items-center">

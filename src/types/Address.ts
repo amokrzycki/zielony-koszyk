@@ -10,7 +10,7 @@ export interface Address {
   nip?: string;
   type: AddressType;
   customer_type: CustomerType;
-  default?: boolean;
+  default: boolean;
   street: string;
   building_number: string;
   flat_number: string;

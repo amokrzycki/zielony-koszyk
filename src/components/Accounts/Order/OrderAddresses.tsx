@@ -1,6 +1,8 @@
 import { Order } from "@/types/Order.ts";
 import { Box, Typography } from "@mui/material";
 import { OrderType } from "@/enums/OrderType.ts";
+import { CustomerType } from "@/enums/CustomerType.ts";
+import { generateOrderAddress } from "@/helpers/generateOrderAddress.ts";
 
 interface OrderAddressesProps {
   order: Order;
@@ -9,8 +11,19 @@ interface OrderAddressesProps {
 function OrderAddresses({ order }: OrderAddressesProps) {
   return (
     <>
-      <Box>
-        <Typography>Dane do faktury:</Typography>
+      <Box
+        className={"flex flex-col border rounded p-4 gap-1 text-left"}
+        sx={{
+          borderColor: "background.default",
+        }}
+      >
+        <Typography
+          sx={{
+            fontWeight: "bold",
+          }}
+        >
+          Dane do faktury
+        </Typography>
         {order?.order_type === OrderType.COMPANY ? (
           <>
             <Typography>{order?.billingAddress.company_name}</Typography>
@@ -23,12 +36,22 @@ function OrderAddresses({ order }: OrderAddressesProps) {
         )}
         <Typography>{order?.customer_email}</Typography>
         <Typography>{order?.billingAddress.phone}</Typography>
-        <Typography>{order?.billingAddress.street}</Typography>
+        <Typography>{generateOrderAddress(order?.billingAddress)}</Typography>
       </Box>
-      <Box>
-        <Typography>Dane do wysyłki:</Typography>
-        <Typography>Kurier DPD - 10 zł</Typography>
-        {order?.order_type === OrderType.COMPANY ? (
+      <Box
+        className={"flex flex-col border rounded p-4 gap-1 text-left"}
+        sx={{
+          borderColor: "background.default",
+        }}
+      >
+        <Typography
+          sx={{
+            fontWeight: "bold",
+          }}
+        >
+          Wysyłka
+        </Typography>
+        {order?.shippingAddress.customer_type === CustomerType.COMPANY ? (
           <>
             <Typography>{order?.shippingAddress.company_name}</Typography>
             <Typography>{order?.shippingAddress.nip}</Typography>
@@ -38,9 +61,9 @@ function OrderAddresses({ order }: OrderAddressesProps) {
             <Typography>{`${order?.shippingAddress.first_name} ${order?.shippingAddress.last_name}`}</Typography>
           </>
         )}
-        <Typography>{order?.customer_email}</Typography>
         <Typography>{order?.shippingAddress.phone}</Typography>
-        <Typography>{order?.shippingAddress.street}</Typography>
+        <Typography>{generateOrderAddress(order?.shippingAddress)}</Typography>
+        <Typography>Kurier DPD - 10 zł</Typography>
       </Box>
     </>
   );

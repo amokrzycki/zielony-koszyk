@@ -9,6 +9,7 @@ import ErrorView from "@/components/common/ErrorView.tsx";
 import OrderDetailsTable from "@/components/Accounts/Order/OrderDetailsTable.tsx";
 import OrderAddresses from "@/components/Accounts/Order/OrderAddresses.tsx";
 import InvoiceDownloadButton from "@/components/Order/InvoiceDownloadButton.tsx";
+import { OrderType } from "@/enums/OrderType.ts";
 
 function AccountOrderDetails() {
   const { orderId } = useParams();
@@ -33,14 +34,16 @@ function AccountOrderDetails() {
 
   return (
     <Box className={"text-center"}>
-      <Box id={"order-details"} className={"mt-1"}>
-        <Typography variant={"h5"} className={"font-bold"}>
-          Zamówienie numer {order?.order_id}
-        </Typography>
+      <Typography variant={"h5"} className={"font-bold"}>
+        Zamówienie numer {order?.order_id}
+      </Typography>
+      <Box id={"order-details"} className={"mt-1 flex gap-4"}>
         <Box
-          className={"flex flex-col items-start border rounded p-4 mt-4"}
+          className={
+            "flex border rounded p-4 mt-4 gap-4 justify-start items-center"
+          }
           sx={{
-            borderColor: "text.primary",
+            borderColor: "background.default",
           }}
         >
           <Box className={"flex flex-col items-start"}>
@@ -50,12 +53,20 @@ function AccountOrderDetails() {
             <Typography>
               Data złożenia zamówienia: {getFormattedDate(order?.order_date)}
             </Typography>
+            <Typography>
+              Typ zamówienia:{" "}
+              {order?.order_type === OrderType.COMPANY
+                ? "Firma"
+                : "Osoba prywatna"}
+            </Typography>
           </Box>
+        </Box>
+        <Box className={"flex gap-4 justify-end items-end"}>
           <InvoiceDownloadButton orderId={order.order_id} />
         </Box>
       </Box>
       <OrderDetailsTable orderDetails={orderDetails} />
-      <Box className={"flex gap-1 mt-2"}>
+      <Box className={"flex gap-1 mt-4"}>
         <OrderAddresses order={order} />
       </Box>
       <OrderStatusesInfo />

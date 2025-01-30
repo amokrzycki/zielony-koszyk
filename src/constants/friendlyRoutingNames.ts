@@ -12,4 +12,5 @@ export const friendlyRoutingNames: Record<string, string> = {
   "edycja-uzytkownika": "Edycja użytkownika",
   "dodaj-uzytkownika": "Dodaj użytkownika",
   "dodaj-adres": "Dodaj adres",
+  "edycja-danych-zamowienia": "Edycja danych zamówienia",
 };

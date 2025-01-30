@@ -37,7 +37,7 @@ export const accountReducers = {
         address.default,
     );
 
-    if (address) {
+    if (address && action.payload.default) {
       address.default = false;
     }
 

@@ -102,11 +102,13 @@ function AddressForm() {
     const updatedDetails: UpdateDetailsBody = {
       user_id: user.user_id,
       address_id: userAddress?.address_id || 1,
+      default: userAddress?.default || false,
       ...values,
     };
 
     const updatedAddress: Address = {
       ...userAddress,
+      default: userAddress?.default || false,
       ...values,
     };
 

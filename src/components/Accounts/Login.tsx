@@ -5,7 +5,8 @@ import LoginForm from "./LoginForm.tsx";
 import { useMode } from "@/providers/ModeProvider.tsx";
 
 function Login() {
-  const [tab, setTab] = useState<number>(0);
+  const query = new URLSearchParams(window.location.search);
+  const [tab, setTab] = useState<number>(query.get("tab") === "1" ? 1 : 0);
   const { mode } = useMode();
 
   const handleTabChange = (_: React.SyntheticEvent, tabNumber: number) => {

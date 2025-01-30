@@ -131,7 +131,7 @@ function UsersView() {
         <Button
           startIcon={<AddIcon />}
           onClick={() =>
-            navigate("/admin/zarzadzanie-klientami/dodaj-uzytkownika")
+            navigate("/admin/zarzadzanie-uzytkownikami/dodaj-uzytkownika")
           }
         >
           Dodaj użytkownika

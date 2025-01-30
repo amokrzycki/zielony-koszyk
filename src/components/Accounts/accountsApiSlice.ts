@@ -59,7 +59,7 @@ export const accountsApiSlice = baseApi.injectEndpoints({
         body,
       }),
     }),
-    changeUserAddress: builder.mutation({
+    changeUserAddress: builder.mutation<Address, UpdateDetailsBody>({
       query: (body: UpdateDetailsBody) => ({
         url: `users/change-address/${body.user_id}/address/${body.address_id}`,
         method: "PUT",

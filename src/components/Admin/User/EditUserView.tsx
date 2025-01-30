@@ -13,7 +13,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import ChangeUserAddress from "./ChangeUserAddress.tsx";
+import ChangeAddress from "./ChangeAddress.tsx";
 import { AddressType } from "@/enums/AddressType.ts";
 import ErrorView from "../../common/ErrorView.tsx";
 import { useChangeUserDetailsMutation } from "../../Accounts/accountsApiSlice.ts";
@@ -193,13 +193,13 @@ function EditUserView() {
         <Typography variant={"h6"} gutterBottom>
           Edytuj adres dostawy
         </Typography>
-        <ChangeUserAddress user={user} address={shippingAddress} />
+        <ChangeAddress user={user} address={shippingAddress} />
       </Box>
       <Box className={"flex flex-col items-center"}>
         <Typography variant={"h6"} gutterBottom>
           Edytuj adres rozliczeniowy
         </Typography>
-        <ChangeUserAddress user={user} address={billingAddress} />
+        <ChangeAddress user={user} address={billingAddress} />
       </Box>
     </Box>
   );
