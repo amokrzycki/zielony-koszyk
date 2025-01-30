@@ -185,6 +185,11 @@ function OrderItemsView() {
             <InvoiceDownloadButton orderId={order.order_id} />
           </Box>
         </Box>
+        {!order?.user_id && (
+          <Typography variant="h6" component="h2" sx={{ fontWeight: "bold" }}>
+            Zamówienie bez konta
+          </Typography>
+        )}
         <Typography variant="h6" component="h2">
           Data zamówienia: {getFormattedDate(order.order_date)}
         </Typography>
@@ -195,7 +200,10 @@ function OrderItemsView() {
           Kwota: {order.total_amount} PLN
         </Typography>
       </Box>
-      <Box className={"w-full overflow-x-auto mt-4"}>
+      <Typography variant="h5" component="h3" sx={{ mt: 2 }}>
+        Zarządzanie produktami w zamówieniu
+      </Typography>
+      <Box className={"w-full overflow-x-auto mt-2"}>
         <DataGrid
           disableRowSelectionOnClick
           checkboxSelection
