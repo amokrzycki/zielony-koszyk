@@ -8,6 +8,7 @@ import ProductInfo from "./ProductInfo.tsx";
 import toast from "react-hot-toast";
 import { NavLink } from "react-router-dom";
 import ProductPrice from "@/components/Products/ProductPrice.tsx";
+import { API_URL } from "@/constants/api.ts";
 
 interface ProductCardProps {
   product: Product;
@@ -36,7 +37,7 @@ function ProductCard({ product }: ProductCardProps) {
         className={"h-full left-0 top-0 absolute w-full z-[1]"}
       />
       <img
-        src={`http://localhost:3000/${product.image}`}
+        src={`${API_URL}/${product.image}`}
         alt="product-image"
         style={{ height: "200px" }}
       />

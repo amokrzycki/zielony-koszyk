@@ -23,6 +23,7 @@ import { Categories } from "@/enums/Categories.ts";
 import ConfirmDeleteModal from "../ConfirmDeleteModal.tsx";
 import ErrorView from "../../common/ErrorView.tsx";
 import UploadImageModal from "@/components/Admin/Products/UploadImageModal.tsx";
+import { API_URL } from "@/constants/api.ts";
 
 interface Row {
   id: number;
@@ -144,7 +145,7 @@ function ProductsView() {
       width: 150,
       renderCell: (params) => (
         <img
-          src={`http://localhost:3000/${params.value}`}
+          src={`${API_URL}/${params.value}`}
           alt="product"
           style={{ height: "50px" }}
         />
