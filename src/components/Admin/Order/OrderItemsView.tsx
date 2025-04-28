@@ -5,9 +5,10 @@ import Loading from "../../common/Loading.tsx";
 import {
   DataGrid,
   GridColDef,
+  GridRowSelectionModel,
   GridToolbarColumnsButton,
-  GridToolbarContainer,
   GridToolbarQuickFilter,
+  Toolbar,
 } from "@mui/x-data-grid";
 import { OrderItemResponse } from "@/types/OrderItemResponse.ts";
 import ConfirmDeleteModal from "../ConfirmDeleteModal.tsx";
@@ -49,7 +50,11 @@ function OrderItemsView() {
   } = useGetOrderQuery(orderId as string);
   const [openProductModal, setOpenProductModal] = useState(false);
   const [openConfirmDeleteModal, setOpenConfirmDeleteModal] = useState(false);
-  const [selectedRows, setSelectedRows] = useState<number[]>([]);
+  const [rowSelectionModel, setRowSelectionModel] =
+    useState<GridRowSelectionModel>({
+      type: "include",
+      ids: new Set<number>(),
+    });
   const [deleteOrderItems] = useRemoveOrderItemsMutation();
   const [updateOrderItems] = useUpdateOrderItemsMutation();
   const navigate = useNavigate();
@@ -68,21 +73,22 @@ function OrderItemsView() {
   }
 
   const onDelete = async () => {
-    if (selectedRows.length === 0) {
+    const ids = Array.from(rowSelectionModel.ids) as number[];
+    if (ids.length === 0) {
       toast.error("Nie wybrano zamówień do usunięcia.");
       return;
     }
 
     try {
       await toast.promise(
-        Promise.all(selectedRows.map((id) => deleteOrderItems(id).unwrap())),
+        Promise.all(ids.map((id) => deleteOrderItems(id).unwrap())),
         {
-          loading: `Usuwanie ${selectedRows.length >= 1 ? "elementu zamówienia" : "elementów zamówienia"}...`,
-          success: `${selectedRows.length >= 1 ? "Element zamówienia został usunięty." : "Elementy zamówienia zostały usunięte."}`,
-          error: `Wystąpił błąd podczas usuwania ${selectedRows.length >= 1 ? "elementu zamówienia" : "elementów zamówienia."}.`,
-        },
+          loading: `Usuwanie ${ids.length > 1 ? "elementów zamówienia" : "elementu zamówienia"}...`,
+          success: `${ids.length > 1 ? "Elementy zamówienia zostały usunięte." : "Element zamówienia został usunięty."}`,
+          error: `Wystąpił błąd podczas usuwania ${ids.length > 1 ? "elementów zamówienia." : "elementu zamówienia."}`,
+        }
       );
-      setSelectedRows([]);
+      setRowSelectionModel({ type: "include", ids: new Set<number>() });
     } catch (error) {
       console.error("Delete failed:", error);
       toast.error("Nie udało się usunąć.");
@@ -112,7 +118,7 @@ function OrderItemsView() {
           loading: "Aktualizowanie elementu zamówienia...",
           success: "Element zamówienia został zaktualizowany.",
           error: "Wystąpił błąd podczas aktualizowania elementu zamówienia.",
-        },
+        }
       );
       return updatedRow;
     } catch (error) {
@@ -123,7 +129,6 @@ function OrderItemsView() {
   };
 
   const columns: GridColDef[] = [
-    { field: "id", headerName: "ID produktu", width: 130 },
     {
       field: "product_name",
       headerName: "Nazwa produktu",
@@ -147,22 +152,20 @@ function OrderItemsView() {
     total: (orderDetail.quantity * parseFloat(orderDetail.price)).toFixed(2),
   }));
 
-  const CustomToolbar = () => {
-    return (
-      <GridToolbarContainer className={"flex justify-between"}>
-        <GridToolbarColumnsButton />
-        <Button startIcon={<AddIcon />} onClick={handleProductModalOpen}>
-          Dodaj produkt
+  const CustomToolbar = () => (
+    <Toolbar className={"flex justify-between"}>
+      <GridToolbarColumnsButton />
+      <Button startIcon={<AddIcon />} onClick={handleProductModalOpen}>
+        Dodaj produkt
+      </Button>
+      {rowSelectionModel.ids.size > 0 && (
+        <Button color="error" onClick={handleConfirmDeleteModalOpen}>
+          Usuń zaznaczone ({rowSelectionModel.ids.size})
         </Button>
-        {selectedRows.length > 0 && (
-          <Button color="error" onClick={handleConfirmDeleteModalOpen}>
-            Usuń zaznaczone ({selectedRows.length})
-          </Button>
-        )}
-        <GridToolbarQuickFilter debounceMs={300} />
-      </GridToolbarContainer>
-    );
-  };
+      )}
+      <GridToolbarQuickFilter debounceMs={300} />
+    </Toolbar>
+  );
 
   return (
     <Box className={"flex flex-col overflow-x-auto w-full"}>
@@ -207,13 +210,19 @@ function OrderItemsView() {
         <DataGrid
           disableRowSelectionOnClick
           checkboxSelection
+          showToolbar
           columns={columns}
           rows={rows}
           rowHeight={40}
           pageSizeOptions={[5, 10, 25, 50, 100]}
           sx={{ border: 0 }}
           slots={{ toolbar: CustomToolbar }}
+          rowSelectionModel={rowSelectionModel}
+          onRowSelectionModelChange={setRowSelectionModel}
           initialState={{
+            sorting: {
+              sortModel: [{ field: "id", sort: "asc" }],
+            },
             pagination: {
               paginationModel: {
                 pageSize: 10,
@@ -221,16 +230,13 @@ function OrderItemsView() {
             },
           }}
           processRowUpdate={handleProcessRowUpdate}
-          onRowSelectionModelChange={(newSelection) =>
-            setSelectedRows(newSelection as number[])
-          }
         />
       </Box>
       <ConfirmDeleteModal
         open={openConfirmDeleteModal}
         handleClose={handleConfirmDeleteModalClose}
         onConfirm={onDelete}
-        count={selectedRows.length}
+        count={rowSelectionModel.ids.size}
       />
       <AddOrderItemsModal
         open={openProductModal}

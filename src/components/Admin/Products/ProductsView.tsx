@@ -8,9 +8,10 @@ import Loading from "../../common/Loading.tsx";
 import {
   DataGrid,
   GridColDef,
+  GridRowSelectionModel,
   GridToolbarColumnsButton,
-  GridToolbarContainer,
   GridToolbarQuickFilter,
+  Toolbar,
 } from "@mui/x-data-grid";
 import Product from "../../../types/Product.ts";
 import capitalizeFirstLetter from "../../../helpers/capitalizeFirstLetter.ts";
@@ -41,7 +42,11 @@ function ProductsView() {
   const [openConfirmDeleteModal, setOpenConfirmDeleteModal] = useState(false);
   const [openUploadModal, setOpenUploadModal] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
-  const [selectedRows, setSelectedRows] = useState<number[]>([]);
+  const [rowSelectionModel, setRowSelectionModel] =
+    useState<GridRowSelectionModel>({
+      type: "include",
+      ids: new Set<number>(),
+    });
   const [deleteProduct] = useDeleteProductMutation();
   const [updateProduct] = useUpdateProductMutation();
 
@@ -66,21 +71,22 @@ function ProductsView() {
   }
 
   const onDelete = async () => {
-    if (selectedRows.length === 0) {
+    const ids = Array.from(rowSelectionModel.ids) as number[];
+    if (ids.length === 0) {
       toast.error("Nie wybrano produktów do usunięcia.");
       return;
     }
 
     try {
       await toast.promise(
-        Promise.all(selectedRows.map((id) => deleteProduct(id).unwrap())),
+        Promise.all(ids.map((id) => deleteProduct(id).unwrap())),
         {
-          loading: `Usuwanie ${selectedRows.length >= 1 ? "produktu" : "produktów"}...`,
-          success: `${selectedRows.length >= 1 ? "Produkt został usunięty." : "Produkty zostały usunięte."}`,
-          error: `Wystąpił błąd podczas usuwania ${selectedRows.length >= 1 ? "produktu" : "produktów"}.`,
-        },
+          loading: `Usuwanie ${ids.length >= 1 ? "produktu" : "produktów"}...`,
+          success: `${ids.length >= 1 ? "Produkt został usunięty." : "Produkty zostały usunięte."}`,
+          error: `Wystąpił błąd podczas usuwania ${ids.length >= 1 ? "produktu" : "produktów"}.`,
+        }
       );
-      setSelectedRows([]);
+      setRowSelectionModel({ type: "include", ids: new Set<number>() });
     } catch (error) {
       console.error("Delete failed:", error);
       toast.error("Nie udało się usunąć.");
@@ -114,7 +120,7 @@ function ProductsView() {
           loading: "Aktualizowanie produktu...",
           success: "Produkt został zaktualizowany.",
           error: "Wystąpił błąd podczas aktualizacji produktu.",
-        },
+        }
       );
 
       return updatedRow;
@@ -161,7 +167,7 @@ function ProductsView() {
           color="primary"
           onClick={() => {
             setSelectedProduct(
-              products?.find((p) => p.product_id === params.id) || null,
+              products?.find((p) => p.product_id === params.id) || null
             );
             handleUploadModalOpen();
           }}
@@ -185,19 +191,20 @@ function ProductsView() {
   }));
 
   const CustomToolbar = () => {
+    const ids = Array.from(rowSelectionModel.ids) as number[];
     return (
-      <GridToolbarContainer className={"flex justify-between"}>
+      <Toolbar className={"flex justify-between"}>
         <GridToolbarColumnsButton />
         <Button startIcon={<AddIcon />} onClick={handleProductModalOpen}>
           Dodaj produkt
         </Button>
-        {selectedRows.length > 0 && (
+        {ids.length > 0 && (
           <Button color="error" onClick={handleConfirmDeleteModalOpen}>
-            Usuń zaznaczone ({selectedRows.length})
+            Usuń zaznaczone ({ids.length})
           </Button>
         )}
         <GridToolbarQuickFilter debounceMs={300} />
-      </GridToolbarContainer>
+      </Toolbar>
     );
   };
 
@@ -211,6 +218,7 @@ function ProductsView() {
         <DataGrid
           disableRowSelectionOnClick
           checkboxSelection
+          showToolbar
           columns={columns}
           rows={rows}
           rowHeight={40}
@@ -218,6 +226,9 @@ function ProductsView() {
           sx={{ border: 0 }}
           slots={{ toolbar: CustomToolbar }}
           initialState={{
+            sorting: {
+              sortModel: [{ field: "id", sort: "asc" }],
+            },
             pagination: {
               paginationModel: {
                 pageSize: 10,
@@ -225,9 +236,8 @@ function ProductsView() {
             },
           }}
           processRowUpdate={handleProcessRowUpdate}
-          onRowSelectionModelChange={(newSelection) =>
-            setSelectedRows(newSelection as number[])
-          }
+          rowSelectionModel={rowSelectionModel}
+          onRowSelectionModelChange={setRowSelectionModel}
         />
       </Box>
       <AddProductModal
@@ -238,7 +248,7 @@ function ProductsView() {
         open={openConfirmDeleteModal}
         handleClose={handleConfirmDeleteModalClose}
         onConfirm={onDelete}
-        count={selectedRows.length}
+        count={rowSelectionModel.ids.size}
       />
       <UploadImageModal
         open={openUploadModal}
