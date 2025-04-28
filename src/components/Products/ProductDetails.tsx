@@ -12,6 +12,7 @@ import toast from "react-hot-toast";
 import FeaturedProducts from "@/components/Products/FeaturedProducts.tsx";
 import ProductPrice from "@/components/Products/ProductPrice.tsx";
 import ProductInfo from "@/components/Products/ProductInfo.tsx";
+import { API_URL } from "@/constants/api.ts";
 
 function ProductDetails() {
   const { productId } = useParams();
@@ -56,7 +57,7 @@ function ProductDetails() {
           <Box className={"mt-4 flex xl:justify-between max-xl:flex-col"}>
             <Box className={"flex flex-col max-xl:items-center"}>
               <img
-                src={`http://localhost:3000/${product.image}`}
+                src={`${API_URL}/${product.image}`}
                 alt={product.name}
                 style={{ height: "400px", width: "400px" }}
               />
