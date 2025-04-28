@@ -9,9 +9,10 @@ import toast from "react-hot-toast";
 import {
   DataGrid,
   GridColDef,
+  GridRowSelectionModel,
   GridToolbarColumnsButton,
-  GridToolbarContainer,
   GridToolbarQuickFilter,
+  Toolbar,
 } from "@mui/x-data-grid";
 import { Box, Button, IconButton, Typography } from "@mui/material";
 import User from "../../../types/User.ts";
@@ -29,7 +30,11 @@ function UsersView() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const [openConfirmDeleteModal, setOpenConfirmDeleteModal] = useState(false);
-  const [selectedRows, setSelectedRows] = useState<string[]>([]);
+  const [rowSelectionModel, setRowSelectionModel] =
+    useState<GridRowSelectionModel>({
+      type: "include",
+      ids: new Set<string>(),
+    });
   const [deleteUsers] = useDeleteUsersMutation();
 
   const handleConfirmDeleteModalOpen = () => setOpenConfirmDeleteModal(true);
@@ -44,21 +49,22 @@ function UsersView() {
   }
 
   const onDelete = async () => {
-    if (selectedRows.length === 0) {
+    const ids = Array.from(rowSelectionModel.ids) as string[];
+    if (ids.length === 0) {
       toast.error("Nie wybrano zamówień do usunięcia.");
       return;
     }
 
     try {
       await toast.promise(
-        Promise.all(selectedRows.map((id) => deleteUsers(id).unwrap())),
+        Promise.all(ids.map((id) => deleteUsers(id).unwrap())),
         {
-          loading: `Usuwanie ${selectedRows.length >= 1 ? "użytkownika" : "użytkowników"}...`,
-          success: `${selectedRows.length >= 1 ? "Użytkownik został usunięty." : "Użytkownicy zostali usunięci."}`,
-          error: `Wystąpił błąd podczas usuwania ${selectedRows.length >= 1 ? "użytkownika" : "użytkowników"}.`,
-        },
+          loading: `Usuwanie ${ids.length >= 1 ? "użytkownika" : "użytkowników"}...`,
+          success: `${ids.length >= 1 ? "Użytkownik został usunięty." : "Użytkownicy zostali usunięci."}`,
+          error: `Wystąpił błąd podczas usuwania ${ids.length >= 1 ? "użytkownika" : "użytkowników"}.`,
+        }
       );
-      setSelectedRows([]);
+      setRowSelectionModel({ type: "include", ids: new Set<string>() });
     } catch (error) {
       console.error("Delete failed:", error);
       toast.error("Nie udało się usunąć.");
@@ -103,11 +109,11 @@ function UsersView() {
 
   const rows = users.map((user: User) => {
     const billingAddress = user.addresses.find(
-      (address) => address.type === AddressType.BILLING,
+      (address) => address.type === AddressType.BILLING
     );
 
     const shippingAddress = user.addresses.find(
-      (address) => address.type === AddressType.DELIVERY,
+      (address) => address.type === AddressType.DELIVERY
     );
 
     return {
@@ -125,8 +131,9 @@ function UsersView() {
   });
 
   const CustomToolbar = () => {
+    const ids = Array.from(rowSelectionModel.ids) as string[];
     return (
-      <GridToolbarContainer className={"flex justify-between"}>
+      <Toolbar className={"flex justify-between"}>
         <GridToolbarColumnsButton />
         <Button
           startIcon={<AddIcon />}
@@ -136,13 +143,13 @@ function UsersView() {
         >
           Dodaj użytkownika
         </Button>
-        {selectedRows.length > 0 && (
+        {ids.length > 0 && (
           <Button color="error" onClick={handleConfirmDeleteModalOpen}>
-            Usuń zaznaczone ({selectedRows.length})
+            Usuń zaznaczone ({ids.length})
           </Button>
         )}
         <GridToolbarQuickFilter debounceMs={300} />
-      </GridToolbarContainer>
+      </Toolbar>
     );
   };
 
@@ -160,6 +167,7 @@ function UsersView() {
         <DataGrid
           disableRowSelectionOnClick
           checkboxSelection
+          showToolbar
           columns={columns}
           rows={rows}
           rowHeight={40}
@@ -167,22 +175,24 @@ function UsersView() {
           sx={{ border: 0 }}
           slots={{ toolbar: CustomToolbar }}
           initialState={{
+            sorting: {
+              sortModel: [{ field: "id", sort: "asc" }],
+            },
             pagination: {
               paginationModel: {
                 pageSize: 10,
               },
             },
           }}
-          onRowSelectionModelChange={(newSelection) =>
-            setSelectedRows(newSelection as string[])
-          }
+          rowSelectionModel={rowSelectionModel}
+          onRowSelectionModelChange={setRowSelectionModel}
         />
       </Box>
       <ConfirmDeleteModal
         open={openConfirmDeleteModal}
         handleClose={handleConfirmDeleteModalClose}
         onConfirm={onDelete}
-        count={selectedRows.length}
+        count={rowSelectionModel.ids.size}
       />
     </Box>
   );

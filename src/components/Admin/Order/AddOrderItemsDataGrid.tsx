@@ -138,8 +138,8 @@ function AddOrderItemsDataGrid({
                 onClick={() => {
                   setOrderItems(
                     orderItems.filter(
-                      (item) => item.product_id !== orderItem.product_id,
-                    ),
+                      (item) => item.product_id !== orderItem.product_id
+                    )
                   );
                 }}
               >
@@ -154,6 +154,7 @@ function AddOrderItemsDataGrid({
         <Box className={"w-full overflow-x-auto"}>
           <DataGrid
             disableRowSelectionOnClick
+            showToolbar
             columns={columns}
             rows={rows}
             rowHeight={40}
@@ -161,6 +162,9 @@ function AddOrderItemsDataGrid({
             sx={{ border: 0 }}
             slots={{ toolbar: CustomToolbar }}
             initialState={{
+              sorting: {
+                sortModel: [{ field: "id", sort: "asc" }],
+              },
               pagination: {
                 paginationModel: {
                   pageSize: 10,
