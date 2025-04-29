@@ -9,7 +9,7 @@ import useProductFilters from "@/hooks/useProductFilters.ts";
 import FiltersPagination from "@/components/Filters/FiltersPagination.tsx";
 import GoToTop from "@/components/Products/GoToTop.tsx";
 
-function Products() {
+function ProductsList() {
   const { filters } = useProductFilters();
   const fetchedProducts = useGetProductsByParamsQuery(filters);
   const { data, error, isLoading, isFetching } = fetchedProducts;
@@ -31,9 +31,13 @@ function Products() {
 
   return (
     <Box id="main-wrapper">
-      <Box className={"main-container flex"}>
+      <Box
+        className={
+          "main-container flex lg:flex-row flex-col items-center lg:items-start"
+        }
+      >
         <FiltersBox />
-        <Box className={"flex flex-col ml-4 w-full"}>
+        <Box className={"flex flex-col lg:ml-4 w-full"}>
           <FiltersBar
             pagination={<FiltersPagination totalCount={data?.totalPages} />}
           />
@@ -73,4 +77,4 @@ function Products() {
   );
 }
 
-export default Products;
+export default ProductsList;

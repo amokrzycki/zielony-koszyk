@@ -223,7 +223,7 @@ function ProductsView() {
           rows={rows}
           rowHeight={40}
           pageSizeOptions={[5, 10, 25, 50, 100]}
-          sx={{ border: 0 }}
+          sx={{ border: 0, bgcolor: "background.paper" }}
           slots={{ toolbar: CustomToolbar }}
           initialState={{
             sorting: {

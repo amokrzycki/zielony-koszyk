@@ -12,7 +12,9 @@ function FiltersBar({ pagination }: FiltersBarProps) {
   return (
     <Box
       id="search-wrapper"
-      className={"flex justify-between items-center gap-2 p-8 rounded-2xl"}
+      className={
+        "flex flex-wrap sm:justify-between items-center gap-8 sm:gap-2 p-8 rounded-2xl justify-center"
+      }
       sx={{
         bgcolor: "background.paper",
       }}

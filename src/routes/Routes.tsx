@@ -1,6 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
 import Homepage from "../components/Homepage.tsx";
-import Products from "../components/Products/Products.tsx";
+import ProductsList from "../components/Products/ProductsList.tsx";
 import About from "../components/About.tsx";
 import Cart from "../components/Cart/Cart.tsx";
 import OrderDetails from "../components/Order/OrderDetails.tsx";
@@ -33,7 +33,7 @@ const routes: Route[] = [
     children: [
       {
         path: "*",
-        element: <Products />,
+        element: <ProductsList />,
       },
       {
         path: ":productId",

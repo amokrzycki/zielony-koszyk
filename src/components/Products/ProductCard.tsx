@@ -25,13 +25,17 @@ function ProductCard({ product }: ProductCardProps) {
         name: product.name,
         quantity: quantity,
         price: product.price,
-      }),
+      })
     );
     toast.success("Produkt zostały dodany do koszyka");
   };
 
   return (
-    <Box className={"flex w-300 border-b-2 p-4 relative"}>
+    <Box
+      className={
+        "flex border-b-2 p-4 relative border-gray-200 flex-wrap lg:flex-nowrap justify-center"
+      }
+    >
       <NavLink
         to={`/produkty/${product.product_id}`}
         className={"h-full left-0 top-0 absolute w-full z-[1]"}
@@ -41,11 +45,16 @@ function ProductCard({ product }: ProductCardProps) {
         alt="product-image"
         style={{ height: "200px" }}
       />
-      <Box className={"grid w-full"}>
-        <ProductInfo product={product} classNames={"ml-4"} />
+      <Box className={"grid w-full gap-4 lg:gap-0"}>
+        <ProductInfo
+          product={product}
+          classNames={
+            "lg:ml-4 lg:justify-self-start flex flex-col items-center lg:items-start"
+          }
+        />
         <Box
           className={
-            "flex flex-col justify-between items-center gap-2 justify-self-end z-10"
+            "flex flex-col justify-between items-center gap-2 lg:justify-self-end z-10"
           }
         >
           <ProductPrice price={product.price} quantity={quantity} />

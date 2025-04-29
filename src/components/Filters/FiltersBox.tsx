@@ -30,7 +30,7 @@ function FiltersBox() {
 
   const handlePriceChangeCommitted = (
     _event: React.SyntheticEvent | Event,
-    newValue: number | number[],
+    newValue: number | number[]
   ) => {
     if (Array.isArray(newValue)) {
       const [minVal, maxVal] = newValue as [number, number];
@@ -42,7 +42,7 @@ function FiltersBox() {
 
   return (
     <Box
-      className={"flex-col p-8 h-1/3 rounded-2xl w-1/4"}
+      className={"flex-col p-8 h-1/3 rounded-2xl w-full sm:w-[400px] mb-4"}
       sx={{ bgcolor: "background.paper" }}
     >
       <Typography variant="h5" component="h2" gutterBottom>
