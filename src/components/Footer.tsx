@@ -10,16 +10,15 @@ function Footer() {
         padding: "20px",
         marginTop: "auto",
         textAlign: "center",
-      }}
-    >
+      }}>
       <Grid container spacing={2}>
         <Grid size={{ xs: 12, sm: 3 }}>
           <Typography variant="h6" gutterBottom>
             Zielony koszyk
           </Typography>
           <Typography variant="body2">
-            Zielony Koszyk oferuje warzywa i owoce, jak również susze, grochy,
-            przyprawy, oliwę z oliwek oraz inne produkty greckie.
+            Zielony Koszyk oferuje warzywa i owoce, jak również susze, grochy, przyprawy, oliwę z oliwek oraz inne
+            produkty greckie.
           </Typography>
         </Grid>
         <Grid size={{ xs: 12, sm: 3 }}>

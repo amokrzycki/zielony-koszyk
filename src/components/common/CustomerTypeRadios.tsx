@@ -1,11 +1,4 @@
-import {
-  Box,
-  FormControl,
-  FormControlLabel,
-  FormHelperText,
-  Radio,
-  Typography,
-} from "@mui/material";
+import { Box, FormControl, FormControlLabel, FormHelperText, Radio, Typography } from "@mui/material";
 import { CustomerType } from "@/enums/CustomerType.ts";
 
 interface CustomerTypeRadiosProps {
@@ -15,12 +8,7 @@ interface CustomerTypeRadiosProps {
   touched?: boolean;
 }
 
-function CustomerTypeRadios({
-  customerType,
-  setCustomerType,
-  error,
-  touched,
-}: CustomerTypeRadiosProps) {
+function CustomerTypeRadios({ customerType, setCustomerType, error, touched }: CustomerTypeRadiosProps) {
   return (
     <Box className="flex items-center">
       <Typography variant="body1" sx={{ mr: "1em" }}>
@@ -32,8 +20,7 @@ function CustomerTypeRadios({
         error={Boolean(error) && touched}
         component="fieldset"
         variant="standard"
-        sx={{ display: "flex", flexDirection: "row" }}
-      >
+        sx={{ display: "flex", flexDirection: "row" }}>
         <FormControlLabel
           control={
             <Radio

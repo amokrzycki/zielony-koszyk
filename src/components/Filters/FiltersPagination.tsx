@@ -1,6 +1,6 @@
 import { Pagination } from "@mui/material";
 import useProductFilters from "@/hooks/useProductFilters.ts";
-import { ChangeEvent } from "react";
+import type { ChangeEvent } from "react";
 
 interface FiltersPageProps {
   totalCount: number | undefined;
@@ -14,13 +14,7 @@ function FiltersPagination({ totalCount }: FiltersPageProps) {
   };
 
   return (
-    <Pagination
-      count={totalCount}
-      color="primary"
-      page={filters.page}
-      onChange={handleChange}
-      hidden={!totalCount}
-    />
+    <Pagination count={totalCount} color="primary" page={filters.page} onChange={handleChange} hidden={!totalCount} />
   );
 }
 

@@ -1,7 +1,7 @@
 import { baseApi } from "@/api/api.ts";
-import Product from "@/types/Product.ts";
-import { ProductParams } from "@/types/ProductParams.ts";
-import { PageableProducts } from "@/types/PageableProducts.ts";
+import type Product from "@/types/Product.ts";
+import type { ProductParams } from "@/types/ProductParams.ts";
+import type { PageableProducts } from "@/types/PageableProducts.ts";
 
 export const productsApiSlice = baseApi.injectEndpoints({
   endpoints: (builder) => ({
@@ -34,10 +34,7 @@ export const productsApiSlice = baseApi.injectEndpoints({
         method: "GET",
       }),
     }),
-    createProduct: builder.mutation<
-      Product,
-      { product: Partial<Product>; file: File | null }
-    >({
+    createProduct: builder.mutation<Product, { product: Partial<Product>; file: File | null }>({
       query: ({ product, file }) => {
         const formData = new FormData();
         formData.append("product", JSON.stringify(product));

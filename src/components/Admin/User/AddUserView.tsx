@@ -1,10 +1,5 @@
 import { useCreateUserFromAdminMutation } from "../../Accounts/accountsApiSlice.ts";
-import {
-  validateEmail,
-  validateFirstName,
-  validateLastName,
-  validateNumber,
-} from "@/helpers/validators.ts";
+import { validateEmail, validateFirstName, validateLastName, validateNumber } from "@/helpers/validators.ts";
 import { useForm } from "@mantine/form";
 import toast from "react-hot-toast";
 import {
@@ -18,7 +13,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { CreateUserFromAdmin } from "@/types/CreateUserFromAdmin.ts";
+import type { CreateUserFromAdmin } from "@/types/CreateUserFromAdmin.ts";
 import { useNavigate } from "react-router-dom";
 import { Roles } from "@/enums/Roles.ts";
 
@@ -94,8 +89,7 @@ function AddUserView() {
     <form
       onSubmit={form.onSubmit((values) => {
         handleSubmit(values);
-      })}
-    >
+      })}>
       <Box className={"flex flex-col justify-center items-center"}>
         <Typography variant="h4" component="h1" gutterBottom>
           Dodaj użytkownika
@@ -106,9 +100,7 @@ function AddUserView() {
             label="Imię"
             placeholder={"Jan"}
             {...form.getInputProps("firstName")}
-            error={
-              Boolean(form.errors.firstName) && form.isTouched("firstName")
-            }
+            error={Boolean(form.errors.firstName) && form.isTouched("firstName")}
             helperText={form.errors.firstName}
             sx={{ marginRight: "1em" }}
           />
@@ -126,23 +118,17 @@ function AddUserView() {
           margin={"normal"}
           required
           error={Boolean(form.errors.role) && form.isTouched("role")}
-          sx={{ width: "300px" }}
-        >
+          sx={{ width: "300px" }}>
           <InputLabel id="role-label">Rola</InputLabel>
           <Select
             labelId={"role-label"}
             label={"Rola"}
             value={form.values.role}
-            onChange={(e) =>
-              form.setFieldValue("role", e.target.value as Roles)
-            }
-          >
+            onChange={(e) => form.setFieldValue("role", e.target.value as Roles)}>
             <MenuItem value={Roles.ADMIN}>Administrator</MenuItem>
             <MenuItem value={Roles.USER}>Użytkownik</MenuItem>
           </Select>
-          {Boolean(form.errors.role) && form.isTouched("role") && (
-            <FormHelperText>{form.errors.role}</FormHelperText>
-          )}
+          {Boolean(form.errors.role) && form.isTouched("role") && <FormHelperText>{form.errors.role}</FormHelperText>}
         </FormControl>
         <TextField
           variant={"outlined"}
@@ -176,10 +162,7 @@ function AddUserView() {
             placeholder={"1A"}
             {...form.getInputProps("buildingNumber")}
             helperText={form.errors.buldingNumber}
-            error={
-              Boolean(form.errors.buildingNumber) &&
-              form.isTouched("buildingNumber")
-            }
+            error={Boolean(form.errors.buildingNumber) && form.isTouched("buildingNumber")}
             sx={{ marginRight: "1em" }}
           />
           <TextField
@@ -188,9 +171,7 @@ function AddUserView() {
             placeholder={"150"}
             {...form.getInputProps("flatNumber")}
             helperText={form.errors.flatNumber}
-            error={
-              Boolean(form.errors.flatNumber) && form.isTouched("flatNumber")
-            }
+            error={Boolean(form.errors.flatNumber) && form.isTouched("flatNumber")}
           />
         </Box>
         <Box>
@@ -212,12 +193,7 @@ function AddUserView() {
             error={Boolean(form.errors.city) && form.isTouched("city")}
           />
         </Box>
-        <Button
-          type={"submit"}
-          variant={"contained"}
-          sx={{ mt: "1em" }}
-          disabled={!isValid && form.isTouched()}
-        >
+        <Button type={"submit"} variant={"contained"} sx={{ mt: "1em" }} disabled={!isValid && form.isTouched()}>
           Utwórz użytkownika
         </Button>
       </Box>

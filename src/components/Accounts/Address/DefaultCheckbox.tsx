@@ -1,4 +1,4 @@
-import { Address } from "@/types/Address.ts";
+import type { Address } from "@/types/Address.ts";
 import { FormControlLabel } from "@mui/material";
 import Checkbox from "@mui/material/Checkbox";
 import { useChangeUserAddressMutation } from "@/components/Accounts/accountsApiSlice.ts";
@@ -39,10 +39,7 @@ function DefaultCheckbox({ address, userId }: DefaultCheckboxProps) {
   return (
     <>
       {address.default ? (
-        <FormControlLabel
-          control={<Checkbox checked={address.default} />}
-          label={"Domyślny"}
-        />
+        <FormControlLabel control={<Checkbox checked={address.default} />} label={"Domyślny"} />
       ) : (
         <FormControlLabel
           control={<Checkbox checked={address.default} />}

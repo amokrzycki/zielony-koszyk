@@ -1,6 +1,6 @@
-import { OrderType } from "@/enums/OrderType.ts";
-import { Address } from "@/types/Address.ts";
-import { OrderItem } from "@/types/OrderItem.ts";
+import type { OrderType } from "@/enums/OrderType.ts";
+import type { Address } from "@/types/Address.ts";
+import type { OrderItem } from "@/types/OrderItem.ts";
 
 export interface Order {
   order_id: number;

@@ -1,4 +1,4 @@
-import { Route } from "./Routes.tsx";
+import type { Route } from "./Routes.tsx";
 import AccountOptions from "../components/Accounts/AccountOptions.tsx";
 import AddressBook from "../components/Accounts/Address/AddressBook.tsx";
 import AddressForm from "../components/Accounts/Address/AddressForm.tsx";

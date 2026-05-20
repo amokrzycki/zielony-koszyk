@@ -1,4 +1,4 @@
-import { cartReducers, CartState } from "@/reducers/cartReducers.ts";
+import { cartReducers, type CartState } from "@/reducers/cartReducers.ts";
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState: CartState = {
@@ -12,10 +12,4 @@ export const cartSlice = createSlice({
   reducers: cartReducers,
 });
 
-export const {
-  addItem,
-  removeItem,
-  changeQuantity,
-  calculateTotalAmount,
-  clearCart,
-} = cartSlice.actions;
+export const { addItem, removeItem, changeQuantity, calculateTotalAmount, clearCart } = cartSlice.actions;

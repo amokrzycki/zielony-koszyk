@@ -2,7 +2,7 @@ import { Box, Button, Typography } from "@mui/material";
 import { Outlet, useNavigate } from "react-router-dom";
 import Navigation from "./Navigation.tsx";
 import { useAppSelector } from "@/hooks/hooks.ts";
-import { RootState } from "@/store/store.ts";
+import type { RootState } from "@/store/store.ts";
 import AutoBreadcrumbs from "../AutoBreadcrumbs.tsx";
 
 function MainView() {
@@ -17,8 +17,7 @@ function MainView() {
           sx={{
             textAlign: "center",
             bgcolor: "background.paper",
-          }}
-        >
+          }}>
           <Box className="main-container" sx={{ mt: 0 }}>
             <Typography variant="h4" gutterBottom>
               Zaloguj się, aby uruchomić panel administracyjny
@@ -29,8 +28,7 @@ function MainView() {
               size="large"
               onClick={() => {
                 navigate("/login");
-              }}
-            >
+              }}>
               Zaloguj się
             </Button>
           </Box>
@@ -45,8 +43,7 @@ function MainView() {
         className={"main-container"}
         sx={{
           bgcolor: "background.paper",
-        }}
-      >
+        }}>
         <Box className={"main-container"} sx={{ mt: 0 }}>
           <AutoBreadcrumbs />
           <Box id={"view-wrapper"} className={"mt-4 flex gap-4 w-full"}>

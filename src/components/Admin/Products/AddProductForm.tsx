@@ -1,18 +1,9 @@
 import { useForm } from "@mantine/form";
 import { Categories } from "@/enums/Categories.ts";
-import {
-  Box,
-  Button,
-  FormControl,
-  FormHelperText,
-  InputLabel,
-  MenuItem,
-  Select,
-  TextField,
-} from "@mui/material";
+import { Box, Button, FormControl, FormHelperText, InputLabel, MenuItem, Select, TextField } from "@mui/material";
 import { useCreateProductMutation } from "../../Products/productsApiSlice.ts";
 import toast from "react-hot-toast";
-import { ChangeEvent, useState } from "react";
+import { type ChangeEvent, useState } from "react";
 
 interface IAddProductFormValues {
   name: string;
@@ -30,12 +21,9 @@ function AddProductForm({ handleClose }: AddProductFormProps) {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [createProduct] = useCreateProductMutation();
   const validate = {
-    name: (value: string) =>
-      value.trim().length > 0 ? undefined : "Podaj nazwę produktu",
-    description: (value: string) =>
-      value.trim().length > 0 ? undefined : "Podaj opis produktu",
-    stock_quantity: (value: number) =>
-      value > 0 ? undefined : "Podaj ilość w magazynie",
+    name: (value: string) => (value.trim().length > 0 ? undefined : "Podaj nazwę produktu"),
+    description: (value: string) => (value.trim().length > 0 ? undefined : "Podaj opis produktu"),
+    stock_quantity: (value: number) => (value > 0 ? undefined : "Podaj ilość w magazynie"),
     price: (value: number) => (value > 0 ? undefined : "Podaj cenę"),
   };
 
@@ -82,8 +70,7 @@ function AddProductForm({ handleClose }: AddProductFormProps) {
     <form
       onSubmit={form.onSubmit((values) => {
         handleSubmit(values);
-      })}
-    >
+      })}>
       <TextField
         {...form.getInputProps("name")}
         label="Nazwa produktu"
@@ -100,9 +87,7 @@ function AddProductForm({ handleClose }: AddProductFormProps) {
         variant="outlined"
         required
         fullWidth
-        error={
-          Boolean(form.errors.description) && form.isTouched("description")
-        }
+        error={Boolean(form.errors.description) && form.isTouched("description")}
         helperText={form.errors.description}
         sx={{ mb: "1em" }}
       />
@@ -112,10 +97,7 @@ function AddProductForm({ handleClose }: AddProductFormProps) {
         variant="outlined"
         required
         fullWidth
-        error={
-          Boolean(form.errors.stock_quantity) &&
-          form.isTouched("stock_quantity")
-        }
+        error={Boolean(form.errors.stock_quantity) && form.isTouched("stock_quantity")}
         helperText={form.errors.stock_quantity}
         sx={{ mb: "1em" }}
       />
@@ -133,18 +115,14 @@ function AddProductForm({ handleClose }: AddProductFormProps) {
         margin="normal"
         fullWidth
         required
-        error={Boolean(form.errors.category) && form.isTouched("category")}
-      >
+        error={Boolean(form.errors.category) && form.isTouched("category")}>
         <InputLabel id="category-label">Kategoria</InputLabel>
         <Select
           labelId="category-label"
           label="Kategoria"
           value={form.values.category}
-          onChange={(event) =>
-            form.setFieldValue("category", event.target.value as Categories)
-          }
-          onBlur={() => form.setTouched}
-        >
+          onChange={(event) => form.setFieldValue("category", event.target.value as Categories)}
+          onBlur={() => form.setTouched}>
           <MenuItem value={Categories.FRUITS}>Owoce</MenuItem>
           <MenuItem value={Categories.VEGETABLES}>Warzywa</MenuItem>
           <MenuItem value={Categories.OTHERS}>Inne</MenuItem>
@@ -155,19 +133,14 @@ function AddProductForm({ handleClose }: AddProductFormProps) {
           <FormHelperText>{form.errors.category}</FormHelperText>
         )}
       </FormControl>
-      <input
-        type="file"
-        onChange={handleFileChange}
-        style={{ margin: "1em 0" }}
-      />
+      <input type="file" onChange={handleFileChange} style={{ margin: "1em 0" }} />
       <Box className={"flex w-full justify-center"}>
         <Button
           type="submit"
           variant="outlined"
           color="primary"
           disabled={!isValid && form.isTouched()}
-          sx={{ mt: "1em" }}
-        >
+          sx={{ mt: "1em" }}>
           Dodaj produkt
         </Button>
       </Box>

@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import type React from "react";
+import { useState, useEffect } from "react";
 import { Box, Typography, Stack, Slider, Button } from "@mui/material";
 import useProductFilters from "@/hooks/useProductFilters";
 import CategoryList from "@/components/Filters/CategoryList.tsx";
@@ -8,18 +9,12 @@ function FiltersBox() {
 
   const { priceMin, priceMax } = filters;
 
-  const [priceRange, setPriceRange] = useState<[number, number]>([
-    priceMin ?? 0,
-    priceMax ?? 500,
-  ]);
+  const [priceRange, setPriceRange] = useState<[number, number]>([priceMin ?? 0, priceMax ?? 500]);
 
   const isPriceRangeSet = priceRange[0] !== 0 || priceRange[1] !== 500;
 
   useEffect(() => {
-    setPriceRange([
-      typeof priceMin === "number" ? priceMin : 0,
-      typeof priceMax === "number" ? priceMax : 500,
-    ]);
+    setPriceRange([typeof priceMin === "number" ? priceMin : 0, typeof priceMax === "number" ? priceMax : 500]);
   }, [priceMin, priceMax]);
 
   const handlePriceChange = (_event: Event, newValue: number | number[]) => {
@@ -28,10 +23,7 @@ function FiltersBox() {
     }
   };
 
-  const handlePriceChangeCommitted = (
-    _event: React.SyntheticEvent | Event,
-    newValue: number | number[],
-  ) => {
+  const handlePriceChangeCommitted = (_event: React.SyntheticEvent | Event, newValue: number | number[]) => {
     if (Array.isArray(newValue)) {
       const [minVal, maxVal] = newValue as [number, number];
       setParam("priceMin", minVal.toString());
@@ -41,10 +33,7 @@ function FiltersBox() {
   };
 
   return (
-    <Box
-      className={"flex-col p-8 h-1/3 rounded-2xl w-1/4"}
-      sx={{ bgcolor: "background.paper" }}
-    >
+    <Box className={"flex-col p-8 h-1/3 rounded-2xl w-1/4"} sx={{ bgcolor: "background.paper" }}>
       <Typography variant="h5" component="h2" gutterBottom>
         Kategoria
       </Typography>
@@ -75,8 +64,7 @@ function FiltersBox() {
               setParam("priceMax", "500");
               setParam("page", "1");
             }}
-            variant={"text"}
-          >
+            variant={"text"}>
             Resetuj
           </Button>
         )}

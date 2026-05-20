@@ -1,4 +1,4 @@
-import { Order } from "@/types/Order.ts";
+import type { Order } from "@/types/Order.ts";
 import { Box, Typography } from "@mui/material";
 import { OrderType } from "@/enums/OrderType.ts";
 import { CustomerType } from "@/enums/CustomerType.ts";
@@ -15,13 +15,11 @@ function OrderAddresses({ order }: OrderAddressesProps) {
         className={"flex flex-col border rounded p-4 gap-1 text-left"}
         sx={{
           borderColor: "background.default",
-        }}
-      >
+        }}>
         <Typography
           sx={{
             fontWeight: "bold",
-          }}
-        >
+          }}>
           Dane do faktury
         </Typography>
         {order?.order_type === OrderType.COMPANY ? (
@@ -42,13 +40,11 @@ function OrderAddresses({ order }: OrderAddressesProps) {
         className={"flex flex-col border rounded p-4 gap-1 text-left"}
         sx={{
           borderColor: "background.default",
-        }}
-      >
+        }}>
         <Typography
           sx={{
             fontWeight: "bold",
-          }}
-        >
+          }}>
           Wysyłka
         </Typography>
         {order?.shippingAddress.customer_type === CustomerType.COMPANY ? (

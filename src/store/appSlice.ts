@@ -1,5 +1,5 @@
-import { Address } from "../types/Address.ts";
-import User from "../types/User.ts";
+import type { Address } from "../types/Address.ts";
+import type User from "../types/User.ts";
 import { createSlice } from "@reduxjs/toolkit";
 import { appReducers } from "../reducers/appReducers.ts";
 
@@ -19,9 +19,4 @@ export const appSlice = createSlice({
   reducers: appReducers,
 });
 
-export const {
-  setAddressToEdit,
-  clearAddressToEdit,
-  setUserToEdit,
-  clearUserToEdit,
-} = appSlice.actions;
+export const { setAddressToEdit, clearAddressToEdit, setUserToEdit, clearUserToEdit } = appSlice.actions;

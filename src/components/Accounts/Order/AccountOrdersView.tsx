@@ -1,9 +1,9 @@
 import { Box, CircularProgress, Paper, Typography } from "@mui/material";
 import { useGetUserOrdersQuery } from "../../Order/orderApiSlice.ts";
-import User from "../../../types/User.ts";
+import type User from "../../../types/User.ts";
 import { useAppSelector } from "@/hooks/hooks.ts";
-import { RootState } from "@/store/store.ts";
-import { DataGrid, GridColDef, GridRowParams } from "@mui/x-data-grid";
+import type { RootState } from "@/store/store.ts";
+import { DataGrid, type GridColDef, type GridRowParams } from "@mui/x-data-grid";
 import { useNavigate } from "react-router-dom";
 import { getFormattedDate } from "@/helpers/getFormattedDate.ts";
 import { getPolishStatus } from "@/helpers/getPolishStatus.ts";
@@ -14,7 +14,7 @@ function AccountOrdersView() {
   const userOrders = useGetUserOrdersQuery(user.user_id);
   const navigate = useNavigate();
 
-  /* eslint-disable */
+  // biome-ignore lint/correctness/useExhaustiveDependencies: Only want to refetch on mount
   useEffect(() => {
     userOrders.refetch();
   }, []);
@@ -48,9 +48,7 @@ function AccountOrdersView() {
   return (
     <Box className={"flex flex-col items-center gap-2"}>
       <Typography variant="h3">Zamówienia</Typography>
-      <Typography variant="body1">
-        Tutaj znajdziesz listę swoich zamówień
-      </Typography>
+      <Typography variant="body1">Tutaj znajdziesz listę swoich zamówień</Typography>
       <Paper sx={{ height: 500, width: "60%" }}>
         <DataGrid
           rows={rows}

@@ -1,7 +1,7 @@
 import { Categories } from "@/enums/Categories.ts";
 import useProductFilters from "@/hooks/useProductFilters.ts";
 import { Box, Button } from "@mui/material";
-import { MouseEventHandler } from "react";
+import type { MouseEventHandler } from "react";
 
 const CATEGORIES = [
   { value: Categories.COLLECTIVE, label: "Zbiorcze" },
@@ -26,8 +26,7 @@ function CategoryList() {
           key={cat.value}
           variant={filters.category === cat.value ? "contained" : "text"}
           onClick={handleCategoryChange}
-          value={cat.value}
-        >
+          value={cat.value}>
           {cat.label}
         </Button>
       ))}
@@ -38,8 +37,7 @@ function CategoryList() {
           onClick={() => {
             setParam("category", "");
             setParam("page", "1");
-          }}
-        >
+          }}>
           Wyczyść
         </Button>
       )}

@@ -6,9 +6,9 @@ import PasswordIcon from "@mui/icons-material/Password";
 import ImportContactsIcon from "@mui/icons-material/ImportContacts";
 import BuildIcon from "@mui/icons-material/Build";
 import { Roles } from "@/enums/Roles.ts";
-import User from "../../types/User.ts";
+import type User from "../../types/User.ts";
 import { useAppSelector } from "@/hooks/hooks.ts";
-import { RootState } from "@/store/store.ts";
+import type { RootState } from "@/store/store.ts";
 
 function AccountOptions() {
   const navigate = useNavigate();
@@ -27,8 +27,7 @@ function AccountOptions() {
           startIcon={<ImportContactsIcon sx={{ color: "text.primary" }} />}
           onClick={() => {
             navigate("/konto/ksiazka-adresowa");
-          }}
-        >
+          }}>
           Książka adresowa
         </Button>
         <Button
@@ -38,8 +37,7 @@ function AccountOptions() {
           startIcon={<ShoppingBagIcon sx={{ color: "text.primary" }} />}
           onClick={() => {
             navigate("/konto/zamowienia");
-          }}
-        >
+          }}>
           Twoje zamówienia
         </Button>
         <Button
@@ -49,8 +47,7 @@ function AccountOptions() {
           startIcon={<AlternateEmailIcon sx={{ color: "text.primary" }} />}
           onClick={() => {
             navigate("/konto/zmiana-email");
-          }}
-        >
+          }}>
           Zmiana adresu email
         </Button>
         <Button
@@ -60,8 +57,7 @@ function AccountOptions() {
           startIcon={<PasswordIcon sx={{ color: "text.primary" }} />}
           onClick={() => {
             navigate("/konto/zmiana-hasla");
-          }}
-        >
+          }}>
           Zmiana hasła
         </Button>
         {user.role === Roles.ADMIN && (
@@ -72,8 +68,7 @@ function AccountOptions() {
             startIcon={<BuildIcon sx={{ color: "text.primary" }} />}
             onClick={() => {
               navigate("/admin");
-            }}
-          >
+            }}>
             Panel administratora
           </Button>
         )}

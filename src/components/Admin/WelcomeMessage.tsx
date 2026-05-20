@@ -7,9 +7,8 @@ function WelcomeMessage() {
         Dzień dobry!
       </Typography>
       <Typography variant="body1" gutterBottom>
-        Witaj w panelu administracyjnym sklepu internetowego „Zielony Koszyk”. W
-        menu po lewej stronie znajdziesz listę dostępnych opcji, które umożliwią
-        Ci zarządzanie sklepem.
+        Witaj w panelu administracyjnym sklepu internetowego „Zielony Koszyk”. W menu po lewej stronie znajdziesz listę
+        dostępnych opcji, które umożliwią Ci zarządzanie sklepem.
       </Typography>
     </Box>
   );

@@ -1,7 +1,7 @@
 import { Typography } from "@mui/material";
-import CartItem from "@/types/CartItem.ts";
+import type CartItem from "@/types/CartItem.ts";
 import { useSelector } from "react-redux";
-import { RootState } from "@/store/store.ts";
+import type { RootState } from "@/store/store.ts";
 
 function CartSummary() {
   const cart = useSelector((state: RootState) => state.cart.items);
@@ -19,23 +19,13 @@ function CartSummary() {
         </Typography>
       ))}
       <Typography variant="h6" gutterBottom>
-        Suma:{" "}
-        {cart.reduce(
-          (acc: number, item: CartItem) => acc + item.quantity * item.price,
-          0,
-        )}{" "}
-        zł
+        Suma: {cart.reduce((acc: number, item: CartItem) => acc + item.quantity * item.price, 0)} zł
       </Typography>
       <Typography variant="h6" gutterBottom>
         Dostawa: 10 zł
       </Typography>
       <Typography variant="h6" gutterBottom>
-        Razem:{" "}
-        {cart.reduce(
-          (acc: number, item: CartItem) => acc + item.quantity * item.price,
-          0,
-        ) + 10}{" "}
-        zł
+        Razem: {cart.reduce((acc: number, item: CartItem) => acc + item.quantity * item.price, 0) + 10} zł
       </Typography>
     </>
   );

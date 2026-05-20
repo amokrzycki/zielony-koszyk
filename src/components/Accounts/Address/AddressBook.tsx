@@ -1,8 +1,8 @@
 import { useAppDispatch, useAppSelector } from "@/hooks/hooks.ts";
 import { Box, Button, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import User from "@/types/User.ts";
-import { Address } from "@/types/Address.ts";
+import type User from "@/types/User.ts";
+import type { Address } from "@/types/Address.ts";
 import { setAddressToEdit } from "@/store/appSlice.ts";
 import { AddressType } from "@/enums/AddressType.ts";
 import AddressBox from "@/components/Accounts/Address/AddressBox.tsx";
@@ -25,20 +25,16 @@ function AddressBook() {
       };
       dispatch(updateUserDetails(updatedDetails));
     }
-  }, [data]);
+  }, [data, user, dispatch]);
 
   const handleEditData = (address: Address) => {
     navigate("/konto/ksiazka-adresowa/edytuj-dane");
     dispatch(setAddressToEdit(address));
   };
 
-  const billingAddresses = user.addresses.filter(
-    (address) => address.type === AddressType.BILLING,
-  );
+  const billingAddresses = user.addresses.filter((address) => address.type === AddressType.BILLING);
 
-  const deliveryAddresses = user.addresses.filter(
-    (address) => address.type === AddressType.DELIVERY,
-  );
+  const deliveryAddresses = user.addresses.filter((address) => address.type === AddressType.DELIVERY);
 
   return (
     <Box className={"flex flex-col"}>
@@ -53,8 +49,7 @@ function AddressBook() {
           variant={"contained"}
           sx={{
             mb: 2,
-          }}
-        >
+          }}>
           Dodaj nowy adres
         </Button>
         <Typography variant={"h4"} gutterBottom>
@@ -66,9 +61,7 @@ function AddressBook() {
               key={address.address_id}
               address={address}
               onEdit={handleEditData}
-              checkBox={
-                <DefaultCheckbox address={address} userId={user.user_id} />
-              }
+              checkBox={<DefaultCheckbox address={address} userId={user.user_id} />}
             />
           ))}
         </Box>
@@ -83,9 +76,7 @@ function AddressBook() {
               key={address.address_id}
               address={address}
               onEdit={handleEditData}
-              checkBox={
-                <DefaultCheckbox address={address} userId={user.user_id} />
-              }
+              checkBox={<DefaultCheckbox address={address} userId={user.user_id} />}
             />
           ))}
         </Box>

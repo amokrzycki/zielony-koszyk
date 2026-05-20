@@ -1,11 +1,6 @@
 import { useDispatch } from "react-redux";
-import { RootState } from "@/store/store.ts";
-import {
-  calculateTotalAmount,
-  changeQuantity,
-  clearCart,
-  removeItem,
-} from "./cartSlice.ts";
+import type { RootState } from "@/store/store.ts";
+import { calculateTotalAmount, changeQuantity, clearCart, removeItem } from "./cartSlice.ts";
 import {
   Box,
   Button,
@@ -19,18 +14,15 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
-import CartItem from "../../types/CartItem.ts";
+import type CartItem from "../../types/CartItem.ts";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Divider from "@mui/material/Divider";
 import { useNavigate } from "react-router-dom";
 import { useAppSelector } from "@/hooks/hooks.ts";
 import QuantitySelector from "@/components/Products/QuantitySelector.tsx";
-import User from "@/types/User.ts";
+import type User from "@/types/User.ts";
 import { AddressType } from "@/enums/AddressType.ts";
-import {
-  setBillingAddress,
-  setShippingAddress,
-} from "@/components/Order/orderSlice.ts";
+import { setBillingAddress, setShippingAddress } from "@/components/Order/orderSlice.ts";
 
 function Cart() {
   const navigate = useNavigate();
@@ -38,13 +30,9 @@ function Cart() {
   const user: User = useAppSelector((state: RootState) => state.auth.user);
   const dispatch = useDispatch();
 
-  const billingAddress = user.addresses?.find(
-    (address) => address.type === AddressType.BILLING && address.default,
-  );
+  const billingAddress = user.addresses?.find((address) => address.type === AddressType.BILLING && address.default);
 
-  const deliveryAddress = user.addresses?.find(
-    (address) => address.type === AddressType.DELIVERY && address.default,
-  );
+  const deliveryAddress = user.addresses?.find((address) => address.type === AddressType.DELIVERY && address.default);
 
   const handleOrder = () => {
     dispatch(calculateTotalAmount());
@@ -63,17 +51,10 @@ function Cart() {
         className="main-container"
         sx={{
           bgcolor: "background.paper",
-        }}
-      >
+        }}>
         <Box className={"main-container"}>
-          <Box
-            className={`flex items-center ${cart.length !== 0 ? "justify-between" : "justify-center"}`}
-          >
-            <Typography
-              variant="h4"
-              gutterBottom
-              className={cart.length === 0 ? "text-center" : ""}
-            >
+          <Box className={`flex items-center ${cart.length !== 0 ? "justify-between" : "justify-center"}`}>
+            <Typography variant="h4" gutterBottom className={cart.length === 0 ? "text-center" : ""}>
               {cart.length === 0 ? "Twój koszyk jest pusty" : "Twój koszyk"}
             </Typography>
             {cart.length !== 0 && (
@@ -81,8 +62,7 @@ function Cart() {
                 variant="contained"
                 color="primary"
                 onClick={() => dispatch(clearCart())}
-                startIcon={<DeleteIcon />}
-              >
+                startIcon={<DeleteIcon />}>
                 Wyczyść koszyk
               </Button>
             )}
@@ -120,13 +100,9 @@ function Cart() {
                           />
                         </TableCell>
                         <TableCell align="right">{item.price}zł</TableCell>
-                        <TableCell align="center">
-                          {item.quantity * item.price}zł
-                        </TableCell>
+                        <TableCell align="center">{item.quantity * item.price}zł</TableCell>
                         <TableCell align="right" width="50">
-                          <IconButton
-                            onClick={() => dispatch(removeItem(item.productId))}
-                          >
+                          <IconButton onClick={() => dispatch(removeItem(item.productId))}>
                             <DeleteIcon
                               sx={{
                                 color: "text.primary",
@@ -144,35 +120,18 @@ function Cart() {
                   className={"flex flex-col items-center mt-8 rounded-2xl p-8"}
                   sx={{
                     bgcolor: "background.default",
-                  }}
-                >
+                  }}>
                   <Typography variant="h6" gutterBottom>
-                    Suma:{" "}
-                    {cart.reduce(
-                      (acc: number, item: CartItem) =>
-                        acc + item.quantity * item.price,
-                      0,
-                    )}{" "}
-                    zł
+                    Suma: {cart.reduce((acc: number, item: CartItem) => acc + item.quantity * item.price, 0)} zł
                   </Typography>
                   <Typography variant="h6" gutterBottom>
                     Dostawa: 10 zł
                   </Typography>
                   <Divider />
                   <Typography variant="h6" gutterBottom>
-                    Razem:{" "}
-                    {cart.reduce(
-                      (acc: number, item: CartItem) =>
-                        acc + item.quantity * item.price,
-                      0,
-                    ) + 10}{" "}
-                    zł
+                    Razem: {cart.reduce((acc: number, item: CartItem) => acc + item.quantity * item.price, 0) + 10} zł
                   </Typography>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={handleOrder}
-                  >
+                  <Button variant="contained" color="primary" onClick={handleOrder}>
                     Wybierz dostawę i płatność
                   </Button>
                 </Box>

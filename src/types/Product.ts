@@ -1,4 +1,4 @@
-import { Categories } from "../enums/Categories.ts";
+import type { Categories } from "../enums/Categories.ts";
 
 interface Product {
   product_id: number;

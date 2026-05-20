@@ -8,11 +8,7 @@ interface AddOrderItemsModalProps {
   orderId: number;
 }
 
-function AddOrderItemsModal({
-  open,
-  handleClose,
-  orderId,
-}: AddOrderItemsModalProps) {
+function AddOrderItemsModal({ open, handleClose, orderId }: AddOrderItemsModalProps) {
   return (
     <Modal open={open} onClose={handleClose}>
       <Box
@@ -20,8 +16,7 @@ function AddOrderItemsModal({
         sx={{
           bgcolor: "background.paper",
           transform: "translate(-50%, -50%)",
-        }}
-      >
+        }}>
         <IconButton
           onClick={handleClose}
           sx={{
@@ -29,8 +24,7 @@ function AddOrderItemsModal({
             position: "absolute",
             top: 0,
             right: 0,
-          }}
-        >
+          }}>
           <CloseIcon />
         </IconButton>
         <Typography variant="h5" component="h2" sx={{ mb: 2 }}>

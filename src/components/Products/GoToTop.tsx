@@ -28,18 +28,13 @@ export default function GoToTop() {
   if (!visible) return null;
 
   return (
-    <Grow
-      in={visible}
-      style={{ transformOrigin: "0 0 0" }}
-      {...(visible ? { timeout: 1000 } : {})}
-    >
+    <Grow in={visible} style={{ transformOrigin: "0 0 0" }} {...(visible ? { timeout: 1000 } : {})}>
       <Fab
         color={"primary"}
         className={"bottom-8 right-8"}
         sx={{ position: "fixed" }}
         aria-label={"Go to top"}
-        onClick={scrollToTop}
-      >
+        onClick={scrollToTop}>
         <ArrowUpwardIcon />
       </Fab>
     </Grow>

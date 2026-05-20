@@ -1,28 +1,22 @@
-import {
-  Box,
-  Button,
-  Checkbox,
-  FormControlLabel,
-  Typography,
-} from "@mui/material";
+import { Box, Button, Checkbox, FormControlLabel, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import { useForm } from "@mantine/form";
-import { RootState } from "@/store/store";
+import type { RootState } from "@/store/store";
 import { useAppDispatch } from "@/hooks/hooks";
 import { useNavigate } from "react-router-dom";
 
 import { AddressType } from "@/enums/AddressType";
 import { CustomerType } from "@/enums/CustomerType";
-import { CreateOrder } from "@/types/CreateOrder.ts";
+import type { CreateOrder } from "@/types/CreateOrder.ts";
 import CartSummary from "@/components/Cart/CartSummary.tsx";
 import ShippingFormFields from "@/components/Order/ShippingFormFields.tsx";
 import BillingFormFields from "@/components/Order/BillingFormFields.tsx";
 import { setOrder } from "@/components/Order/orderSlice.ts";
-import User from "@/types/User.ts";
+import type User from "@/types/User.ts";
 import { OrderType } from "@/enums/OrderType.ts";
-import { CreateAddress } from "@/types/CreateAddress.ts";
+import type { CreateAddress } from "@/types/CreateAddress.ts";
 import {
   validateBuildingNumber,
   validateCity,
@@ -35,7 +29,7 @@ import {
   validateStreet,
   validateZip,
 } from "@/helpers/validators.ts";
-import { Address } from "@/types/Address.ts";
+import type { Address } from "@/types/Address.ts";
 
 export interface IFormValues {
   shipping: CreateAddress | Address;
@@ -47,36 +41,26 @@ function OrderDetails() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  const orderInfo: CreateOrder = useSelector(
-    (state: RootState) => state.order.orderInfo,
-  );
+  const orderInfo: CreateOrder = useSelector((state: RootState) => state.order.orderInfo);
 
   const user: User = useSelector((state: RootState) => state.auth.user);
 
   const [useDifferentAddress, setUseDifferentAddress] = useState(false);
   const [shippingType, setShippingType] = useState(
-    orderInfo.shippingAddress.customer_type === CustomerType.COMPANY
-      ? CustomerType.COMPANY
-      : CustomerType.PERSON,
+    orderInfo.shippingAddress.customer_type === CustomerType.COMPANY ? CustomerType.COMPANY : CustomerType.PERSON,
   );
   const [billingType, setBillingType] = useState(
-    orderInfo.billingAddress.customer_type === CustomerType.COMPANY
-      ? CustomerType.COMPANY
-      : CustomerType.PERSON,
+    orderInfo.billingAddress.customer_type === CustomerType.COMPANY ? CustomerType.COMPANY : CustomerType.PERSON,
   );
 
   const validate = {
     email: validateEmail,
     shipping: {
-      first_name:
-        shippingType === CustomerType.PERSON ? validateFirstName : undefined,
-      last_name:
-        shippingType === CustomerType.PERSON ? validateLastName : undefined,
+      first_name: shippingType === CustomerType.PERSON ? validateFirstName : undefined,
+      last_name: shippingType === CustomerType.PERSON ? validateLastName : undefined,
       phone: validateNumber,
-      company_name:
-        shippingType === CustomerType.COMPANY ? validateCompany : undefined,
-      nip:
-        shippingType === CustomerType.COMPANY ? validateCompanyNip : undefined,
+      company_name: shippingType === CustomerType.COMPANY ? validateCompany : undefined,
+      nip: shippingType === CustomerType.COMPANY ? validateCompanyNip : undefined,
       street: validateStreet,
       building_number: validateBuildingNumber,
       city: validateCity,
@@ -85,23 +69,11 @@ function OrderDetails() {
       customer_type: undefined,
     },
     billing: {
-      first_name:
-        billingType === CustomerType.PERSON && useDifferentAddress
-          ? validateFirstName
-          : undefined,
-      last_name:
-        billingType === CustomerType.PERSON && useDifferentAddress
-          ? validateLastName
-          : undefined,
+      first_name: billingType === CustomerType.PERSON && useDifferentAddress ? validateFirstName : undefined,
+      last_name: billingType === CustomerType.PERSON && useDifferentAddress ? validateLastName : undefined,
       phone: useDifferentAddress ? validateNumber : undefined,
-      company_name:
-        billingType === CustomerType.COMPANY && useDifferentAddress
-          ? validateCompany
-          : undefined,
-      nip:
-        billingType === CustomerType.COMPANY && useDifferentAddress
-          ? validateCompanyNip
-          : undefined,
+      company_name: billingType === CustomerType.COMPANY && useDifferentAddress ? validateCompany : undefined,
+      nip: billingType === CustomerType.COMPANY && useDifferentAddress ? validateCompanyNip : undefined,
       street: useDifferentAddress ? validateStreet : undefined,
       building_number: useDifferentAddress ? validateBuildingNumber : undefined,
       city: useDifferentAddress ? validateCity : undefined,
@@ -196,17 +168,11 @@ function OrderDetails() {
         ...orderInfo,
         shippingAddress: finalShipping,
         billingAddress: finalBilling,
-        nip:
-          finalBilling.customer_type === CustomerType.COMPANY
-            ? finalBilling.nip
-            : "",
+        nip: finalBilling.customer_type === CustomerType.COMPANY ? finalBilling.nip : "",
         customer_email: values.email,
         user_id: user.user_id,
         same_address: same_address,
-        order_type:
-          finalBilling.customer_type === CustomerType.COMPANY
-            ? OrderType.COMPANY
-            : OrderType.PRIVATE,
+        order_type: finalBilling.customer_type === CustomerType.COMPANY ? OrderType.COMPANY : OrderType.PRIVATE,
       }),
     );
 
@@ -219,22 +185,15 @@ function OrderDetails() {
         className="main-container flex items-center justify-around flex-col"
         sx={{
           bgcolor: "background.paper",
-        }}
-      >
+        }}>
         <Box className="main-container">
           <form onSubmit={form.onSubmit(handleSubmit)}>
             <Grid container className={"w-full justify-around"}>
               <Grid>
-                <ShippingFormFields
-                  form={form}
-                  setCustomerType={setShippingType}
-                />
+                <ShippingFormFields form={form} setCustomerType={setShippingType} />
                 <FormControlLabel
                   control={
-                    <Checkbox
-                      checked={useDifferentAddress}
-                      onChange={() => setUseDifferentAddress((prev) => !prev)}
-                    />
+                    <Checkbox checked={useDifferentAddress} onChange={() => setUseDifferentAddress((prev) => !prev)} />
                   }
                   label="Chcę otrzymać fakturę na inne dane"
                 />
@@ -245,22 +204,12 @@ function OrderDetails() {
                       : "Dane do faktury: domyślne dane z Twojego konta"}
                   </Typography>
                 )}
-                {useDifferentAddress && (
-                  <BillingFormFields
-                    form={form}
-                    setCustomerType={setBillingType}
-                  />
-                )}
+                {useDifferentAddress && <BillingFormFields form={form} setCustomerType={setBillingType} />}
               </Grid>
 
               <Grid>
                 <CartSummary />
-                <Button
-                  type="submit"
-                  variant="contained"
-                  sx={{ mt: 2 }}
-                  disabled={!isValid}
-                >
+                <Button type="submit" variant="contained" sx={{ mt: 2 }} disabled={!isValid}>
                   Przejdź dalej
                 </Button>
               </Grid>

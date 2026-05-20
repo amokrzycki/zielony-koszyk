@@ -7,18 +7,14 @@ import StoreIcon from "@mui/icons-material/Store";
 function Nav() {
   const navigate = useNavigate();
   return (
-    <Box
-      id="navigation-wrapper"
-      className={"gap-2 items-center flex justify-center"}
-    >
+    <Box id="navigation-wrapper" className={"gap-2 items-center flex justify-center"}>
       <Button
         color={"primary"}
         startIcon={<HomeIcon sx={{ color: "text.primary" }} />}
         sx={{ color: "text.primary" }}
         onClick={() => {
           navigate("/");
-        }}
-      >
+        }}>
         Strona główna
       </Button>
       <Button
@@ -27,8 +23,7 @@ function Nav() {
         sx={{ color: "text.primary" }}
         onClick={() => {
           navigate("/produkty");
-        }}
-      >
+        }}>
         Produkty
       </Button>
       <Button
@@ -37,8 +32,7 @@ function Nav() {
         sx={{ color: "text.primary" }}
         onClick={() => {
           navigate("/o-nas");
-        }}
-      >
+        }}>
         O nas
       </Button>
     </Box>

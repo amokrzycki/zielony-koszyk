@@ -1,10 +1,4 @@
-import {
-  createContext,
-  useContext,
-  useState,
-  ReactNode,
-  useEffect,
-} from "react";
+import { createContext, useContext, useState, type ReactNode, useEffect } from "react";
 import { ThemeProvider, CssBaseline } from "@mui/material";
 import { darkTheme, lightTheme } from "../../theme.ts";
 import { MantineProvider } from "@mantine/core";

@@ -15,8 +15,7 @@ function CartLogin() {
         sx={{
           textAlign: "center",
           bgcolor: "background.paper",
-        }}
-      >
+        }}>
         <Box className="main-container flex flex-col items-center">
           <Box>
             <img src={`/${mode}_logo.png`} alt="logo" className={"h-[120px]"} />
@@ -27,8 +26,7 @@ function CartLogin() {
                 className={"max-w-1/3"}
                 sx={{
                   flex: "0 0 33.333333%",
-                }}
-              >
+                }}>
                 <Typography variant={"h4"} gutterBottom>
                   Mam konto
                 </Typography>
@@ -38,8 +36,7 @@ function CartLogin() {
                 className={"separator flex justify-center"}
                 sx={{
                   flex: "0 0 8.33333%",
-                }}
-              >
+                }}>
                 <Divider orientation="vertical" flexItem />
               </Box>
               <OrderNoAccount />
@@ -53,15 +50,13 @@ function CartLogin() {
                 className={"max-w-1/3"}
                 sx={{
                   flex: "0 0 33.333333%",
-                }}
-              >
+                }}>
                 <Button
                   variant="contained"
                   color="primary"
                   onClick={() => {
                     navigate(-1);
-                  }}
-                >
+                  }}>
                   Wróć do koszyka
                 </Button>
               </Box>

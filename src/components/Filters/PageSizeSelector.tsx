@@ -1,11 +1,5 @@
 import useProductFilters from "@/hooks/useProductFilters.ts";
-import {
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
-  SelectChangeEvent,
-} from "@mui/material";
+import { FormControl, InputLabel, MenuItem, Select, type SelectChangeEvent } from "@mui/material";
 
 function PageSizeSelector() {
   const { filters, setParam } = useProductFilters();
@@ -21,18 +15,14 @@ function PageSizeSelector() {
       variant="outlined"
       sx={{
         minWidth: 170,
-      }}
-    >
-      <InputLabel id="page-size-select-label">
-        Ilość produktów na stronę
-      </InputLabel>
+      }}>
+      <InputLabel id="page-size-select-label">Ilość produktów na stronę</InputLabel>
       <Select
         labelId="page-size-select-label"
         id="page-size-select"
         label="Ilość produktów na stronę"
         value={filters.pageSize?.toString() || "24"}
-        onChange={handlePageSizeChange}
-      >
+        onChange={handlePageSizeChange}>
         <MenuItem value="24">24</MenuItem>
         <MenuItem value="48">48</MenuItem>
         <MenuItem value="96">96</MenuItem>

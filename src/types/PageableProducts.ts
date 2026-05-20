@@ -1,4 +1,4 @@
-import Product from "./Product.ts";
+import type Product from "./Product.ts";
 
 export interface PageableProducts {
   data: Product[];

@@ -1,17 +1,12 @@
 import { useGetProductsQuery } from "../../Products/productsApiSlice.ts";
 import ErrorView from "../../common/ErrorView.tsx";
 import Loading from "../../common/Loading.tsx";
-import {
-  DataGrid,
-  GridColDef,
-  GridToolbarContainer,
-  GridToolbarQuickFilter,
-} from "@mui/x-data-grid";
-import Product from "../../../types/Product.ts";
+import { DataGrid, type GridColDef, GridToolbarContainer, GridToolbarQuickFilter } from "@mui/x-data-grid";
+import type Product from "../../../types/Product.ts";
 import { Box, Button, Typography } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import { useCreateOrderItemsMutation } from "../../Order/orderItemsApiSlice.ts";
-import { OrderItemCreate } from "@/types/OrderItemCreate.ts";
+import type { OrderItemCreate } from "@/types/OrderItemCreate.ts";
 import { useState } from "react";
 import toast from "react-hot-toast";
 
@@ -20,10 +15,7 @@ interface AddOrderItemsDataGridProps {
   handleClose: () => void;
 }
 
-function AddOrderItemsDataGrid({
-  orderId,
-  handleClose,
-}: AddOrderItemsDataGridProps) {
+function AddOrderItemsDataGrid({ orderId, handleClose }: AddOrderItemsDataGridProps) {
   const { data: products, isError, isLoading } = useGetProductsQuery();
   const [orderItems, setOrderItems] = useState<OrderItemCreate[]>([]);
   const [createOrderItems] = useCreateOrderItemsMutation();
@@ -33,9 +25,7 @@ function AddOrderItemsDataGrid({
   }
 
   if (isError || !products) {
-    return (
-      <ErrorView message={"Wystąpił błąd podczas pobierania produktów."} />
-    );
+    return <ErrorView message={"Wystąpił błąd podczas pobierania produktów."} />;
   }
 
   const columns: GridColDef[] = [
@@ -80,8 +70,7 @@ function AddOrderItemsDataGrid({
                 price: params.row.price,
               };
               setOrderItems([...orderItems, orderItem]);
-            }}
-          >
+            }}>
             Wybierz
           </Button>
         );
@@ -136,13 +125,8 @@ function AddOrderItemsDataGrid({
                 color="error"
                 size="small"
                 onClick={() => {
-                  setOrderItems(
-                    orderItems.filter(
-                      (item) => item.product_id !== orderItem.product_id
-                    )
-                  );
-                }}
-              >
+                  setOrderItems(orderItems.filter((item) => item.product_id !== orderItem.product_id));
+                }}>
                 Usuń
               </Button>
             </Box>

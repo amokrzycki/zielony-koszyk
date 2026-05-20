@@ -1,21 +1,11 @@
 import { useParams } from "react-router-dom";
-import {
-  useGetOrderQuery,
-  useUpdateOrderMutation,
-} from "@/components/Order/orderApiSlice.ts";
-import {
-  Box,
-  Button,
-  CircularProgress,
-  MenuItem,
-  Select,
-  Typography,
-} from "@mui/material";
+import { useGetOrderQuery, useUpdateOrderMutation } from "@/components/Order/orderApiSlice.ts";
+import { Box, Button, CircularProgress, MenuItem, Select, Typography } from "@mui/material";
 import ErrorView from "@/components/common/ErrorView.tsx";
 import { useForm } from "@mantine/form";
-import { Address } from "@/types/Address.ts";
+import type { Address } from "@/types/Address.ts";
 import ShippingFormFields from "@/components/Order/ShippingFormFields.tsx";
-import { IFormValues } from "@/components/Order/OrderDetails.tsx";
+import type { IFormValues } from "@/components/Order/OrderDetails.tsx";
 import { useState } from "react";
 import { CustomerType } from "@/enums/CustomerType.ts";
 import BillingFormFields from "@/components/Order/BillingFormFields.tsx";
@@ -38,25 +28,17 @@ import { OrderType } from "@/enums/OrderType.ts";
 
 function EditOrderAddresses() {
   const { orderId } = useParams();
-  const {
-    data: order,
-    isLoading: isOrderLoading,
-    isError: isOrderError,
-  } = useGetOrderQuery(orderId as string);
+  const { data: order, isLoading: isOrderLoading, isError: isOrderError } = useGetOrderQuery(orderId as string);
   const [updateOrder] = useUpdateOrderMutation();
 
   const billingAddress = order?.billingAddress;
   const shippingAddress = order?.shippingAddress;
 
   const [shippingType, setShippingType] = useState(
-    shippingAddress?.customer_type === CustomerType.COMPANY
-      ? CustomerType.COMPANY
-      : CustomerType.PERSON,
+    shippingAddress?.customer_type === CustomerType.COMPANY ? CustomerType.COMPANY : CustomerType.PERSON,
   );
   const [billingType, setBillingType] = useState(
-    billingAddress?.customer_type === CustomerType.COMPANY
-      ? CustomerType.COMPANY
-      : CustomerType.PERSON,
+    billingAddress?.customer_type === CustomerType.COMPANY ? CustomerType.COMPANY : CustomerType.PERSON,
   );
 
   const [orderStatus, setOrderStatus] = useState(order?.status);
@@ -64,15 +46,11 @@ function EditOrderAddresses() {
   const validate = {
     email: validateEmail,
     shipping: {
-      first_name:
-        shippingType === CustomerType.PERSON ? validateFirstName : undefined,
-      last_name:
-        shippingType === CustomerType.PERSON ? validateLastName : undefined,
+      first_name: shippingType === CustomerType.PERSON ? validateFirstName : undefined,
+      last_name: shippingType === CustomerType.PERSON ? validateLastName : undefined,
       phone: validateNumber,
-      company_name:
-        shippingType === CustomerType.COMPANY ? validateCompany : undefined,
-      nip:
-        shippingType === CustomerType.COMPANY ? validateCompanyNip : undefined,
+      company_name: shippingType === CustomerType.COMPANY ? validateCompany : undefined,
+      nip: shippingType === CustomerType.COMPANY ? validateCompanyNip : undefined,
       street: validateStreet,
       building_number: validateBuildingNumber,
       city: validateCity,
@@ -81,15 +59,11 @@ function EditOrderAddresses() {
       customer_type: undefined,
     },
     billing: {
-      first_name:
-        billingType === CustomerType.PERSON ? validateFirstName : undefined,
-      last_name:
-        billingType === CustomerType.PERSON ? validateLastName : undefined,
+      first_name: billingType === CustomerType.PERSON ? validateFirstName : undefined,
+      last_name: billingType === CustomerType.PERSON ? validateLastName : undefined,
       phone: validateNumber,
-      company_name:
-        billingType === CustomerType.COMPANY ? validateCompany : undefined,
-      nip:
-        billingType === CustomerType.COMPANY ? validateCompanyNip : undefined,
+      company_name: billingType === CustomerType.COMPANY ? validateCompany : undefined,
+      nip: billingType === CustomerType.COMPANY ? validateCompanyNip : undefined,
       street: validateStreet,
       building_number: validateBuildingNumber,
       city: validateCity,
@@ -123,34 +97,20 @@ function EditOrderAddresses() {
   const handleSubmit = (values: IFormValues) => {
     const updatedShipping = {
       ...values.shipping,
-      first_name:
-        shippingType === CustomerType.PERSON ? values.shipping.first_name : "",
-      last_name:
-        shippingType === CustomerType.PERSON ? values.shipping.last_name : "",
-      company_name:
-        shippingType === CustomerType.COMPANY
-          ? values.shipping.company_name
-          : "",
+      first_name: shippingType === CustomerType.PERSON ? values.shipping.first_name : "",
+      last_name: shippingType === CustomerType.PERSON ? values.shipping.last_name : "",
+      company_name: shippingType === CustomerType.COMPANY ? values.shipping.company_name : "",
       nip: shippingType === CustomerType.COMPANY ? values.shipping.nip : "",
-      customer_type:
-        shippingType === CustomerType.COMPANY
-          ? CustomerType.COMPANY
-          : CustomerType.PERSON,
+      customer_type: shippingType === CustomerType.COMPANY ? CustomerType.COMPANY : CustomerType.PERSON,
     } as Address;
 
     const updatedBilling = {
       ...values.billing,
-      first_name:
-        billingType === CustomerType.PERSON ? values.billing.first_name : "",
-      last_name:
-        billingType === CustomerType.PERSON ? values.billing.last_name : "",
-      company_name:
-        billingType === CustomerType.COMPANY ? values.billing.company_name : "",
+      first_name: billingType === CustomerType.PERSON ? values.billing.first_name : "",
+      last_name: billingType === CustomerType.PERSON ? values.billing.last_name : "",
+      company_name: billingType === CustomerType.COMPANY ? values.billing.company_name : "",
       nip: billingType === CustomerType.COMPANY ? values.billing.nip : "",
-      customer_type:
-        billingType === CustomerType.COMPANY
-          ? CustomerType.COMPANY
-          : CustomerType.PERSON,
+      customer_type: billingType === CustomerType.COMPANY ? CustomerType.COMPANY : CustomerType.PERSON,
     } as Address;
 
     toast
@@ -162,10 +122,7 @@ function EditOrderAddresses() {
             shippingAddress: updatedShipping,
             billingAddress: updatedBilling,
             status: orderStatus,
-            order_type:
-              values.billing.customer_type === CustomerType.COMPANY
-                ? OrderType.COMPANY
-                : OrderType.PRIVATE,
+            order_type: values.billing.customer_type === CustomerType.COMPANY ? OrderType.COMPANY : OrderType.PRIVATE,
           },
         }).unwrap(),
         {
@@ -181,20 +138,14 @@ function EditOrderAddresses() {
 
   return (
     <Box>
-      <form
-        className={"flex items-start gap-8"}
-        onSubmit={form.onSubmit(handleSubmit)}
-      >
+      <form className={"flex items-start gap-8"} onSubmit={form.onSubmit(handleSubmit)}>
         <Box>
           <ShippingFormFields form={form} setCustomerType={setShippingType} />
           <BillingFormFields form={form} setCustomerType={setBillingType} />
         </Box>
         <Box className={"flex flex-col gap-4"}>
           <Typography variant={"h6"}>Status zamówienia</Typography>
-          <Select
-            value={orderStatus}
-            onChange={(e) => setOrderStatus(e.target.value)}
-          >
+          <Select value={orderStatus} onChange={(e) => setOrderStatus(e.target.value)}>
             {Object.values(OrderStatuses).map((status) => (
               <MenuItem key={status} value={status}>
                 {getPolishStatus(status)}

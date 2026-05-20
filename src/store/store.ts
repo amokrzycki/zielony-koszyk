@@ -1,11 +1,37 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
-import storage from "redux-persist/lib/storage";
 import { persistStore, persistReducer } from "redux-persist";
 import { baseApi } from "../api/api.ts";
 import { cartSlice } from "../components/Cart/cartSlice.ts";
 import { orderSlice } from "../components/Order/orderSlice.ts";
 import { accountSlice } from "../components/Accounts/accountSlice.ts";
 import { appSlice } from "./appSlice.ts";
+
+const persistStorage = {
+  getItem: (key: string) => {
+    try {
+      const item = localStorage.getItem(key);
+      return Promise.resolve(item);
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  },
+  setItem: (key: string, value: string) => {
+    try {
+      localStorage.setItem(key, value);
+      return Promise.resolve();
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  },
+  removeItem: (key: string) => {
+    try {
+      localStorage.removeItem(key);
+      return Promise.resolve();
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  },
+};
 
 const rootReducer = combineReducers({
   cart: cartSlice.reducer,
@@ -17,7 +43,7 @@ const rootReducer = combineReducers({
 
 const persistConfig = {
   key: "root",
-  storage,
+  storage: persistStorage,
   whitelist: ["cart"],
 };
 

@@ -1,7 +1,7 @@
-import { PayloadAction } from "@reduxjs/toolkit";
-import { Address } from "../types/Address.ts";
-import { AppState } from "../store/appSlice.ts";
-import User from "../types/User.ts";
+import type { PayloadAction } from "@reduxjs/toolkit";
+import type { Address } from "../types/Address.ts";
+import type { AppState } from "../store/appSlice.ts";
+import type User from "../types/User.ts";
 
 export const appReducers = {
   setAddressToEdit(state: AppState, action: PayloadAction<Address>) {

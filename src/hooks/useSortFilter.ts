@@ -1,7 +1,4 @@
-import {
-  FILTER_DIRECTION_ASC,
-  FILTER_DIRECTION_DESC,
-} from "../constants/app.ts";
+import { FILTER_DIRECTION_ASC, FILTER_DIRECTION_DESC } from "../constants/app.ts";
 import { useSearchParams } from "react-router-dom";
 import { useEffect } from "react";
 
@@ -14,9 +11,7 @@ const useSortFilter = (
   sortByParamName = "sortBy",
 ): [SortDirection, string, (newSortBy: string) => void] => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const direction =
-    (searchParams.get(sortDirectionParamName) as SortDirection) ??
-    sortDirectionInitialValue;
+  const direction = (searchParams.get(sortDirectionParamName) as SortDirection) ?? sortDirectionInitialValue;
   const sortBy = searchParams.get(sortByParamName) ?? sortByInitialValue;
 
   // set initial Value

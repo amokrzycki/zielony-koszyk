@@ -19,15 +19,8 @@ function QuantitySelector({ quantity, setQuantity }: QuantitySelectorProps) {
   };
 
   return (
-    <Box
-      className={"flex"}
-      id="quantity-selector"
-      sx={{ border: "1px solid #e5e7eb" }}
-    >
-      <IconButton
-        onClick={() => setQuantity(Math.max(1, quantity - 1))}
-        disabled={quantity === 1}
-      >
+    <Box className={"flex"} id="quantity-selector" sx={{ border: "1px solid #e5e7eb" }}>
+      <IconButton onClick={() => setQuantity(Math.max(1, quantity - 1))} disabled={quantity === 1}>
         <RemoveIcon
           sx={{
             color: quantity === 1 ? "action.disabled" : "primary.main",
@@ -38,8 +31,7 @@ function QuantitySelector({ quantity, setQuantity }: QuantitySelectorProps) {
         sx={{
           borderLeft: "1px solid #e5e7eb",
           borderRight: "1px solid #e5e7eb",
-        }}
-      >
+        }}>
         <TextField
           type="number"
           value={quantity}

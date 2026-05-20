@@ -1,21 +1,18 @@
-import {
-  useDeleteUsersMutation,
-  useGetUsersQuery,
-} from "../../Accounts/accountsApiSlice.ts";
+import { useDeleteUsersMutation, useGetUsersQuery } from "../../Accounts/accountsApiSlice.ts";
 import Loading from "../../common/Loading.tsx";
 import ErrorView from "../../common/ErrorView.tsx";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import {
   DataGrid,
-  GridColDef,
-  GridRowSelectionModel,
+  type GridColDef,
+  type GridRowSelectionModel,
   GridToolbarColumnsButton,
   GridToolbarQuickFilter,
   Toolbar,
 } from "@mui/x-data-grid";
 import { Box, Button, IconButton, Typography } from "@mui/material";
-import User from "../../../types/User.ts";
+import type User from "../../../types/User.ts";
 import { AddressType } from "@/enums/AddressType.ts";
 import ConfirmDeleteModal from "../ConfirmDeleteModal.tsx";
 import RefreshIcon from "@mui/icons-material/Refresh";
@@ -30,11 +27,10 @@ function UsersView() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const [openConfirmDeleteModal, setOpenConfirmDeleteModal] = useState(false);
-  const [rowSelectionModel, setRowSelectionModel] =
-    useState<GridRowSelectionModel>({
-      type: "include",
-      ids: new Set<string>(),
-    });
+  const [rowSelectionModel, setRowSelectionModel] = useState<GridRowSelectionModel>({
+    type: "include",
+    ids: new Set<string>(),
+  });
   const [deleteUsers] = useDeleteUsersMutation();
 
   const handleConfirmDeleteModalOpen = () => setOpenConfirmDeleteModal(true);
@@ -56,14 +52,11 @@ function UsersView() {
     }
 
     try {
-      await toast.promise(
-        Promise.all(ids.map((id) => deleteUsers(id).unwrap())),
-        {
-          loading: `Usuwanie ${ids.length >= 1 ? "użytkownika" : "użytkowników"}...`,
-          success: `${ids.length >= 1 ? "Użytkownik został usunięty." : "Użytkownicy zostali usunięci."}`,
-          error: `Wystąpił błąd podczas usuwania ${ids.length >= 1 ? "użytkownika" : "użytkowników"}.`,
-        }
-      );
+      await toast.promise(Promise.all(ids.map((id) => deleteUsers(id).unwrap())), {
+        loading: `Usuwanie ${ids.length >= 1 ? "użytkownika" : "użytkowników"}...`,
+        success: `${ids.length >= 1 ? "Użytkownik został usunięty." : "Użytkownicy zostali usunięci."}`,
+        error: `Wystąpił błąd podczas usuwania ${ids.length >= 1 ? "użytkownika" : "użytkowników"}.`,
+      });
       setRowSelectionModel({ type: "include", ids: new Set<string>() });
     } catch (error) {
       console.error("Delete failed:", error);
@@ -95,12 +88,7 @@ function UsersView() {
       headerName: "Akcje",
       width: 150,
       renderCell: (params) => (
-        <Button
-          variant="outlined"
-          color="primary"
-          size="small"
-          onClick={() => handleEdit(params.row.id as string)}
-        >
+        <Button variant="outlined" color="primary" size="small" onClick={() => handleEdit(params.row.id as string)}>
           Edytuj
         </Button>
       ),
@@ -108,13 +96,9 @@ function UsersView() {
   ];
 
   const rows = users.map((user: User) => {
-    const billingAddress = user.addresses.find(
-      (address) => address.type === AddressType.BILLING
-    );
+    const billingAddress = user.addresses.find((address) => address.type === AddressType.BILLING);
 
-    const shippingAddress = user.addresses.find(
-      (address) => address.type === AddressType.DELIVERY
-    );
+    const shippingAddress = user.addresses.find((address) => address.type === AddressType.DELIVERY);
 
     return {
       id: user.user_id,
@@ -135,12 +119,7 @@ function UsersView() {
     return (
       <Toolbar className={"flex justify-between"}>
         <GridToolbarColumnsButton />
-        <Button
-          startIcon={<AddIcon />}
-          onClick={() =>
-            navigate("/admin/zarzadzanie-uzytkownikami/dodaj-uzytkownika")
-          }
-        >
+        <Button startIcon={<AddIcon />} onClick={() => navigate("/admin/zarzadzanie-uzytkownikami/dodaj-uzytkownika")}>
           Dodaj użytkownika
         </Button>
         {ids.length > 0 && (

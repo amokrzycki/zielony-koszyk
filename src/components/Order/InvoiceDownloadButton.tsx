@@ -3,11 +3,7 @@ import { useGetInvoiceQuery } from "@/components/Order/orderApiSlice.ts";
 import Loading from "@/components/common/Loading.tsx";
 
 function InvoiceDownloadButton({ orderId }: { orderId: number }) {
-  const {
-    data: invoiceBlob,
-    isFetching,
-    isError,
-  } = useGetInvoiceQuery(orderId);
+  const { data: invoiceBlob, isFetching, isError } = useGetInvoiceQuery(orderId);
 
   const handleDownload = () => {
     if (!invoiceBlob) return;
@@ -29,12 +25,7 @@ function InvoiceDownloadButton({ orderId }: { orderId: number }) {
   if (isError) return <Box sx={{ color: "red" }}>Błąd w ładowaniu faktury</Box>;
 
   return (
-    <Button
-      onClick={handleDownload}
-      variant={"outlined"}
-      size={"small"}
-      disabled={!invoiceBlob}
-    >
+    <Button onClick={handleDownload} variant={"outlined"} size={"small"} disabled={!invoiceBlob}>
       Faktura elektroniczna
     </Button>
   );

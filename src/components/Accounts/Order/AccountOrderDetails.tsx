@@ -18,11 +18,7 @@ function AccountOrderDetails() {
     isLoading: isOrderDetailsLoading,
     isError: isOrderDetailsError,
   } = useGetOrderItemsQuery(orderId as string);
-  const {
-    data: order,
-    isLoading: isOrderLoading,
-    isError: isOrderError,
-  } = useGetOrderQuery(orderId as string);
+  const { data: order, isLoading: isOrderLoading, isError: isOrderError } = useGetOrderQuery(orderId as string);
 
   if (isOrderDetailsLoading || isOrderLoading) {
     return <CircularProgress />;
@@ -39,25 +35,15 @@ function AccountOrderDetails() {
       </Typography>
       <Box id={"order-details"} className={"mt-1 flex gap-4"}>
         <Box
-          className={
-            "flex border rounded p-4 mt-4 gap-4 justify-start items-center"
-          }
+          className={"flex border rounded p-4 mt-4 gap-4 justify-start items-center"}
           sx={{
             borderColor: "background.default",
-          }}
-        >
+          }}>
           <Box className={"flex flex-col items-start"}>
+            <Typography>Status zamówienia: {getPolishStatus(order?.status)}</Typography>
+            <Typography>Data złożenia zamówienia: {getFormattedDate(order?.order_date)}</Typography>
             <Typography>
-              Status zamówienia: {getPolishStatus(order?.status)}
-            </Typography>
-            <Typography>
-              Data złożenia zamówienia: {getFormattedDate(order?.order_date)}
-            </Typography>
-            <Typography>
-              Typ zamówienia:{" "}
-              {order?.order_type === OrderType.COMPANY
-                ? "Firma"
-                : "Osoba prywatna"}
+              Typ zamówienia: {order?.order_type === OrderType.COMPANY ? "Firma" : "Osoba prywatna"}
             </Typography>
           </Box>
         </Box>

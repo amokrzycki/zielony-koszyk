@@ -1,7 +1,7 @@
-import { OrderItem } from "./OrderItem.ts";
-import { OrderType } from "@/enums/OrderType.ts";
-import { CreateAddress } from "@/types/CreateAddress.ts";
-import { Address } from "@/types/Address.ts";
+import type { OrderItem } from "./OrderItem.ts";
+import type { OrderType } from "@/enums/OrderType.ts";
+import type { CreateAddress } from "@/types/CreateAddress.ts";
+import type { Address } from "@/types/Address.ts";
 
 export interface CreateOrder {
   user_id?: string;

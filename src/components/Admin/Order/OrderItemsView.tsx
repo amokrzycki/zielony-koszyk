@@ -4,13 +4,13 @@ import { Box, Button, Typography } from "@mui/material";
 import Loading from "../../common/Loading.tsx";
 import {
   DataGrid,
-  GridColDef,
-  GridRowSelectionModel,
+  type GridColDef,
+  type GridRowSelectionModel,
   GridToolbarColumnsButton,
   GridToolbarQuickFilter,
   Toolbar,
 } from "@mui/x-data-grid";
-import { OrderItemResponse } from "@/types/OrderItemResponse.ts";
+import type { OrderItemResponse } from "@/types/OrderItemResponse.ts";
 import ConfirmDeleteModal from "../ConfirmDeleteModal.tsx";
 import { useState } from "react";
 import toast from "react-hot-toast";
@@ -38,23 +38,14 @@ interface Row {
 
 function OrderItemsView() {
   const { orderId } = useParams();
-  const {
-    data: orderDetails,
-    isError,
-    isLoading,
-  } = useGetOrderItemsQuery(orderId as string);
-  const {
-    data: order,
-    isLoading: isOrderLoading,
-    isError: isOrderError,
-  } = useGetOrderQuery(orderId as string);
+  const { data: orderDetails, isError, isLoading } = useGetOrderItemsQuery(orderId as string);
+  const { data: order, isLoading: isOrderLoading, isError: isOrderError } = useGetOrderQuery(orderId as string);
   const [openProductModal, setOpenProductModal] = useState(false);
   const [openConfirmDeleteModal, setOpenConfirmDeleteModal] = useState(false);
-  const [rowSelectionModel, setRowSelectionModel] =
-    useState<GridRowSelectionModel>({
-      type: "include",
-      ids: new Set<number>(),
-    });
+  const [rowSelectionModel, setRowSelectionModel] = useState<GridRowSelectionModel>({
+    type: "include",
+    ids: new Set<number>(),
+  });
   const [deleteOrderItems] = useRemoveOrderItemsMutation();
   const [updateOrderItems] = useUpdateOrderItemsMutation();
   const navigate = useNavigate();
@@ -80,14 +71,11 @@ function OrderItemsView() {
     }
 
     try {
-      await toast.promise(
-        Promise.all(ids.map((id) => deleteOrderItems(id).unwrap())),
-        {
-          loading: `Usuwanie ${ids.length > 1 ? "elementów zamówienia" : "elementu zamówienia"}...`,
-          success: `${ids.length > 1 ? "Elementy zamówienia zostały usunięte." : "Element zamówienia został usunięty."}`,
-          error: `Wystąpił błąd podczas usuwania ${ids.length > 1 ? "elementów zamówienia." : "elementu zamówienia."}`,
-        }
-      );
+      await toast.promise(Promise.all(ids.map((id) => deleteOrderItems(id).unwrap())), {
+        loading: `Usuwanie ${ids.length > 1 ? "elementów zamówienia" : "elementu zamówienia"}...`,
+        success: `${ids.length > 1 ? "Elementy zamówienia zostały usunięte." : "Element zamówienia został usunięty."}`,
+        error: `Wystąpił błąd podczas usuwania ${ids.length > 1 ? "elementów zamówienia." : "elementu zamówienia."}`,
+      });
       setRowSelectionModel({ type: "include", ids: new Set<number>() });
     } catch (error) {
       console.error("Delete failed:", error);
@@ -118,7 +106,7 @@ function OrderItemsView() {
           loading: "Aktualizowanie elementu zamówienia...",
           success: "Element zamówienia został zaktualizowany.",
           error: "Wystąpił błąd podczas aktualizowania elementu zamówienia.",
-        }
+        },
       );
       return updatedRow;
     } catch (error) {
@@ -178,11 +166,7 @@ function OrderItemsView() {
         <Box className={"flex gap-4 my-4"}>
           <OrderAddresses order={order} />
           <Box className={"flex gap-4 justify-end items-center flex-col"}>
-            <Button
-              variant={"outlined"}
-              size={"small"}
-              onClick={() => navigate("edycja-danych-zamowienia")}
-            >
+            <Button variant={"outlined"} size={"small"} onClick={() => navigate("edycja-danych-zamowienia")}>
               Edytuj dane zamówienia
             </Button>
             <InvoiceDownloadButton orderId={order.order_id} />
@@ -238,11 +222,7 @@ function OrderItemsView() {
         onConfirm={onDelete}
         count={rowSelectionModel.ids.size}
       />
-      <AddOrderItemsModal
-        open={openProductModal}
-        handleClose={handleProductModalClose}
-        orderId={order.order_id}
-      />
+      <AddOrderItemsModal open={openProductModal} handleClose={handleProductModalClose} orderId={order.order_id} />
     </Box>
   );
 }
