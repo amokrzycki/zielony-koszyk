@@ -1,6 +1,6 @@
-import { PayloadAction } from "@reduxjs/toolkit";
-import User from "../types/User.ts";
-import { Address } from "../types/Address.ts";
+import type { PayloadAction } from "@reduxjs/toolkit";
+import type User from "../types/User.ts";
+import type { Address } from "../types/Address.ts";
 import { CustomerType } from "@/enums/CustomerType.ts";
 
 export interface AccountState {
@@ -32,9 +32,7 @@ export const accountReducers = {
 
     const address = state.user.addresses.find(
       (address) =>
-        address.type === action.payload.type &&
-        address.address_id !== action.payload.address_id &&
-        address.default,
+        address.type === action.payload.type && address.address_id !== action.payload.address_id && address.default,
     );
 
     if (address && action.payload.default) {
@@ -42,14 +40,10 @@ export const accountReducers = {
     }
 
     state.user.addresses = state.user.addresses.map((address) =>
-      address.address_id === action.payload.address_id
-        ? action.payload
-        : address,
+      address.address_id === action.payload.address_id ? action.payload : address,
     );
 
-    const rememberMe = JSON.parse(
-      localStorage.getItem("rememberMe") || "false",
-    );
+    const rememberMe = JSON.parse(localStorage.getItem("rememberMe") || "false");
 
     if (rememberMe) {
       localStorage.setItem("user", JSON.stringify(state.user));

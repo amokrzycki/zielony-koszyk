@@ -1,13 +1,5 @@
 import { useForm } from "@mantine/form";
-import {
-  Box,
-  Button,
-  FormControl,
-  FormControlLabel,
-  FormGroup,
-  FormHelperText,
-  TextField,
-} from "@mui/material";
+import { Box, Button, FormControl, FormControlLabel, FormGroup, FormHelperText, TextField } from "@mui/material";
 import Checkbox from "@mui/material/Checkbox";
 import {
   validateBuildingNumber,
@@ -22,10 +14,10 @@ import {
   validateTermsAccepted,
   validateZip,
 } from "@/helpers/validators.ts";
-import { CreateUser } from "@/types/CreateUser.ts";
+import type { CreateUser } from "@/types/CreateUser.ts";
 import { useRegisterMutation } from "./accountsApiSlice.ts";
 import toast from "react-hot-toast";
-import { Dispatch, SetStateAction } from "react";
+import type { Dispatch, SetStateAction } from "react";
 
 export interface IRegisterFormValues {
   firstName: string;
@@ -114,8 +106,7 @@ function RegisterForm({ setTab }: RegisterFormProps) {
     <form
       onSubmit={form.onSubmit((values) => {
         handleSubmit(values);
-      })}
-    >
+      })}>
       <Box className={"flex flex-col justify-center items-center"}>
         <Box>
           <TextField
@@ -124,9 +115,7 @@ function RegisterForm({ setTab }: RegisterFormProps) {
             required
             placeholder={"Jan"}
             {...form.getInputProps("firstName")}
-            error={
-              Boolean(form.errors.firstName) && form.isTouched("firstName")
-            }
+            error={Boolean(form.errors.firstName) && form.isTouched("firstName")}
             helperText={form.errors.firstName}
             sx={{ marginRight: "1em" }}
           />
@@ -174,10 +163,7 @@ function RegisterForm({ setTab }: RegisterFormProps) {
           type={"password"}
           required
           {...form.getInputProps("passwordConfirmation")}
-          error={
-            Boolean(form.errors.passwordConfirmation) &&
-            form.isTouched("passwordConfirmation")
-          }
+          error={Boolean(form.errors.passwordConfirmation) && form.isTouched("passwordConfirmation")}
           helperText={form.errors.passwordConfirmation}
           sx={{ m: "1em 0", width: "300px" }}
         />
@@ -199,10 +185,7 @@ function RegisterForm({ setTab }: RegisterFormProps) {
             required
             {...form.getInputProps("buildingNumber")}
             helperText={form.errors.buldingNumber}
-            error={
-              Boolean(form.errors.buildingNumber) &&
-              form.isTouched("buildingNumber")
-            }
+            error={Boolean(form.errors.buildingNumber) && form.isTouched("buildingNumber")}
             sx={{ marginRight: "1em" }}
           />
           <TextField
@@ -211,9 +194,7 @@ function RegisterForm({ setTab }: RegisterFormProps) {
             placeholder={"150"}
             {...form.getInputProps("flatNumber")}
             helperText={form.errors.flatNumber}
-            error={
-              Boolean(form.errors.flatNumber) && form.isTouched("flatNumber")
-            }
+            error={Boolean(form.errors.flatNumber) && form.isTouched("flatNumber")}
           />
         </Box>
         <Box className={"mb-4"}>
@@ -239,29 +220,18 @@ function RegisterForm({ setTab }: RegisterFormProps) {
         </Box>
         <FormControl
           required
-          error={
-            Boolean(form.errors.termsAccepted) &&
-            form.isTouched("termsAccepted")
-          }
+          error={Boolean(form.errors.termsAccepted) && form.isTouched("termsAccepted")}
           component="fieldset"
-          variant={"standard"}
-        >
+          variant={"standard"}>
           <FormGroup>
             <FormControlLabel
               control={<Checkbox {...form.getInputProps("termsAccepted")} />}
               label={"Akceptuję regulamin*"}
             />
           </FormGroup>
-          <FormHelperText sx={{ m: 0 }}>
-            {form.errors.termsAccepted}
-          </FormHelperText>
+          <FormHelperText sx={{ m: 0 }}>{form.errors.termsAccepted}</FormHelperText>
         </FormControl>
-        <Button
-          type={"submit"}
-          variant={"contained"}
-          sx={{ mt: "1em" }}
-          disabled={!isValid && form.isTouched()}
-        >
+        <Button type={"submit"} variant={"contained"} sx={{ mt: "1em" }} disabled={!isValid && form.isTouched()}>
           Utwórz konto
         </Button>
       </Box>

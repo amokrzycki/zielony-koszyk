@@ -23,11 +23,7 @@ function ProductDetails() {
     throw new Error("Product ID is required");
   }
 
-  const {
-    data: product,
-    isLoading,
-    isError,
-  } = useGetProductByIdQuery(parseInt(productId));
+  const { data: product, isLoading, isError } = useGetProductByIdQuery(parseInt(productId));
 
   if (isLoading) {
     return <Loading />;
@@ -56,19 +52,12 @@ function ProductDetails() {
           <AutoBreadcrumbs />
           <Box className={"mt-4 flex xl:justify-between max-xl:flex-col"}>
             <Box className={"flex flex-col max-xl:items-center"}>
-              <img
-                src={`${API_URL}/${product.image}`}
-                alt={product.name}
-                style={{ height: "400px", width: "400px" }}
-              />
+              <img src={`${API_URL}/${product.image}`} alt={product.name} style={{ height: "400px", width: "400px" }} />
               <Box className={"flex flex-col mt-8"}>
                 <ProductInfo product={product} />
                 <Box className={"flex flex-col gap-4 mt-4 items-end"}>
                   <ProductPrice price={product.price} quantity={quantity} />
-                  <QuantitySelector
-                    quantity={quantity}
-                    setQuantity={(newVal) => setQuantity(newVal)}
-                  />
+                  <QuantitySelector quantity={quantity} setQuantity={(newVal) => setQuantity(newVal)} />
                   <Button onClick={handleAddToCart} variant="contained">
                     Do koszyka
                   </Button>

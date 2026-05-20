@@ -1,7 +1,7 @@
 import { baseApi } from "@/api/api.ts";
-import { CreateOrder } from "@/types/CreateOrder.ts";
-import { Order } from "@/types/Order.ts";
-import { OrderItemResponse } from "@/types/OrderItemResponse.ts";
+import type { CreateOrder } from "@/types/CreateOrder.ts";
+import type { Order } from "@/types/Order.ts";
+import type { OrderItemResponse } from "@/types/OrderItemResponse.ts";
 
 export const orderApiSlice = baseApi.injectEndpoints({
   endpoints: (builder) => ({
@@ -41,10 +41,7 @@ export const orderApiSlice = baseApi.injectEndpoints({
             ]
           : [{ type: "Orders" }],
     }),
-    updateOrder: builder.mutation<
-      OrderItemResponse,
-      { id: number; order: Partial<Order> }
-    >({
+    updateOrder: builder.mutation<OrderItemResponse, { id: number; order: Partial<Order> }>({
       query: (body: { id: number; order: Partial<Order> }) => ({
         url: `orders/${body.id}`,
         method: "PUT",

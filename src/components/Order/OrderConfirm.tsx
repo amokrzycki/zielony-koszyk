@@ -7,8 +7,7 @@ function OrderConfirm() {
         className="main-container text-center"
         sx={{
           bgcolor: "background.paper",
-        }}
-      >
+        }}>
         <Box className={"main-container"}>
           <Typography variant="h4" gutterBottom>
             Dziękujemy za złożenie zamówienia!

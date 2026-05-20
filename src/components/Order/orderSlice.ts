@@ -1,4 +1,4 @@
-import { orderReducers, OrderState } from "@/reducers/orderReducers.ts";
+import { orderReducers, type OrderState } from "@/reducers/orderReducers.ts";
 import { createSlice } from "@reduxjs/toolkit";
 import { OrderType } from "@/enums/OrderType.ts";
 import { AddressType } from "@/enums/AddressType.ts";
@@ -50,5 +50,4 @@ export const orderSlice = createSlice({
   reducers: orderReducers,
 });
 
-export const { setOrder, setBillingAddress, setShippingAddress, clearOrder } =
-  orderSlice.actions;
+export const { setOrder, setBillingAddress, setShippingAddress, clearOrder } = orderSlice.actions;

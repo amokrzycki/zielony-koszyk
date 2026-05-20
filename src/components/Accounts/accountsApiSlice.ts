@@ -1,11 +1,11 @@
 import { baseApi } from "@/api/api.ts";
-import { CreateUser } from "@/types/CreateUser.ts";
-import { ILoginFormValues } from "./LoginForm.tsx";
-import { UpdatePasswordBody } from "@/types/UpdatePasswordBody.ts";
-import { UpdateDetailsBody } from "@/types/updateDetailsBody.ts";
-import User from "../../types/User.ts";
-import { CreateUserFromAdmin } from "@/types/CreateUserFromAdmin.ts";
-import { Address } from "@/types/Address.ts";
+import type { CreateUser } from "@/types/CreateUser.ts";
+import type { ILoginFormValues } from "./LoginForm.tsx";
+import type { UpdatePasswordBody } from "@/types/UpdatePasswordBody.ts";
+import type { UpdateDetailsBody } from "@/types/updateDetailsBody.ts";
+import type User from "../../types/User.ts";
+import type { CreateUserFromAdmin } from "@/types/CreateUserFromAdmin.ts";
+import type { Address } from "@/types/Address.ts";
 
 export const accountsApiSlice = baseApi.injectEndpoints({
   endpoints: (builder) => ({
@@ -73,10 +73,7 @@ export const accountsApiSlice = baseApi.injectEndpoints({
         body,
       }),
     }),
-    createNewAddress: builder.mutation<
-      void,
-      { user_id: string; address: Partial<Address> }
-    >({
+    createNewAddress: builder.mutation<void, { user_id: string; address: Partial<Address> }>({
       query: (body: { user_id: string; address: Partial<Address> }) => ({
         url: `users/${body.user_id}/address`,
         method: "POST",

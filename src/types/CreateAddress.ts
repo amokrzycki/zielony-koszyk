@@ -1,5 +1,5 @@
-import { AddressType } from "@/enums/AddressType.ts";
-import { CustomerType } from "@/enums/CustomerType.ts";
+import type { AddressType } from "@/enums/AddressType.ts";
+import type { CustomerType } from "@/enums/CustomerType.ts";
 
 export interface CreateAddress {
   first_name: string;

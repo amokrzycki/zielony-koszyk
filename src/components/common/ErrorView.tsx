@@ -13,16 +13,14 @@ function ErrorView({ message, errorText }: ErrorProps) {
         sx={{
           color: "error.main",
         }}
-        gutterBottom
-      >
+        gutterBottom>
         {message}
       </Typography>
       <Typography
         variant={"body1"}
         sx={{
           color: "error.main",
-        }}
-      >
+        }}>
         {errorText}
       </Typography>
     </Box>

@@ -1,12 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useForm } from "@mantine/form";
-import {
-  Box,
-  Button,
-  FormControlLabel,
-  FormGroup,
-  TextField,
-} from "@mui/material";
+import { Box, Button, FormControlLabel, FormGroup, TextField } from "@mui/material";
 import { validateEmail, validatePassword } from "@/helpers/validators.ts";
 import { useLoginMutation } from "./accountsApiSlice.ts";
 import { loginUser } from "./accountSlice.ts";
@@ -65,8 +59,7 @@ function LoginForm() {
     <form
       onSubmit={form.onSubmit((values) => {
         handleSubmit(values);
-      })}
-    >
+      })}>
       <Box className={"flex flex-col items-center justify-center"}>
         <TextField
           variant={"outlined"}
@@ -87,18 +80,10 @@ function LoginForm() {
         />
       </Box>
       <FormGroup sx={{ mt: 1 }} className={"items-center"}>
-        <FormControlLabel
-          control={<Checkbox {...form.getInputProps("rememberMe")} />}
-          label={"Zapamiętaj mnie"}
-        />
+        <FormControlLabel control={<Checkbox {...form.getInputProps("rememberMe")} />} label={"Zapamiętaj mnie"} />
       </FormGroup>
       {/* TODO: forgot password */}
-      <Button
-        type={"submit"}
-        disabled={!isValid && form.isTouched()}
-        variant={"contained"}
-        sx={{ mt: "1em" }}
-      >
+      <Button type={"submit"} disabled={!isValid && form.isTouched()} variant={"contained"} sx={{ mt: "1em" }}>
         Zaloguj się
       </Button>
     </form>

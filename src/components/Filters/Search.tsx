@@ -1,6 +1,6 @@
 import { Box, IconButton, TextField } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-import { ChangeEvent, useEffect, useState } from "react";
+import { type ChangeEvent, useEffect, useState } from "react";
 import useProductFilters from "@/hooks/useProductFilters.ts";
 import { useDebouncedValue } from "@mantine/hooks";
 

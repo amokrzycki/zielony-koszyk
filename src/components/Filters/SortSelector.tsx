@@ -1,13 +1,7 @@
 import { SORT_MODES } from "@/constants/app";
 import useProductFilters from "@/hooks/useProductFilters.ts";
 import { useEffect, useState } from "react";
-import {
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
-  SelectChangeEvent,
-} from "@mui/material";
+import { FormControl, InputLabel, MenuItem, Select, type SelectChangeEvent } from "@mui/material";
 
 function SortSelector() {
   const { filters, setParam } = useProductFilters();
@@ -19,9 +13,7 @@ function SortSelector() {
       return "nameAsc";
     }
 
-    const mode = SORT_MODES.find(
-      (m) => m.orderBy === orderBy && m.orderDir === orderDir,
-    );
+    const mode = SORT_MODES.find((m) => m.orderBy === orderBy && m.orderDir === orderDir);
     return mode ? mode.value : "nameAsc";
   };
 
@@ -51,8 +43,7 @@ function SortSelector() {
         id="sort-select"
         label="Sortowanie"
         value={sortValue}
-        onChange={handleSortChange}
-      >
+        onChange={handleSortChange}>
         {SORT_MODES.map((mode) => (
           <MenuItem key={mode.value} value={mode.value}>
             {mode.label}

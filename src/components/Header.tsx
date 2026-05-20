@@ -21,13 +21,11 @@ function Header() {
         left: 0,
         right: 0,
         zIndex: 1000,
-      }}
-    >
+      }}>
       <Box
         className={
           "justify-between flex items-center gap-2 p-2 w-full 2xl:max-w-screen-2xl xl:max-w-screen-xl lg:max-w-screen-lg"
-        }
-      >
+        }>
         <img
           src={`/${mode}_logo.png`}
           alt="logo"

@@ -29,12 +29,7 @@ export default function AutoBreadcrumbs() {
 
   return (
     <Breadcrumbs aria-label="breadcrumb">
-      <Link
-        component={RouterLink}
-        underline="hover"
-        color="textSecondary"
-        to="/"
-      >
+      <Link component={RouterLink} underline="hover" color="textSecondary" to="/">
         Zielony koszyk
       </Link>
 
@@ -49,13 +44,7 @@ export default function AutoBreadcrumbs() {
             {friendlyName}
           </Typography>
         ) : (
-          <Link
-            component={RouterLink}
-            underline="hover"
-            color="inherit"
-            to={to}
-            key={to}
-          >
+          <Link component={RouterLink} underline="hover" color="inherit" to={to} key={to}>
             {friendlyName}
           </Link>
         );

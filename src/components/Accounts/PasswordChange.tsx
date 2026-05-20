@@ -1,20 +1,10 @@
-import {
-  validateNewPassword,
-  validatePassword,
-  validatePasswordConfirmation,
-} from "@/helpers/validators.ts";
+import { validateNewPassword, validatePassword, validatePasswordConfirmation } from "@/helpers/validators.ts";
 import { useForm } from "@mantine/form";
-import {
-  Box,
-  Button,
-  CircularProgress,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Box, Button, CircularProgress, TextField, Typography } from "@mui/material";
 import { useChangePasswordMutation } from "./accountsApiSlice.ts";
-import User from "../../types/User.ts";
+import type User from "../../types/User.ts";
 import { useAppSelector } from "@/hooks/hooks.ts";
-import { UpdatePasswordBody } from "@/types/UpdatePasswordBody.ts";
+import type { UpdatePasswordBody } from "@/types/UpdatePasswordBody.ts";
 import { useNavigate } from "react-router-dom";
 
 export interface IPasswordChangeFormValues {
@@ -76,9 +66,7 @@ function PasswordChange() {
           label={"Wpisz aktualne hasło"}
           type={"password"}
           {...form.getInputProps("oldPassword")}
-          error={
-            Boolean(form.errors.oldPassword) && form.isTouched("oldPassword")
-          }
+          error={Boolean(form.errors.oldPassword) && form.isTouched("oldPassword")}
           helperText={form.errors.oldPassword}
           sx={{ mt: "1em", width: "300px" }}
         />
@@ -96,19 +84,11 @@ function PasswordChange() {
           label={"Potwierdź nowe hasło"}
           type={"password"}
           {...form.getInputProps("passwordConfirmation")}
-          error={
-            Boolean(form.errors.passwordConfirmation) &&
-            form.isTouched("passwordConfirmation")
-          }
+          error={Boolean(form.errors.passwordConfirmation) && form.isTouched("passwordConfirmation")}
           helperText={form.errors.passwordConfirmation}
           sx={{ m: "1em 0", width: "300px" }}
         />
-        <Button
-          type={"submit"}
-          variant={"contained"}
-          sx={{ mt: "1em" }}
-          disabled={!isValid && form.isTouched()}
-        >
+        <Button type={"submit"} variant={"contained"} sx={{ mt: "1em" }} disabled={!isValid && form.isTouched()}>
           Zmień hasło
         </Button>
       </Box>

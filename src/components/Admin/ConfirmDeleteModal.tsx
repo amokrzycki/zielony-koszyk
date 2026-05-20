@@ -10,12 +10,7 @@ interface ConfirmDeleteModalProps {
   count: number;
 }
 
-function ConfirmDeleteModal({
-  open,
-  handleClose,
-  onConfirm,
-  count,
-}: ConfirmDeleteModalProps) {
+function ConfirmDeleteModal({ open, handleClose, onConfirm, count }: ConfirmDeleteModalProps) {
   const createDeleteText = () => {
     if (count === 1) {
       return "element";
@@ -29,12 +24,11 @@ function ConfirmDeleteModal({
   return (
     <Modal open={open} onClose={handleClose}>
       <Box
-        className={"absolute top-1/2 left-1/2 w-[550px] shadow p-4 rounded-xl"}
+        className={"absolute top-1/2 left-1/2 w-137.5 shadow p-4 rounded-xl"}
         sx={{
           bgcolor: "background.paper",
           transform: "translate(-50%, -50%)",
-        }}
-      >
+        }}>
         <IconButton
           onClick={handleClose}
           sx={{
@@ -42,8 +36,7 @@ function ConfirmDeleteModal({
             position: "absolute",
             top: 0,
             right: 0,
-          }}
-        >
+          }}>
           <CloseIcon />
         </IconButton>
         <Typography variant="h5" component="h2" sx={{ mb: 2 }}>
@@ -56,15 +49,10 @@ function ConfirmDeleteModal({
               onConfirm().then(() => handleClose());
             }}
             color="error"
-            variant="contained"
-          >
+            variant="contained">
             Usuń
           </Button>
-          <Button
-            onClick={handleClose}
-            variant="outlined"
-            startIcon={<DoDisturbIcon />}
-          >
+          <Button onClick={handleClose} variant="outlined" startIcon={<DoDisturbIcon />}>
             Anuluj
           </Button>
         </Box>

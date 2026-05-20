@@ -1,6 +1,6 @@
 import { Box, Button, TextField, Typography } from "@mui/material";
 import { useAppDispatch, useAppSelector } from "@/hooks/hooks.ts";
-import User from "../../types/User.ts";
+import type User from "../../types/User.ts";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "@mantine/form";
 import { validateEmail } from "@/helpers/validators.ts";
@@ -19,17 +19,12 @@ function EmailChange() {
   const [changeEmail] = useChangeEmailMutation();
   const navigate = useNavigate();
 
-  const validateEmailChange = (
-    email: string,
-    values: IEmailChangeFormValues,
-  ) => {
+  const validateEmailChange = (email: string, values: IEmailChangeFormValues) => {
     if (email === user.email && email === values.newEmail) {
       return "Nowy adres email musi się różnić od starego";
     }
 
-    return email && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
-      ? undefined
-      : "Podaj prawidłowy adres email";
+    return email && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) ? undefined : "Podaj prawidłowy adres email";
   };
 
   const validate = {
@@ -51,14 +46,11 @@ function EmailChange() {
 
   const handleSubmit = (values: IEmailChangeFormValues) => {
     toast
-      .promise(
-        changeEmail({ user_id: user.user_id, email: values.newEmail }).unwrap(),
-        {
-          loading: "Zmieniam adres email...",
-          success: "Adres email został zmieniony",
-          error: "Nie udało się zmienić adresu email",
-        },
-      )
+      .promise(changeEmail({ user_id: user.user_id, email: values.newEmail }).unwrap(), {
+        loading: "Zmieniam adres email...",
+        success: "Adres email został zmieniony",
+        error: "Nie udało się zmienić adresu email",
+      })
       .then(() => {
         dispatch(logoutUser());
         localStorage.removeItem("token");
@@ -89,12 +81,7 @@ function EmailChange() {
           helperText={form.errors.newEmail}
           sx={{ mt: "1em", width: "300px" }}
         />
-        <Button
-          type={"submit"}
-          variant={"contained"}
-          sx={{ mt: "1em" }}
-          disabled={!isValid && form.isTouched()}
-        >
+        <Button type={"submit"} variant={"contained"} sx={{ mt: "1em" }} disabled={!isValid && form.isTouched()}>
           Zmień adres email
         </Button>
       </Box>

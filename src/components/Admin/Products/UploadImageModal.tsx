@@ -8,11 +8,7 @@ interface UploadImageModalProps {
   productId: number;
 }
 
-function UploadImageModal({
-  open,
-  handleClose,
-  productId,
-}: UploadImageModalProps) {
+function UploadImageModal({ open, handleClose, productId }: UploadImageModalProps) {
   return (
     <Modal open={open} onClose={handleClose}>
       <Box
@@ -20,8 +16,7 @@ function UploadImageModal({
         sx={{
           bgcolor: "background.paper",
           transform: "translate(-50%, -50%)",
-        }}
-      >
+        }}>
         <IconButton
           onClick={handleClose}
           sx={{
@@ -29,8 +24,7 @@ function UploadImageModal({
             position: "absolute",
             top: 0,
             right: 0,
-          }}
-        >
+          }}>
           <CloseIcon />
         </IconButton>
         <Typography variant="h5" component="h2" sx={{ mb: 2 }}>

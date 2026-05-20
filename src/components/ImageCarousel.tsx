@@ -1,12 +1,5 @@
 import { useState, useEffect } from "react";
-import {
-  Box,
-  IconButton,
-  MobileStepper,
-  Paper,
-  Typography,
-  Fade,
-} from "@mui/material";
+import { Box, IconButton, MobileStepper, Paper, Typography, Fade } from "@mui/material";
 import { KeyboardArrowLeft, KeyboardArrowRight } from "@mui/icons-material";
 
 const carouselImages = [
@@ -29,23 +22,17 @@ export default function ImageCarousel() {
   const maxSteps = carouselImages.length;
 
   const handleNext = () => {
-    setActiveStep((prevActiveStep) =>
-      prevActiveStep + 1 >= maxSteps ? 0 : prevActiveStep + 1,
-    );
+    setActiveStep((prevActiveStep) => (prevActiveStep + 1 >= maxSteps ? 0 : prevActiveStep + 1));
   };
 
   const handleBack = () => {
-    setActiveStep((prevActiveStep) =>
-      prevActiveStep - 1 < 0 ? maxSteps - 1 : prevActiveStep - 1,
-    );
+    setActiveStep((prevActiveStep) => (prevActiveStep - 1 < 0 ? maxSteps - 1 : prevActiveStep - 1));
   };
 
   // Auto-scrolling: advances every 5 seconds
   useEffect(() => {
     const intervalId = setInterval(() => {
-      setActiveStep((prevStep) =>
-        prevStep + 1 >= maxSteps ? 0 : prevStep + 1,
-      );
+      setActiveStep((prevStep) => (prevStep + 1 >= maxSteps ? 0 : prevStep + 1));
     }, 5000);
 
     return () => clearInterval(intervalId);
@@ -62,16 +49,14 @@ export default function ImageCarousel() {
         position: "relative",
         width: "60%",
         margin: "0 auto",
-      }}
-    >
+      }}>
       <Box
         sx={{
           width: "100%",
           height: 400,
           position: "relative",
           overflow: "hidden",
-        }}
-      >
+        }}>
         {carouselImages.map((item, index) => (
           <Fade in={activeStep === index} timeout={1000} key={item.label}>
             <Box

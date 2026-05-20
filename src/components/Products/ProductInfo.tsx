@@ -1,4 +1,4 @@
-import Product from "../../types/Product.ts";
+import type Product from "../../types/Product.ts";
 import { Box, Typography } from "@mui/material";
 import capitalizeFirstLetter from "@/helpers/capitalizeFirstLetter.ts";
 import Divider from "@mui/material/Divider";

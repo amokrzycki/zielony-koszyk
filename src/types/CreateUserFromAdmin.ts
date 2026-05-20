@@ -1,4 +1,4 @@
-import { Roles } from "../enums/Roles.ts";
+import type { Roles } from "../enums/Roles.ts";
 
 export interface CreateUserFromAdmin {
   first_name: string;

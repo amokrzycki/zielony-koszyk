@@ -1,18 +1,15 @@
-import {
-  useDeleteOrderMutation,
-  useGetOrdersQuery,
-} from "../../Order/orderApiSlice.ts";
+import { useDeleteOrderMutation, useGetOrdersQuery } from "../../Order/orderApiSlice.ts";
 import { Box, Button, IconButton, Typography } from "@mui/material";
 import Loading from "../../common/Loading.tsx";
 import {
   DataGrid,
-  GridColDef,
-  GridRowSelectionModel,
+  type GridColDef,
+  type GridRowSelectionModel,
   GridToolbarColumnsButton,
   GridToolbarQuickFilter,
   Toolbar,
 } from "@mui/x-data-grid";
-import { Order } from "@/types/Order.ts";
+import type { Order } from "@/types/Order.ts";
 import { useState } from "react";
 import ConfirmDeleteModal from "../ConfirmDeleteModal.tsx";
 import toast from "react-hot-toast";
@@ -28,11 +25,10 @@ function OrdersView() {
   const { data: orders, isError, isLoading, refetch } = useGetOrdersQuery();
   const navigate = useNavigate();
   const [openConfirmDeleteModal, setOpenConfirmDeleteModal] = useState(false);
-  const [rowSelectionModel, setRowSelectionModel] =
-    useState<GridRowSelectionModel>({
-      type: "include",
-      ids: new Set<number>(),
-    });
+  const [rowSelectionModel, setRowSelectionModel] = useState<GridRowSelectionModel>({
+    type: "include",
+    ids: new Set<number>(),
+  });
   const [deleteOrder] = useDeleteOrderMutation();
 
   const handleConfirmDeleteModalOpen = () => setOpenConfirmDeleteModal(true);
@@ -54,14 +50,11 @@ function OrdersView() {
     }
 
     try {
-      await toast.promise(
-        Promise.all(ids.map((id) => deleteOrder(id).unwrap())),
-        {
-          loading: `Usuwanie ${ids.length >= 1 ? "zamówienia" : "zamówień"}...`,
-          success: `${ids.length >= 1 ? "Zamówienie zostało usunięte." : "Zamówienia zostały usunięte."}`,
-          error: `Wystąpił błąd podczas usuwania ${ids.length >= 1 ? "zamówienia" : "zamówień"}.`,
-        }
-      );
+      await toast.promise(Promise.all(ids.map((id) => deleteOrder(id).unwrap())), {
+        loading: `Usuwanie ${ids.length >= 1 ? "zamówienia" : "zamówień"}...`,
+        success: `${ids.length >= 1 ? "Zamówienie zostało usunięte." : "Zamówienia zostały usunięte."}`,
+        error: `Wystąpił błąd podczas usuwania ${ids.length >= 1 ? "zamówienia" : "zamówień"}.`,
+      });
       setRowSelectionModel({ type: "include", ids: new Set<number>() });
     } catch (error) {
       console.error("Delete failed:", error);
@@ -83,13 +76,10 @@ function OrdersView() {
             variant="outlined"
             color="primary"
             size="small"
-            onClick={() =>
-              navigate(`/admin/zarzadzanie-zamowieniami/${params.id}`)
-            }
+            onClick={() => navigate(`/admin/zarzadzanie-zamowieniami/${params.id}`)}
             sx={{
               mr: 2,
-            }}
-          >
+            }}>
             Szczegóły
           </Button>
           <InvoiceDownloadButton orderId={parseInt(params.id.toString())} />

@@ -1,4 +1,4 @@
-import { Address } from "./Address.ts";
+import type { Address } from "./Address.ts";
 
 export interface UpdateDetailsBody extends Partial<Address> {
   user_id: string;

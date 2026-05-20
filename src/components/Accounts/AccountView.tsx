@@ -1,9 +1,9 @@
 import { Box, Button, Typography } from "@mui/material";
 import AutoBreadcrumbs from "../AutoBreadcrumbs.tsx";
 import { Outlet, useNavigate } from "react-router-dom";
-import User from "../../types/User.ts";
+import type User from "../../types/User.ts";
 import { useAppSelector } from "@/hooks/hooks.ts";
-import { RootState } from "@/store/store.ts";
+import type { RootState } from "@/store/store.ts";
 
 function AccountView() {
   const user: User = useAppSelector((state: RootState) => state.auth.user);
@@ -17,8 +17,7 @@ function AccountView() {
           sx={{
             textAlign: "center",
             bgcolor: "background.paper",
-          }}
-        >
+          }}>
           <Box className="main-container" sx={{ mt: 0 }}>
             <Typography variant="h4" gutterBottom>
               Zaloguj się, aby zobaczyć swoje konto
@@ -29,8 +28,7 @@ function AccountView() {
               size="large"
               onClick={() => {
                 navigate("/login");
-              }}
-            >
+              }}>
               Zaloguj się
             </Button>
           </Box>
@@ -46,8 +44,7 @@ function AccountView() {
         sx={{
           textAlign: "center",
           bgcolor: "background.paper",
-        }}
-      >
+        }}>
         <Box className="main-container" sx={{ mt: 0 }}>
           <AutoBreadcrumbs />
           <Outlet />

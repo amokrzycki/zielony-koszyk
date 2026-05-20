@@ -1,5 +1,5 @@
 import { useAppDispatch, useAppSelector } from "@/hooks/hooks.ts";
-import User from "../../../types/User.ts";
+import type User from "../../../types/User.ts";
 import { useForm } from "@mantine/form";
 import { Roles } from "@/enums/Roles.ts";
 import {
@@ -19,12 +19,7 @@ import ErrorView from "../../common/ErrorView.tsx";
 import { useChangeUserDetailsMutation } from "../../Accounts/accountsApiSlice.ts";
 import toast from "react-hot-toast";
 import { setUserToEdit } from "@/store/appSlice.ts";
-import {
-  validateEmail,
-  validateFirstName,
-  validateLastName,
-  validateNumber,
-} from "@/helpers/validators.ts";
+import { validateEmail, validateFirstName, validateLastName, validateNumber } from "@/helpers/validators.ts";
 
 export interface IEditUserFormValues {
   first_name: string;
@@ -60,29 +55,15 @@ function EditUserView() {
   });
 
   if (!user) {
-    return (
-      <ErrorView
-        message={"Nie znaleziono użytkownika."}
-        errorText={"Spróbuj ponownie"}
-      />
-    );
+    return <ErrorView message={"Nie znaleziono użytkownika."} errorText={"Spróbuj ponownie"} />;
   }
 
-  const billingAddress = user.addresses.find(
-    (address) => address.type === AddressType.BILLING,
-  );
+  const billingAddress = user.addresses.find((address) => address.type === AddressType.BILLING);
 
-  const shippingAddress = user.addresses.find(
-    (address) => address.type === AddressType.DELIVERY,
-  );
+  const shippingAddress = user.addresses.find((address) => address.type === AddressType.DELIVERY);
 
   if (!billingAddress || !shippingAddress) {
-    return (
-      <ErrorView
-        message={"Nie znaleziono adresów użytkownika."}
-        errorText={"Spróbuj ponownie"}
-      />
-    );
+    return <ErrorView message={"Nie znaleziono adresów użytkownika."} errorText={"Spróbuj ponownie"} />;
   }
 
   const isValid = form.isValid();
@@ -109,8 +90,7 @@ function EditUserView() {
       <form
         onSubmit={form.onSubmit((values) => {
           handleSubmit(values);
-        })}
-      >
+        })}>
         <Box className={"flex flex-col justify-center items-center"}>
           <Typography variant={"h6"} gutterBottom>
             Edytuj dane użytkownika
@@ -121,9 +101,7 @@ function EditUserView() {
             required
             placeholder={"Jan"}
             {...form.getInputProps("first_name")}
-            error={
-              Boolean(form.errors.first_name) && form.isTouched("first_name")
-            }
+            error={Boolean(form.errors.first_name) && form.isTouched("first_name")}
             helperText={form.errors.first_name}
             sx={{ m: "1em 0" }}
           />
@@ -133,9 +111,7 @@ function EditUserView() {
             required
             placeholder={"Kowalski"}
             {...form.getInputProps("last_name")}
-            error={
-              Boolean(form.errors.last_name) && form.isTouched("last_name")
-            }
+            error={Boolean(form.errors.last_name) && form.isTouched("last_name")}
             helperText={form.errors.last_name}
           />
           <TextField
@@ -161,30 +137,19 @@ function EditUserView() {
             margin={"normal"}
             fullWidth
             required
-            error={Boolean(form.errors.role) && form.isTouched("role")}
-          >
+            error={Boolean(form.errors.role) && form.isTouched("role")}>
             <InputLabel id="role-label">Rola</InputLabel>
             <Select
               labelId={"role-label"}
               label={"Rola"}
               value={form.values.role}
-              onChange={(e) =>
-                form.setFieldValue("role", e.target.value as Roles)
-              }
-            >
+              onChange={(e) => form.setFieldValue("role", e.target.value as Roles)}>
               <MenuItem value={Roles.ADMIN}>Administrator</MenuItem>
               <MenuItem value={Roles.USER}>Użytkownik</MenuItem>
             </Select>
-            {Boolean(form.errors.role) && form.isTouched("role") && (
-              <FormHelperText>{form.errors.role}</FormHelperText>
-            )}
+            {Boolean(form.errors.role) && form.isTouched("role") && <FormHelperText>{form.errors.role}</FormHelperText>}
           </FormControl>
-          <Button
-            type={"submit"}
-            variant={"contained"}
-            sx={{ mt: "1em" }}
-            disabled={!isValid && form.isTouched()}
-          >
+          <Button type={"submit"} variant={"contained"} sx={{ mt: "1em" }} disabled={!isValid && form.isTouched()}>
             Zmień dane
           </Button>
         </Box>

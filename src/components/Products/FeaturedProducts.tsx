@@ -4,7 +4,7 @@ import { Box, Typography } from "@mui/material";
 import Loading from "@/components/common/Loading.tsx";
 import ErrorView from "@/components/common/ErrorView.tsx";
 import { useMemo } from "react";
-import Product from "@/types/Product.ts";
+import type Product from "@/types/Product.ts";
 
 function FeaturedProducts() {
   const { data: products, isError, isLoading } = useGetProductsQuery();
@@ -26,11 +26,7 @@ function FeaturedProducts() {
   }
 
   if (isError || !products) {
-    return (
-      <ErrorView
-        message={"Wystąpił błąd podczas pobierania polecanych produktów"}
-      />
-    );
+    return <ErrorView message={"Wystąpił błąd podczas pobierania polecanych produktów"} />;
   }
 
   return (

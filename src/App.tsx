@@ -13,8 +13,7 @@ function App() {
           display: "flex",
           flexDirection: "column",
           minHeight: "100vh",
-        }}
-      >
+        }}>
         <RouterProvider router={router} />
       </Box>
     </ModeProvider>

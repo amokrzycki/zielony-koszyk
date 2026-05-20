@@ -1,5 +1,5 @@
 import { Box, Button } from "@mui/material";
-import { ChangeEvent, useState } from "react";
+import { type ChangeEvent, useState } from "react";
 import { useUploadImageMutation } from "@/components/Products/productsApiSlice.ts";
 import toast from "react-hot-toast";
 
@@ -38,11 +38,7 @@ function UploadImage({ productId }: UploadFileProps) {
     <>
       <input type="file" onChange={handleFileChange} />
       <Box className={"mt-4 w-full text-center"}>
-        <Button
-          variant={"outlined"}
-          onClick={handleSaveChanges}
-          disabled={isLoading}
-        >
+        <Button variant={"outlined"} onClick={handleSaveChanges} disabled={isLoading}>
           {isLoading ? "Ładowanie..." : "Dodaj plik"}
         </Button>
       </Box>

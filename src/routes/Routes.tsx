@@ -11,7 +11,7 @@ import Login from "../components/Accounts/Login.tsx";
 import AccountView from "../components/Accounts/AccountView.tsx";
 import Page from "../components/Page.tsx";
 import MainView from "../components/Admin/MainView.tsx";
-import { ReactNode } from "react";
+import type { ReactNode } from "react";
 import { AdminRoutes } from "./AdminRoutes.tsx";
 import { AccountRoutes } from "./AccountRoutes.tsx";
 import ProductDetails from "@/components/Products/ProductDetails.tsx";

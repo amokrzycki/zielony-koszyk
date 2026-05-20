@@ -18,22 +18,19 @@ function Categories() {
     },
     {
       name: "Artykuły spożywcze",
-      description:
-        "W ofercie posiadamy również produkty greckie m.in. oliwy, miody, herbaty",
+      description: "W ofercie posiadamy również produkty greckie m.in. oliwy, miody, herbaty",
       image: "/images/others.jpeg",
       category: "inne",
     },
     {
       name: "Produkty sezonowe",
-      description:
-        "Susze, kasze, Grochy czyli produkty, które warto mieć w swojej kuchni",
+      description: "Susze, kasze, Grochy czyli produkty, które warto mieć w swojej kuchni",
       image: "/images/seasonal.jpeg",
       category: "sezonowe",
     },
     {
       name: "Opakowania zbiorcze",
-      description:
-        "Produkty pakowane w workach oraz skrzynkach w niższych cenach",
+      description: "Produkty pakowane w workach oraz skrzynkach w niższych cenach",
       image: "/images/collective.jpeg",
       category: "worki",
     },
@@ -106,11 +103,7 @@ function Categories() {
 
   return (
     <>
-      <Box
-        className={
-          "flex flex-wrap justify-around w-full min-w-[300px] h-full gap-2 mt-8"
-        }
-      >
+      <Box className={"flex flex-wrap justify-around w-full min-w-[300px] h-full gap-2 mt-8"}>
         {categories.map((category, index) => (
           <ImageButton
             focusRipple
@@ -118,8 +111,7 @@ function Categories() {
               width: "40%",
             }}
             key={index}
-            onClick={() => navigate(`/produkty/?category=${category.category}`)}
-          >
+            onClick={() => navigate(`/produkty/?category=${category.category}`)}>
             <ImageSrc
               style={{
                 backgroundImage: `url(${category.image})`,
@@ -136,8 +128,7 @@ function Categories() {
                   p: 4,
                   pt: 2,
                   pb: (theme) => `calc(${theme.spacing(1)} + 6px)`,
-                }}
-              >
+                }}>
                 {category.name}
                 <ImageMarked className="MuiImageMarked-root" />
               </Typography>

@@ -1,9 +1,10 @@
 import PersonIcon from "@mui/icons-material/Person";
 import { Button, Menu, MenuItem } from "@mui/material";
 import { useAppDispatch, useAppSelector } from "@/hooks/hooks.ts";
-import { RootState } from "@/store/store.ts";
-import { AccountState } from "@/reducers/accountReducers.ts";
-import React, { useState } from "react";
+import type { RootState } from "@/store/store.ts";
+import type { AccountState } from "@/reducers/accountReducers.ts";
+import type React from "react";
+import { useState } from "react";
 import { logoutUser } from "./accountSlice.ts";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
@@ -52,8 +53,7 @@ function UserBadge() {
         aria-haspopup="true"
         aria-expanded={open ? "true" : undefined}
         onClick={handleClick}
-        sx={{ color: "text.primary" }}
-      >
+        sx={{ color: "text.primary" }}>
         {auth.token ? `Witaj ${auth.user.first_name}!` : "Moje konto"}
       </Button>
       <Menu
@@ -63,8 +63,7 @@ function UserBadge() {
         onClose={handleClose}
         MenuListProps={{
           "aria-labelledby": "user-button",
-        }}
-      >
+        }}>
         <MenuItem onClick={handleClose} data-route="/konto">
           Profil
         </MenuItem>

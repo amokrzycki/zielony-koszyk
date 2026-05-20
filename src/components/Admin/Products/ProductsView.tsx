@@ -7,20 +7,20 @@ import {
 import Loading from "../../common/Loading.tsx";
 import {
   DataGrid,
-  GridColDef,
-  GridRowSelectionModel,
+  type GridColDef,
+  type GridRowSelectionModel,
   GridToolbarColumnsButton,
   GridToolbarQuickFilter,
   Toolbar,
 } from "@mui/x-data-grid";
-import Product from "../../../types/Product.ts";
+import type Product from "../../../types/Product.ts";
 import capitalizeFirstLetter from "../../../helpers/capitalizeFirstLetter.ts";
 import { getFormattedDate } from "@/helpers/getFormattedDate.ts";
 import AddIcon from "@mui/icons-material/Add";
 import { useState } from "react";
 import AddProductModal from "./AddProductModal.tsx";
 import toast from "react-hot-toast";
-import { Categories } from "@/enums/Categories.ts";
+import type { Categories } from "@/enums/Categories.ts";
 import ConfirmDeleteModal from "../ConfirmDeleteModal.tsx";
 import ErrorView from "../../common/ErrorView.tsx";
 import UploadImageModal from "@/components/Admin/Products/UploadImageModal.tsx";
@@ -42,11 +42,10 @@ function ProductsView() {
   const [openConfirmDeleteModal, setOpenConfirmDeleteModal] = useState(false);
   const [openUploadModal, setOpenUploadModal] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
-  const [rowSelectionModel, setRowSelectionModel] =
-    useState<GridRowSelectionModel>({
-      type: "include",
-      ids: new Set<number>(),
-    });
+  const [rowSelectionModel, setRowSelectionModel] = useState<GridRowSelectionModel>({
+    type: "include",
+    ids: new Set<number>(),
+  });
   const [deleteProduct] = useDeleteProductMutation();
   const [updateProduct] = useUpdateProductMutation();
 
@@ -65,9 +64,7 @@ function ProductsView() {
   }
 
   if (isError) {
-    return (
-      <ErrorView message={"Wystąpił błąd podczas pobierania produktów."} />
-    );
+    return <ErrorView message={"Wystąpił błąd podczas pobierania produktów."} />;
   }
 
   const onDelete = async () => {
@@ -78,14 +75,11 @@ function ProductsView() {
     }
 
     try {
-      await toast.promise(
-        Promise.all(ids.map((id) => deleteProduct(id).unwrap())),
-        {
-          loading: `Usuwanie ${ids.length >= 1 ? "produktu" : "produktów"}...`,
-          success: `${ids.length >= 1 ? "Produkt został usunięty." : "Produkty zostały usunięte."}`,
-          error: `Wystąpił błąd podczas usuwania ${ids.length >= 1 ? "produktu" : "produktów"}.`,
-        }
-      );
+      await toast.promise(Promise.all(ids.map((id) => deleteProduct(id).unwrap())), {
+        loading: `Usuwanie ${ids.length >= 1 ? "produktu" : "produktów"}...`,
+        success: `${ids.length >= 1 ? "Produkt został usunięty." : "Produkty zostały usunięte."}`,
+        error: `Wystąpił błąd podczas usuwania ${ids.length >= 1 ? "produktu" : "produktów"}.`,
+      });
       setRowSelectionModel({ type: "include", ids: new Set<number>() });
     } catch (error) {
       console.error("Delete failed:", error);
@@ -114,14 +108,11 @@ function ProductsView() {
         description: updatedRow.description,
       };
 
-      await toast.promise(
-        updateProduct({ id: updatedRow.id, product: updatedProduct }).unwrap(),
-        {
-          loading: "Aktualizowanie produktu...",
-          success: "Produkt został zaktualizowany.",
-          error: "Wystąpił błąd podczas aktualizacji produktu.",
-        }
-      );
+      await toast.promise(updateProduct({ id: updatedRow.id, product: updatedProduct }).unwrap(), {
+        loading: "Aktualizowanie produktu...",
+        success: "Produkt został zaktualizowany.",
+        error: "Wystąpił błąd podczas aktualizacji produktu.",
+      });
 
       return updatedRow;
     } catch (error) {
@@ -149,13 +140,7 @@ function ProductsView() {
       field: "image",
       headerName: "Zdjęcie",
       width: 150,
-      renderCell: (params) => (
-        <img
-          src={`${API_URL}/${params.value}`}
-          alt="product"
-          style={{ height: "50px" }}
-        />
-      ),
+      renderCell: (params) => <img src={`${API_URL}/${params.value}`} alt="product" style={{ height: "50px" }} />,
     },
     {
       field: "actions",
@@ -166,12 +151,9 @@ function ProductsView() {
           variant="text"
           color="primary"
           onClick={() => {
-            setSelectedProduct(
-              products?.find((p) => p.product_id === params.id) || null
-            );
+            setSelectedProduct(products?.find((p) => p.product_id === params.id) || null);
             handleUploadModalOpen();
-          }}
-        >
+          }}>
           Zmień zdjęcie
         </Button>
       ),
@@ -240,10 +222,7 @@ function ProductsView() {
           onRowSelectionModelChange={setRowSelectionModel}
         />
       </Box>
-      <AddProductModal
-        open={openProductModal}
-        handleClose={handleProductModalClose}
-      />
+      <AddProductModal open={openProductModal} handleClose={handleProductModalClose} />
       <ConfirmDeleteModal
         open={openConfirmDeleteModal}
         handleClose={handleConfirmDeleteModalClose}

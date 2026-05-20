@@ -1,5 +1,5 @@
-import { Roles } from "../enums/Roles.ts";
-import { Address } from "./Address.ts";
+import type { Roles } from "../enums/Roles.ts";
+import type { Address } from "./Address.ts";
 
 interface User {
   user_id: string;

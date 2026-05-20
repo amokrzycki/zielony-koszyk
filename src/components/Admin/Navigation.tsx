@@ -15,8 +15,7 @@ function Navigation() {
         startIcon={<Inventory2Icon sx={{ color: "text.primary" }} />}
         onClick={() => {
           navigate("/admin/zarzadzanie-produktami");
-        }}
-      >
+        }}>
         Produkty
       </Button>
       <Button
@@ -26,8 +25,7 @@ function Navigation() {
         startIcon={<SellIcon sx={{ color: "text.primary" }} />}
         onClick={() => {
           navigate("/admin/zarzadzanie-zamowieniami");
-        }}
-      >
+        }}>
         Zamówienia
       </Button>
       <Button
@@ -37,8 +35,7 @@ function Navigation() {
         startIcon={<GroupIcon sx={{ color: "text.primary" }} />}
         onClick={() => {
           navigate("/admin/zarzadzanie-uzytkownikami");
-        }}
-      >
+        }}>
         Użytkownicy
       </Button>
     </Box>

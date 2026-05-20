@@ -1,7 +1,7 @@
-import { Address } from "@/types/Address.ts";
+import type { Address } from "@/types/Address.ts";
 import { Box, Button, Typography } from "@mui/material";
 import { CustomerType } from "@/enums/CustomerType.ts";
-import { ReactNode } from "react";
+import type { ReactNode } from "react";
 
 interface AddressBoxProps {
   address: Address;
@@ -14,10 +14,7 @@ function AddressBox({ address, onEdit, checkBox }: AddressBoxProps) {
     <Box className={"mb-4 p-8 border border-gray-300 rounded-md max-w-md"}>
       {checkBox}
       <Typography variant={"h6"} gutterBottom>
-        Typ klienta:{" "}
-        {address.customer_type === CustomerType.COMPANY
-          ? "Firma"
-          : "Osoba prywatna"}
+        Typ klienta: {address.customer_type === CustomerType.COMPANY ? "Firma" : "Osoba prywatna"}
       </Typography>
       {address.customer_type === CustomerType.COMPANY ? (
         <>
@@ -46,8 +43,7 @@ function AddressBox({ address, onEdit, checkBox }: AddressBoxProps) {
         variant={"contained"}
         sx={{
           mt: 1,
-        }}
-      >
+        }}>
         Edytuj dane
       </Button>
     </Box>

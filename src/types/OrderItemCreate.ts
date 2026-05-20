@@ -1,4 +1,4 @@
-import { OrderItem } from "./OrderItem.ts";
+import type { OrderItem } from "./OrderItem.ts";
 
 export interface OrderItemCreate extends OrderItem {
   order_id: number;

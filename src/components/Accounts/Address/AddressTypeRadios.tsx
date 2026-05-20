@@ -1,13 +1,6 @@
-import { UseFormReturnType } from "@mantine/form";
-import { IChangeAddressesFormValues } from "@/components/Accounts/Address/AddressForm.tsx";
-import {
-  Box,
-  FormControl,
-  FormControlLabel,
-  FormHelperText,
-  Radio,
-  Typography,
-} from "@mui/material";
+import type { UseFormReturnType } from "@mantine/form";
+import type { IChangeAddressesFormValues } from "@/components/Accounts/Address/AddressForm.tsx";
+import { Box, FormControl, FormControlLabel, FormHelperText, Radio, Typography } from "@mui/material";
 
 interface AddressTypeRadiosProps {
   form: UseFormReturnType<
@@ -27,25 +20,16 @@ function AddressTypeRadios({ form }: AddressTypeRadiosProps) {
         error={Boolean(form.errors.type) && form.isTouched("type")}
         component="fieldset"
         variant={"standard"}
-        sx={{ display: "flex", flexDirection: "row" }}
-      >
+        sx={{ display: "flex", flexDirection: "row" }}>
         <FormControlLabel
           control={
-            <Radio
-              {...form.getInputProps("type")}
-              value={"BILLING"}
-              checked={form.getValues().type === "BILLING"}
-            />
+            <Radio {...form.getInputProps("type")} value={"BILLING"} checked={form.getValues().type === "BILLING"} />
           }
           label={"rachunku"}
         />
         <FormControlLabel
           control={
-            <Radio
-              {...form.getInputProps("type")}
-              value={"DELIVERY"}
-              checked={form.getValues().type === "DELIVERY"}
-            />
+            <Radio {...form.getInputProps("type")} value={"DELIVERY"} checked={form.getValues().type === "DELIVERY"} />
           }
           label={"dostawie"}
         />
