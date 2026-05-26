@@ -42,11 +42,7 @@ function LoginForm() {
       const result = await login(values).unwrap();
       const { access_token } = result;
       dispatch(loginUser({ accessToken: access_token, user: result.user }));
-      if (values.rememberMe) {
-        localStorage.setItem("accessToken", access_token);
-        localStorage.setItem("user", JSON.stringify(result.user));
-        localStorage.setItem("rememberMe", "true");
-      }
+      // Refresh token is stored in httpOnly cookie automatically
       navigate("/");
       toast.success("Zalogowano pomyślnie");
     } catch (err) {
