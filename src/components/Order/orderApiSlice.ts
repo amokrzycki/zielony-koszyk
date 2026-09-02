@@ -59,7 +59,7 @@ export const orderApiSlice = baseApi.injectEndpoints({
     getInvoice: builder.query<Blob, number>({
       query: (orderId: number) => ({
         url: `orders/order/${orderId}/invoice`,
-        responseHandler: (response) => response.blob(),
+        responseHandler: (response: Response) => response.blob(),
       }),
     }),
   }),

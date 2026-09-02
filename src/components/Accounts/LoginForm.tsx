@@ -7,6 +7,7 @@ import { loginUser } from "./accountSlice.ts";
 import { useAppDispatch } from "@/hooks/hooks.ts";
 import toast from "react-hot-toast";
 import Checkbox from "@mui/material/Checkbox";
+import { rememberSession } from "@/helpers/tokenHelpers.ts";
 
 export interface ILoginFormValues {
   email: string;
@@ -42,11 +43,8 @@ function LoginForm() {
       const result = await login(values).unwrap();
       const { access_token } = result;
       dispatch(loginUser({ accessToken: access_token, user: result.user }));
-      if (values.rememberMe) {
-        localStorage.setItem("accessToken", access_token);
-        localStorage.setItem("user", JSON.stringify(result.user));
-        localStorage.setItem("rememberMe", "true");
-      }
+      rememberSession(Boolean(values.rememberMe));
+      // Refresh token is stored in httpOnly cookie automatically
       navigate("/");
       toast.success("Zalogowano pomyślnie");
     } catch (err) {
@@ -80,7 +78,10 @@ function LoginForm() {
         />
       </Box>
       <FormGroup sx={{ mt: 1 }} className={"items-center"}>
-        <FormControlLabel control={<Checkbox {...form.getInputProps("rememberMe")} />} label={"Zapamiętaj mnie"} />
+        <FormControlLabel
+          control={<Checkbox {...form.getInputProps("rememberMe", { type: "checkbox" })} />}
+          label={"Zapamiętaj mnie"}
+        />
       </FormGroup>
       {/* TODO: forgot password */}
       <Button type={"submit"} disabled={!isValid && form.isTouched()} variant={"contained"} sx={{ mt: "1em" }}>

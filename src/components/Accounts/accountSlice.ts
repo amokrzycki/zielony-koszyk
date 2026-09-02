@@ -3,8 +3,8 @@ import { accountReducers, type AccountState } from "@/reducers/accountReducers.t
 import type User from "../../types/User.ts";
 
 const initialState: AccountState = {
-  token: localStorage.getItem("accessToken"),
-  user: JSON.parse(localStorage.getItem("user") || "{}") as User,
+  token: null,
+  user: {} as User,
 };
 
 export const accountSlice = createSlice({
@@ -13,4 +13,4 @@ export const accountSlice = createSlice({
   reducers: accountReducers,
 });
 
-export const { loginUser, updateUserAddresses, logoutUser, updateUserDetails } = accountSlice.actions;
+export const { loginUser, updateUserAddresses, logoutUser, updateUserDetails, refreshToken } = accountSlice.actions;

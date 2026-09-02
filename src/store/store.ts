@@ -1,10 +1,18 @@
-import { combineReducers, configureStore } from "@reduxjs/toolkit";
+import { combineReducers, configureStore, createListenerMiddleware } from "@reduxjs/toolkit";
 import { persistStore, persistReducer } from "redux-persist";
 import { baseApi } from "../api/api.ts";
 import { cartSlice } from "../components/Cart/cartSlice.ts";
 import { orderSlice } from "../components/Order/orderSlice.ts";
-import { accountSlice } from "../components/Accounts/accountSlice.ts";
+import { accountSlice, logoutUser } from "../components/Accounts/accountSlice.ts";
+import { clearTokenStorage } from "../helpers/tokenHelpers.ts";
 import { appSlice } from "./appSlice.ts";
+
+const listenerMiddleware = createListenerMiddleware();
+
+listenerMiddleware.startListening({
+  actionCreator: logoutUser,
+  effect: clearTokenStorage,
+});
 
 const persistStorage = {
   getItem: (key: string) => {
@@ -52,7 +60,7 @@ export const store = configureStore({
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: false,
-    }).concat(baseApi.middleware),
+    }).concat(listenerMiddleware.middleware, baseApi.middleware),
 });
 
 export type RootState = ReturnType<typeof store.getState>;

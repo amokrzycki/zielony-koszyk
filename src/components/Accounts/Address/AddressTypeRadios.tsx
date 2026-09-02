@@ -3,10 +3,7 @@ import type { IChangeAddressesFormValues } from "@/components/Accounts/Address/A
 import { Box, FormControl, FormControlLabel, FormHelperText, Radio, Typography } from "@mui/material";
 
 interface AddressTypeRadiosProps {
-  form: UseFormReturnType<
-    IChangeAddressesFormValues,
-    (values: IChangeAddressesFormValues) => IChangeAddressesFormValues
-  >;
+  form: UseFormReturnType<IChangeAddressesFormValues>;
 }
 
 function AddressTypeRadios({ form }: AddressTypeRadiosProps) {

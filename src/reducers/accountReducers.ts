@@ -19,6 +19,9 @@ export const accountReducers = {
     state.token = action.payload.accessToken;
     state.user = action.payload.user;
   },
+  refreshToken(state: AccountState, action: PayloadAction<string>) {
+    state.token = action.payload;
+  },
   updateUserAddresses(state: AccountState, action: PayloadAction<Address>) {
     if (action.payload.customer_type === CustomerType.COMPANY) {
       action.payload.first_name = "";
@@ -43,11 +46,7 @@ export const accountReducers = {
       address.address_id === action.payload.address_id ? action.payload : address,
     );
 
-    const rememberMe = JSON.parse(localStorage.getItem("rememberMe") || "false");
-
-    if (rememberMe) {
-      localStorage.setItem("user", JSON.stringify(state.user));
-    }
+    // User data is now kept only in Redux state (cleared on logout and page refresh)
   },
   updateUserDetails(state: AccountState, action: PayloadAction<Partial<User>>) {
     state.user = { ...state.user, ...action.payload };

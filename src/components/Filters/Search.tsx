@@ -9,6 +9,7 @@ function Search() {
   const [searchTerm, setSearchTerm] = useState(filters.search);
   const [debouncedSearchTerm] = useDebouncedValue(searchTerm, 300);
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: useEffect is used to update the search param when the debounced search term changes
   useEffect(() => {
     setParam("search", debouncedSearchTerm || "");
     setParam("page", "1");

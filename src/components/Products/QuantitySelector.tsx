@@ -37,7 +37,7 @@ function QuantitySelector({ quantity, setQuantity }: QuantitySelectorProps) {
           value={quantity}
           onChange={(e) => {
             const value = parseInt(e.target.value, 10);
-            setQuantity(isNaN(value) ? 1 : value);
+            setQuantity(Number.isNaN(value) ? 1 : value);
           }}
           sx={{
             width: calcInputWidth(),

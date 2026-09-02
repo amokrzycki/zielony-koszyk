@@ -1,31 +1,15 @@
 import { SORT_MODES } from "@/constants/app";
 import useProductFilters from "@/hooks/useProductFilters.ts";
-import { useEffect, useState } from "react";
 import { FormControl, InputLabel, MenuItem, Select, type SelectChangeEvent } from "@mui/material";
 
 function SortSelector() {
   const { filters, setParam } = useProductFilters();
-
-  const findCurrentSortValue = () => {
-    const { orderBy, orderDir } = filters;
-
-    if (!orderBy && !orderDir) {
-      return "nameAsc";
-    }
-
-    const mode = SORT_MODES.find((m) => m.orderBy === orderBy && m.orderDir === orderDir);
-    return mode ? mode.value : "nameAsc";
-  };
-
-  const [sortValue, setSortValue] = useState<string>("nameAsc");
-
-  useEffect(() => {
-    setSortValue(findCurrentSortValue());
-  }, [filters.orderBy, filters.orderDir]);
+  const sortValue =
+    SORT_MODES.find((mode) => mode.orderBy === filters.orderBy && mode.orderDir === filters.orderDir)?.value ??
+    "nameAsc";
 
   const handleSortChange = (event: SelectChangeEvent) => {
     const newValue = event.target.value as string;
-    setSortValue(newValue);
 
     const selectedMode = SORT_MODES.find((m) => m.value === newValue);
     if (!selectedMode) return;

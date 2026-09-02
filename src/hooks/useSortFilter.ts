@@ -26,7 +26,14 @@ const useSortFilter = (
         { replace: true },
       );
     }
-  }, []);
+  }, [
+    searchParams,
+    setSearchParams,
+    sortDirectionParamName,
+    sortDirectionInitialValue,
+    sortByParamName,
+    sortByInitialValue,
+  ]);
 
   const changeSortBy = (newSortBy: string) => {
     const newSortDir =

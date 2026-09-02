@@ -9,6 +9,7 @@ import { logoutUser } from "./accountSlice.ts";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { Roles } from "@/enums/Roles.ts";
+import { useLogoutMutation } from "./accountsApiSlice.ts";
 
 function UserBadge() {
   const navigate = useNavigate();
@@ -16,6 +17,7 @@ function UserBadge() {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const auth = useAppSelector((state: RootState): AccountState => state.auth);
+  const [endSession] = useLogoutMutation();
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     if (auth.token) {
@@ -33,14 +35,16 @@ function UserBadge() {
     }
   };
 
-  const handleLogout = () => {
-    setAnchorEl(null);
-    dispatch(logoutUser());
-    localStorage.removeItem("accessToken");
-    localStorage.removeItem("user");
-    localStorage.removeItem("rememberMe");
-    toast.success("Zostałeś wylogowany");
-    navigate("/");
+  const handleLogout = async () => {
+    try {
+      await endSession().unwrap();
+      setAnchorEl(null);
+      dispatch(logoutUser());
+      toast.success("Zostałeś wylogowany");
+      navigate("/");
+    } catch {
+      toast.error("Nie udało się wylogować");
+    }
   };
 
   return (

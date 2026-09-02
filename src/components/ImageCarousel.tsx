@@ -36,7 +36,7 @@ export default function ImageCarousel() {
     }, 5000);
 
     return () => clearInterval(intervalId);
-  }, [maxSteps]);
+  }, []);
 
   return (
     <Paper

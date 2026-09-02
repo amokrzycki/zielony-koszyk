@@ -82,7 +82,7 @@ function OrdersView() {
             }}>
             Szczegóły
           </Button>
-          <InvoiceDownloadButton orderId={parseInt(params.id.toString())} />
+          <InvoiceDownloadButton orderId={parseInt(params.id.toString(), 10)} />
         </Box>
       ),
     },
