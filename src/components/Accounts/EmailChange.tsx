@@ -4,7 +4,7 @@ import type User from "../../types/User.ts";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "@mantine/form";
 import { validateEmail } from "@/helpers/validators.ts";
-import { useChangeEmailMutation } from "./accountsApiSlice.ts";
+import { useChangeEmailMutation, useLogoutMutation } from "./accountsApiSlice.ts";
 import { logoutUser } from "./accountSlice.ts";
 import toast from "react-hot-toast";
 
@@ -17,6 +17,7 @@ function EmailChange() {
   const dispatch = useAppDispatch();
   const user: User = useAppSelector((state) => state.auth.user);
   const [changeEmail] = useChangeEmailMutation();
+  const [endSession] = useLogoutMutation();
   const navigate = useNavigate();
 
   const validateEmailChange = (email: string, values: IEmailChangeFormValues) => {
@@ -51,10 +52,15 @@ function EmailChange() {
         success: "Adres email został zmieniony",
         error: "Nie udało się zmienić adresu email",
       })
-      .then(() => {
-        dispatch(logoutUser());
-        navigate("/");
-        toast("Zostałeś wylogowany");
+      .then(async () => {
+        try {
+          await endSession().unwrap();
+          dispatch(logoutUser());
+          navigate("/");
+          toast("Zostałeś wylogowany");
+        } catch {
+          toast.error("Nie udało się wylogować");
+        }
       });
   };
 

@@ -21,7 +21,8 @@ const baseQueryWithReauth: BaseQueryFn = async (args, api, extraOptions) => {
   })(args, api, extraOptions);
 
   // Handle 401 errors with token refresh
-  if (result.error && result.error.status === 401) {
+  const url = typeof args === "string" ? args : args.url;
+  if (result.error && result.error.status === 401 && !url.startsWith("auth/")) {
     if (!isRefreshing) {
       isRefreshing = true;
       refreshPromise = Promise.resolve(

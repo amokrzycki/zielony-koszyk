@@ -7,6 +7,8 @@ import type User from "../../types/User.ts";
 import type { CreateUserFromAdmin } from "@/types/CreateUserFromAdmin.ts";
 import type { Address } from "@/types/Address.ts";
 
+type AuthResponse = { access_token: string; user: User };
+
 export const accountsApiSlice = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     register: builder.mutation({
@@ -23,15 +25,22 @@ export const accountsApiSlice = baseApi.injectEndpoints({
         body,
       }),
     }),
-    login: builder.mutation({
+    login: builder.mutation<AuthResponse, ILoginFormValues>({
       query: (body: ILoginFormValues) => ({
         url: "auth/login",
         method: "POST",
         body: {
           email: body.email,
           password: body.password,
+          rememberMe: Boolean(body.rememberMe),
         },
       }),
+    }),
+    refreshSession: builder.mutation<AuthResponse, void>({
+      query: () => ({ url: "auth/refresh", method: "POST" }),
+    }),
+    logout: builder.mutation<void, void>({
+      query: () => ({ url: "auth/logout", method: "POST" }),
     }),
     getUsers: builder.query<User[], void>({
       query: () => ({
@@ -93,6 +102,7 @@ export const {
   useRegisterMutation,
   useCreateUserFromAdminMutation,
   useLoginMutation,
+  useLogoutMutation,
   useGetUsersQuery,
   useDeleteUsersMutation,
   useChangePasswordMutation,
