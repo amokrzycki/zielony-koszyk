@@ -102,41 +102,39 @@ function Categories() {
   }));
 
   return (
-    <>
-      <Box className={"flex flex-wrap justify-around w-full min-w-[300px] h-full gap-2 mt-8"}>
-        {categories.map((category, index) => (
-          <ImageButton
-            focusRipple
+    <Box className={"flex flex-wrap justify-around w-full min-w-75 h-full gap-2 mt-8"}>
+      {categories.map((category) => (
+        <ImageButton
+          focusRipple
+          style={{
+            width: "40%",
+          }}
+          key={category.category}
+          onClick={() => navigate(`/produkty/?category=${category.category}`)}>
+          <ImageSrc
             style={{
-              width: "40%",
+              backgroundImage: `url(${category.image})`,
             }}
-            key={index}
-            onClick={() => navigate(`/produkty/?category=${category.category}`)}>
-            <ImageSrc
-              style={{
-                backgroundImage: `url(${category.image})`,
-              }}
-            />
-            <ImageBackdrop className="MuiImageBackdrop-root" />
-            <Image>
-              <Typography
-                component="span"
-                variant="subtitle1"
-                color="inherit"
-                sx={{
-                  position: "relative",
-                  p: 4,
-                  pt: 2,
-                  pb: (theme) => `calc(${theme.spacing(1)} + 6px)`,
-                }}>
-                {category.name}
-                <ImageMarked className="MuiImageMarked-root" />
-              </Typography>
-            </Image>
-          </ImageButton>
-        ))}
-      </Box>
-    </>
+          />
+          <ImageBackdrop className="MuiImageBackdrop-root" />
+          <Image>
+            <Typography
+              component="span"
+              variant="subtitle1"
+              color="inherit"
+              sx={{
+                position: "relative",
+                p: 4,
+                pt: 2,
+                pb: (theme) => `calc(${theme.spacing(1)} + 6px)`,
+              }}>
+              {category.name}
+              <ImageMarked className="MuiImageMarked-root" />
+            </Typography>
+          </Image>
+        </ImageButton>
+      ))}
+    </Box>
   );
 }
 

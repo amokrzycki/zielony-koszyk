@@ -2,7 +2,6 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 import type User from "../types/User.ts";
 import type { Address } from "../types/Address.ts";
 import { CustomerType } from "@/enums/CustomerType.ts";
-import { clearTokenStorage } from "@/helpers/tokenHelpers.ts";
 
 export interface AccountState {
   token: string | null;
@@ -55,6 +54,5 @@ export const accountReducers = {
   logoutUser(state: AccountState) {
     state.token = null;
     state.user = {} as User;
-    clearTokenStorage();
   },
 };
