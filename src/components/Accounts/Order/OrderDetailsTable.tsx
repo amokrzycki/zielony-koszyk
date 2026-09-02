@@ -25,7 +25,7 @@ function OrderDetailsTable({ orderDetails }: OrderDetailsTableProps) {
         <TableBody>
           {orderDetails.map((product: OrderItemResponse, index: number) => (
             <TableRow
-              key={index}
+              key={product.order_item_id}
               sx={{
                 backgroundColor: index % 2 !== 0 ? "background.paper" : "background.default",
               }}>

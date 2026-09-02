@@ -46,7 +46,7 @@ function Products() {
                 </Typography>
               )}
               {products.length > 0 &&
-                products.map((product: Product, index: number) => <ProductCard key={index} product={product} />)}
+                products.map((product: Product) => <ProductCard key={product.product_id} product={product} />)}
               <Box className={"flex w-full justify-center mt-4"}>
                 <FiltersPagination totalCount={data?.totalPages} />
               </Box>

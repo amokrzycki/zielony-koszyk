@@ -23,7 +23,7 @@ function ProductDetails() {
     throw new Error("Product ID is required");
   }
 
-  const { data: product, isLoading, isError } = useGetProductByIdQuery(parseInt(productId));
+  const { data: product, isLoading, isError } = useGetProductByIdQuery(parseInt(productId, 10));
 
   if (isLoading) {
     return <Loading />;

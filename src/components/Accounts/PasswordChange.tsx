@@ -45,7 +45,7 @@ function PasswordChange() {
     };
     updatePassword(body)
       .then(() => {
-        console.log("Password changed");
+        // Handle successful password change
       })
       .catch((error) => {
         console.error(error);

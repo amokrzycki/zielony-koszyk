@@ -31,7 +31,7 @@ function UploadImage({ productId }: UploadFileProps) {
         error: "Wystąpił błąd podczas aktualizacji zdjęcia",
       })
       .then(() => {
-        console.log("Image uploaded");
+        // Handle successful image upload
       });
   };
   return (

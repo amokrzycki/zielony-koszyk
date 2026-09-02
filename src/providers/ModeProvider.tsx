@@ -5,7 +5,9 @@ import { MantineProvider } from "@mantine/core";
 
 const ModeContext = createContext({
   mode: "light",
-  toggleMode: () => {},
+  toggleMode: () => {
+    //
+  },
 });
 
 /* eslint-disable */

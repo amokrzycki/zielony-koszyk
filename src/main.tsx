@@ -7,8 +7,9 @@ import { PersistGate } from "redux-persist/integration/react";
 import { accountsApiSlice } from "./components/Accounts/accountsApiSlice.ts";
 import { loginUser } from "./components/Accounts/accountSlice.ts";
 
-// biome-ignore lint/style/noNonNullAssertion: We are sure that the element with id "root" exists in the HTML, so we can safely use the non-null assertion operator here.
-ReactDOM.createRoot(document.getElementById("root")!).render(
+const rootElement = document.getElementById("root");
+if (!rootElement) throw new Error("Root element not found");
+ReactDOM.createRoot(rootElement).render(
   <React.StrictMode>
     <Provider store={store}>
       <PersistGate persistor={persistor} loading={<div>Loading...</div>}>

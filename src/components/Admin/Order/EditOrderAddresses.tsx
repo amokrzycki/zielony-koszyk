@@ -132,7 +132,7 @@ function EditOrderAddresses() {
         },
       )
       .then(() => {
-        console.log("Zapisano zmiany");
+        // Handle successful order update
       });
   };
 

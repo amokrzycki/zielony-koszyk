@@ -28,9 +28,7 @@ function OrderAddresses({ order }: OrderAddressesProps) {
             <Typography>{order?.billingAddress.nip}</Typography>
           </>
         ) : (
-          <>
-            <Typography>{`${order?.billingAddress.first_name} ${order?.billingAddress.last_name}`}</Typography>
-          </>
+          <Typography>{`${order?.billingAddress.first_name} ${order?.billingAddress.last_name}`}</Typography>
         )}
         <Typography>{order?.customer_email}</Typography>
         <Typography>{order?.billingAddress.phone}</Typography>
@@ -53,9 +51,7 @@ function OrderAddresses({ order }: OrderAddressesProps) {
             <Typography>{order?.shippingAddress.nip}</Typography>
           </>
         ) : (
-          <>
-            <Typography>{`${order?.shippingAddress.first_name} ${order?.shippingAddress.last_name}`}</Typography>
-          </>
+          <Typography>{`${order?.shippingAddress.first_name} ${order?.shippingAddress.last_name}`}</Typography>
         )}
         <Typography>{order?.shippingAddress.phone}</Typography>
         <Typography>{generateOrderAddress(order?.shippingAddress)}</Typography>

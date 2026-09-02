@@ -50,20 +50,20 @@ export const accountsApiSlice = baseApi.injectEndpoints({
     }),
     deleteUsers: builder.mutation<void, string>({
       query: (body: string) => ({
-        url: "users/" + body,
+        url: `users/${body}`,
         method: "DELETE",
       }),
     }),
     changePassword: builder.mutation({
       query: (body: UpdatePasswordBody) => ({
-        url: "users/password-change/" + body.user_id,
+        url: `users/password-change/${body.user_id}`,
         method: "PUT",
         body,
       }),
     }),
     changeEmail: builder.mutation({
       query: (body: { user_id: string; email: string }) => ({
-        url: "users/" + body.user_id,
+        url: `users/${body.user_id}`,
         method: "PUT",
         body,
       }),
