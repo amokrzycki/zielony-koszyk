@@ -50,18 +50,19 @@ const baseQueryWithReauth: BaseQueryFn = async (args, api, extraOptions) => {
 
     if (refreshPromise) {
       await refreshPromise;
-      // Retry original request with refreshed token
-      result = await fetchBaseQuery({
-        baseUrl: API_URL,
-        credentials: "include",
-        prepareHeaders: (headers, { getState }) => {
-          const token = (getState() as RootState).auth.token;
-          if (token) {
+
+      const token = (api.getState() as RootState).auth.token;
+      if (token) {
+        // Retry original request with refreshed token
+        result = await fetchBaseQuery({
+          baseUrl: API_URL,
+          credentials: "include",
+          prepareHeaders: (headers) => {
             headers.set("authorization", `Bearer ${token}`);
-          }
-          return headers;
-        },
-      })(args, api, extraOptions);
+            return headers;
+          },
+        })(args, api, extraOptions);
+      }
     }
   }
 
