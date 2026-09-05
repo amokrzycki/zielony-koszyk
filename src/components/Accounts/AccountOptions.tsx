@@ -5,6 +5,7 @@ import AlternateEmailIcon from "@mui/icons-material/AlternateEmail";
 import PasswordIcon from "@mui/icons-material/Password";
 import ImportContactsIcon from "@mui/icons-material/ImportContacts";
 import BuildIcon from "@mui/icons-material/Build";
+import SecurityIcon from "@mui/icons-material/Security";
 import { Roles } from "@/enums/Roles.ts";
 import type User from "../../types/User.ts";
 import { useAppSelector } from "@/hooks/hooks.ts";
@@ -19,7 +20,7 @@ function AccountOptions() {
       <Box>
         <Typography variant="h4">Twoje konto</Typography>
       </Box>
-      <Box className={"flex justify-center gap-4 mt-4"}>
+      <Box className={"flex flex-wrap justify-center gap-4 mt-4"}>
         <Button
           variant="contained"
           color="primary"
@@ -59,6 +60,16 @@ function AccountOptions() {
             navigate("/konto/zmiana-hasla");
           }}>
           Zmiana hasła
+        </Button>
+        <Button
+          variant="contained"
+          color="primary"
+          size={"large"}
+          startIcon={<SecurityIcon sx={{ color: "text.primary" }} />}
+          onClick={() => {
+            navigate("/konto/mfa");
+          }}>
+          Uwierzytelnianie TOTP
         </Button>
         {user.role === Roles.ADMIN && (
           <Button

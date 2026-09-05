@@ -8,6 +8,7 @@ import {
   type PendingAuthResponse,
   useLoginMutation,
   useVerifyEmailOtpMutation,
+  useVerifyTotpMutation,
 } from "./accountsApiSlice.ts";
 import { loginUser, logoutUser } from "./accountSlice.ts";
 import { useAppDispatch } from "@/hooks/hooks.ts";
@@ -28,6 +29,7 @@ function LoginForm() {
   const dispatch = useAppDispatch();
   const [login] = useLoginMutation();
   const [verifyEmailOtp] = useVerifyEmailOtpMutation();
+  const [verifyTotp] = useVerifyTotpMutation();
   const [pendingMfa, setPendingMfa] = useState<{
     response: PendingAuthResponse;
     rememberMe: boolean;
@@ -76,15 +78,22 @@ function LoginForm() {
   };
 
   if (pendingMfa) {
-    if (pendingMfa.response.method === MfaMethod.EMAIL_OTP) {
+    if (pendingMfa.response.method === MfaMethod.EMAIL_OTP || pendingMfa.response.method === MfaMethod.TOTP) {
+      const isEmailOtp = pendingMfa.response.method === MfaMethod.EMAIL_OTP;
       return (
         <MfaCodeForm
+          instruction={
+            isEmailOtp
+              ? "Wpisz sześciocyfrowy kod wysłany e-mailem."
+              : "Wpisz sześciocyfrowy kod z aplikacji uwierzytelniającej."
+          }
           onCancel={() => setPendingMfa(null)}
           onSubmit={async (code) => {
-            const result = await verifyEmailOtp({
+            const request = {
               code,
               mfaToken: pendingMfa.response.mfa_token,
-            }).unwrap();
+            };
+            const result = await (isEmailOtp ? verifyEmailOtp(request) : verifyTotp(request)).unwrap();
             completeLogin(result, pendingMfa.rememberMe);
           }}
         />

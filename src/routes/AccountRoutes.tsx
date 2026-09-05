@@ -6,6 +6,7 @@ import AccountOrdersView from "../components/Accounts/Order/AccountOrdersView.ts
 import AccountOrderDetails from "../components/Accounts/Order/AccountOrderDetails.tsx";
 import EmailChange from "../components/Accounts/EmailChange.tsx";
 import PasswordChange from "../components/Accounts/PasswordChange.tsx";
+import MfaSettings from "../components/Accounts/MfaSettings.tsx";
 
 export const AccountRoutes: Route[] = [
   {
@@ -49,5 +50,9 @@ export const AccountRoutes: Route[] = [
   {
     path: "zmiana-hasla",
     element: <PasswordChange />,
+  },
+  {
+    path: "mfa",
+    element: <MfaSettings />,
   },
 ];

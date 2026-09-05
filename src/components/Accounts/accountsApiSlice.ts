@@ -22,9 +22,20 @@ export type PendingAuthResponse = {
 
 export type LoginResponse = FullAuthResponse | PendingAuthResponse;
 
-type VerifyEmailOtpRequest = {
+type VerifyMfaCodeRequest = {
   code: string;
   mfaToken: string;
+};
+
+export type TotpEnrollmentResponse = {
+  challenge_id: string;
+  otpauth_uri: string;
+  secret: string;
+};
+
+type VerifyTotpEnrollmentRequest = {
+  challengeId: string;
+  code: string;
 };
 
 export const accountsApiSlice = baseApi.injectEndpoints({
@@ -54,12 +65,34 @@ export const accountsApiSlice = baseApi.injectEndpoints({
         },
       }),
     }),
-    verifyEmailOtp: builder.mutation<FullAuthResponse, VerifyEmailOtpRequest>({
+    verifyEmailOtp: builder.mutation<FullAuthResponse, VerifyMfaCodeRequest>({
       query: ({ code, mfaToken }) => ({
         url: "auth/mfa/email-otp/verify",
         method: "POST",
         body: { code },
         headers: { Authorization: `Bearer ${mfaToken}` },
+      }),
+    }),
+    verifyTotp: builder.mutation<FullAuthResponse, VerifyMfaCodeRequest>({
+      query: ({ code, mfaToken }) => ({
+        url: "auth/mfa/totp/verify",
+        method: "POST",
+        body: { code },
+        headers: { Authorization: `Bearer ${mfaToken}` },
+      }),
+    }),
+    startTotpEnrollment: builder.mutation<TotpEnrollmentResponse, string>({
+      query: (password) => ({
+        url: "users/me/mfa/totp/enrollment",
+        method: "POST",
+        body: { password },
+      }),
+    }),
+    verifyTotpEnrollment: builder.mutation<{ mfa_method: MfaMethod.TOTP }, VerifyTotpEnrollmentRequest>({
+      query: ({ challengeId, code }) => ({
+        url: "users/me/mfa/totp/enrollment/verify",
+        method: "POST",
+        body: { challenge_id: challengeId, code },
       }),
     }),
     refreshSession: builder.mutation<FullAuthResponse, void>({
@@ -129,6 +162,9 @@ export const {
   useCreateUserFromAdminMutation,
   useLoginMutation,
   useVerifyEmailOtpMutation,
+  useVerifyTotpMutation,
+  useStartTotpEnrollmentMutation,
+  useVerifyTotpEnrollmentMutation,
   useLogoutMutation,
   useGetUsersQuery,
   useDeleteUsersMutation,
