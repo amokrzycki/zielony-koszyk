@@ -1,9 +1,10 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "@mantine/form";
-import { Box, Button, FormControlLabel, FormGroup, TextField } from "@mui/material";
+import { Box, Button, FormControlLabel, FormGroup, TextField, Typography } from "@mui/material";
 import { validateEmail, validatePassword } from "@/helpers/validators.ts";
-import { useLoginMutation } from "./accountsApiSlice.ts";
-import { loginUser } from "./accountSlice.ts";
+import { type PendingAuthResponse, useLoginMutation } from "./accountsApiSlice.ts";
+import { loginUser, logoutUser } from "./accountSlice.ts";
 import { useAppDispatch } from "@/hooks/hooks.ts";
 import toast from "react-hot-toast";
 import Checkbox from "@mui/material/Checkbox";
@@ -19,6 +20,7 @@ function LoginForm() {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const [login] = useLoginMutation();
+  const [pendingMfa, setPendingMfa] = useState<PendingAuthResponse | null>(null);
 
   const validate = {
     email: validateEmail,
@@ -41,6 +43,13 @@ function LoginForm() {
   const handleSubmit = async (values: ILoginFormValues) => {
     try {
       const result = await login(values).unwrap();
+      if (result.mfa_required) {
+        dispatch(logoutUser());
+        form.reset();
+        setPendingMfa(result);
+        return;
+      }
+
       const { access_token } = result;
       dispatch(loginUser({ accessToken: access_token, user: result.user }));
       rememberSession(Boolean(values.rememberMe));
@@ -52,6 +61,15 @@ function LoginForm() {
       toast.error("Niepoprawne dane logowania");
     }
   };
+
+  if (pendingMfa) {
+    return (
+      <Box className={"flex flex-col items-center gap-4"}>
+        <Typography>Wymagane dodatkowe uwierzytelnienie: {pendingMfa.method}</Typography>
+        <Button onClick={() => setPendingMfa(null)}>Wróć do logowania</Button>
+      </Box>
+    );
+  }
 
   return (
     <form

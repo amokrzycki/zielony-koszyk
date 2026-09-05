@@ -6,8 +6,21 @@ import type { UpdateDetailsBody } from "@/types/updateDetailsBody.ts";
 import type User from "../../types/User.ts";
 import type { CreateUserFromAdmin } from "@/types/CreateUserFromAdmin.ts";
 import type { Address } from "@/types/Address.ts";
+import type { MfaMethod } from "@/enums/MfaMethod.ts";
 
-type AuthResponse = { access_token: string; user: User };
+export type FullAuthResponse = {
+  mfa_required: false;
+  access_token: string;
+  user: User;
+};
+
+export type PendingAuthResponse = {
+  mfa_required: true;
+  method: Exclude<MfaMethod, MfaMethod.NONE>;
+  mfa_token: string;
+};
+
+export type LoginResponse = FullAuthResponse | PendingAuthResponse;
 
 export const accountsApiSlice = baseApi.injectEndpoints({
   endpoints: (builder) => ({
@@ -25,7 +38,7 @@ export const accountsApiSlice = baseApi.injectEndpoints({
         body,
       }),
     }),
-    login: builder.mutation<AuthResponse, ILoginFormValues>({
+    login: builder.mutation<LoginResponse, ILoginFormValues>({
       query: (body: ILoginFormValues) => ({
         url: "auth/login",
         method: "POST",
@@ -36,7 +49,7 @@ export const accountsApiSlice = baseApi.injectEndpoints({
         },
       }),
     }),
-    refreshSession: builder.mutation<AuthResponse, void>({
+    refreshSession: builder.mutation<FullAuthResponse, void>({
       query: () => ({ url: "auth/refresh", method: "POST" }),
     }),
     logout: builder.mutation<void, void>({
