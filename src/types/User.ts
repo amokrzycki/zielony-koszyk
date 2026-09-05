@@ -1,5 +1,6 @@
 import type { Roles } from "../enums/Roles.ts";
 import type { Address } from "./Address.ts";
+import type { MfaMethod } from "../enums/MfaMethod.ts";
 
 interface User {
   user_id: string;
@@ -9,6 +10,7 @@ interface User {
   last_name: string;
   addresses: Address[];
   phone: string;
+  mfa_method: MfaMethod;
   created_at: string;
   updated_at: string;
 }
