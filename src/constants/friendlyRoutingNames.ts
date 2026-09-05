@@ -4,6 +4,7 @@ export const friendlyRoutingNames: Record<string, string> = {
   zamowienia: "Moje zamówienia",
   "zmiana-email": "Zmiana email",
   "zmiana-hasla": "Zmiana hasła",
+  mfa: "Uwierzytelnianie TOTP",
   "edytuj-dane": "Edytuj dane",
   "zarzadzanie-produktami": "Zarządzanie produktami",
   "zarzadzanie-zamowieniami": "Zarządzanie zamówieniami",

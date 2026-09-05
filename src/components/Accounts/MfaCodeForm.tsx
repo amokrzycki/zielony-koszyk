@@ -2,11 +2,12 @@ import { useState, type FormEvent } from "react";
 import { Box, Button, TextField, Typography } from "@mui/material";
 
 type Props = {
+  instruction: string;
   onSubmit: (code: string) => Promise<void>;
   onCancel: () => void;
 };
 
-function MfaCodeForm({ onSubmit, onCancel }: Props) {
+function MfaCodeForm({ instruction, onSubmit, onCancel }: Props) {
   const [code, setCode] = useState("");
   const [error, setError] = useState("");
   const [submitting, setSubmitting] = useState(false);
@@ -27,7 +28,7 @@ function MfaCodeForm({ onSubmit, onCancel }: Props) {
 
   return (
     <Box component="form" onSubmit={handleSubmit} className="flex flex-col items-center gap-4" sx={{ width: "100%" }}>
-      <Typography>Wpisz sześciocyfrowy kod wysłany e-mailem.</Typography>
+      <Typography>{instruction}</Typography>
       <TextField
         autoFocus
         label="Kod jednorazowy"
