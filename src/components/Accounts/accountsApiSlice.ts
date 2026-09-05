@@ -22,6 +22,11 @@ export type PendingAuthResponse = {
 
 export type LoginResponse = FullAuthResponse | PendingAuthResponse;
 
+type VerifyEmailOtpRequest = {
+  code: string;
+  mfaToken: string;
+};
+
 export const accountsApiSlice = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     register: builder.mutation({
@@ -47,6 +52,14 @@ export const accountsApiSlice = baseApi.injectEndpoints({
           password: body.password,
           rememberMe: Boolean(body.rememberMe),
         },
+      }),
+    }),
+    verifyEmailOtp: builder.mutation<FullAuthResponse, VerifyEmailOtpRequest>({
+      query: ({ code, mfaToken }) => ({
+        url: "auth/mfa/email-otp/verify",
+        method: "POST",
+        body: { code },
+        headers: { Authorization: `Bearer ${mfaToken}` },
       }),
     }),
     refreshSession: builder.mutation<FullAuthResponse, void>({
@@ -115,6 +128,7 @@ export const {
   useRegisterMutation,
   useCreateUserFromAdminMutation,
   useLoginMutation,
+  useVerifyEmailOtpMutation,
   useLogoutMutation,
   useGetUsersQuery,
   useDeleteUsersMutation,

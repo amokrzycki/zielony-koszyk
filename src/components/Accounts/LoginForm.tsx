@@ -3,12 +3,19 @@ import { useNavigate } from "react-router-dom";
 import { useForm } from "@mantine/form";
 import { Box, Button, FormControlLabel, FormGroup, TextField, Typography } from "@mui/material";
 import { validateEmail, validatePassword } from "@/helpers/validators.ts";
-import { type PendingAuthResponse, useLoginMutation } from "./accountsApiSlice.ts";
+import {
+  type FullAuthResponse,
+  type PendingAuthResponse,
+  useLoginMutation,
+  useVerifyEmailOtpMutation,
+} from "./accountsApiSlice.ts";
 import { loginUser, logoutUser } from "./accountSlice.ts";
 import { useAppDispatch } from "@/hooks/hooks.ts";
 import toast from "react-hot-toast";
 import Checkbox from "@mui/material/Checkbox";
 import { rememberSession } from "@/helpers/tokenHelpers.ts";
+import MfaCodeForm from "./MfaCodeForm.tsx";
+import { MfaMethod } from "@/enums/MfaMethod.ts";
 
 export interface ILoginFormValues {
   email: string;
@@ -20,7 +27,11 @@ function LoginForm() {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const [login] = useLoginMutation();
-  const [pendingMfa, setPendingMfa] = useState<PendingAuthResponse | null>(null);
+  const [verifyEmailOtp] = useVerifyEmailOtpMutation();
+  const [pendingMfa, setPendingMfa] = useState<{
+    response: PendingAuthResponse;
+    rememberMe: boolean;
+  } | null>(null);
 
   const validate = {
     email: validateEmail,
@@ -40,32 +51,49 @@ function LoginForm() {
 
   const isValid = form.isValid();
 
+  const completeLogin = (result: FullAuthResponse, rememberMe: boolean) => {
+    dispatch(loginUser({ accessToken: result.access_token, user: result.user }));
+    rememberSession(rememberMe);
+    navigate("/");
+    toast.success("Zalogowano pomyślnie");
+  };
+
   const handleSubmit = async (values: ILoginFormValues) => {
     try {
       const result = await login(values).unwrap();
       if (result.mfa_required) {
         dispatch(logoutUser());
         form.reset();
-        setPendingMfa(result);
+        setPendingMfa({ response: result, rememberMe: Boolean(values.rememberMe) });
         return;
       }
 
-      const { access_token } = result;
-      dispatch(loginUser({ accessToken: access_token, user: result.user }));
-      rememberSession(Boolean(values.rememberMe));
-      // Refresh token is stored in httpOnly cookie automatically
-      navigate("/");
-      toast.success("Zalogowano pomyślnie");
+      completeLogin(result, Boolean(values.rememberMe));
     } catch (err) {
       console.error(err);
-      toast.error("Niepoprawne dane logowania");
+      toast.error("Nie udało się zalogować");
     }
   };
 
   if (pendingMfa) {
+    if (pendingMfa.response.method === MfaMethod.EMAIL_OTP) {
+      return (
+        <MfaCodeForm
+          onCancel={() => setPendingMfa(null)}
+          onSubmit={async (code) => {
+            const result = await verifyEmailOtp({
+              code,
+              mfaToken: pendingMfa.response.mfa_token,
+            }).unwrap();
+            completeLogin(result, pendingMfa.rememberMe);
+          }}
+        />
+      );
+    }
+
     return (
       <Box className={"flex flex-col items-center gap-4"}>
-        <Typography>Wymagane dodatkowe uwierzytelnienie: {pendingMfa.method}</Typography>
+        <Typography>Wymagane dodatkowe uwierzytelnienie: {pendingMfa.response.method}</Typography>
         <Button onClick={() => setPendingMfa(null)}>Wróć do logowania</Button>
       </Box>
     );
