@@ -1,13 +1,17 @@
 import { useState, type FormEvent } from "react";
 import { Box, Button, TextField, Typography } from "@mui/material";
 import toast from "react-hot-toast";
+import { startRegistration, WebAuthnError } from "@simplewebauthn/browser";
+import type { RegistrationResponseJSON } from "@simplewebauthn/browser";
 import { useAppDispatch, useAppSelector } from "@/hooks/hooks.ts";
 import { MfaMethod } from "@/enums/MfaMethod.ts";
 import { updateUserDetails } from "./accountSlice.ts";
 import {
   type TotpEnrollmentResponse,
   useStartTotpEnrollmentMutation,
+  useStartWebAuthnRegistrationMutation,
   useVerifyTotpEnrollmentMutation,
+  useVerifyWebAuthnRegistrationMutation,
 } from "./accountsApiSlice.ts";
 import MfaCodeForm from "./MfaCodeForm.tsx";
 
@@ -19,6 +23,11 @@ function MfaSettings() {
   const [enrollment, setEnrollment] = useState<TotpEnrollmentResponse | null>(null);
   const [startEnrollment, { isLoading: isStarting }] = useStartTotpEnrollmentMutation();
   const [verifyEnrollment] = useVerifyTotpEnrollmentMutation();
+  const [webAuthnPassword, setWebAuthnPassword] = useState("");
+  const [webAuthnError, setWebAuthnError] = useState("");
+  const [isRegisteringWebAuthn, setIsRegisteringWebAuthn] = useState(false);
+  const [startWebAuthnRegistration] = useStartWebAuthnRegistrationMutation();
+  const [verifyWebAuthnRegistration] = useVerifyWebAuthnRegistrationMutation();
 
   const handleStart = async (event: FormEvent) => {
     event.preventDefault();
@@ -28,6 +37,36 @@ function MfaSettings() {
       setPassword("");
     } catch {
       setError("Nie udało się rozpocząć konfiguracji TOTP. Sprawdź hasło i spróbuj ponownie.");
+    }
+  };
+
+  const handleWebAuthnRegistration = async (event: FormEvent) => {
+    event.preventDefault();
+    setWebAuthnError("");
+    setIsRegisteringWebAuthn(true);
+    try {
+      const { challenge_id, options } = await startWebAuthnRegistration(webAuthnPassword).unwrap();
+      setWebAuthnPassword("");
+
+      let response: RegistrationResponseJSON;
+      try {
+        response = await startRegistration({ optionsJSON: options });
+      } catch (err) {
+        setWebAuthnError(
+          err instanceof WebAuthnError && err.name === "NotAllowedError"
+            ? "Rejestracja klucza została anulowana."
+            : "Nie udało się uruchomić klucza platformowego.",
+        );
+        return;
+      }
+
+      await verifyWebAuthnRegistration({ challengeId: challenge_id, response }).unwrap();
+      dispatch(updateUserDetails({ mfa_method: MfaMethod.WEBAUTHN }));
+      toast.success("Klucz platformowy został skonfigurowany");
+    } catch {
+      setWebAuthnError("Nie udało się skonfigurować klucza. Sprawdź hasło i spróbuj ponownie.");
+    } finally {
+      setIsRegisteringWebAuthn(false);
     }
   };
 
@@ -91,6 +130,34 @@ function MfaSettings() {
           </Button>
         </Box>
       )}
+
+      <Typography variant="h4">Klucz platformowy (WebAuthn)</Typography>
+      <Box
+        component="form"
+        onSubmit={handleWebAuthnRegistration}
+        className="flex flex-col items-center gap-4"
+        sx={{ width: "100%" }}>
+        <Typography>
+          Podaj aktualne hasło, aby skonfigurować logowanie kluczem platformowym (np. Windows Hello).
+        </Typography>
+        <TextField
+          type="password"
+          autoComplete="current-password"
+          label="Aktualne hasło"
+          value={webAuthnPassword}
+          onChange={(event) => {
+            setWebAuthnPassword(event.target.value);
+            setWebAuthnError("");
+          }}
+          error={Boolean(webAuthnError)}
+          helperText={webAuthnError}
+          slotProps={{ formHelperText: { role: "alert" } }}
+          sx={{ width: "100%", maxWidth: 300 }}
+        />
+        <Button type="submit" variant="contained" disabled={!webAuthnPassword || isRegisteringWebAuthn}>
+          {isRegisteringWebAuthn ? "Konfigurowanie…" : "Skonfiguruj klucz platformowy"}
+        </Button>
+      </Box>
     </Box>
   );
 }
