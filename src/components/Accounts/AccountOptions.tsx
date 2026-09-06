@@ -69,7 +69,7 @@ function AccountOptions() {
           onClick={() => {
             navigate("/konto/mfa");
           }}>
-          Uwierzytelnianie TOTP
+          Ustawienia MFA
         </Button>
         {user.role === Roles.ADMIN && (
           <Button
