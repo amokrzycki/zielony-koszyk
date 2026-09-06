@@ -60,6 +60,11 @@ type VerifyWebAuthnLoginRequest = {
   mfaToken: string;
 };
 
+type UpdateMfaMethodRequest = {
+  method: MfaMethod.NONE | MfaMethod.EMAIL_OTP;
+  password: string;
+};
+
 export const accountsApiSlice = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     register: builder.mutation({
@@ -141,6 +146,13 @@ export const accountsApiSlice = baseApi.injectEndpoints({
         }),
       },
     ),
+    updateMfaMethod: builder.mutation<{ mfa_method: MfaMethod }, UpdateMfaMethodRequest>({
+      query: (body) => ({
+        url: "users/me/mfa",
+        method: "PUT",
+        body,
+      }),
+    }),
     refreshSession: builder.mutation<FullAuthResponse, void>({
       query: () => ({ url: "auth/refresh", method: "POST" }),
     }),
@@ -214,6 +226,7 @@ export const {
   useVerifyWebAuthnLoginMutation,
   useStartWebAuthnRegistrationMutation,
   useVerifyWebAuthnRegistrationMutation,
+  useUpdateMfaMethodMutation,
   useLogoutMutation,
   useGetUsersQuery,
   useDeleteUsersMutation,
