@@ -74,8 +74,7 @@ function LoginForm() {
       }
 
       completeLogin(result, Boolean(values.rememberMe));
-    } catch (err) {
-      console.error(err);
+    } catch {
       toast.error("Nie udało się zalogować");
     }
   };

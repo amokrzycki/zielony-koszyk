@@ -15,25 +15,23 @@ Witamy w **Zielony Koszyk**! To aplikacja umożliwiająca zakup świeżych warzy
 ## Technologie
 
 - **Frontend**: React + TypeScript
-- **Backend**: Next.js + TypeScript
-- **Baza danych**: MySQL
+- **Backend**: NestJS + TypeScript
+- **Baza danych**: PostgreSQL
 
 ## Wymagania
 
-- **Node.js**: <= v16.14.0
-- **npm**: <= 8.0.0
-- **Docker**
-- **Docker Compose**
+- **Node.js**: 26
+- **npm**: wersja dostarczona z Node.js 26
 
 ## Instalacja
 
 1. Sklonuj repozytorium: `git@github.com:amokrzycki/zielony-koszyk-frontend.git`
 2. Przejdź do katalogu: `cd zielony-koszyk-frontend`
-3. Zainstaluj zależności: `npm install`
-4. Uruchom aplikację: `npm run start`
-5. Sklonuj repozytorium z backendem: `git@github.com:amokrzycki/zielony-koszyk-backend.git`
-6. Przejdź do katalogu: `cd zielony-koszyk-backend`
-7. Zainstaluj zależności: `npm install`
-8. Uruchom i zbuduj obraz dockera: `sudo docker-compose up --build`
-9. Backend będzie dostępny pod adresem: `http://localhost:3000`
-10. Gotowe!
+3. Skopiuj `.env.example` do `.env`.
+4. Zainstaluj zależności: `npm ci`
+5. Uruchom aplikację: `npm run dev`
+6. Sklonuj repozytorium z backendem: `git@github.com:amokrzycki/zielony-koszyk-backend.git`
+7. Przejdź do katalogu: `cd zielony-koszyk-backend`
+8. Skonfiguruj i uruchom backend zgodnie z jego `README.md`.
+9. Backend będzie dostępny pod adresem: `http://localhost:3000`.
+10. Frontend będzie dostępny pod adresem: `http://localhost:5173`.
