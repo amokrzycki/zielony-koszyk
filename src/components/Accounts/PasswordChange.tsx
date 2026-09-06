@@ -43,13 +43,7 @@ function PasswordChange() {
       password: values.oldPassword,
       new_password: values.password,
     };
-    updatePassword(body)
-      .then(() => {
-        // Handle successful password change
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+    void updatePassword(body).catch(() => undefined);
     navigate("/konto");
   };
 
