@@ -7,6 +7,12 @@ import type User from "../../types/User.ts";
 import type { CreateUserFromAdmin } from "@/types/CreateUserFromAdmin.ts";
 import type { Address } from "@/types/Address.ts";
 import type { MfaMethod } from "@/enums/MfaMethod.ts";
+import type {
+  AuthenticationResponseJSON,
+  PublicKeyCredentialCreationOptionsJSON,
+  PublicKeyCredentialRequestOptionsJSON,
+  RegistrationResponseJSON,
+} from "@simplewebauthn/browser";
 
 export type FullAuthResponse = {
   mfa_required: false;
@@ -18,6 +24,7 @@ export type PendingAuthResponse = {
   mfa_required: true;
   method: Exclude<MfaMethod, MfaMethod.NONE>;
   mfa_token: string;
+  webauthn_options?: PublicKeyCredentialRequestOptionsJSON;
 };
 
 export type LoginResponse = FullAuthResponse | PendingAuthResponse;
@@ -36,6 +43,21 @@ export type TotpEnrollmentResponse = {
 type VerifyTotpEnrollmentRequest = {
   challengeId: string;
   code: string;
+};
+
+export type WebAuthnRegistrationOptionsResponse = {
+  challenge_id: string;
+  options: PublicKeyCredentialCreationOptionsJSON;
+};
+
+type VerifyWebAuthnRegistrationRequest = {
+  challengeId: string;
+  response: RegistrationResponseJSON;
+};
+
+type VerifyWebAuthnLoginRequest = {
+  response: AuthenticationResponseJSON;
+  mfaToken: string;
 };
 
 export const accountsApiSlice = baseApi.injectEndpoints({
@@ -95,6 +117,30 @@ export const accountsApiSlice = baseApi.injectEndpoints({
         body: { challenge_id: challengeId, code },
       }),
     }),
+    verifyWebAuthnLogin: builder.mutation<FullAuthResponse, VerifyWebAuthnLoginRequest>({
+      query: ({ response, mfaToken }) => ({
+        url: "auth/mfa/webauthn/verify",
+        method: "POST",
+        body: { response },
+        headers: { Authorization: `Bearer ${mfaToken}` },
+      }),
+    }),
+    startWebAuthnRegistration: builder.mutation<WebAuthnRegistrationOptionsResponse, string>({
+      query: (password) => ({
+        url: "users/me/mfa/webauthn/registration",
+        method: "POST",
+        body: { password },
+      }),
+    }),
+    verifyWebAuthnRegistration: builder.mutation<{ mfa_method: MfaMethod.WEBAUTHN }, VerifyWebAuthnRegistrationRequest>(
+      {
+        query: ({ challengeId, response }) => ({
+          url: "users/me/mfa/webauthn/registration/verify",
+          method: "POST",
+          body: { challenge_id: challengeId, response },
+        }),
+      },
+    ),
     refreshSession: builder.mutation<FullAuthResponse, void>({
       query: () => ({ url: "auth/refresh", method: "POST" }),
     }),
@@ -165,6 +211,9 @@ export const {
   useVerifyTotpMutation,
   useStartTotpEnrollmentMutation,
   useVerifyTotpEnrollmentMutation,
+  useVerifyWebAuthnLoginMutation,
+  useStartWebAuthnRegistrationMutation,
+  useVerifyWebAuthnRegistrationMutation,
   useLogoutMutation,
   useGetUsersQuery,
   useDeleteUsersMutation,

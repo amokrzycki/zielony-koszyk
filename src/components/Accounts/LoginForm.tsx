@@ -9,6 +9,7 @@ import {
   useLoginMutation,
   useVerifyEmailOtpMutation,
   useVerifyTotpMutation,
+  useVerifyWebAuthnLoginMutation,
 } from "./accountsApiSlice.ts";
 import { loginUser, logoutUser } from "./accountSlice.ts";
 import { useAppDispatch } from "@/hooks/hooks.ts";
@@ -16,6 +17,7 @@ import toast from "react-hot-toast";
 import Checkbox from "@mui/material/Checkbox";
 import { rememberSession } from "@/helpers/tokenHelpers.ts";
 import MfaCodeForm from "./MfaCodeForm.tsx";
+import MfaWebAuthnStep from "./MfaWebAuthnStep.tsx";
 import { MfaMethod } from "@/enums/MfaMethod.ts";
 
 export interface ILoginFormValues {
@@ -30,6 +32,7 @@ function LoginForm() {
   const [login] = useLoginMutation();
   const [verifyEmailOtp] = useVerifyEmailOtpMutation();
   const [verifyTotp] = useVerifyTotpMutation();
+  const [verifyWebAuthnLogin] = useVerifyWebAuthnLoginMutation();
   const [pendingMfa, setPendingMfa] = useState<{
     response: PendingAuthResponse;
     rememberMe: boolean;
@@ -94,6 +97,23 @@ function LoginForm() {
               mfaToken: pendingMfa.response.mfa_token,
             };
             const result = await (isEmailOtp ? verifyEmailOtp(request) : verifyTotp(request)).unwrap();
+            completeLogin(result, pendingMfa.rememberMe);
+          }}
+        />
+      );
+    }
+
+    if (pendingMfa.response.method === MfaMethod.WEBAUTHN && pendingMfa.response.webauthn_options) {
+      const options = pendingMfa.response.webauthn_options;
+      return (
+        <MfaWebAuthnStep
+          options={options}
+          onCancel={() => setPendingMfa(null)}
+          onSubmit={async (response) => {
+            const result = await verifyWebAuthnLogin({
+              response,
+              mfaToken: pendingMfa.response.mfa_token,
+            }).unwrap();
             completeLogin(result, pendingMfa.rememberMe);
           }}
         />
