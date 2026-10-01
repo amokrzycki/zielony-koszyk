@@ -1,40 +1,42 @@
-import { Box, Button } from "@mui/material";
-import { useNavigate } from "react-router-dom";
-import HomeIcon from "@mui/icons-material/Home";
-import InventoryIcon from "@mui/icons-material/Inventory";
-import StoreIcon from "@mui/icons-material/Store";
+import { Box, useTheme } from "@mui/material";
+import { NavLink } from "react-router-dom";
+import { navPillSx, navRowSx } from "./navStyles.ts";
 
-function Nav() {
-  const navigate = useNavigate();
+const links = [
+  { to: "/", label: "Strona główna", end: true },
+  { to: "/produkty", label: "Produkty" },
+  { to: "/o-nas", label: "O nas" },
+];
+
+interface NavProps {
+  vertical?: boolean;
+  /** Called after a link is followed, e.g. to close the drawer. */
+  onNavigate?: () => void;
+}
+
+function Nav({ vertical = false, onNavigate }: NavProps) {
+  const theme = useTheme();
   return (
-    <Box id="navigation-wrapper" className={"gap-2 items-center flex justify-center"}>
-      <Button
-        color={"primary"}
-        startIcon={<HomeIcon sx={{ color: "text.primary" }} />}
-        sx={{ color: "text.primary" }}
-        onClick={() => {
-          navigate("/");
-        }}>
-        Strona główna
-      </Button>
-      <Button
-        color={"primary"}
-        startIcon={<InventoryIcon sx={{ color: "text.primary" }} />}
-        sx={{ color: "text.primary" }}
-        onClick={() => {
-          navigate("/produkty");
-        }}>
-        Produkty
-      </Button>
-      <Button
-        color={"primary"}
-        startIcon={<StoreIcon sx={{ color: "text.primary" }} />}
-        sx={{ color: "text.primary" }}
-        onClick={() => {
-          navigate("/o-nas");
-        }}>
-        O nas
-      </Button>
+    <Box
+      component="nav"
+      aria-label="Nawigacja główna"
+      sx={{
+        display: "flex",
+        flexDirection: vertical ? "column" : "row",
+        alignItems: vertical ? "stretch" : "center",
+        gap: 0.5,
+      }}>
+      {links.map(({ to, label, end }) => (
+        <Box
+          key={to}
+          component={NavLink}
+          to={to}
+          end={end}
+          onClick={onNavigate}
+          sx={vertical ? navRowSx(theme) : navPillSx(theme)}>
+          {label}
+        </Box>
+      ))}
     </Box>
   );
 }
