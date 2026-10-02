@@ -3,11 +3,11 @@ import type { SortDirection } from "./useSortFilter";
 import { convertToNumber } from "../helpers/convertToNumber.ts";
 import { useSearchParams } from "react-router-dom";
 import type { ProductParams } from "../types/ProductParams.ts";
-import { FILTER_DIRECTION_ASC } from "../constants/app.ts";
+import { DEFAULT_PRICE_MAX, DEFAULT_PRICE_MIN, FILTER_DIRECTION_ASC } from "../constants/app.ts";
 import { convertToSearchParams } from "../helpers/convertToSearchParams.ts";
 
 const useProductFilters = (): {
-  setParam: (name: keyof ProductParams, value: string) => void;
+  setParams: (updates: Partial<Record<keyof ProductParams, string>>) => void;
   resetFilters: () => void;
   filters: ProductParams;
   changeSortBy: (newSortBy: string) => void;
@@ -15,8 +15,8 @@ const useProductFilters = (): {
   const initialProductParams = {
     search: "",
     category: "",
-    priceMin: "0",
-    priceMax: "500",
+    priceMin: DEFAULT_PRICE_MIN.toString(),
+    priceMax: DEFAULT_PRICE_MAX.toString(),
     page: "1",
     pageSize: "24",
     orderBy: "name",
@@ -33,17 +33,19 @@ const useProductFilters = (): {
 
   const search = searchParams.get("search") || initialProductParams.search;
   const category = searchParams.get("category") || initialProductParams.category;
-  const priceMin = convertToNumber(searchParams.get("priceMin"), 0);
-  const priceMax = convertToNumber(searchParams.get("priceMax"), 500);
+  const priceMin = convertToNumber(searchParams.get("priceMin"), DEFAULT_PRICE_MIN);
+  const priceMax = convertToNumber(searchParams.get("priceMax"), DEFAULT_PRICE_MAX);
   const page = convertToNumber(searchParams.get("page"), 1);
   const pageSize = convertToNumber(searchParams.get("pageSize"), 24);
 
   const initialParams = convertToSearchParams(initialProductParams);
 
-  const setParam = (name: keyof ProductParams, value: string) => {
+  const setParams = (updates: Partial<Record<keyof ProductParams, string>>) => {
     setSearchParams(
       (prev) => {
-        prev.set(name, value);
+        for (const [key, value] of Object.entries(updates)) {
+          prev.set(key, value);
+        }
         return prev;
       },
       { replace: true },
@@ -65,7 +67,7 @@ const useProductFilters = (): {
       orderBy: sortBy,
       orderDir: direction,
     },
-    setParam,
+    setParams,
     resetFilters,
     changeSortBy,
   };

@@ -19,6 +19,7 @@ import { rememberSession } from "@/helpers/tokenHelpers.ts";
 import MfaCodeForm from "./MfaCodeForm.tsx";
 import MfaWebAuthnStep from "./MfaWebAuthnStep.tsx";
 import { MfaMethod } from "@/enums/MfaMethod.ts";
+import { ctaButtonSx, ghostButtonSx } from "@/components/listingStyles.ts";
 
 export interface ILoginFormValues {
   email: string;
@@ -122,7 +123,9 @@ function LoginForm() {
     return (
       <Box className={"flex flex-col items-center gap-4"}>
         <Typography>Wymagane dodatkowe uwierzytelnienie: {pendingMfa.response.method}</Typography>
-        <Button onClick={() => setPendingMfa(null)}>Wróć do logowania</Button>
+        <Button onClick={() => setPendingMfa(null)} sx={(theme) => ghostButtonSx(theme)}>
+          Wróć do logowania
+        </Button>
       </Box>
     );
   }
@@ -158,7 +161,11 @@ function LoginForm() {
         />
       </FormGroup>
       {/* TODO: forgot password */}
-      <Button type={"submit"} disabled={!isValid && form.isTouched()} variant={"contained"} sx={{ mt: "1em" }}>
+      <Button
+        type={"submit"}
+        disabled={!isValid && form.isTouched()}
+        variant={"contained"}
+        sx={{ ...ctaButtonSx, mt: "1.5em", minWidth: 200 }}>
         Zaloguj się
       </Button>
     </form>

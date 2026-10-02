@@ -13,7 +13,8 @@ function FeaturedProducts() {
     if (!products) return [];
     const copy = [...products];
     const tempFeatured: Product[] = [];
-    for (let i = 0; i < 4; i++) {
+    const count = Math.min(4, copy.length);
+    for (let i = 0; i < count; i++) {
       const randomIndex = Math.floor(Math.random() * copy.length);
       tempFeatured.push(copy[randomIndex]);
       copy.splice(randomIndex, 1);
@@ -30,11 +31,20 @@ function FeaturedProducts() {
   }
 
   return (
-    <Box className={"ml-4 max-xl:mt-8"}>
-      <Typography variant="h4" component="h2">
+    <Box component="section" sx={{ mt: { xs: 6, lg: 8 } }}>
+      <Typography
+        component="h2"
+        sx={{
+          m: 0,
+          mb: { xs: 2.5, lg: 3 },
+          fontSize: { xs: "1.5rem", sm: "1.75rem", lg: "2rem" },
+          fontWeight: 900,
+          lineHeight: 1.1,
+          letterSpacing: "-0.03em",
+        }}>
         Polecane produkty
       </Typography>
-      <Box className={"flex flex-col"}>
+      <Box sx={{ display: "flex", flexDirection: "column", gap: { xs: 2.5, lg: 3 } }}>
         {featuredProducts.map((product) => (
           <ProductCard key={product.product_id} product={product} />
         ))}

@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Box, Button, Typography } from "@mui/material";
 import { startAuthentication, WebAuthnError } from "@simplewebauthn/browser";
 import type { AuthenticationResponseJSON, PublicKeyCredentialRequestOptionsJSON } from "@simplewebauthn/browser";
+import { ctaButtonSx, ghostButtonSx } from "@/components/listingStyles.ts";
 
 type Props = {
   options: PublicKeyCredentialRequestOptionsJSON;
@@ -47,10 +48,10 @@ function MfaWebAuthnStep({ options, onSubmit, onCancel }: Props) {
         </Typography>
       )}
       <Box className="flex gap-2">
-        <Button type="button" onClick={onCancel} disabled={submitting}>
+        <Button type="button" onClick={onCancel} disabled={submitting} sx={(theme) => ghostButtonSx(theme)}>
           Wróć
         </Button>
-        <Button variant="contained" onClick={handleClick} disabled={submitting}>
+        <Button variant="contained" onClick={handleClick} disabled={submitting} sx={ctaButtonSx}>
           {submitting ? "Oczekiwanie…" : "Użyj klucza platformowego"}
         </Button>
       </Box>

@@ -8,8 +8,8 @@ interface AddressTypeRadiosProps {
 
 function AddressTypeRadios({ form }: AddressTypeRadiosProps) {
   return (
-    <Box className={"flex items-center"}>
-      <Typography variant={"body1"} sx={{ mr: "1em" }}>
+    <Box sx={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: 1 }}>
+      <Typography variant="body1" sx={{ mr: 1 }}>
         Adres używany w:
       </Typography>
       <FormControl

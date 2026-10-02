@@ -1,43 +1,42 @@
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Button } from "@mui/material";
+import Inventory2Outlined from "@mui/icons-material/Inventory2Outlined";
+import AddIcon from "@mui/icons-material/Add";
 import {
   useDeleteProductMutation,
   useGetProductsQuery,
   useUpdateProductMutation,
 } from "../../Products/productsApiSlice.ts";
-import Loading from "../../common/Loading.tsx";
-import {
-  DataGrid,
-  type GridColDef,
-  type GridRowSelectionModel,
-  GridToolbarColumnsButton,
-  GridToolbarQuickFilter,
-  Toolbar,
-} from "@mui/x-data-grid";
+import { DataGrid, type GridColDef, type GridRowSelectionModel } from "@mui/x-data-grid";
 import type Product from "../../../types/Product.ts";
 import capitalizeFirstLetter from "../../../helpers/capitalizeFirstLetter.ts";
 import { getFormattedDate } from "@/helpers/getFormattedDate.ts";
-import AddIcon from "@mui/icons-material/Add";
 import { useState } from "react";
 import AddProductModal from "./AddProductModal.tsx";
 import toast from "react-hot-toast";
 import type { Categories } from "@/enums/Categories.ts";
 import ConfirmDeleteModal from "../ConfirmDeleteModal.tsx";
-import ErrorView from "../../common/ErrorView.tsx";
+import AdminError from "../AdminError.tsx";
+import AdminEmpty from "../AdminEmpty.tsx";
+import AdminLoading from "../AdminLoading.tsx";
 import UploadImageModal from "@/components/Admin/Products/UploadImageModal.tsx";
 import { API_URL } from "@/constants/api.ts";
+import { adminGridSx, adminPanelSx, moneyCellSx } from "../adminStyles.ts";
+import AdminPageHeader from "../AdminPageHeader.tsx";
+import AdminTableToolbar from "../AdminTableToolbar.tsx";
+import { accentText, ghostButtonSx, tone } from "@/components/listingStyles.ts";
 
 interface Row {
   id: number;
   name: string;
   category: string;
   price: number;
-  stock_quantity: number;
+  quantity: number;
   created_at: string;
   description: string;
 }
 
 function ProductsView() {
-  const { data: products, isError, isLoading } = useGetProductsQuery();
+  const { data: products, isError, isLoading, refetch } = useGetProductsQuery();
   const [openProductModal, setOpenProductModal] = useState(false);
   const [openConfirmDeleteModal, setOpenConfirmDeleteModal] = useState(false);
   const [openUploadModal, setOpenUploadModal] = useState(false);
@@ -59,14 +58,6 @@ function ProductsView() {
     setSelectedProduct(null);
   };
 
-  if (isLoading) {
-    return <Loading />;
-  }
-
-  if (isError) {
-    return <ErrorView message={"Wystąpił błąd podczas pobierania produktów."} />;
-  }
-
   const onDelete = async () => {
     const ids = Array.from(rowSelectionModel.ids) as number[];
     if (ids.length === 0) {
@@ -76,9 +67,9 @@ function ProductsView() {
 
     try {
       await toast.promise(Promise.all(ids.map((id) => deleteProduct(id).unwrap())), {
-        loading: `Usuwanie ${ids.length >= 1 ? "produktu" : "produktów"}...`,
-        success: `${ids.length >= 1 ? "Produkt został usunięty." : "Produkty zostały usunięte."}`,
-        error: `Wystąpił błąd podczas usuwania ${ids.length >= 1 ? "produktu" : "produktów"}.`,
+        loading: `Usuwanie ${ids.length > 1 ? "produktów" : "produktu"}...`,
+        success: `${ids.length > 1 ? "Produkty zostały usunięte." : "Produkt został usunięty."}`,
+        error: `Wystąpił błąd podczas usuwania ${ids.length > 1 ? "produktów" : "produktu"}.`,
       });
       setRowSelectionModel({ type: "include", ids: new Set<number>() });
     } catch (error) {
@@ -92,7 +83,7 @@ function ProductsView() {
       oldRow.name === updatedRow.name &&
       oldRow.category === updatedRow.category &&
       oldRow.price === updatedRow.price &&
-      oldRow.stock_quantity === updatedRow.stock_quantity &&
+      oldRow.quantity === updatedRow.quantity &&
       oldRow.description === updatedRow.description
     ) {
       return oldRow;
@@ -104,7 +95,7 @@ function ProductsView() {
         name: updatedRow.name,
         category: updatedRow.category as Categories,
         price: updatedRow.price,
-        stock_quantity: updatedRow.stock_quantity,
+        stock_quantity: updatedRow.quantity,
         description: updatedRow.description,
       };
 
@@ -122,117 +113,168 @@ function ProductsView() {
   };
 
   const columns: GridColDef[] = [
-    { field: "id", headerName: "ID", width: 70 },
-    { field: "name", headerName: "Nazwa", width: 200, editable: true },
-    { field: "category", headerName: "Kategoria", width: 150, editable: true },
+    { field: "id", headerName: "ID", width: 80 },
+    {
+      field: "image",
+      headerName: "",
+      width: 68,
+      sortable: false,
+      disableColumnMenu: true,
+      renderCell: (params) =>
+        params.value ? (
+          <Box
+            component="img"
+            src={`${API_URL}/${params.value}`}
+            alt=""
+            sx={(theme) => ({
+              height: 40,
+              width: 40,
+              objectFit: "cover",
+              borderRadius: "18px",
+              border: "1px solid",
+              borderColor: "divider",
+              bgcolor: tone(theme, 0.06),
+            })}
+          />
+        ) : (
+          <Box
+            aria-hidden
+            sx={(theme) => ({
+              height: 40,
+              width: 40,
+              borderRadius: "18px",
+              bgcolor: tone(theme, 0.08),
+              display: "grid",
+              placeItems: "center",
+              color: accentText(theme),
+            })}>
+            <Inventory2Outlined sx={{ fontSize: 18 }} />
+          </Box>
+        ),
+    },
+    { field: "name", headerName: "Nazwa", flex: 1, minWidth: 180, editable: true },
+    { field: "category", headerName: "Kategoria", width: 130, editable: true },
     {
       field: "price",
       headerName: "Cena",
-      width: 120,
+      width: 110,
       editable: true,
       sortComparator: (v1, v2) => v1 - v2,
+      renderCell: (params) => (
+        <Box component="span" sx={moneyCellSx}>
+          {params.value} zł
+        </Box>
+      ),
     },
-    { field: "stock_quantity", headerName: "Stan", width: 100, editable: true },
-    { field: "created_at", headerName: "Data dodania", width: 150 },
-    { field: "updated_at", headerName: "Data aktualizacji", width: 150 },
-    { field: "description", headerName: "Opis", width: 350, editable: true },
-    {
-      field: "image",
-      headerName: "Zdjęcie",
-      width: 150,
-      renderCell: (params) => <img src={`${API_URL}/${params.value}`} alt="product" style={{ height: "50px" }} />,
-    },
+    { field: "quantity", headerName: "Stan", width: 90, editable: true, type: "number" },
+    { field: "created_at", headerName: "Dodano", width: 120 },
+    { field: "description", headerName: "Opis", width: 260, editable: true },
     {
       field: "actions",
-      headerName: "Akcje",
-      width: 150,
+      headerName: "",
+      width: 130,
+      sortable: false,
+      disableColumnMenu: true,
       renderCell: (params) => (
         <Button
           variant="text"
-          color="primary"
           onClick={() => {
-            setSelectedProduct(products?.find((p) => p.product_id === params.id) || null);
+            setSelectedProduct(products?.find((p) => p.product_id === params.row.id) || null);
             handleUploadModalOpen();
-          }}>
+          }}
+          sx={(theme) => ({
+            ...ghostButtonSx(theme),
+            px: 1.5,
+            py: 0.5,
+            fontSize: "0.82rem",
+          })}>
           Zmień zdjęcie
         </Button>
       ),
     },
   ];
 
-  const rows = products?.map((product: Product) => ({
-    id: product.product_id,
-    name: product.name,
-    category: capitalizeFirstLetter(product.category),
-    price: product.price,
-    stock_quantity: product.stock_quantity,
-    created_at: getFormattedDate(product.created_at.toString()),
-    updated_at: getFormattedDate(product.updated_at.toString()),
-    description: product.description,
-    image: product.image,
-  }));
+  const rows =
+    products?.map((product: Product) => ({
+      id: product.product_id,
+      name: product.name,
+      category: capitalizeFirstLetter(product.category),
+      price: product.price,
+      quantity: product.stock_quantity,
+      created_at: getFormattedDate(product.created_at.toString()),
+      description: product.description,
+      image: product.image,
+    })) ?? [];
 
-  const CustomToolbar = () => {
-    const ids = Array.from(rowSelectionModel.ids) as number[];
-    return (
-      <Toolbar className={"flex justify-between"}>
-        <GridToolbarColumnsButton />
-        <Button startIcon={<AddIcon />} onClick={handleProductModalOpen}>
-          Dodaj produkt
-        </Button>
-        {ids.length > 0 && (
-          <Button color="error" onClick={handleConfirmDeleteModalOpen}>
-            Usuń zaznaczone ({ids.length})
-          </Button>
-        )}
-        <GridToolbarQuickFilter debounceMs={300} />
-      </Toolbar>
-    );
-  };
+  const selectedCount = rowSelectionModel.ids.size;
+
+  const CustomToolbar = () => (
+    <AdminTableToolbar
+      selectedCount={selectedCount}
+      onDeleteSelected={handleConfirmDeleteModalOpen}
+      addAction={{ label: "Dodaj produkt", icon: <AddIcon />, onClick: handleProductModalOpen }}
+    />
+  );
 
   return (
-    <Box className={"flex flex-col overflow-x-auto w-full"}>
-      <Typography variant="h4" component="h1" gutterBottom>
-        Produkty
-      </Typography>
-      {/* Products table */}
-      <Box className={"w-full overflow-x-auto"}>
-        <DataGrid
-          disableRowSelectionOnClick
-          checkboxSelection
-          showToolbar
-          columns={columns}
-          rows={rows}
-          rowHeight={40}
-          pageSizeOptions={[5, 10, 25, 50, 100]}
-          sx={{ border: 0 }}
-          slots={{ toolbar: CustomToolbar }}
-          initialState={{
-            sorting: {
-              sortModel: [{ field: "id", sort: "asc" }],
-            },
-            pagination: {
-              paginationModel: {
-                pageSize: 10,
-              },
-            },
-          }}
-          processRowUpdate={handleProcessRowUpdate}
-          rowSelectionModel={rowSelectionModel}
-          onRowSelectionModelChange={setRowSelectionModel}
+    <Box sx={{ display: "flex", flexDirection: "column", width: "100%", minWidth: 0 }}>
+      <AdminPageHeader
+        icon={<Inventory2Outlined />}
+        title="Produkty"
+        subtitle="Katalog, ceny i stany magazynowe. Edytuj komórki bezpośrednio w tabeli."
+      />
+
+      {isError ? (
+        <AdminError
+          message="Wystąpił błąd podczas pobierania produktów."
+          hint="Odśwież listę, aby spróbować ponownie."
+          onRetry={() => refetch()}
         />
-      </Box>
+      ) : isLoading ? (
+        <AdminLoading rows={7} />
+      ) : (
+        <Box sx={(theme) => ({ ...adminPanelSx(theme), width: "100%" })}>
+          <DataGrid
+            disableRowSelectionOnClick
+            checkboxSelection
+            showToolbar
+            columns={columns}
+            rows={rows}
+            rowHeight={52}
+            pageSizeOptions={[5, 10, 25, 50, 100]}
+            sx={adminGridSx}
+            slots={{
+              toolbar: CustomToolbar,
+              noRowsOverlay: () => (
+                <AdminEmpty
+                  icon={<Inventory2Outlined />}
+                  title="Brak produktów"
+                  hint="Dodaj pierwszy produkt, aby pojawił się w katalogu sklepu."
+                />
+              ),
+            }}
+            initialState={{
+              sorting: { sortModel: [{ field: "id", sort: "asc" }] },
+              pagination: { paginationModel: { pageSize: 10 } },
+            }}
+            processRowUpdate={handleProcessRowUpdate}
+            rowSelectionModel={rowSelectionModel}
+            onRowSelectionModelChange={setRowSelectionModel}
+          />
+        </Box>
+      )}
+
       <AddProductModal open={openProductModal} handleClose={handleProductModalClose} />
       <ConfirmDeleteModal
         open={openConfirmDeleteModal}
         handleClose={handleConfirmDeleteModalClose}
         onConfirm={onDelete}
-        count={rowSelectionModel.ids.size}
+        count={selectedCount}
       />
       <UploadImageModal
-        open={openUploadModal}
+        open={openUploadModal && Boolean(selectedProduct)}
         handleClose={handleUploadModalClose}
-        productId={selectedProduct?.product_id || 0}
+        productId={selectedProduct?.product_id ?? 0}
       />
     </Box>
   );

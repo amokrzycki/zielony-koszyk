@@ -1,68 +1,81 @@
 import { Box, Button, Typography } from "@mui/material";
+import ArrowBack from "@mui/icons-material/ArrowBack";
 import OrderNoAccount from "../Order/OrderNoAccount.tsx";
 import LoginForm from "../Accounts/LoginForm.tsx";
 import { useNavigate } from "react-router-dom";
 import { useMode } from "@/providers/ModeProvider.tsx";
-import Divider from "@mui/material/Divider";
+import { ghostButtonSx, panelSx } from "@/components/listingStyles.ts";
 
 function CartLogin() {
   const navigate = useNavigate();
   const { mode } = useMode();
   return (
-    <Box id="main-wrapper">
+    <Box id="main-wrapper" sx={{ px: { xs: 2, sm: 3 } }}>
       <Box
         className="main-container"
         sx={{
-          textAlign: "center",
-          bgcolor: "background.paper",
+          bgcolor: "transparent",
+          p: 0,
+          maxWidth: 1080,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          gap: { xs: 3, md: 4 },
         }}>
-        <Box className="main-container flex flex-col items-center">
-          <Box>
-            <img src={`/${mode}_logo.png`} alt="logo" className={"h-[120px]"} />
+        <Box
+          component="img"
+          src={`/${mode}_logo.png`}
+          alt="Zielony Koszyk"
+          sx={{ height: { xs: 72, md: 84 }, width: "auto" }}
+        />
+        <Typography
+          component="h1"
+          sx={{
+            m: 0,
+            textAlign: "center",
+            fontSize: "clamp(1.7rem, 3.4vw, 2.4rem)",
+            fontWeight: 900,
+            lineHeight: 1.1,
+            letterSpacing: "-0.03em",
+            textWrap: "balance",
+            maxWidth: "24ch",
+          }}>
+          Jak chcesz dokończyć zakupy?
+        </Typography>
+
+        <Box
+          sx={{
+            width: "100%",
+            display: "grid",
+            gridTemplateColumns: { xs: "1fr", md: "1fr 1fr" },
+            alignItems: "stretch",
+            gap: { xs: 3, md: 4 },
+          }}>
+          <Box
+            sx={(theme) => ({
+              ...panelSx(theme),
+              p: { xs: 3, sm: 4 },
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              textAlign: "center",
+            })}>
+            <Typography
+              component="h2"
+              sx={{ m: 0, mb: 1, fontSize: "1.35rem", fontWeight: 800, letterSpacing: "-0.02em" }}>
+              Mam konto
+            </Typography>
+            <Typography sx={{ mb: 3, color: "text.secondary", lineHeight: 1.55 }}>
+              Zaloguj się, aby przejść do dostawy i płatności.
+            </Typography>
+            <LoginForm />
           </Box>
-          <Box>
-            <Box className={"flex flex-wrap justify-center"}>
-              <Box
-                className={"max-w-1/3"}
-                sx={{
-                  flex: "0 0 33.333333%",
-                }}>
-                <Typography variant={"h4"} gutterBottom>
-                  Mam konto
-                </Typography>
-                <LoginForm />
-              </Box>
-              <Box
-                className={"separator flex justify-center"}
-                sx={{
-                  flex: "0 0 8.33333%",
-                }}>
-                <Divider orientation="vertical" flexItem />
-              </Box>
-              <OrderNoAccount />
-            </Box>
-          </Box>
+          <OrderNoAccount />
         </Box>
-        <Box className="main-container">
-          <Box sx={{ marginBottom: "30px" }}>
-            <Box sx={{ display: "flex", flexWrap: "wrap" }}>
-              <Box
-                className={"max-w-1/3"}
-                sx={{
-                  flex: "0 0 33.333333%",
-                }}>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={() => {
-                    navigate(-1);
-                  }}>
-                  Wróć do koszyka
-                </Button>
-              </Box>
-            </Box>
-          </Box>
-        </Box>
+
+        <Button onClick={() => navigate(-1)} startIcon={<ArrowBack />} sx={(theme) => ghostButtonSx(theme)}>
+          Wróć do koszyka
+        </Button>
       </Box>
     </Box>
   );

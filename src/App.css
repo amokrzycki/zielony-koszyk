@@ -6,10 +6,6 @@ body {
   padding: 0;
 }
 
-#main-wrapper {
-  margin-top: 92px;
-}
-
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
   -webkit-appearance: none;

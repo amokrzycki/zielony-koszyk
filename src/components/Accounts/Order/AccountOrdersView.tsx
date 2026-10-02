@@ -1,64 +1,170 @@
-import { Box, CircularProgress, Paper, Typography } from "@mui/material";
+import { Box, Button, CircularProgress, Typography } from "@mui/material";
+import ArrowForward from "@mui/icons-material/ArrowForward";
+import ScheduleOutlined from "@mui/icons-material/ScheduleOutlined";
+import ShoppingBagOutlined from "@mui/icons-material/ShoppingBagOutlined";
+import { Link } from "react-router-dom";
+import { useEffect } from "react";
 import { useGetUserOrdersQuery } from "../../Order/orderApiSlice.ts";
-import type User from "../../../types/User.ts";
 import { useAppSelector } from "@/hooks/hooks.ts";
 import type { RootState } from "@/store/store.ts";
-import { DataGrid, type GridColDef, type GridRowParams } from "@mui/x-data-grid";
-import { useNavigate } from "react-router-dom";
+import type User from "../../../types/User.ts";
 import { getFormattedDate } from "@/helpers/getFormattedDate.ts";
-import { getPolishStatus } from "@/helpers/getPolishStatus.ts";
-import { useEffect } from "react";
+import OrderStatusPill from "@/components/Order/OrderStatusPill.tsx";
+import ErrorView from "@/components/common/ErrorView.tsx";
+import { EASE, accentText, ctaButtonSx, tone } from "@/components/listingStyles.ts";
 
 function AccountOrdersView() {
   const user: User = useAppSelector((state: RootState) => state.auth.user);
   const userOrders = useGetUserOrdersQuery(user.user_id);
-  const navigate = useNavigate();
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: Only want to refetch on mount
   useEffect(() => {
     userOrders.refetch();
   }, []);
 
-  const columns: GridColDef[] = [
-    { field: "id", headerName: "Numer zamówienia", flex: 0.8 },
-    { field: "status", headerName: "Status", flex: 1 },
-    { field: "totalAmount", headerName: "Kwota", flex: 0.5 },
-    { field: "createdAt", headerName: "Data zamówienia", flex: 1 },
-  ];
-
   if (userOrders.isLoading || userOrders.isFetching) {
-    return <CircularProgress />;
+    return (
+      <Box sx={{ display: "grid", placeItems: "center", py: 10 }}>
+        <CircularProgress />
+      </Box>
+    );
   }
 
   if (userOrders.isError || !userOrders.data) {
-    return <div>Wystąpił błąd!</div>;
+    return <ErrorView message="Nie udało się pobrać Twoich zamówień" />;
   }
 
-  const rows = userOrders.data.map((order) => ({
-    id: order.order_id,
-    status: getPolishStatus(order.status),
-    totalAmount: `${order.total_amount} zł`,
-    createdAt: getFormattedDate(order.order_date),
-  }));
-
-  const handleRowClick = (row: GridRowParams) => {
-    navigate(`/konto/zamowienia/${row.row.id}`);
-  };
+  const orders = userOrders.data;
 
   return (
-    <Box className={"flex flex-col items-center gap-2"}>
-      <Typography variant="h3">Zamówienia</Typography>
-      <Typography variant="body1">Tutaj znajdziesz listę swoich zamówień</Typography>
-      <Paper sx={{ height: 500, width: "60%" }}>
-        <DataGrid
-          rows={rows}
-          columns={columns}
-          pageSizeOptions={[5, 10, 25, 50, 100]}
-          autoPageSize={true}
-          sx={{ border: 0 }}
-          onRowClick={handleRowClick}
-        />
-      </Paper>
+    <Box sx={{ maxWidth: 720, mx: "auto", textAlign: "left" }}>
+      <Typography
+        component="h1"
+        sx={{
+          m: 0,
+          fontSize: { xs: "1.7rem", md: "2.05rem" },
+          fontWeight: 900,
+          lineHeight: 1.1,
+          letterSpacing: "-0.03em",
+        }}>
+        Zamówienia
+      </Typography>
+      <Typography sx={{ mt: 1, color: "text.secondary", maxWidth: "54ch", lineHeight: 1.6 }}>
+        Twoja historia zakupów — sprawdź status i szczegóły każdego zamówienia.
+      </Typography>
+
+      {orders.length === 0 ? (
+        <Box
+          sx={(theme) => ({
+            mt: { xs: 3, md: 3.5 },
+            py: { xs: 5, sm: 6 },
+            px: { xs: 3, sm: 4 },
+            borderRadius: "24px",
+            textAlign: "center",
+            bgcolor: tone(theme, 0.05),
+          })}>
+          <Box
+            aria-hidden
+            sx={{
+              display: "grid",
+              placeItems: "center",
+              width: 56,
+              height: 56,
+              mx: "auto",
+              borderRadius: "50%",
+              color: (t) => accentText(t),
+              bgcolor: (t) => tone(t, 0.12),
+              "& svg": { fontSize: 28 },
+            }}>
+            <ShoppingBagOutlined />
+          </Box>
+          <Typography
+            component="h2"
+            sx={{ mt: 2, fontSize: "clamp(1.6rem, 3vw, 2.1rem)", fontWeight: 800, letterSpacing: "-0.02em" }}>
+            Nie masz jeszcze zamówień
+          </Typography>
+          <Typography sx={{ mt: 0.75, mx: "auto", maxWidth: "40ch", color: "text.secondary", lineHeight: 1.6 }}>
+            Gdy złożysz pierwsze zamówienie, pojawi się tutaj wraz z aktualnym statusem dostawy.
+          </Typography>
+          <Button component={Link} to="/produkty" sx={{ ...ctaButtonSx, mt: 3 }}>
+            Przejdź do produktów
+          </Button>
+        </Box>
+      ) : (
+        <Box component="ul" sx={{ listStyle: "none", m: 0, p: 0, mt: { xs: 3, md: 3.5 }, display: "grid", gap: 1 }}>
+          {orders.map((order) => {
+            const total = Number(order.total_amount);
+            const amount = Number.isFinite(total) ? total.toFixed(2) : order.total_amount;
+
+            return (
+              <Box component="li" key={order.order_id}>
+                <Box
+                  component={Link}
+                  to={`/konto/zamowienia/${order.order_id}`}
+                  sx={(theme) => ({
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 2,
+                    p: { xs: 1.5, sm: 2 },
+                    borderRadius: "14px",
+                    bgcolor: tone(theme, 0.05),
+                    color: "text.primary",
+                    textDecoration: "none",
+                    transition: `background-color 200ms ${EASE}`,
+                    "&:hover": { bgcolor: tone(theme, 0.11) },
+                    "&:hover .order-row-arrow": { transform: "translateX(4px)", color: accentText(theme) },
+                    "&:focus-visible": { outline: "2px solid", outlineColor: "primary.main", outlineOffset: 2 },
+                  })}>
+                  <Box sx={{ minWidth: 0, flex: 1 }}>
+                    <Box sx={{ display: "flex", alignItems: "center", gap: 1.25, flexWrap: "wrap" }}>
+                      <Typography
+                        sx={{
+                          fontSize: { xs: "1.05rem", sm: "1.15rem" },
+                          fontWeight: 800,
+                          letterSpacing: "-0.02em",
+                          lineHeight: 1.2,
+                        }}>
+                        #{order.order_id}
+                      </Typography>
+                      <OrderStatusPill status={order.status} />
+                    </Box>
+                    <Box sx={{ display: "flex", alignItems: "center", gap: 0.75, mt: 0.5, color: "text.secondary" }}>
+                      <ScheduleOutlined sx={{ fontSize: 15 }} />
+                      <Typography
+                        component="span"
+                        sx={{ fontSize: "0.85rem", lineHeight: 1.4, fontVariantNumeric: "tabular-nums" }}>
+                        {getFormattedDate(order.order_date)}
+                      </Typography>
+                    </Box>
+                  </Box>
+                  <Typography
+                    sx={{
+                      flexShrink: 0,
+                      fontWeight: 800,
+                      fontVariantNumeric: "tabular-nums",
+                      letterSpacing: "-0.01em",
+                      whiteSpace: "nowrap",
+                    }}>
+                    {amount}{" "}
+                    <Box component="span" sx={{ color: "text.secondary", fontWeight: 600, fontSize: "0.85em" }}>
+                      zł
+                    </Box>
+                  </Typography>
+                  <ArrowForward
+                    className="order-row-arrow"
+                    sx={{
+                      fontSize: 20,
+                      flexShrink: 0,
+                      color: "text.secondary",
+                      transition: `transform 200ms ${EASE}, color 200ms ${EASE}`,
+                    }}
+                  />
+                </Box>
+              </Box>
+            );
+          })}
+        </Box>
+      )}
     </Box>
   );
 }

@@ -1,6 +1,7 @@
-import { Box, Button } from "@mui/material";
+import { Button, CircularProgress, Typography } from "@mui/material";
+import FileDownloadOutlined from "@mui/icons-material/FileDownloadOutlined";
 import { useGetInvoiceQuery } from "@/components/Order/orderApiSlice.ts";
-import Loading from "@/components/common/Loading.tsx";
+import { ghostButtonSx } from "@/components/listingStyles.ts";
 
 function InvoiceDownloadButton({ orderId }: { orderId: number }) {
   const { data: invoiceBlob, isFetching, isError } = useGetInvoiceQuery(orderId);
@@ -21,11 +22,20 @@ function InvoiceDownloadButton({ orderId }: { orderId: number }) {
     window.URL.revokeObjectURL(url);
   };
 
-  if (isFetching) return <Loading />;
-  if (isError) return <Box sx={{ color: "red" }}>Błąd w ładowaniu faktury</Box>;
+  if (isError) {
+    return (
+      <Typography component="span" sx={{ color: "error.main", fontSize: "0.85rem", lineHeight: 1.4 }}>
+        Nie udało się pobrać faktury
+      </Typography>
+    );
+  }
 
   return (
-    <Button onClick={handleDownload} variant={"outlined"} size={"small"} disabled={!invoiceBlob}>
+    <Button
+      onClick={handleDownload}
+      disabled={isFetching || !invoiceBlob}
+      startIcon={isFetching ? <CircularProgress size={16} color="inherit" /> : <FileDownloadOutlined />}
+      sx={(theme) => ghostButtonSx(theme)}>
       Faktura elektroniczna
     </Button>
   );

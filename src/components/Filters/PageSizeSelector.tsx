@@ -2,11 +2,10 @@ import useProductFilters from "@/hooks/useProductFilters.ts";
 import { FormControl, InputLabel, MenuItem, Select, type SelectChangeEvent } from "@mui/material";
 
 function PageSizeSelector() {
-  const { filters, setParam } = useProductFilters();
+  const { filters, setParams } = useProductFilters();
 
   const handlePageSizeChange = (e: SelectChangeEvent) => {
-    setParam("pageSize", e.target.value as string);
-    setParam("page", "1");
+    setParams({ pageSize: e.target.value as string, page: "1" });
   };
 
   return (
@@ -14,13 +13,18 @@ function PageSizeSelector() {
       size="small"
       variant="outlined"
       sx={{
-        minWidth: 170,
+        minWidth: 126,
+        borderRadius: "12px",
+        bgcolor: "background.paper",
+        "& .MuiOutlinedInput-notchedOutline": { borderColor: "divider" },
+        "&:hover .MuiOutlinedInput-notchedOutline": { borderColor: "text.secondary" },
+        "&.Mui-focused .MuiOutlinedInput-notchedOutline": { borderColor: "primary.main" },
       }}>
-      <InputLabel id="page-size-select-label">Ilość produktów na stronę</InputLabel>
+      <InputLabel id="page-size-select-label">Na stronę</InputLabel>
       <Select
         labelId="page-size-select-label"
         id="page-size-select"
-        label="Ilość produktów na stronę"
+        label="Na stronę"
         value={filters.pageSize?.toString() || "24"}
         onChange={handlePageSizeChange}>
         <MenuItem value="24">24</MenuItem>

@@ -10,10 +10,8 @@ interface CustomerTypeRadiosProps {
 
 function CustomerTypeRadios({ customerType, setCustomerType, error, touched }: CustomerTypeRadiosProps) {
   return (
-    <Box className="flex items-center">
-      <Typography variant="body1" sx={{ mr: "1em" }}>
-        Typ klienta:
-      </Typography>
+    <Box className="flex flex-wrap items-center gap-x-4 gap-y-1">
+      <Typography variant="body1">Typ klienta:</Typography>
 
       <FormControl
         required
