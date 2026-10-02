@@ -19,6 +19,19 @@ const muiComponentOverrides = {
       root: { borderRadius: "12px" },
     },
   },
+  // One button identity everywhere: pill, sentence case, bold, no elevation. The layout-specific
+  // hover/lift and color pairings live in listingStyles (ctaButtonSx, ghostButtonSx).
+  MuiButton: {
+    defaultProps: { disableElevation: true },
+    styleOverrides: {
+      root: {
+        borderRadius: "999px",
+        textTransform: "none",
+        fontWeight: 700,
+        letterSpacing: "0.005em",
+      },
+    },
+  },
 };
 
 const darkTheme = createTheme(
