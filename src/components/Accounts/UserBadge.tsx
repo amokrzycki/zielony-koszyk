@@ -7,7 +7,7 @@ import type React from "react";
 import { useState } from "react";
 import { logoutUser } from "./accountSlice.ts";
 import toast from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Roles } from "@/enums/Roles.ts";
 import { useLogoutMutation } from "./accountsApiSlice.ts";
 import { navPillSx, navRowSx } from "../navStyles.ts";
@@ -20,11 +20,14 @@ interface UserBadgeProps {
 function UserBadge({ variant = "bar", onNavigate }: UserBadgeProps) {
   const theme = useTheme();
   const navigate = useNavigate();
+  const { pathname } = useLocation();
   const dispatch = useAppDispatch();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const auth = useAppSelector((state: RootState): AccountState => state.auth);
   const [endSession] = useLogoutMutation();
+
+  const isAccountActive = pathname === "/login" || pathname.startsWith("/konto");
 
   const accountRoutes = [
     { label: "Profil", route: "/konto" },
@@ -73,7 +76,11 @@ function UserBadge({ variant = "bar", onNavigate }: UserBadgeProps) {
               </Typography>
             </Box>
             {accountRoutes.map(({ label, route }) => (
-              <Button key={route} onClick={() => go(route)} sx={navRowSx(theme)}>
+              <Button
+                key={route}
+                onClick={() => go(route)}
+                className={pathname === route ? "active" : undefined}
+                sx={navRowSx(theme)}>
                 {label}
               </Button>
             ))}
@@ -82,7 +89,7 @@ function UserBadge({ variant = "bar", onNavigate }: UserBadgeProps) {
             </Button>
           </>
         ) : (
-          <Button onClick={() => go("/login")} sx={navRowSx(theme)}>
+          <Button onClick={() => go("/login")} className={isAccountActive ? "active" : undefined} sx={navRowSx(theme)}>
             Moje konto
           </Button>
         )}
@@ -100,6 +107,7 @@ function UserBadge({ variant = "bar", onNavigate }: UserBadgeProps) {
         aria-expanded={open ? "true" : undefined}
         aria-label={auth.token ? `Menu konta: ${auth.user.first_name}` : "Moje konto"}
         onClick={handleClick}
+        className={isAccountActive ? "active" : undefined}
         sx={navPillSx(theme)}>
         <Box component="span" sx={{ display: { xs: "none", lg: "inline" } }}>
           {auth.token ? `Witaj ${auth.user.first_name}!` : "Moje konto"}
