@@ -15,8 +15,8 @@ function Page() {
   const root = pathname.split("/")[1];
   const section = root === "admin" || root === "konto" ? root : pathname;
   // Reset scroll once the old page has faded out: instant, so it never fights the height ease with a smooth scroll.
-  // biome-ignore lint/correctness/useExhaustiveDependencies: runs per swap, not per render
   const first = useRef(true);
+  // biome-ignore lint/correctness/useExhaustiveDependencies: keyed on section so it re-runs per swap, not per render
   useEffect(() => {
     if (first.current) {
       first.current = false; // keep the browser's own scroll restoration on a reload

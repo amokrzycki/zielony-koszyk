@@ -47,9 +47,13 @@ input::-webkit-inner-spin-button {
   *,
   *::before,
   *::after {
+    /* biome-ignore lint/complexity/noImportantStyles: the reset must override animations to honor the preference */
     animation-duration: 0.01ms !important;
+    /* biome-ignore lint/complexity/noImportantStyles: the reset must override animations to honor the preference */
     animation-iteration-count: 1 !important;
+    /* biome-ignore lint/complexity/noImportantStyles: the reset must override transitions to honor the preference */
     transition-duration: 0.01ms !important;
+    /* biome-ignore lint/complexity/noImportantStyles: the reset must disable smooth scrolling to honor the preference */
     scroll-behavior: auto !important;
   }
 }
