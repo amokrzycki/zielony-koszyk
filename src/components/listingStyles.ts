@@ -25,6 +25,15 @@ export const panelSx = (theme: Theme) => ({
   boxShadow: theme.palette.mode === "dark" ? "0 18px 44px rgba(0,0,0,0.55)" : "0 18px 44px rgba(15,40,28,0.12)",
 });
 
+/** Section heading shared by the account and order surfaces (checkout summary, order details). */
+export const sectionHeadingSx = {
+  m: 0,
+  mb: 2,
+  fontSize: "1.35rem",
+  fontWeight: 800,
+  letterSpacing: "-0.02em",
+} as const;
+
 /** Primary brand action: pill, bright green, dark ink label. One shape for cart, auth and empty states. */
 export const ctaButtonSx = {
   bgcolor: "primary.main",
@@ -58,4 +67,5 @@ export const ghostButtonSx = (theme: Theme) => ({
     backgroundColor: "transparent",
   },
   "&:focus-visible": { outline: `2px solid ${theme.palette.primary.main}`, outlineOffset: 2 },
+  "&.Mui-disabled": { color: theme.palette.action.disabled, borderColor: theme.palette.divider },
 });

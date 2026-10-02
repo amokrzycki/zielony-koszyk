@@ -17,15 +17,7 @@ import ErrorView from "@/components/common/ErrorView.tsx";
 import { generateOrderAddress } from "@/helpers/generateOrderAddress.ts";
 import { CustomerType } from "@/enums/CustomerType.ts";
 import CartSummary from "@/components/Cart/CartSummary.tsx";
-import { accentText, ctaButtonSx, ghostButtonSx, panelSx, tone } from "@/components/listingStyles.ts";
-
-const sectionHeadingSx = {
-  m: 0,
-  mb: 2,
-  fontSize: "1.35rem",
-  fontWeight: 800,
-  letterSpacing: "-0.02em",
-} as const;
+import { accentText, ctaButtonSx, ghostButtonSx, panelSx, sectionHeadingSx, tone } from "@/components/listingStyles.ts";
 
 /** Label/value row used by both address blocks, so the two sections read as one system. */
 function DetailRow({ label, value }: { label: string; value: ReactNode }) {
