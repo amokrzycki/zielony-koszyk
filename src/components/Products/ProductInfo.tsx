@@ -5,23 +5,27 @@ import { accentText, tone } from "@/components/listingStyles.ts";
 
 interface ProductInfoProps {
   product: Product;
+  /** "detail" scales the block up and promotes the name to the page title on the product page. */
+  size?: "card" | "detail";
 }
 
-function ProductInfo({ product }: ProductInfoProps) {
+function ProductInfo({ product, size = "card" }: ProductInfoProps) {
+  const isDetail = size === "detail";
+
   return (
-    <Box sx={{ display: "flex", minWidth: 0, flexDirection: "column", gap: 1 }}>
+    <Box sx={{ display: "flex", minWidth: 0, flexDirection: "column", gap: isDetail ? 1.5 : 1 }}>
       <Typography
-        component="h3"
+        component={isDetail ? "h1" : "h3"}
         sx={{
-          fontSize: { xs: "1.05rem", sm: "1.2rem" },
+          m: 0,
+          fontSize: isDetail ? { xs: "1.6rem", sm: "1.9rem", lg: "2.1rem" } : { xs: "1.05rem", sm: "1.2rem" },
           fontWeight: 800,
-          lineHeight: 1.2,
+          lineHeight: isDetail ? 1.15 : 1.2,
           letterSpacing: "-0.02em",
           textWrap: "balance",
-          display: "-webkit-box",
-          WebkitLineClamp: 2,
-          WebkitBoxOrient: "vertical",
-          overflow: "hidden",
+          ...(isDetail
+            ? {}
+            : { display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden" }),
         }}>
         {product.name}
       </Typography>
@@ -30,11 +34,10 @@ function ProductInfo({ product }: ProductInfoProps) {
           component="p"
           sx={{
             color: "text.secondary",
-            lineHeight: 1.5,
-            display: "-webkit-box",
-            WebkitLineClamp: 2,
-            WebkitBoxOrient: "vertical",
-            overflow: "hidden",
+            lineHeight: isDetail ? 1.6 : 1.5,
+            ...(isDetail
+              ? {}
+              : { display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden" }),
           }}>
           {product.description}
         </Typography>

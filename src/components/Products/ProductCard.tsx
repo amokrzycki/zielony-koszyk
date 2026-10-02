@@ -28,7 +28,7 @@ function ProductCard({ product }: ProductCardProps) {
         price: product.price,
       }),
     );
-    toast.success("Produkt zostały dodany do koszyka");
+    toast.success("Produkt został dodany do koszyka");
   };
 
   return (

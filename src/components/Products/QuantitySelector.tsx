@@ -35,8 +35,9 @@ function QuantitySelector({ quantity, setQuantity }: QuantitySelectorProps) {
           value={quantity}
           onChange={(e) => {
             const value = parseInt(e.target.value, 10);
-            setQuantity(Number.isNaN(value) ? 1 : value);
+            setQuantity(Number.isNaN(value) ? 1 : Math.max(1, value));
           }}
+          slotProps={{ htmlInput: { "aria-label": "Ilość" } }}
           sx={{
             width: calcInputWidth(),
             "& .MuiOutlinedInput-root": {
