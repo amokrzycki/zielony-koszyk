@@ -1,16 +1,8 @@
-import { Categories } from "@/enums/Categories.ts";
+import { CATEGORIES } from "@/constants/app";
 import useProductFilters from "@/hooks/useProductFilters.ts";
 import { Box, Button } from "@mui/material";
 import type { MouseEventHandler } from "react";
 import { accentText, tone } from "@/components/listingStyles.ts";
-
-const CATEGORIES = [
-  { value: Categories.COLLECTIVE, label: "Zbiorcze" },
-  { value: Categories.FRUITS, label: "Owoce" },
-  { value: Categories.VEGETABLES, label: "Warzywa" },
-  { value: Categories.SEASONAL, label: "Sezonowe" },
-  { value: Categories.OTHERS, label: "Spożywcze" },
-];
 
 function CategoryList() {
   const { filters, setParams } = useProductFilters();

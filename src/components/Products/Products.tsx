@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Box, Button, Typography } from "@mui/material";
 import SearchOffRoundedIcon from "@mui/icons-material/SearchOffRounded";
 import ProductCard from "./ProductCard.tsx";
@@ -5,14 +6,19 @@ import type Product from "@/types/Product.ts";
 import Loading from "../common/Loading.tsx";
 import FiltersBar from "../Filters/FiltersBar.tsx";
 import FiltersBox from "../Filters/FiltersBox.tsx";
+import FiltersDrawer from "../Filters/FiltersDrawer.tsx";
+import ActiveFilters from "../Filters/ActiveFilters.tsx";
+import PageSizeSelector from "../Filters/PageSizeSelector.tsx";
 import { useGetProductsByParamsQuery } from "./productsApiSlice.ts";
 import useProductFilters from "@/hooks/useProductFilters.ts";
+import { getActiveFilterChips } from "@/helpers/getActiveFilterChips.ts";
 import FiltersPagination from "@/components/Filters/FiltersPagination.tsx";
 import GoToTop from "@/components/Products/GoToTop.tsx";
 import { accentText, panelSx, tone } from "@/components/listingStyles.ts";
 
 function Products() {
   const { filters, setParams } = useProductFilters();
+  const [filtersOpen, setFiltersOpen] = useState(false);
   const fetchedProducts = useGetProductsByParamsQuery(filters);
   const { data, error, isLoading, isFetching } = fetchedProducts;
   const products = data?.data || [];
@@ -20,6 +26,7 @@ function Products() {
   const totalCount = data?.totalCount;
   const shownCount = data ? Math.min((data.currentPage - 1) * data.pageSize + products.length, data.totalCount) : 0;
   const isBusy = isLoading || isFetching;
+  const activeFilterCount = getActiveFilterChips(filters).length;
 
   if (error) {
     return (
@@ -38,35 +45,29 @@ function Products() {
       <Box
         component="section"
         sx={{ width: "100%", maxWidth: 1560, mx: "auto", px: { xs: 2, sm: 3, lg: 4 }, py: { xs: 4, lg: 6 } }}>
-        <Box className="flex flex-wrap items-end justify-between gap-3" sx={{ mb: { xs: 3, lg: 4 } }}>
-          <Box>
-            <Typography
-              component="h1"
-              sx={{
-                m: 0,
-                fontSize: { xs: "2rem", sm: "2.4rem", lg: "2.9rem" },
-                fontWeight: 900,
-                lineHeight: 1.05,
-                letterSpacing: "-0.03em",
-                textWrap: "balance",
-              }}>
-              Produkty
-            </Typography>
-            <Typography sx={{ mt: 1, color: "text.secondary", lineHeight: 1.5 }}>
-              Świeże warzywa, owoce i produkty spożywcze od lokalnych dostawców.
-            </Typography>
-          </Box>
-          {!isBusy && totalCount !== undefined && (
-            <Typography sx={{ color: "text.secondary", fontWeight: 600, fontVariantNumeric: "tabular-nums" }}>
-              Wyświetlono {shownCount} z {totalCount}
-            </Typography>
-          )}
+        <Box sx={{ mb: { xs: 3, lg: 4 } }}>
+          <Typography
+            component="h1"
+            sx={{
+              m: 0,
+              fontSize: { xs: "2rem", sm: "2.4rem", lg: "2.9rem" },
+              fontWeight: 900,
+              lineHeight: 1.05,
+              letterSpacing: "-0.03em",
+              textWrap: "balance",
+            }}>
+            Produkty
+          </Typography>
+          <Typography sx={{ mt: 1, color: "text.secondary", lineHeight: 1.5, maxWidth: "60ch" }}>
+            Świeże warzywa, owoce i produkty spożywcze od lokalnych dostawców.
+          </Typography>
         </Box>
 
         <Box className="flex flex-col items-start gap-4 lg:flex-row lg:gap-6">
           <FiltersBox />
           <Box className="flex min-w-0 w-full flex-col gap-4">
-            <FiltersBar pagination={<FiltersPagination totalCount={data?.totalPages} />} />
+            <FiltersBar onOpenFilters={() => setFiltersOpen(true)} activeFilterCount={activeFilterCount} />
+            <ActiveFilters />
             {isBusy ? (
               <Box className="flex h-[50vh] items-center justify-center p-8" sx={panelSx}>
                 <Loading />
@@ -78,16 +79,27 @@ function Products() {
                 ) : (
                   products.map((product: Product) => <ProductCard key={product.product_id} product={product} />)
                 )}
-                {products.length > 0 && (
-                  <Box className="mt-2 flex w-full justify-center">
-                    <FiltersPagination totalCount={data?.totalPages} />
-                  </Box>
-                )}
+              </Box>
+            )}
+            {!isBusy && products.length > 0 && (
+              <Box className="flex flex-col items-center gap-4 sm:flex-row sm:justify-between">
+                <Typography
+                  className="order-2 sm:order-1"
+                  sx={{ color: "text.secondary", fontWeight: 600, fontVariantNumeric: "tabular-nums" }}>
+                  Wyświetlono {shownCount} z {totalCount}
+                </Typography>
+                <Box className="order-1 sm:order-2">
+                  <FiltersPagination totalCount={data?.totalPages} />
+                </Box>
+                <Box className="order-3">
+                  <PageSizeSelector />
+                </Box>
               </Box>
             )}
           </Box>
         </Box>
       </Box>
+      <FiltersDrawer open={filtersOpen} onClose={() => setFiltersOpen(false)} />
       <GoToTop />
     </Box>
   );

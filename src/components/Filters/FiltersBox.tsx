@@ -5,6 +5,7 @@ import type { Theme } from "@mui/material/styles";
 import useProductFilters from "@/hooks/useProductFilters";
 import CategoryList from "@/components/Filters/CategoryList.tsx";
 import { accentText, panelSx } from "@/components/listingStyles.ts";
+import { DEFAULT_PRICE_MAX, DEFAULT_PRICE_MIN } from "@/constants/app.ts";
 
 // Micro-label shared with the footer column headings, darkened for legibility on the light panel.
 const groupLabelSx = {
@@ -16,17 +17,23 @@ const groupLabelSx = {
   textTransform: "uppercase" as const,
 };
 
-function FiltersBox() {
+export function FiltersContent() {
   const { filters, setParams } = useProductFilters();
 
   const { priceMin, priceMax } = filters;
 
-  const [priceRange, setPriceRange] = useState<[number, number]>([priceMin ?? 0, priceMax ?? 500]);
+  const [priceRange, setPriceRange] = useState<[number, number]>([
+    priceMin ?? DEFAULT_PRICE_MIN,
+    priceMax ?? DEFAULT_PRICE_MAX,
+  ]);
 
-  const isPriceRangeSet = priceRange[0] !== 0 || priceRange[1] !== 500;
+  const isPriceRangeSet = priceRange[0] !== DEFAULT_PRICE_MIN || priceRange[1] !== DEFAULT_PRICE_MAX;
 
   useEffect(() => {
-    setPriceRange([typeof priceMin === "number" ? priceMin : 0, typeof priceMax === "number" ? priceMax : 500]);
+    setPriceRange([
+      typeof priceMin === "number" ? priceMin : DEFAULT_PRICE_MIN,
+      typeof priceMax === "number" ? priceMax : DEFAULT_PRICE_MAX,
+    ]);
   }, [priceMin, priceMax]);
 
   const handlePriceChange = (_event: Event, newValue: number | number[]) => {
@@ -43,11 +50,7 @@ function FiltersBox() {
   };
 
   return (
-    <Box
-      component="aside"
-      aria-label="Filtry produktów"
-      className={"flex w-full shrink-0 flex-col p-5 sm:p-6 lg:w-72 xl:w-80"}
-      sx={(theme) => ({ ...panelSx(theme), position: { lg: "sticky" }, top: { lg: "88px" } })}>
+    <>
       <Typography component="h2" sx={groupLabelSx}>
         Kategoria
       </Typography>
@@ -69,15 +72,19 @@ function FiltersBox() {
             onChange={handlePriceChange}
             onChangeCommitted={handlePriceChangeCommitted}
             valueLabelDisplay="auto"
-            min={0}
-            max={500}
+            min={DEFAULT_PRICE_MIN}
+            max={DEFAULT_PRICE_MAX}
           />
         </Box>
         {isPriceRangeSet && (
           <Button
             onClick={() => {
-              setPriceRange([0, 500]);
-              setParams({ priceMin: "0", priceMax: "500", page: "1" });
+              setPriceRange([DEFAULT_PRICE_MIN, DEFAULT_PRICE_MAX]);
+              setParams({
+                priceMin: DEFAULT_PRICE_MIN.toString(),
+                priceMax: DEFAULT_PRICE_MAX.toString(),
+                page: "1",
+              });
             }}
             variant={"text"}
             sx={{
@@ -92,6 +99,18 @@ function FiltersBox() {
           </Button>
         )}
       </Stack>
+    </>
+  );
+}
+
+function FiltersBox() {
+  return (
+    <Box
+      component="aside"
+      aria-label="Filtry produktów"
+      className={"hidden w-full shrink-0 flex-col p-5 sm:p-6 lg:flex lg:w-72 xl:w-80"}
+      sx={(theme) => ({ ...panelSx(theme), position: { lg: "sticky" }, top: { lg: "88px" } })}>
+      <FiltersContent />
     </Box>
   );
 }

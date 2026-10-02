@@ -2,6 +2,18 @@ import { createTheme } from "@mui/material/styles";
 import { plPL } from "@mui/material/locale";
 import { plPL as plPLGrid } from "@mui/x-data-grid/locales";
 
+// Tailwind's preflight sets `html { line-height: 1.5 }`. MUI's outlined-label notch is cut from
+// the label's own box, so the inherited 1.5 line-height makes the shrunken label taller than the
+// gap the fieldset reserves — the descenders ("ę") land on the solid top border. Pinning the
+// label's line-height to the font size restores the geometry MUI expects.
+const muiComponentOverrides = {
+  MuiInputLabel: {
+    styleOverrides: {
+      root: { lineHeight: 1 },
+    },
+  },
+};
+
 const darkTheme = createTheme(
   {
     palette: {
@@ -22,6 +34,7 @@ const darkTheme = createTheme(
     typography: {
       fontFamily: "Lato",
     },
+    components: muiComponentOverrides,
   },
   plPL,
   plPLGrid,
@@ -49,6 +62,7 @@ const lightTheme = createTheme(
     typography: {
       fontFamily: "Lato",
     },
+    components: muiComponentOverrides,
   },
   plPL,
   plPLGrid,

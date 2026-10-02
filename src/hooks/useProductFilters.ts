@@ -3,7 +3,7 @@ import type { SortDirection } from "./useSortFilter";
 import { convertToNumber } from "../helpers/convertToNumber.ts";
 import { useSearchParams } from "react-router-dom";
 import type { ProductParams } from "../types/ProductParams.ts";
-import { FILTER_DIRECTION_ASC } from "../constants/app.ts";
+import { DEFAULT_PRICE_MAX, DEFAULT_PRICE_MIN, FILTER_DIRECTION_ASC } from "../constants/app.ts";
 import { convertToSearchParams } from "../helpers/convertToSearchParams.ts";
 
 const useProductFilters = (): {
@@ -15,8 +15,8 @@ const useProductFilters = (): {
   const initialProductParams = {
     search: "",
     category: "",
-    priceMin: "0",
-    priceMax: "500",
+    priceMin: DEFAULT_PRICE_MIN.toString(),
+    priceMax: DEFAULT_PRICE_MAX.toString(),
     page: "1",
     pageSize: "24",
     orderBy: "name",

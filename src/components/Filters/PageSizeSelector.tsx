@@ -1,15 +1,6 @@
 import useProductFilters from "@/hooks/useProductFilters.ts";
 import { FormControl, InputLabel, MenuItem, Select, type SelectChangeEvent } from "@mui/material";
 
-const controlSx = {
-  minWidth: 170,
-  borderRadius: "12px",
-  bgcolor: "background.paper",
-  "& .MuiOutlinedInput-notchedOutline": { borderColor: "divider" },
-  "&:hover .MuiOutlinedInput-notchedOutline": { borderColor: "text.secondary" },
-  "&.Mui-focused .MuiOutlinedInput-notchedOutline": { borderColor: "primary.main" },
-};
-
 function PageSizeSelector() {
   const { filters, setParams } = useProductFilters();
 
@@ -18,12 +9,22 @@ function PageSizeSelector() {
   };
 
   return (
-    <FormControl size="small" variant="outlined" sx={controlSx}>
-      <InputLabel id="page-size-select-label">Ilość produktów na stronę</InputLabel>
+    <FormControl
+      size="small"
+      variant="outlined"
+      sx={{
+        minWidth: 126,
+        borderRadius: "12px",
+        bgcolor: "background.paper",
+        "& .MuiOutlinedInput-notchedOutline": { borderColor: "divider" },
+        "&:hover .MuiOutlinedInput-notchedOutline": { borderColor: "text.secondary" },
+        "&.Mui-focused .MuiOutlinedInput-notchedOutline": { borderColor: "primary.main" },
+      }}>
+      <InputLabel id="page-size-select-label">Na stronę</InputLabel>
       <Select
         labelId="page-size-select-label"
         id="page-size-select"
-        label="Ilość produktów na stronę"
+        label="Na stronę"
         value={filters.pageSize?.toString() || "24"}
         onChange={handlePageSizeChange}>
         <MenuItem value="24">24</MenuItem>
