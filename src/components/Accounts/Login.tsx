@@ -130,7 +130,6 @@ function Login() {
                   height: "100%",
                   borderRadius: "999px",
                   bgcolor: theme.palette.mode === "dark" ? "rgba(255,255,255,0.14)" : "background.paper",
-                  boxShadow: theme.palette.mode === "dark" ? "none" : "0 4px 12px rgba(15,40,28,0.10)",
                   transition: `all 300ms ${EASE}`,
                 },
                 "& .MuiTab-root": {
