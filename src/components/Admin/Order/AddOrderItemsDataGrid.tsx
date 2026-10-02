@@ -1,14 +1,16 @@
 import { useGetProductsQuery } from "../../Products/productsApiSlice.ts";
 import ErrorView from "../../common/ErrorView.tsx";
-import Loading from "../../common/Loading.tsx";
-import { DataGrid, type GridColDef, GridToolbarContainer, GridToolbarQuickFilter } from "@mui/x-data-grid";
+import { DataGrid, type GridColDef } from "@mui/x-data-grid";
 import type Product from "../../../types/Product.ts";
 import { Box, Button, Typography } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
+import DeleteOutline from "@mui/icons-material/DeleteOutline";
 import { useCreateOrderItemsMutation } from "../../Order/orderItemsApiSlice.ts";
 import type { OrderItemCreate } from "@/types/OrderItemCreate.ts";
 import { useState } from "react";
 import toast from "react-hot-toast";
+import { adminGridSx, adminPanelSx, moneyCellSx } from "../adminStyles.ts";
+import { accentText, tone } from "@/components/listingStyles.ts";
 
 interface AddOrderItemsDataGridProps {
   orderId: number;
@@ -20,72 +22,65 @@ function AddOrderItemsDataGrid({ orderId, handleClose }: AddOrderItemsDataGridPr
   const [orderItems, setOrderItems] = useState<OrderItemCreate[]>([]);
   const [createOrderItems] = useCreateOrderItemsMutation();
 
-  if (isLoading) {
-    return <Loading />;
-  }
-
-  if (isError || !products) {
-    return <ErrorView message={"Wystąpił błąd podczas pobierania produktów."} />;
-  }
-
   const columns: GridColDef[] = [
-    { field: "id", headerName: "ID", width: 90 },
-    { field: "name", headerName: "Nazwa", width: 200 },
-    { field: "category", headerName: "Kategoria", width: 150 },
+    { field: "id", headerName: "ID", width: 80 },
+    { field: "name", headerName: "Nazwa", flex: 1, minWidth: 180 },
+    { field: "category", headerName: "Kategoria", width: 140 },
     {
       field: "price",
       headerName: "Cena",
-      width: 120,
-      sortComparator: (v1, v2) => v1 - v2,
+      width: 110,
+      renderCell: (params) => (
+        <Box component="span" sx={moneyCellSx}>
+          {params.value} zł
+        </Box>
+      ),
     },
+    { field: "stock_quantity", headerName: "Stan", width: 90 },
+    { field: "quantity", headerName: "Ilość", width: 90, editable: true, type: "number" },
     {
-      field: "stock_quantity",
-      headerName: "Stan magazynowy",
-      width: 100,
-    },
-    {
-      field: "quantity",
-      headerName: "Ilość",
-      width: 100,
-      editable: true,
-    },
-    {
-      field: "Akcje",
-      headerName: "Akcje",
+      field: "add",
+      headerName: "",
       sortable: false,
-      width: 200,
-      renderCell: (params) => {
-        return (
-          <Button
-            variant="text"
-            color="primary"
-            size="small"
-            startIcon={<AddIcon />}
-            onClick={() => {
-              const orderItem = {
-                order_id: orderId,
-                product_id: params.row.id,
-                product_name: params.row.name,
-                quantity: params.row.quantity,
-                price: params.row.price,
-              };
-              setOrderItems([...orderItems, orderItem]);
-            }}>
-            Wybierz
-          </Button>
-        );
-      },
+      disableColumnMenu: true,
+      width: 130,
+      renderCell: (params) => (
+        <Button
+          variant="text"
+          size="small"
+          startIcon={<AddIcon />}
+          onClick={() => {
+            const orderItem = {
+              order_id: orderId,
+              product_id: params.row.id,
+              product_name: params.row.name,
+              quantity: params.row.quantity,
+              price: params.row.price,
+            };
+            setOrderItems((current) => [...current, orderItem]);
+          }}
+          sx={(theme) => ({
+            borderRadius: "999px",
+            fontWeight: 700,
+            fontSize: "0.82rem",
+            color: accentText(theme),
+            "&:hover": { backgroundColor: tone(theme, 0.1) },
+          })}>
+          Wybierz
+        </Button>
+      ),
     },
   ];
 
-  const rows = products.map((product: Product) => ({
-    id: product.product_id,
-    name: product.name,
-    category: product.category,
-    price: product.price,
-    stock_quantity: product.stock_quantity,
-    quantity: 1,
-  }));
+  const rows =
+    products?.map((product: Product) => ({
+      id: product.product_id,
+      name: product.name,
+      category: product.category,
+      price: product.price,
+      stock_quantity: product.stock_quantity,
+      quantity: 1,
+    })) ?? [];
 
   const handleAddProducts = () => {
     toast
@@ -100,70 +95,70 @@ function AddOrderItemsDataGrid({ orderId, handleClose }: AddOrderItemsDataGridPr
       });
   };
 
-  const CustomToolbar = () => {
-    return (
-      <GridToolbarContainer className={"flex justify-between"}>
-        <GridToolbarQuickFilter debounceMs={300} />
-      </GridToolbarContainer>
-    );
-  };
+  if (isError || !products) {
+    return <ErrorView message={"Wystąpił błąd podczas pobierania produktów."} />;
+  }
 
   return (
-    <>
+    <Box sx={{ display: "flex", flexDirection: "column", gap: 2.5 }}>
       {orderItems.length > 0 && (
-        <Box className={"mb-4"}>
-          <Typography variant="h6" component="h2" sx={{ mb: 2 }}>
-            Wybrane produkty
+        <Box
+          sx={(theme) => ({
+            border: "1px solid",
+            borderColor: "divider",
+            borderRadius: "16px",
+            bgcolor: tone(theme, 0.05),
+            p: 2,
+          })}>
+          <Typography sx={{ fontWeight: 800, fontSize: "0.95rem", mb: 1 }}>
+            Wybrane produkty ({orderItems.length})
           </Typography>
-          {orderItems.map((orderItem) => (
-            <Box key={orderItem.product_id} className={"flex items-center"}>
-              <Typography variant="body1" sx={{ mr: 2 }}>
-                {orderItem.product_name} - {orderItem.quantity} szt.
-              </Typography>
-              <Button
-                variant="text"
-                color="error"
-                size="small"
-                onClick={() => {
-                  setOrderItems(orderItems.filter((item) => item.product_id !== orderItem.product_id));
-                }}>
-                Usuń
-              </Button>
-            </Box>
-          ))}
+          <Box sx={{ display: "flex", flexDirection: "column", gap: 0.75 }}>
+            {orderItems.map((orderItem) => (
+              <Box key={orderItem.product_id} sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
+                <Typography sx={{ flex: 1, fontSize: "0.9rem" }}>
+                  {orderItem.product_name} · {orderItem.quantity} szt.
+                </Typography>
+                <Button
+                  size="small"
+                  color="error"
+                  startIcon={<DeleteOutline />}
+                  onClick={() => setOrderItems(orderItems.filter((item) => item.product_id !== orderItem.product_id))}
+                  sx={{ borderRadius: "999px", fontWeight: 700, fontSize: "0.8rem" }}>
+                  Usuń
+                </Button>
+              </Box>
+            ))}
+          </Box>
         </Box>
       )}
 
-      <Box className={"flex flex-col overflow-x-auto w-full"}>
-        <Box className={"w-full overflow-x-auto"}>
-          <DataGrid
-            disableRowSelectionOnClick
-            showToolbar
-            columns={columns}
-            rows={rows}
-            rowHeight={40}
-            pageSizeOptions={[5, 10, 25, 50, 100]}
-            sx={{ border: 0 }}
-            slots={{ toolbar: CustomToolbar }}
-            initialState={{
-              sorting: {
-                sortModel: [{ field: "id", sort: "asc" }],
-              },
-              pagination: {
-                paginationModel: {
-                  pageSize: 10,
-                },
-              },
-            }}
-          />
-        </Box>
-        {orderItems.length > 0 && (
-          <Button variant="text" color="primary" onClick={handleAddProducts}>
-            Dodaj wybrane produkty ({orderItems.length})
-          </Button>
-        )}
+      <Box sx={(theme) => ({ ...adminPanelSx(theme), width: "100%" })}>
+        <DataGrid
+          disableRowSelectionOnClick
+          columns={columns}
+          rows={rows}
+          loading={isLoading}
+          rowHeight={52}
+          pageSizeOptions={[5, 10, 25, 50, 100]}
+          sx={{ ...adminGridSx, height: 460 }}
+          initialState={{
+            sorting: { sortModel: [{ field: "id", sort: "asc" }] },
+            pagination: { paginationModel: { pageSize: 10 } },
+          }}
+        />
       </Box>
-    </>
+
+      <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
+        <Button
+          variant="contained"
+          disabled={orderItems.length === 0}
+          onClick={handleAddProducts}
+          sx={{ borderRadius: "999px", fontWeight: 700 }}>
+          Dodaj wybrane produkty ({orderItems.length})
+        </Button>
+      </Box>
+    </Box>
   );
 }
 

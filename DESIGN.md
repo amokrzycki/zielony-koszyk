@@ -198,6 +198,7 @@ The form language is rounded and consistent: **pills for anything you press**, s
 ### Chips
 - **Style:** MUI `Chip`, MUI `default`/`success` color tokens; the MFA status chip uses `success` when active and `default` when off.
 - **State:** filter chips mirror the nav-pill treatment — transparent at rest, green text plus a green tint on hover/active.
+- **Order-status pill:** order states collapse to three semantic buckets, not a per-status rainbow. Forward states (new, in progress, to be shipped, shipping) wear Deep Leaf text on a green tint with a green border; finished states (delivered, done) grey out to secondary text on `action.hover`; states waiting on the customer (payment, confirmation) use primary text on `action.hover` with a Warm Slate hairline. One pill style, reused in tables, cards, and the order header.
 
 ### Cards / Containers
 - **Corner Style:** 24px (`panelSx`); 28px for feature panels.
@@ -222,6 +223,12 @@ The account shell (`AccountView`) is a 24px panel capped at 1080px with a faint 
 
 ### Signature: Brand auth panel
 The login surface pairs a Forest Ink panel (radial Market Green at the top-right, logo, heavy display headline, green check medallions) with a light forms panel, joined inside one 24px frame. It is the fullest expression of the world: dark brand block on one side, warm calm work surface on the other.
+
+### Signature: Admin rail
+The admin console (`MainView`, everything behind `/admin/*`) is a 24px panel split into a fixed Forest Ink left rail and a calm Paper work area — the inverse of a storefront card. The rail carries a radial Market Green wash at the top-left (0.16 alpha, fading by 45%), the brand lockup, grouped nav rows (14px radius, 700 weight, compressed hints) and an account block at the foot. Nav rows are tuned for the dark ground: white at 72% at rest, white on a 0.08 white wash on hover, and the active row at `accentText` on a 0.16 green tint with `:focus-visible` in green. Below `md` the rail collapses to the same rows inside a drawer, with a top bar and menu button in the work area. This is where the brand commits on a task surface.
+
+### Signature: Admin page-frame primitives
+The console's per-page chrome is a small set of reusable primitives rather than bespoke layouts: `AdminPageHeader` (green icon medallion, heavy title with tight tracking, one factual subtitle, page actions right), `AdminModal` (24px paper panel, hairline, Panel shadow, one faint radial green corner wash, heavy title, labelled close), `AdminEmpty`, `AdminError`, and the `AdminLoading` skeleton panel. The DataGrid surface adds three conventions on the same system: brand-tinted uppercase column headers (`0.06` tone), hover rows that pick up the green tint, and monospace-ish ID cells kept in the single Lato family — machine values set quiet and tabular so the eye skips them, with money cells right-aligned and `tabular-nums`. The `adminStyles.ts` helpers (`adminGridSx`, `adminPanelSx`, `adminSubheadingSx`, `moneyCellSx`, `monoCellSx`, `orderStatusChipSx`) are the admin's extension of `listingStyles.ts`, not a second system.
 
 ## Do's and Don'ts
 

@@ -41,6 +41,10 @@ interface ChangeUserAddressProps {
   address: Address;
 }
 
+const grid = { display: "grid", gap: 2 } as const;
+const twoCol = { ...grid, gridTemplateColumns: { xs: "1fr", sm: "1fr 1fr" } } as const;
+const streetGrid = { ...grid, gridTemplateColumns: { xs: "1fr", sm: "2fr 1fr 1fr" } } as const;
+
 function ChangeAddress({ address, user }: ChangeUserAddressProps) {
   const [changeDetails] = useChangeUserAddressMutation();
   const dispatch = useAppDispatch();
@@ -116,123 +120,122 @@ function ChangeAddress({ address, user }: ChangeUserAddressProps) {
 
   return (
     <form onSubmit={form.onSubmit((values) => handleSubmit(values))}>
-      <Box className={"flex flex-col justify-center items-center mt-2"}>
+      <Box sx={grid}>
         <CustomerTypeRadios
           customerType={customerType}
           setCustomerType={handleCustomerTypeChange}
           touched={form.isTouched("customer_type")}
         />
-        {customerType === CustomerType.PERSON && (
-          <>
+
+        {customerType === CustomerType.PERSON ? (
+          <Box sx={twoCol}>
             <TextField
               variant="outlined"
               label="Imię"
               required
-              placeholder={"Jan"}
+              placeholder="Jan"
               {...form.getInputProps("first_name")}
               error={Boolean(form.errors.first_name) && form.isTouched("first_name")}
               helperText={form.errors.first_name}
-              sx={{ mb: "1em", mt: "1em" }}
             />
             <TextField
               variant="outlined"
               label="Nazwisko"
               required
-              placeholder={"Kowalski"}
+              placeholder="Kowalski"
               {...form.getInputProps("last_name")}
               error={Boolean(form.errors.last_name) && form.isTouched("last_name")}
               helperText={form.errors.last_name}
-              sx={{ mb: "1em" }}
             />
-          </>
-        )}
-        {customerType === CustomerType.COMPANY && (
-          <>
+          </Box>
+        ) : (
+          <Box sx={twoCol}>
             <TextField
               variant="outlined"
               label="Nazwa firmy"
               required
-              placeholder={"Firma XYZ"}
+              placeholder="Firma XYZ"
               {...form.getInputProps("company_name")}
               error={Boolean(form.errors.company_name) && form.isTouched("company_name")}
               helperText={form.errors.company_name}
-              sx={{ mb: "1em", mt: "1em" }}
             />
             <TextField
               variant="outlined"
               label="NIP"
               required
-              placeholder={"1234567890"}
+              placeholder="1234567890"
               {...form.getInputProps("nip")}
               error={Boolean(form.errors.nip) && form.isTouched("nip")}
               helperText={form.errors.nip}
-              sx={{ mb: "1em" }}
             />
-          </>
+          </Box>
         )}
+
         <TextField
           variant="outlined"
           label="Numer telefonu"
+          type="tel"
           required
-          placeholder={"ul. Przykładowa"}
           {...form.getInputProps("phone")}
           helperText={form.errors.phone}
           error={Boolean(form.errors.phone) && form.isTouched("phone")}
-          sx={{ mb: "1em", width: "300px" }}
         />
-        <TextField
-          variant="outlined"
-          label="Ulica"
-          required
-          placeholder={"ul. Przykładowa"}
-          {...form.getInputProps("street")}
-          helperText={form.errors.street}
-          error={Boolean(form.errors.street) && form.isTouched("street")}
-          sx={{ mb: "1em", width: "300px" }}
-        />
-        <Box className={"flex justify-center items-center mb-4"}>
+        <Box sx={streetGrid}>
           <TextField
             variant="outlined"
-            label="Numer domu/budynku"
-            placeholder={"1A"}
+            label="Ulica"
+            required
+            placeholder="ul. Przykładowa"
+            {...form.getInputProps("street")}
+            helperText={form.errors.street}
+            error={Boolean(form.errors.street) && form.isTouched("street")}
+          />
+          <TextField
+            variant="outlined"
+            label="Nr budynku"
+            placeholder="1A"
             required
             {...form.getInputProps("building_number")}
             helperText={form.errors.building_number}
             error={Boolean(form.errors.building_number) && form.isTouched("building_number")}
-            sx={{ marginRight: "1em" }}
           />
           <TextField
             variant="outlined"
-            label="Numer mieszkania"
-            placeholder={"14"}
+            label="Nr mieszkania"
+            placeholder="14"
             {...form.getInputProps("flat_number")}
             helperText={form.errors.flat_number}
             error={Boolean(form.errors.flat_number) && form.isTouched("flat_number")}
           />
         </Box>
-        <Box>
+        <Box sx={twoCol}>
           <TextField
             variant="outlined"
             label="Kod pocztowy"
-            placeholder={"00-000"}
+            placeholder="00-000"
             required
             {...form.getInputProps("zip")}
             helperText={form.errors.zip}
             error={Boolean(form.errors.zip) && form.isTouched("zip")}
-            sx={{ marginRight: "1em" }}
           />
           <TextField
             variant="outlined"
             label="Miejscowość"
             required
-            placeholder={"Warszawa"}
+            placeholder="Rzeszów"
             {...form.getInputProps("city")}
             helperText={form.errors.city}
             error={Boolean(form.errors.city) && form.isTouched("city")}
           />
         </Box>
-        <Button type={"submit"} variant={"contained"} sx={{ mt: "1em" }} disabled={!isValid && form.isTouched()}>
-          Zapisz zmiany
+      </Box>
+      <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 3 }}>
+        <Button
+          type="submit"
+          variant="contained"
+          disabled={!isValid && form.isTouched()}
+          sx={{ borderRadius: "999px", fontWeight: 700 }}>
+          Zapisz adres
         </Button>
       </Box>
     </form>
