@@ -18,6 +18,7 @@ import type { CreateUser } from "@/types/CreateUser.ts";
 import { useRegisterMutation } from "./accountsApiSlice.ts";
 import toast from "react-hot-toast";
 import type { Dispatch, SetStateAction } from "react";
+import { ctaButtonSx } from "@/components/listingStyles.ts";
 
 export interface IRegisterFormValues {
   firstName: string;
@@ -231,7 +232,11 @@ function RegisterForm({ setTab }: RegisterFormProps) {
           </FormGroup>
           <FormHelperText sx={{ m: 0 }}>{form.errors.termsAccepted}</FormHelperText>
         </FormControl>
-        <Button type={"submit"} variant={"contained"} sx={{ mt: "1em" }} disabled={!isValid && form.isTouched()}>
+        <Button
+          type={"submit"}
+          variant={"contained"}
+          sx={{ ...ctaButtonSx, mt: "1.5em", minWidth: 200 }}
+          disabled={!isValid && form.isTouched()}>
           Utwórz konto
         </Button>
       </Box>

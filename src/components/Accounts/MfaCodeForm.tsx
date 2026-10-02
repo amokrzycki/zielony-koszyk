@@ -1,5 +1,6 @@
 import { useState, type FormEvent } from "react";
 import { Box, Button, TextField, Typography } from "@mui/material";
+import { ctaButtonSx, ghostButtonSx } from "@/components/listingStyles.ts";
 
 type Props = {
   instruction: string;
@@ -46,10 +47,10 @@ function MfaCodeForm({ instruction, onSubmit, onCancel }: Props) {
         sx={{ width: "100%", maxWidth: "300px" }}
       />
       <Box className="flex gap-2">
-        <Button type="button" onClick={onCancel} disabled={submitting}>
+        <Button type="button" onClick={onCancel} disabled={submitting} sx={(theme) => ghostButtonSx(theme)}>
           Wróć
         </Button>
-        <Button type="submit" variant="contained" disabled={code.length !== 6 || submitting}>
+        <Button type="submit" variant="contained" disabled={code.length !== 6 || submitting} sx={ctaButtonSx}>
           {submitting ? "Weryfikowanie…" : "Potwierdź"}
         </Button>
       </Box>
