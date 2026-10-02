@@ -39,7 +39,9 @@ function ConfirmDeleteModal({ open, handleClose, onConfirm, count, entityLabel }
             onClick={() => {
               onConfirm()
                 .then(() => handleClose())
-                .catch(() => {});
+                .catch(() => {
+                  /* failure is surfaced by the delete action itself */
+                });
             }}
             sx={{ borderRadius: "999px", fontWeight: 700 }}>
             Usuń

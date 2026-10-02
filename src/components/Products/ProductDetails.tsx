@@ -63,7 +63,10 @@ function ProductDetails() {
           <AutoBreadcrumbs />
         </Box>
 
-        <Box component="article" aria-label="Szczegóły produktu" sx={(theme) => ({ ...panelSx(theme), p: { xs: 2.5, sm: 3.5, lg: 5 } })}>
+        <Box
+          component="article"
+          aria-label="Szczegóły produktu"
+          sx={(theme) => ({ ...panelSx(theme), p: { xs: 2.5, sm: 3.5, lg: 5 } })}>
           <Box
             sx={{
               display: "grid",

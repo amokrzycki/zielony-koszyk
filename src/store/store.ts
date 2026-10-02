@@ -1,7 +1,8 @@
 import { combineReducers, configureStore, createListenerMiddleware } from "@reduxjs/toolkit";
-import { persistStore, persistReducer } from "redux-persist";
+import { persistStore, persistReducer, createTransform, type PersistConfig } from "redux-persist";
 import { baseApi } from "../api/api.ts";
 import { cartSlice } from "../components/Cart/cartSlice.ts";
+import { normalizeCart } from "../reducers/cartReducers.ts";
 import { orderSlice } from "../components/Order/orderSlice.ts";
 import { accountSlice, logoutUser } from "../components/Accounts/accountSlice.ts";
 import { clearTokenStorage } from "../helpers/tokenHelpers.ts";
@@ -49,10 +50,14 @@ const rootReducer = combineReducers({
   [baseApi.reducerPath]: baseApi.reducer,
 });
 
-const persistConfig = {
+// Carts persisted before prices were coerced still hold API strings; normalise them on rehydrate.
+const cartPriceTransform = createTransform(null, normalizeCart, { whitelist: ["cart"] });
+
+const persistConfig: PersistConfig<ReturnType<typeof rootReducer>> = {
   key: "root",
   storage: persistStorage,
   whitelist: ["cart"],
+  transforms: [cartPriceTransform],
 };
 
 export const store = configureStore({

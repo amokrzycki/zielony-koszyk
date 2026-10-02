@@ -15,7 +15,7 @@ it("updates and clears category with page reset while preserving other filters",
   const root = createRoot(container);
   try {
     await act(async () => root.render(<RouterProvider router={router} />));
-    await act(async () => container.querySelector<HTMLButtonElement>('button[value="owoce"]')!.click());
+    await act(async () => container.querySelector<HTMLButtonElement>('button[value="owoce"]')?.click());
     expect(Object.fromEntries(new URLSearchParams(router.state.location.search))).toEqual({
       category: "owoce",
       page: "1",
@@ -29,8 +29,8 @@ it("updates and clears category with page reset while preserving other filters",
     await act(async () => {
       await router.navigate(`/produkty${router.state.location.search.replace("page=1", "page=2")}`);
     });
-    const clear = [...container.querySelectorAll("button")].find((button) => button.textContent === "Wyczyść")!;
-    await act(async () => clear.click());
+    const clear = [...container.querySelectorAll("button")].find((button) => button.textContent === "Wyczyść");
+    await act(async () => clear?.click());
     expect(Object.fromEntries(new URLSearchParams(router.state.location.search))).toEqual({
       category: "",
       page: "1",
