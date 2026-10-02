@@ -1,5 +1,5 @@
-import { Box, Button, Checkbox, FormControlLabel, Typography } from "@mui/material";
-import Grid from "@mui/material/Grid";
+import { Box, Button, Checkbox, Divider, FormControlLabel, Typography } from "@mui/material";
+import ReceiptLongOutlined from "@mui/icons-material/ReceiptLongOutlined";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import { useForm } from "@mantine/form";
@@ -30,6 +30,7 @@ import {
   validateZip,
 } from "@/helpers/validators.ts";
 import type { Address } from "@/types/Address.ts";
+import { accentText, ctaButtonSx, panelSx, tone } from "@/components/listingStyles.ts";
 
 export interface IFormValues {
   shipping: CreateAddress | Address;
@@ -180,40 +181,97 @@ function OrderDetails() {
   };
 
   return (
-    <Box id="main-wrapper">
+    <Box id="main-wrapper" className="flex flex-col items-center">
       <Box
-        className="main-container flex items-center justify-around flex-col"
+        className="main-container"
         sx={{
           bgcolor: "background.paper",
         }}>
-        <Box className="main-container">
+        <Box className="main-container" sx={{ mt: 0 }}>
           <form onSubmit={form.onSubmit(handleSubmit)}>
-            <Grid container className={"w-full justify-around"}>
-              <Grid>
+            <Box sx={{ mb: { xs: 3, sm: 4 } }}>
+              <Typography
+                component="h1"
+                sx={{
+                  m: 0,
+                  fontSize: "clamp(1.6rem, 3vw, 2.1rem)",
+                  fontWeight: 900,
+                  lineHeight: 1.1,
+                  letterSpacing: "-0.03em",
+                }}>
+                Dostawa i płatność
+              </Typography>
+              <Typography sx={{ mt: 1, color: "text.secondary", lineHeight: 1.6, maxWidth: "52ch" }}>
+                Uzupełnij dane do wysyłki i faktury. Zamówienie potwierdzisz w następnym kroku.
+              </Typography>
+            </Box>
+
+            <Box
+              sx={{
+                display: "grid",
+                gridTemplateColumns: { xs: "1fr", lg: "minmax(0, 1fr) 360px" },
+                gap: { xs: 3, lg: 5 },
+                alignItems: "start",
+              }}>
+              <Box sx={(theme) => ({ ...panelSx(theme), p: { xs: 2, sm: 3 } })}>
                 <ShippingFormFields form={form} setCustomerType={setShippingType} />
+
+                <Divider sx={{ my: 3 }} />
+
                 <FormControlLabel
                   control={
                     <Checkbox checked={useDifferentAddress} onChange={() => setUseDifferentAddress((prev) => !prev)} />
                   }
-                  label="Chcę otrzymać fakturę na inne dane"
+                  label="Faktura na inne dane"
                 />
-                {!useDifferentAddress && (
-                  <Typography variant="h6" gutterBottom>
-                    {!user.user_id
-                      ? "Dane do faktury: takie same jak do wysyłki"
-                      : "Dane do faktury: domyślne dane z Twojego konta"}
-                  </Typography>
-                )}
-                {useDifferentAddress && <BillingFormFields form={form} setCustomerType={setBillingType} />}
-              </Grid>
 
-              <Grid>
+                {!useDifferentAddress ? (
+                  <Box
+                    sx={{
+                      mt: 1.5,
+                      display: "flex",
+                      alignItems: "flex-start",
+                      gap: 1,
+                      px: 2,
+                      py: 1.5,
+                      borderRadius: "12px",
+                      bgcolor: (theme) => tone(theme, 0.1),
+                      color: (theme) => accentText(theme),
+                    }}>
+                    <ReceiptLongOutlined fontSize="small" sx={{ mt: "1px" }} />
+                    <Typography sx={{ color: "inherit", fontSize: "0.9rem", lineHeight: 1.5 }}>
+                      {!user.user_id
+                        ? "Dane do faktury: takie same jak do wysyłki."
+                        : "Dane do faktury: domyślne dane z Twojego konta."}
+                    </Typography>
+                  </Box>
+                ) : (
+                  <BillingFormFields form={form} setCustomerType={setBillingType} />
+                )}
+              </Box>
+
+              <Box
+                component="aside"
+                aria-label="Podsumowanie zamówienia"
+                sx={(theme) => ({ ...panelSx(theme), p: { xs: 2.5, sm: 3 } })}>
                 <CartSummary />
-                <Button type="submit" variant="contained" sx={{ mt: 2 }} disabled={!isValid}>
+                <Button type="submit" fullWidth disabled={!isValid} sx={{ ...ctaButtonSx, mt: 3 }}>
                   Przejdź dalej
                 </Button>
-              </Grid>
-            </Grid>
+                {!isValid && (
+                  <Typography
+                    sx={{
+                      mt: 1.5,
+                      color: "text.secondary",
+                      fontSize: "0.85rem",
+                      lineHeight: 1.5,
+                      textAlign: "center",
+                    }}>
+                    Uzupełnij wymagane pola, aby przejść dalej.
+                  </Typography>
+                )}
+              </Box>
+            </Box>
           </form>
         </Box>
       </Box>
