@@ -29,6 +29,7 @@ function Page() {
   return (
     <>
       <Toaster
+        position="top-right"
         toastOptions={{
           style: {
             background: mode === "dark" ? "#333" : "#fff",

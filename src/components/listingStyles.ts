@@ -46,8 +46,9 @@ export const ctaButtonSx = {
   fontWeight: 700,
   textTransform: "none" as const,
   boxShadow: "none",
-  transition: `transform 300ms ${EASE}, box-shadow 300ms ${EASE}`,
+  transition: `transform 160ms ${EASE}, box-shadow 300ms ${EASE}`,
   "&:hover": { bgcolor: "primary.main", boxShadow: "none", transform: "translateY(-2px)" },
+  "&:active": { transform: "translateY(-2px) scale(0.97)" },
   "&:focus-visible": { outline: "2px solid", outlineColor: "primary.main", outlineOffset: 3 },
   "&.Mui-disabled": { bgcolor: "action.disabledBackground", color: "action.disabled" },
 };

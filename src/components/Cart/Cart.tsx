@@ -12,6 +12,7 @@ import type User from "@/types/User.ts";
 import { AddressType } from "@/enums/AddressType.ts";
 import { setBillingAddress, setShippingAddress } from "@/components/Order/orderSlice.ts";
 import { EASE, accentText, ctaButtonSx, panelSx, tone } from "@/components/listingStyles.ts";
+import SwapLayers from "@/components/common/SwapLayers.tsx";
 
 const DELIVERY_FEE = 10;
 
@@ -102,165 +103,167 @@ function Cart() {
             )}
           </Box>
 
-          {cart.length === 0 ? (
-            <Box
-              sx={(theme) => ({
-                ...panelSx(theme),
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                textAlign: "center",
-                gap: 1,
-                py: { xs: 7, sm: 10 },
-                px: 3,
-              })}>
+          <SwapLayers id={cart.length === 0 ? "empty" : "list"} tween="swap">
+            {cart.length === 0 ? (
+              <Box
+                sx={(theme) => ({
+                  ...panelSx(theme),
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  textAlign: "center",
+                  gap: 1,
+                  py: { xs: 7, sm: 10 },
+                  px: 3,
+                })}>
+                <Box
+                  sx={{
+                    display: "grid",
+                    placeItems: "center",
+                    width: 64,
+                    height: 64,
+                    mb: 1,
+                    borderRadius: "50%",
+                    color: "primary.main",
+                    bgcolor: (t) => tone(t, 0.12),
+                    "& svg": { fontSize: 30 },
+                  }}>
+                  <ShoppingCartOutlinedIcon />
+                </Box>
+                <Typography variant="h5" sx={{ fontWeight: 800, letterSpacing: "-0.02em" }}>
+                  Twój koszyk jest pusty
+                </Typography>
+                <Typography sx={{ color: "text.secondary", lineHeight: 1.6, maxWidth: "42ch" }}>
+                  Zajrzyj do naszej oferty i dodaj pierwsze produkty do koszyka.
+                </Typography>
+                <Button component={Link} to="/produkty" sx={{ ...ctaButtonSx, mt: 2 }}>
+                  Przeglądaj produkty
+                </Button>
+              </Box>
+            ) : (
               <Box
                 sx={{
                   display: "grid",
-                  placeItems: "center",
-                  width: 64,
-                  height: 64,
-                  mb: 1,
-                  borderRadius: "50%",
-                  color: "primary.main",
-                  bgcolor: (t) => tone(t, 0.12),
-                  "& svg": { fontSize: 30 },
+                  gridTemplateColumns: { xs: "1fr", lg: "minmax(0, 1fr) 360px" },
+                  gap: { xs: 3, lg: 5 },
+                  alignItems: "start",
                 }}>
-                <ShoppingCartOutlinedIcon />
-              </Box>
-              <Typography variant="h5" sx={{ fontWeight: 800, letterSpacing: "-0.02em" }}>
-                Twój koszyk jest pusty
-              </Typography>
-              <Typography sx={{ color: "text.secondary", lineHeight: 1.6, maxWidth: "42ch" }}>
-                Zajrzyj do naszej oferty i dodaj pierwsze produkty do koszyka.
-              </Typography>
-              <Button component={Link} to="/produkty" sx={{ ...ctaButtonSx, mt: 2 }}>
-                Przeglądaj produkty
-              </Button>
-            </Box>
-          ) : (
-            <Box
-              sx={{
-                display: "grid",
-                gridTemplateColumns: { xs: "1fr", lg: "minmax(0, 1fr) 360px" },
-                gap: { xs: 3, lg: 5 },
-                alignItems: "start",
-              }}>
-              <Box
-                component="ul"
-                aria-label="Produkty w koszyku"
-                sx={(theme) => ({
-                  ...panelSx(theme),
-                  listStyle: "none",
-                  m: 0,
-                  p: { xs: 2, sm: 3 },
-                })}>
-                {cart.map((item: CartItem) => (
-                  <Box
-                    component="li"
-                    key={item.productId}
-                    sx={{
-                      display: "flex",
-                      flexWrap: "wrap",
-                      alignItems: "center",
-                      gap: { xs: 1.5, sm: 3 },
-                      py: 2.5,
-                      borderBottom: "1px solid",
-                      borderColor: "divider",
-                      "&:first-of-type": { pt: 0 },
-                      "&:last-of-type": { pb: 0, borderBottom: "none" },
-                    }}>
-                    <Box sx={{ flex: "1 1 220px", minWidth: 0 }}>
+                <Box
+                  component="ul"
+                  aria-label="Produkty w koszyku"
+                  sx={(theme) => ({
+                    ...panelSx(theme),
+                    listStyle: "none",
+                    m: 0,
+                    p: { xs: 2, sm: 3 },
+                  })}>
+                  {cart.map((item: CartItem) => (
+                    <Box
+                      component="li"
+                      key={item.productId}
+                      sx={{
+                        display: "flex",
+                        flexWrap: "wrap",
+                        alignItems: "center",
+                        gap: { xs: 1.5, sm: 3 },
+                        py: 2.5,
+                        borderBottom: "1px solid",
+                        borderColor: "divider",
+                        "&:first-of-type": { pt: 0 },
+                        "&:last-of-type": { pb: 0, borderBottom: "none" },
+                      }}>
+                      <Box sx={{ flex: "1 1 220px", minWidth: 0 }}>
+                        <Typography
+                          component="span"
+                          sx={{
+                            display: "block",
+                            fontWeight: 800,
+                            fontSize: { xs: "1rem", sm: "1.05rem" },
+                            lineHeight: 1.25,
+                            letterSpacing: "-0.01em",
+                            overflowWrap: "anywhere",
+                          }}>
+                          {item.name}
+                        </Typography>
+                        <Typography component="span" sx={{ color: "text.secondary", fontSize: "0.85rem" }}>
+                          {item.price.toFixed(2)} zł / szt.
+                        </Typography>
+                      </Box>
+
+                      <QuantitySelector
+                        quantity={item.quantity}
+                        setQuantity={(newVal) =>
+                          dispatch(
+                            changeQuantity({
+                              productId: item.productId,
+                              quantity: newVal,
+                            }),
+                          )
+                        }
+                      />
+
                       <Typography
-                        component="span"
                         sx={{
-                          display: "block",
+                          minWidth: { sm: 96 },
+                          textAlign: "right",
                           fontWeight: 800,
-                          fontSize: { xs: "1rem", sm: "1.05rem" },
-                          lineHeight: 1.25,
-                          letterSpacing: "-0.01em",
-                          overflowWrap: "anywhere",
+                          fontSize: "1.1rem",
+                          letterSpacing: "-0.02em",
+                          fontVariantNumeric: "tabular-nums",
                         }}>
-                        {item.name}
+                        {(item.quantity * item.price).toFixed(2)} zł
                       </Typography>
-                      <Typography component="span" sx={{ color: "text.secondary", fontSize: "0.85rem" }}>
-                        {item.price.toFixed(2)} zł / szt.
-                      </Typography>
+
+                      <IconButton
+                        aria-label={`Usuń ${item.name} z koszyka`}
+                        onClick={() => dispatch(removeItem(item.productId))}
+                        size="small"
+                        sx={{
+                          color: "text.secondary",
+                          transition: `color 200ms ${EASE}`,
+                          "&:hover": { color: "error.main", backgroundColor: "transparent" },
+                          "&:focus-visible": { outline: "2px solid", outlineColor: "primary.main", outlineOffset: 2 },
+                        }}>
+                        <DeleteIcon fontSize="small" />
+                      </IconButton>
                     </Box>
+                  ))}
+                </Box>
 
-                    <QuantitySelector
-                      quantity={item.quantity}
-                      setQuantity={(newVal) =>
-                        dispatch(
-                          changeQuantity({
-                            productId: item.productId,
-                            quantity: newVal,
-                          }),
-                        )
-                      }
-                    />
+                <Box component="aside" sx={(theme) => ({ ...panelSx(theme), p: { xs: 2.5, sm: 3 } })}>
+                  <Typography sx={{ fontWeight: 800, fontSize: "1.05rem", mb: 2 }}>Podsumowanie</Typography>
 
+                  <Box sx={{ display: "flex", justifyContent: "space-between", mb: 1 }}>
+                    <Typography sx={{ color: "text.secondary" }}>Wartość produktów</Typography>
+                    <Typography sx={amountSx}>{subtotal.toFixed(2)} zł</Typography>
+                  </Box>
+                  <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+                    <Typography sx={{ color: "text.secondary" }}>Dostawa</Typography>
+                    <Typography sx={amountSx}>{DELIVERY_FEE} zł</Typography>
+                  </Box>
+
+                  <Divider sx={{ my: 2 }} />
+
+                  <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", mb: 3 }}>
+                    <Typography sx={{ fontWeight: 800 }}>Razem</Typography>
                     <Typography
                       sx={{
-                        minWidth: { sm: 96 },
-                        textAlign: "right",
-                        fontWeight: 800,
-                        fontSize: "1.1rem",
-                        letterSpacing: "-0.02em",
+                        fontWeight: 900,
+                        fontSize: { xs: "1.6rem", sm: "1.85rem" },
+                        letterSpacing: "-0.03em",
                         fontVariantNumeric: "tabular-nums",
                       }}>
-                      {(item.quantity * item.price).toFixed(2)} zł
+                      {(subtotal + DELIVERY_FEE).toFixed(2)} zł
                     </Typography>
-
-                    <IconButton
-                      aria-label={`Usuń ${item.name} z koszyka`}
-                      onClick={() => dispatch(removeItem(item.productId))}
-                      size="small"
-                      sx={{
-                        color: "text.secondary",
-                        transition: `color 200ms ${EASE}`,
-                        "&:hover": { color: "error.main", backgroundColor: "transparent" },
-                        "&:focus-visible": { outline: "2px solid", outlineColor: "primary.main", outlineOffset: 2 },
-                      }}>
-                      <DeleteIcon fontSize="small" />
-                    </IconButton>
                   </Box>
-                ))}
+
+                  <Button fullWidth onClick={handleOrder} sx={ctaButtonSx}>
+                    Wybierz dostawę i płatność
+                  </Button>
+                </Box>
               </Box>
-
-              <Box component="aside" sx={(theme) => ({ ...panelSx(theme), p: { xs: 2.5, sm: 3 } })}>
-                <Typography sx={{ fontWeight: 800, fontSize: "1.05rem", mb: 2 }}>Podsumowanie</Typography>
-
-                <Box sx={{ display: "flex", justifyContent: "space-between", mb: 1 }}>
-                  <Typography sx={{ color: "text.secondary" }}>Wartość produktów</Typography>
-                  <Typography sx={amountSx}>{subtotal.toFixed(2)} zł</Typography>
-                </Box>
-                <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-                  <Typography sx={{ color: "text.secondary" }}>Dostawa</Typography>
-                  <Typography sx={amountSx}>{DELIVERY_FEE} zł</Typography>
-                </Box>
-
-                <Divider sx={{ my: 2 }} />
-
-                <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", mb: 3 }}>
-                  <Typography sx={{ fontWeight: 800 }}>Razem</Typography>
-                  <Typography
-                    sx={{
-                      fontWeight: 900,
-                      fontSize: { xs: "1.6rem", sm: "1.85rem" },
-                      letterSpacing: "-0.03em",
-                      fontVariantNumeric: "tabular-nums",
-                    }}>
-                    {(subtotal + DELIVERY_FEE).toFixed(2)} zł
-                  </Typography>
-                </Box>
-
-                <Button fullWidth onClick={handleOrder} sx={ctaButtonSx}>
-                  Wybierz dostawę i płatność
-                </Button>
-              </Box>
-            </Box>
-          )}
+            )}
+          </SwapLayers>
         </Box>
       </Box>
     </Box>

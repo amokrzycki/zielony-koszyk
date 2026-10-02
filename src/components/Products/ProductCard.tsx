@@ -49,7 +49,7 @@ function ProductCard({ product }: ProductCardProps) {
       <NavLink
         to={`/produkty/${product.product_id}`}
         aria-label={product.name}
-        className={"absolute inset-0 z-[1] rounded-2xl focus:outline-none"}
+        className={"absolute inset-0 z-1 rounded-2xl focus:outline-none"}
       />
       <Box
         className={"MuiProductCardPhoto-root"}
@@ -89,8 +89,9 @@ function ProductCard({ product }: ProductCardProps) {
                 fontWeight: 700,
                 textTransform: "none",
                 boxShadow: "none",
-                transition: `transform 300ms ${EASE}, box-shadow 300ms ${EASE}`,
+                transition: `transform 160ms ${EASE}, box-shadow 300ms ${EASE}`,
                 "&:hover": { bgcolor: "primary.main", boxShadow: "none", transform: "translateY(-2px)" },
+                "&:active": { transform: "translateY(-2px) scale(0.97)" },
                 "&:focus-visible": { outline: "2px solid", outlineColor: "primary.main", outlineOffset: 3 },
               }}>
               Do koszyka

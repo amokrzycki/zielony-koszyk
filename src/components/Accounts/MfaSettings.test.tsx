@@ -162,6 +162,10 @@ describe("MfaSettings", () => {
     const cancel = [...container.querySelectorAll("button")].find((button) => button.textContent === "Wróć");
     if (!cancel) throw new Error("Missing cancel button");
     await act(async () => cancel.click());
+    // SwapLayers keeps the outgoing step mounted while it fades out, so wait for it to leave.
+    await act(async () => {
+      await new Promise<void>((resolve) => setTimeout(resolve, 350));
+    });
 
     expect(container.textContent).not.toContain("Dokończ konfigurację TOTP");
     expect(container.textContent).toContain("Aktywna: Kod e-mail");
