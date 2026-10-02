@@ -44,8 +44,16 @@ function Header() {
             <Box
               component="img"
               src={`/${mode}_logo.png`}
-              alt="Zielony koszyk"
+              alt="Zielony koszyk — strona główna"
+              role="button"
+              tabIndex={0}
               onClick={() => navigate("/")}
+              onKeyDown={(e: React.KeyboardEvent) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  navigate("/");
+                }
+              }}
               sx={{ height: { xs: 34, md: 44 }, width: "auto", cursor: "pointer", flexShrink: 0 }}
             />
           </Box>

@@ -68,7 +68,7 @@ export default function ImageCarousel() {
       onTouchEnd={(e) => {
         if (touchStart.current === null) return;
         const delta = e.changedTouches[0].clientX - touchStart.current;
-        if (Math.abs(delta) > SWIPE_PX) go(activeStep + (delta < 0 ? 1 : -1));
+        if (Math.abs(delta) > SWIPE_PX) setActiveStep((s) => (s + (delta < 0 ? 1 : -1) + SLIDE_COUNT) % SLIDE_COUNT);
         touchStart.current = null;
       }}
       sx={{

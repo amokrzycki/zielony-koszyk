@@ -184,7 +184,7 @@ function Cart() {
                         {item.name}
                       </Typography>
                       <Typography component="span" sx={{ color: "text.secondary", fontSize: "0.85rem" }}>
-                        {item.price} zł / szt.
+                        {item.price.toFixed(2)} zł / szt.
                       </Typography>
                     </Box>
 
@@ -209,7 +209,7 @@ function Cart() {
                         letterSpacing: "-0.02em",
                         fontVariantNumeric: "tabular-nums",
                       }}>
-                      {item.quantity * item.price} zł
+                      {(item.quantity * item.price).toFixed(2)} zł
                     </Typography>
 
                     <IconButton
@@ -233,7 +233,7 @@ function Cart() {
 
                 <Box sx={{ display: "flex", justifyContent: "space-between", mb: 1 }}>
                   <Typography sx={{ color: "text.secondary" }}>Wartość produktów</Typography>
-                  <Typography sx={amountSx}>{subtotal} zł</Typography>
+                  <Typography sx={amountSx}>{subtotal.toFixed(2)} zł</Typography>
                 </Box>
                 <Box sx={{ display: "flex", justifyContent: "space-between" }}>
                   <Typography sx={{ color: "text.secondary" }}>Dostawa</Typography>
@@ -251,7 +251,7 @@ function Cart() {
                       letterSpacing: "-0.03em",
                       fontVariantNumeric: "tabular-nums",
                     }}>
-                    {subtotal + DELIVERY_FEE} zł
+                    {(subtotal + DELIVERY_FEE).toFixed(2)} zł
                   </Typography>
                 </Box>
 

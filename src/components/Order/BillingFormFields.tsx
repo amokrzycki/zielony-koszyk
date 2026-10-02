@@ -38,6 +38,7 @@ export default function BillingFormFields({ form, setCustomerType }: Props) {
             label="Imię"
             required
             placeholder="Jan"
+            autoComplete="given-name"
             {...getBillingProps("first_name")}
             helperText={form.errors["billing.first_name"]}
             error={Boolean(form.errors["billing.first_name"]) && form.isTouched("billing.first_name")}
@@ -47,6 +48,7 @@ export default function BillingFormFields({ form, setCustomerType }: Props) {
             label="Nazwisko"
             required
             placeholder="Kowalski"
+            autoComplete="family-name"
             {...getBillingProps("last_name")}
             helperText={form.errors["billing.last_name"]}
             error={Boolean(form.errors["billing.last_name"]) && form.isTouched("billing.last_name")}
@@ -61,6 +63,7 @@ export default function BillingFormFields({ form, setCustomerType }: Props) {
             label="Nazwa firmy"
             required
             placeholder="Firma XYZ"
+            autoComplete="organization"
             {...getBillingProps("company_name")}
             helperText={form.errors["billing.company_name"]}
             error={Boolean(form.errors["billing.company_name"]) && form.isTouched("billing.company_name")}
@@ -83,6 +86,7 @@ export default function BillingFormFields({ form, setCustomerType }: Props) {
         required
         type="tel"
         placeholder="+48123456789"
+        autoComplete="tel"
         {...getBillingProps("phone")}
         helperText={form.errors["billing.phone"]}
         error={Boolean(form.errors["billing.phone"]) && form.isTouched("billing.phone")}
@@ -95,6 +99,7 @@ export default function BillingFormFields({ form, setCustomerType }: Props) {
           label="Ulica"
           required
           placeholder="ul. Przykładowa"
+          autoComplete="address-line1"
           {...getBillingProps("street")}
           helperText={form.errors["billing.street"]}
           error={Boolean(form.errors["billing.street"]) && form.isTouched("billing.street")}
@@ -124,6 +129,7 @@ export default function BillingFormFields({ form, setCustomerType }: Props) {
           label="Kod pocztowy"
           required
           placeholder="00-000"
+          autoComplete="postal-code"
           {...getBillingProps("zip")}
           helperText={form.errors["billing.zip"]}
           error={Boolean(form.errors["billing.zip"]) && form.isTouched("billing.zip")}
@@ -133,6 +139,7 @@ export default function BillingFormFields({ form, setCustomerType }: Props) {
           label="Miejscowość"
           required
           placeholder="Warszawa"
+          autoComplete="address-level2"
           {...getBillingProps("city")}
           helperText={form.errors["billing.city"]}
           error={Boolean(form.errors["billing.city"]) && form.isTouched("billing.city")}

@@ -17,6 +17,7 @@ function MobileMenu({ open, mode, onClose }: MobileMenuProps) {
       open={open}
       onClose={onClose}
       aria-label="Menu"
+      id="mobile-menu"
       PaperProps={{
         sx: {
           width: { xs: "min(88vw, 340px)", sm: 380 },

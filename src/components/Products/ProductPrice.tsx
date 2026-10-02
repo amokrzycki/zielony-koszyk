@@ -19,7 +19,7 @@ function ProductPrice({ price, quantity }: ProductPriceProps) {
           letterSpacing: "-0.02em",
           fontVariantNumeric: "tabular-nums",
         }}>
-        {hasQuantity ? (price * quantity).toFixed(2) : price}
+        {(price * quantity).toFixed(2)}
       </Typography>
       <Typography component="span" sx={{ color: "text.secondary", fontWeight: 600 }}>
         zł

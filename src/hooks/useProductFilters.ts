@@ -33,8 +33,8 @@ const useProductFilters = (): {
 
   const search = searchParams.get("search") || initialProductParams.search;
   const category = searchParams.get("category") || initialProductParams.category;
-  const priceMin = convertToNumber(searchParams.get("priceMin"), 0);
-  const priceMax = convertToNumber(searchParams.get("priceMax"), 500);
+  const priceMin = convertToNumber(searchParams.get("priceMin"), DEFAULT_PRICE_MIN);
+  const priceMax = convertToNumber(searchParams.get("priceMax"), DEFAULT_PRICE_MAX);
   const page = convertToNumber(searchParams.get("page"), 1);
   const pageSize = convertToNumber(searchParams.get("pageSize"), 24);
 
