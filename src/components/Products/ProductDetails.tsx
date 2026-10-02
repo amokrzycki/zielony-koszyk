@@ -6,7 +6,7 @@ import { useGetProductByIdQuery } from "@/components/Products/productsApiSlice.t
 import AutoBreadcrumbs from "@/components/AutoBreadcrumbs.tsx";
 import Loading from "@/components/common/Loading.tsx";
 import ErrorView from "@/components/common/ErrorView.tsx";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import QuantitySelector from "@/components/Products/QuantitySelector.tsx";
 import { useAppDispatch } from "@/hooks/hooks.ts";
 import { addItem } from "../Cart/cartSlice";
@@ -27,6 +27,11 @@ function ProductDetails() {
   }
 
   const { data: product, isLoading, isError } = useGetProductByIdQuery(parseInt(productId, 10));
+
+  // biome-ignore lint/correctness/useExhaustiveDependencies: scroll to top on route change
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [productId]);
 
   if (isLoading) {
     return <Loading />;
