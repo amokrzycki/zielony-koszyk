@@ -1,11 +1,23 @@
 import type React from "react";
 import { useState, useEffect } from "react";
 import { Box, Typography, Stack, Slider, Button } from "@mui/material";
+import type { Theme } from "@mui/material/styles";
 import useProductFilters from "@/hooks/useProductFilters";
 import CategoryList from "@/components/Filters/CategoryList.tsx";
+import { accentText, panelSx } from "@/components/listingStyles.ts";
+
+// Micro-label shared with the footer column headings, darkened for legibility on the light panel.
+const groupLabelSx = {
+  mb: 1.5,
+  color: (t: Theme) => accentText(t),
+  fontSize: "0.8rem",
+  fontWeight: 800,
+  letterSpacing: "0.08em",
+  textTransform: "uppercase" as const,
+};
 
 function FiltersBox() {
-  const { filters, setParam } = useProductFilters();
+  const { filters, setParams } = useProductFilters();
 
   const { priceMin, priceMax } = filters;
 
@@ -26,25 +38,30 @@ function FiltersBox() {
   const handlePriceChangeCommitted = (_event: React.SyntheticEvent | Event, newValue: number | number[]) => {
     if (Array.isArray(newValue)) {
       const [minVal, maxVal] = newValue as [number, number];
-      setParam("priceMin", minVal.toString());
-      setParam("priceMax", maxVal.toString());
-      setParam("page", "1");
+      setParams({ priceMin: minVal.toString(), priceMax: maxVal.toString(), page: "1" });
     }
   };
 
   return (
-    <Box className={"flex-col p-8 h-1/3 rounded-2xl w-1/4"} sx={{ bgcolor: "background.paper" }}>
-      <Typography variant="h5" component="h2" gutterBottom>
+    <Box
+      component="aside"
+      aria-label="Filtry produktów"
+      className={"flex w-full shrink-0 flex-col p-5 sm:p-6 lg:w-72 xl:w-80"}
+      sx={(theme) => ({ ...panelSx(theme), position: { lg: "sticky" }, top: { lg: "88px" } })}>
+      <Typography component="h2" sx={groupLabelSx}>
         Kategoria
       </Typography>
       <CategoryList />
-      <Typography variant="h5" component="h2" gutterBottom>
+
+      <Box sx={{ height: "1px", my: 3, bgcolor: "divider" }} />
+
+      <Typography component="h2" sx={groupLabelSx}>
         Zakres cenowy
       </Typography>
-      <Stack spacing={2} direction="column" sx={{ mb: 2 }}>
+      <Stack spacing={1.5} direction="column">
         <Stack direction="row" justifyContent="space-between">
-          <Typography>{priceRange[0]} PLN</Typography>
-          <Typography>{priceRange[1]} PLN</Typography>
+          <Typography sx={{ fontWeight: 700, fontVariantNumeric: "tabular-nums" }}>{priceRange[0]} PLN</Typography>
+          <Typography sx={{ fontWeight: 700, fontVariantNumeric: "tabular-nums" }}>{priceRange[1]} PLN</Typography>
         </Stack>
         <Box className={"pl-2 pr-2"}>
           <Slider
@@ -60,11 +77,17 @@ function FiltersBox() {
           <Button
             onClick={() => {
               setPriceRange([0, 500]);
-              setParam("priceMin", "0");
-              setParam("priceMax", "500");
-              setParam("page", "1");
+              setParams({ priceMin: "0", priceMax: "500", page: "1" });
             }}
-            variant={"text"}>
+            variant={"text"}
+            sx={{
+              alignSelf: "flex-start",
+              borderRadius: "999px",
+              color: "text.secondary",
+              fontWeight: 700,
+              textTransform: "none",
+              "&:hover": { color: (t) => accentText(t) },
+            }}>
             Resetuj
           </Button>
         )}

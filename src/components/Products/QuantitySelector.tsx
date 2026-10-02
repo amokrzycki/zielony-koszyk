@@ -19,19 +19,17 @@ function QuantitySelector({ quantity, setQuantity }: QuantitySelectorProps) {
   };
 
   return (
-    <Box className={"flex"} id="quantity-selector" sx={{ border: "1px solid #e5e7eb" }}>
-      <IconButton onClick={() => setQuantity(Math.max(1, quantity - 1))} disabled={quantity === 1}>
-        <RemoveIcon
-          sx={{
-            color: quantity === 1 ? "action.disabled" : "primary.main",
-          }}
-        />
+    <Box
+      className={"flex items-center"}
+      sx={{ border: "1px solid", borderColor: "divider", borderRadius: "999px", overflow: "hidden" }}>
+      <IconButton
+        onClick={() => setQuantity(Math.max(1, quantity - 1))}
+        disabled={quantity === 1}
+        aria-label={"Zmniejsz ilość"}
+        sx={{ color: "primary.main", "&.Mui-disabled": { color: "action.disabled" } }}>
+        <RemoveIcon fontSize={"small"} />
       </IconButton>
-      <Box
-        sx={{
-          borderLeft: "1px solid #e5e7eb",
-          borderRight: "1px solid #e5e7eb",
-        }}>
+      <Box sx={{ borderLeft: "1px solid", borderRight: "1px solid", borderColor: "divider" }}>
         <TextField
           type="number"
           value={quantity}
@@ -57,12 +55,8 @@ function QuantitySelector({ quantity, setQuantity }: QuantitySelectorProps) {
           variant="outlined"
         />
       </Box>
-      <IconButton onClick={() => setQuantity(quantity + 1)}>
-        <AddIcon
-          sx={{
-            color: "primary.main",
-          }}
-        />
+      <IconButton onClick={() => setQuantity(quantity + 1)} aria-label={"Zwiększ ilość"} sx={{ color: "primary.main" }}>
+        <AddIcon fontSize={"small"} />
       </IconButton>
     </Box>
   );

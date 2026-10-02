@@ -7,14 +7,21 @@ interface FiltersPageProps {
 }
 
 function FiltersPagination({ totalCount }: FiltersPageProps) {
-  const { filters, setParam } = useProductFilters();
+  const { filters, setParams } = useProductFilters();
 
   const handleChange = (_event: ChangeEvent<unknown>, value: number) => {
-    setParam("page", value.toString());
+    setParams({ page: value.toString() });
   };
 
   return (
-    <Pagination count={totalCount} color="primary" page={filters.page} onChange={handleChange} hidden={!totalCount} />
+    <Pagination
+      count={totalCount}
+      color="primary"
+      page={filters.page}
+      onChange={handleChange}
+      hidden={!totalCount}
+      sx={{ "& .MuiPaginationItem-root": { borderRadius: "10px", fontWeight: 700 } }}
+    />
   );
 }
 

@@ -7,7 +7,7 @@ import { FILTER_DIRECTION_ASC } from "../constants/app.ts";
 import { convertToSearchParams } from "../helpers/convertToSearchParams.ts";
 
 const useProductFilters = (): {
-  setParam: (name: keyof ProductParams, value: string) => void;
+  setParams: (updates: Partial<Record<keyof ProductParams, string>>) => void;
   resetFilters: () => void;
   filters: ProductParams;
   changeSortBy: (newSortBy: string) => void;
@@ -40,10 +40,12 @@ const useProductFilters = (): {
 
   const initialParams = convertToSearchParams(initialProductParams);
 
-  const setParam = (name: keyof ProductParams, value: string) => {
+  const setParams = (updates: Partial<Record<keyof ProductParams, string>>) => {
     setSearchParams(
       (prev) => {
-        prev.set(name, value);
+        for (const [key, value] of Object.entries(updates)) {
+          prev.set(key, value);
+        }
         return prev;
       },
       { replace: true },
@@ -65,7 +67,7 @@ const useProductFilters = (): {
       orderBy: sortBy,
       orderDir: direction,
     },
-    setParam,
+    setParams,
     resetFilters,
     changeSortBy,
   };
