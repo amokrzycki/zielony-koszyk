@@ -80,7 +80,7 @@ function Login() {
               <Typography sx={{ mt: 2, color: "rgba(255,255,255,0.72)", lineHeight: 1.6, maxWidth: "42ch" }}>
                 {copy.body}
               </Typography>
-              <Box component="ul" sx={{ mt: 4, listStyle: "none", m: 0, p: 0, display: "grid", gap: 1.5 }}>
+              <Box component="ul" sx={{ mt: 4, listStyle: "none", p: 0, display: "grid", gap: 1.5 }}>
                 {brandPoints.map((point) => (
                   <Box component="li" key={point} sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
                     <Box

@@ -1,5 +1,14 @@
 import { useForm } from "@mantine/form";
-import { Box, Button, FormControl, FormControlLabel, FormGroup, FormHelperText, TextField } from "@mui/material";
+import {
+  Box,
+  Button,
+  FormControl,
+  FormControlLabel,
+  FormGroup,
+  FormHelperText,
+  TextField,
+  Typography,
+} from "@mui/material";
 import Checkbox from "@mui/material/Checkbox";
 import {
   validateBuildingNumber,
@@ -105,128 +114,144 @@ function RegisterForm({ setTab }: RegisterFormProps) {
 
   return (
     <form
+      noValidate
+      style={{ width: "100%" }}
       onSubmit={form.onSubmit((values) => {
         handleSubmit(values);
       })}>
-      <Box className={"flex flex-col justify-center items-center"}>
-        <Box>
-          <TextField
-            variant="outlined"
-            label="Imię"
-            required
-            placeholder={"Jan"}
-            {...form.getInputProps("firstName")}
-            error={Boolean(form.errors.firstName) && form.isTouched("firstName")}
-            helperText={form.errors.firstName}
-            sx={{ marginRight: "1em" }}
-          />
-          <TextField
-            variant="outlined"
-            label="Nazwisko"
-            required
-            placeholder={"Kowalski"}
-            {...form.getInputProps("lastName")}
-            error={Boolean(form.errors.lastName) && form.isTouched("lastName")}
-            helperText={form.errors.lastName}
-          />
-        </Box>
+      <Box
+        sx={{
+          display: "grid",
+          gridTemplateColumns: { xs: "1fr", sm: "1fr 1fr" },
+          gap: 2,
+          width: "100%",
+          textAlign: "left",
+        }}>
         <TextField
+          fullWidth
+          variant="outlined"
+          label="Imię"
+          required
+          placeholder={"Jan"}
+          {...form.getInputProps("firstName")}
+          slotProps={{ htmlInput: { autoComplete: "given-name" } }}
+          error={Boolean(form.errors.firstName)}
+          helperText={form.errors.firstName}
+        />
+        <TextField
+          fullWidth
+          variant="outlined"
+          label="Nazwisko"
+          required
+          placeholder={"Kowalski"}
+          {...form.getInputProps("lastName")}
+          slotProps={{ htmlInput: { autoComplete: "family-name" } }}
+          error={Boolean(form.errors.lastName)}
+          helperText={form.errors.lastName}
+        />
+        <TextField
+          fullWidth
           variant={"outlined"}
           label={"Email"}
           {...form.getInputProps("email")}
+          slotProps={{ htmlInput: { autoComplete: "email" } }}
           required
-          error={Boolean(form.errors.email) && form.isTouched("email")}
+          error={Boolean(form.errors.email)}
           helperText={form.errors.email}
-          sx={{ m: "1em 0", width: "300px" }}
         />
         <TextField
+          fullWidth
           variant={"outlined"}
           label={"Numer telefonu"}
+          placeholder={"+48123456789"}
           required
           {...form.getInputProps("phone")}
-          error={Boolean(form.errors.phone) && form.isTouched("phone")}
+          slotProps={{ htmlInput: { autoComplete: "tel", inputMode: "tel" } }}
+          error={Boolean(form.errors.phone)}
           helperText={form.errors.phone}
-          sx={{ width: "300px" }}
         />
         <TextField
+          fullWidth
           variant={"outlined"}
           label={"Hasło"}
           type={"password"}
           required
           {...form.getInputProps("password")}
-          error={Boolean(form.errors.password) && form.isTouched("password")}
+          slotProps={{ htmlInput: { autoComplete: "new-password" } }}
+          error={Boolean(form.errors.password)}
           helperText={form.errors.password}
-          sx={{ mt: "1em", width: "300px" }}
         />
         <TextField
+          fullWidth
           variant={"outlined"}
           label={"Potwierdź hasło"}
           type={"password"}
           required
           {...form.getInputProps("passwordConfirmation")}
-          error={Boolean(form.errors.passwordConfirmation) && form.isTouched("passwordConfirmation")}
+          slotProps={{ htmlInput: { autoComplete: "new-password" } }}
+          error={Boolean(form.errors.passwordConfirmation)}
           helperText={form.errors.passwordConfirmation}
-          sx={{ m: "1em 0", width: "300px" }}
         />
-        <Box className={"mb-4"}>
-          <TextField
-            variant="outlined"
-            label="Ulica"
-            required
-            placeholder={"ul. Przykładowa"}
-            {...form.getInputProps("street")}
-            helperText={form.errors.street}
-            error={Boolean(form.errors.street) && form.isTouched("street")}
-            sx={{ marginRight: "1em" }}
-          />
-          <TextField
-            variant="outlined"
-            label="Numer domu/budynku"
-            placeholder={"1A"}
-            required
-            {...form.getInputProps("buildingNumber")}
-            helperText={form.errors.buldingNumber}
-            error={Boolean(form.errors.buildingNumber) && form.isTouched("buildingNumber")}
-            sx={{ marginRight: "1em" }}
-          />
-          <TextField
-            variant="outlined"
-            label="Numer mieszkania"
-            placeholder={"150"}
-            {...form.getInputProps("flatNumber")}
-            helperText={form.errors.flatNumber}
-            error={Boolean(form.errors.flatNumber) && form.isTouched("flatNumber")}
-          />
-        </Box>
-        <Box className={"mb-4"}>
-          <TextField
-            variant="outlined"
-            label="Kod pocztowy"
-            placeholder={"00-000"}
-            required
-            {...form.getInputProps("zip")}
-            helperText={form.errors.zip}
-            error={Boolean(form.errors.zip) && form.isTouched("zip")}
-            sx={{ marginRight: "1em" }}
-          />
-          <TextField
-            variant="outlined"
-            label="Miejscowość"
-            placeholder={"Warszawa"}
-            required
-            {...form.getInputProps("city")}
-            helperText={form.errors.city}
-            error={Boolean(form.errors.city) && form.isTouched("city")}
-          />
-        </Box>
+        <Typography sx={{ gridColumn: "1 / -1", mt: 1, fontWeight: 700, fontSize: "0.95rem" }}>Adres</Typography>
+        <TextField
+          fullWidth
+          variant="outlined"
+          label="Ulica"
+          required
+          placeholder={"ul. Przykładowa"}
+          {...form.getInputProps("street")}
+          helperText={form.errors.street}
+          error={Boolean(form.errors.street)}
+          sx={{ gridColumn: "1 / -1" }}
+        />
+        <TextField
+          fullWidth
+          variant="outlined"
+          label="Numer domu/budynku"
+          placeholder={"1A"}
+          required
+          {...form.getInputProps("buildingNumber")}
+          helperText={form.errors.buildingNumber}
+          error={Boolean(form.errors.buildingNumber)}
+        />
+        <TextField
+          fullWidth
+          variant="outlined"
+          label="Numer mieszkania"
+          placeholder={"150"}
+          {...form.getInputProps("flatNumber")}
+          helperText={form.errors.flatNumber}
+          error={Boolean(form.errors.flatNumber)}
+        />
+        <TextField
+          fullWidth
+          variant="outlined"
+          label="Kod pocztowy"
+          placeholder={"00-000"}
+          required
+          {...form.getInputProps("zip")}
+          helperText={form.errors.zip}
+          error={Boolean(form.errors.zip)}
+        />
+        <TextField
+          fullWidth
+          variant="outlined"
+          label="Miejscowość"
+          placeholder={"Warszawa"}
+          required
+          {...form.getInputProps("city")}
+          helperText={form.errors.city}
+          error={Boolean(form.errors.city)}
+        />
         <FormControl
           required
-          error={Boolean(form.errors.termsAccepted) && form.isTouched("termsAccepted")}
+          error={Boolean(form.errors.termsAccepted)}
           component="fieldset"
-          variant={"standard"}>
+          variant={"standard"}
+          sx={{ gridColumn: "1 / -1", m: 0 }}>
           <FormGroup>
             <FormControlLabel
-              control={<Checkbox {...form.getInputProps("termsAccepted")} />}
+              control={<Checkbox {...form.getInputProps("termsAccepted", { type: "checkbox" })} />}
               label={"Akceptuję regulamin*"}
             />
           </FormGroup>
@@ -235,7 +260,8 @@ function RegisterForm({ setTab }: RegisterFormProps) {
         <Button
           type={"submit"}
           variant={"contained"}
-          sx={{ ...ctaButtonSx, mt: "1.5em", minWidth: 200 }}
+          fullWidth
+          sx={{ ...ctaButtonSx, gridColumn: "1 / -1", mt: 1, minWidth: 200 }}
           disabled={!isValid && form.isTouched()}>
           Utwórz konto
         </Button>

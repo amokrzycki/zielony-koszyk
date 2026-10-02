@@ -66,7 +66,7 @@ export function FiltersContent() {
           <Typography sx={{ fontWeight: 700, fontVariantNumeric: "tabular-nums" }}>{priceRange[0]} PLN</Typography>
           <Typography sx={{ fontWeight: 700, fontVariantNumeric: "tabular-nums" }}>{priceRange[1]} PLN</Typography>
         </Stack>
-        <Box className={"pl-2 pr-2"}>
+        <Box style={{ paddingLeft: 10, paddingRight: 10 }}>
           <Slider
             value={priceRange}
             onChange={handlePriceChange}

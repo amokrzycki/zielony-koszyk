@@ -2,14 +2,21 @@ import { createTheme } from "@mui/material/styles";
 import { plPL } from "@mui/material/locale";
 import { plPL as plPLGrid } from "@mui/x-data-grid/locales";
 
-// Tailwind's preflight sets `html { line-height: 1.5 }`. MUI's outlined-label notch is cut from
-// the label's own box, so the inherited 1.5 line-height makes the shrunken label taller than the
-// gap the fieldset reserves — the descenders ("ę") land on the solid top border. Pinning the
-// label's line-height to the font size restores the geometry MUI expects.
+// MUI centres the resting (unshrunk) label using a transform tuned for its default
+// line-height (1.4375em). Pinning the root line-height to 1 makes the label box shorter, so its
+// visual centre sits ~4px too high when the field is empty. Only the shrunk label needs a short
+// line-height: Tailwind's preflight `html { line-height: 1.5 }` would otherwise make the shrunken
+// label taller than the gap the fieldset reserves, landing its descenders ("ę") on the top border.
 const muiComponentOverrides = {
   MuiInputLabel: {
     styleOverrides: {
-      root: { lineHeight: 1 },
+      root: { "&.MuiInputLabel-shrink": { lineHeight: 1 } },
+    },
+  },
+  // Matches the 12px radius used by the redesigned search, sort and page-size fields.
+  MuiOutlinedInput: {
+    styleOverrides: {
+      root: { borderRadius: "12px" },
     },
   },
 };
