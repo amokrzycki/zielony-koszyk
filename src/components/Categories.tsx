@@ -105,7 +105,7 @@ function Categories() {
               alignItems: "flex-end",
               boxShadow: (t) =>
                 t.palette.mode === "dark" ? "0 10px 30px rgba(0,0,0,0.45)" : "0 10px 30px rgba(15,40,28,0.10)",
-              transition: "transform 400ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 400ms",
+              transition: "transform 300ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 300ms",
               "&:hover, &:focus-visible": {
                 transform: "translateY(-4px)",
                 boxShadow: (t) =>
@@ -123,7 +123,7 @@ function Categories() {
                 backgroundImage: `url(${category.image})`,
                 backgroundSize: "cover",
                 backgroundPosition: "center 42%",
-                transition: "transform 700ms cubic-bezier(0.16, 1, 0.3, 1)",
+                transition: "transform 500ms cubic-bezier(0.16, 1, 0.3, 1)",
               }}
             />
             <Box
@@ -134,7 +134,7 @@ function Categories() {
                 inset: 0,
                 background:
                   "linear-gradient(to top, rgba(4,14,9,0.92) 0%, rgba(4,14,9,0.55) 45%, rgba(4,14,9,0.2) 100%)",
-                transition: "opacity 400ms",
+                transition: "opacity 300ms",
               }}
             />
 

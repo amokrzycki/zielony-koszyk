@@ -8,10 +8,13 @@ interface AdminLoadingProps {
   compact?: boolean;
 }
 
-/** Skeletons beat a spinner here: the work surface keeps its shape while data streams in. */
+/**
+ * Skeletons beat a spinner here: the work surface keeps its shape while data streams in. `data-swap-hold`
+ * makes the enclosing SwapLayers keep the previous page height instead of dipping to the skeleton's.
+ */
 function AdminLoading({ rows = 6, compact = false }: AdminLoadingProps) {
   return (
-    <Box sx={(theme) => ({ ...panelSx(theme), overflow: "hidden", width: "100%" })}>
+    <Box data-swap-hold sx={(theme) => ({ ...panelSx(theme), overflow: "hidden", width: "100%" })}>
       <Box
         sx={{ display: "flex", alignItems: "center", gap: 2, p: 2, borderBottom: "1px solid", borderColor: "divider" }}>
         <Skeleton variant="rounded" width={120} height={28} />

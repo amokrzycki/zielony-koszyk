@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Fab, Grow } from "@mui/material";
+import { Fab, Fade } from "@mui/material";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 
 export default function GoToTop() {
@@ -22,13 +22,14 @@ export default function GoToTop() {
   }, []);
 
   const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    window.scrollTo({
+      top: 0,
+      behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth",
+    });
   };
 
-  if (!visible) return null;
-
   return (
-    <Grow in={visible} style={{ transformOrigin: "0 0 0" }} {...(visible ? { timeout: 1000 } : {})}>
+    <Fade in={visible} timeout={{ enter: 200, exit: 150 }} unmountOnExit>
       <Fab
         color={"primary"}
         className={"bottom-8 right-8"}
@@ -37,6 +38,6 @@ export default function GoToTop() {
         onClick={scrollToTop}>
         <ArrowUpwardIcon />
       </Fab>
-    </Grow>
+    </Fade>
   );
 }

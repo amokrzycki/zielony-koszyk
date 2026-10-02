@@ -2,6 +2,8 @@ import type { Theme } from "@mui/material/styles";
 
 /** Motion curve shared across the brand surfaces (header, hero, categories). */
 export const EASE = "cubic-bezier(0.16, 1, 0.3, 1)";
+/** Motion durations (ms). Mirrors --dur-* in App.css. Exits run at DUR.fast. */
+export const DUR = { fast: 150, base: 200, slow: 300, move: 400 } as const;
 
 /** Forest-green ink used by the footer, the auth brand panel and labels on the bright primary. */
 export const BRAND_INK = "#0b1410";

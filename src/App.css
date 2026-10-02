@@ -21,3 +21,68 @@ input::-webkit-inner-spin-button {
   width: 100%;
   padding: 1em;
 }
+
+/* Motion tokens. Mirror EASE / DUR in components/listingStyles.ts. */
+:root {
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --dur-fast: 150ms;
+  --dur-base: 200ms;
+  --dur-slow: 300ms;
+  --dur-move: 400ms;
+  --ease-move: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Content arriving after a load or swap. Opacity only, so layout never moves. */
+.fade-in {
+  animation: fade-in var(--dur-slow) var(--ease-out) both;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Theme switch cross-fade (see ModeProvider). */
+::view-transition-group(root) {
+  animation-duration: var(--dur-slow);
+  animation-timing-function: var(--ease-out);
+}
+
+/* Content swap (see components/common/SwapLayers.tsx). Fades are quick; the height eases on a softer curve. */
+.swap-box {
+  transition: height var(--dur-move) var(--ease-move);
+}
+
+/* Room for the loading overlay when there is no previous content to hold the height. */
+.swap-box:has([data-swap-hold]) {
+  min-height: 240px;
+}
+
+.swap-in {
+  animation: fade-in var(--dur-slow) var(--ease-out) var(--dur-fast) backwards;
+}
+
+.swap-out {
+  position: absolute;
+  inset: 0 0 auto;
+  pointer-events: none;
+  animation: swap-out var(--dur-fast) var(--ease-out) forwards;
+}
+
+@keyframes swap-out {
+  to {
+    opacity: 0;
+  }
+}

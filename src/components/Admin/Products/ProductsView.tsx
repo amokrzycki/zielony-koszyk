@@ -233,7 +233,7 @@ function ProductsView() {
       ) : isLoading ? (
         <AdminLoading rows={7} />
       ) : (
-        <Box sx={(theme) => ({ ...adminPanelSx(theme), width: "100%" })}>
+        <Box className="fade-in" sx={(theme) => ({ ...adminPanelSx(theme), width: "100%" })}>
           <DataGrid
             disableRowSelectionOnClick
             checkboxSelection

@@ -1,7 +1,8 @@
 import ProductCard from "@/components/Products/ProductCard.tsx";
 import { useGetProductsQuery } from "@/components/Products/productsApiSlice.ts";
 import { Box, Typography } from "@mui/material";
-import Loading from "@/components/common/Loading.tsx";
+import LoadingOverlay from "@/components/common/LoadingOverlay.tsx";
+import SwapLayers from "@/components/common/SwapLayers.tsx";
 import ErrorView from "@/components/common/ErrorView.tsx";
 import { useMemo } from "react";
 import type Product from "@/types/Product.ts";
@@ -23,33 +24,43 @@ function FeaturedProducts() {
   }, [products]);
 
   if (isLoading) {
-    return <Loading />;
+    return (
+      <SwapLayers id="loading" tween={false}>
+        <LoadingOverlay />
+      </SwapLayers>
+    );
   }
 
   if (isError || !products) {
-    return <ErrorView message={"Wystąpił błąd podczas pobierania polecanych produktów"} />;
+    return (
+      <SwapLayers id="error" tween={false}>
+        <ErrorView message={"Wystąpił błąd podczas pobierania polecanych produktów"} />
+      </SwapLayers>
+    );
   }
 
   return (
-    <Box component="section" sx={{ mt: { xs: 6, lg: 8 } }}>
-      <Typography
-        component="h2"
-        sx={{
-          m: 0,
-          mb: { xs: 2.5, lg: 3 },
-          fontSize: { xs: "1.5rem", sm: "1.75rem", lg: "2rem" },
-          fontWeight: 900,
-          lineHeight: 1.1,
-          letterSpacing: "-0.03em",
-        }}>
-        Polecane produkty
-      </Typography>
-      <Box sx={{ display: "flex", flexDirection: "column", gap: { xs: 2.5, lg: 3 } }}>
-        {featuredProducts.map((product) => (
-          <ProductCard key={product.product_id} product={product} />
-        ))}
+    <SwapLayers id="ready" tween={false}>
+      <Box component="section" sx={{ mt: { xs: 6, lg: 8 } }}>
+        <Typography
+          component="h2"
+          sx={{
+            m: 0,
+            mb: { xs: 2.5, lg: 3 },
+            fontSize: { xs: "1.5rem", sm: "1.75rem", lg: "2rem" },
+            fontWeight: 900,
+            lineHeight: 1.1,
+            letterSpacing: "-0.03em",
+          }}>
+          Polecane produkty
+        </Typography>
+        <Box sx={{ display: "flex", flexDirection: "column", gap: { xs: 2.5, lg: 3 } }}>
+          {featuredProducts.map((product) => (
+            <ProductCard key={product.product_id} product={product} />
+          ))}
+        </Box>
       </Box>
-    </Box>
+    </SwapLayers>
   );
 }
 

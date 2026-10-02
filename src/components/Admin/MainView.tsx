@@ -3,7 +3,8 @@ import { Avatar, Box, Button, Drawer, IconButton, Typography } from "@mui/materi
 import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
 import CheckRounded from "@mui/icons-material/CheckRounded";
-import { Outlet, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useOutlet } from "react-router-dom";
+import SwapLayers from "../common/SwapLayers.tsx";
 import Navigation from "./Navigation.tsx";
 import { useAppSelector } from "@/hooks/hooks.ts";
 import type { RootState } from "@/store/store.ts";
@@ -26,6 +27,13 @@ const shellSx = {
   pt: { xs: 3, md: 5 },
   pb: { xs: 8, md: 12 },
 } as const;
+
+/** Subpage swap: the work surface fades and eases between page heights instead of jumping. */
+function AdminOutlet() {
+  const outlet = useOutlet();
+  const { pathname } = useLocation();
+  return <SwapLayers id={pathname}>{outlet}</SwapLayers>;
+}
 
 function AdminAccountBlock({ user, onNavigate }: { user: User; onNavigate?: () => void }) {
   const navigate = useNavigate();
@@ -251,7 +259,7 @@ function MainView() {
               <Box sx={{ mb: 2.5 }}>
                 <AutoBreadcrumbs />
               </Box>
-              <Outlet />
+              <AdminOutlet />
             </Box>
           </Box>
         </Box>
