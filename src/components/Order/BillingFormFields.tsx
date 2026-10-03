@@ -3,6 +3,7 @@ import type { UseFormReturnType } from "@mantine/form";
 import type { Address } from "@/types/Address";
 import { CustomerType } from "@/enums/CustomerType";
 import CustomerTypeRadios from "@/components/common/CustomerTypeRadios";
+import Reveal from "@/components/common/Reveal.tsx";
 import type { IFormValues } from "@/components/Order/OrderDetails.tsx";
 
 interface Props {
@@ -32,52 +33,56 @@ export default function BillingFormFields({ form, setCustomerType }: Props) {
       <CustomerTypeRadios customerType={customerType} setCustomerType={handleCustomerTypeChange} />
 
       {customerType === CustomerType.PERSON && (
-        <Box sx={{ ...fieldGrid, gridTemplateColumns: { xs: "1fr", sm: "1fr 1fr" } }}>
-          <TextField
-            fullWidth
-            label="Imię"
-            required
-            placeholder="Jan"
-            autoComplete="given-name"
-            {...getBillingProps("first_name")}
-            helperText={form.errors["billing.first_name"]}
-            error={Boolean(form.errors["billing.first_name"]) && form.isTouched("billing.first_name")}
-          />
-          <TextField
-            fullWidth
-            label="Nazwisko"
-            required
-            placeholder="Kowalski"
-            autoComplete="family-name"
-            {...getBillingProps("last_name")}
-            helperText={form.errors["billing.last_name"]}
-            error={Boolean(form.errors["billing.last_name"]) && form.isTouched("billing.last_name")}
-          />
-        </Box>
+        <Reveal>
+          <Box sx={{ ...fieldGrid, gridTemplateColumns: { xs: "1fr", sm: "1fr 1fr" } }}>
+            <TextField
+              fullWidth
+              label="Imię"
+              required
+              placeholder="Jan"
+              autoComplete="given-name"
+              {...getBillingProps("first_name")}
+              helperText={form.errors["billing.first_name"]}
+              error={Boolean(form.errors["billing.first_name"]) && form.isTouched("billing.first_name")}
+            />
+            <TextField
+              fullWidth
+              label="Nazwisko"
+              required
+              placeholder="Kowalski"
+              autoComplete="family-name"
+              {...getBillingProps("last_name")}
+              helperText={form.errors["billing.last_name"]}
+              error={Boolean(form.errors["billing.last_name"]) && form.isTouched("billing.last_name")}
+            />
+          </Box>
+        </Reveal>
       )}
 
       {customerType === CustomerType.COMPANY && (
-        <Box sx={{ ...fieldGrid, gridTemplateColumns: { xs: "1fr", sm: "1fr 1fr" } }}>
-          <TextField
-            fullWidth
-            label="Nazwa firmy"
-            required
-            placeholder="Firma XYZ"
-            autoComplete="organization"
-            {...getBillingProps("company_name")}
-            helperText={form.errors["billing.company_name"]}
-            error={Boolean(form.errors["billing.company_name"]) && form.isTouched("billing.company_name")}
-          />
-          <TextField
-            fullWidth
-            label="NIP"
-            required
-            placeholder="1234567890"
-            {...getBillingProps("nip")}
-            helperText={form.errors["billing.nip"]}
-            error={Boolean(form.errors["billing.nip"]) && form.isTouched("billing.nip")}
-          />
-        </Box>
+        <Reveal>
+          <Box sx={{ ...fieldGrid, gridTemplateColumns: { xs: "1fr", sm: "1fr 1fr" } }}>
+            <TextField
+              fullWidth
+              label="Nazwa firmy"
+              required
+              placeholder="Firma XYZ"
+              autoComplete="organization"
+              {...getBillingProps("company_name")}
+              helperText={form.errors["billing.company_name"]}
+              error={Boolean(form.errors["billing.company_name"]) && form.isTouched("billing.company_name")}
+            />
+            <TextField
+              fullWidth
+              label="NIP"
+              required
+              placeholder="1234567890"
+              {...getBillingProps("nip")}
+              helperText={form.errors["billing.nip"]}
+              error={Boolean(form.errors["billing.nip"]) && form.isTouched("billing.nip")}
+            />
+          </Box>
+        </Reveal>
       )}
 
       <TextField

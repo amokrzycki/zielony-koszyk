@@ -1,3 +1,4 @@
+import { type MouseEvent, useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import type { RootState } from "@/store/store.ts";
 import { calculateTotalAmount, changeQuantity, clearCart, removeItem } from "./cartSlice.ts";
@@ -15,14 +16,70 @@ import { EASE, accentText, ctaButtonSx, panelSx, tone } from "@/components/listi
 import SwapLayers from "@/components/common/SwapLayers.tsx";
 
 const DELIVERY_FEE = 10;
+/** Press-and-hold time for clearing the whole cart. Quick clicks do not clear. */
+const HOLD_TO_CLEAR_MS = 700;
 
 const amountSx = { fontWeight: 700, fontVariantNumeric: "tabular-nums" };
+const prefersReducedMotion = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 function Cart() {
   const navigate = useNavigate();
   const cart = useAppSelector((state: RootState) => state.cart.items);
   const user: User = useAppSelector((state: RootState) => state.auth.user);
   const dispatch = useDispatch();
+  const holdTimer = useRef<ReturnType<typeof setTimeout>>(undefined);
+  const [holdingClear, setHoldingClear] = useState(false);
+
+  useEffect(() => () => clearTimeout(holdTimer.current), []);
+
+  const startClearHold = () => {
+    if (prefersReducedMotion()) {
+      dispatch(clearCart());
+      return;
+    }
+    setHoldingClear(true);
+    holdTimer.current = setTimeout(() => {
+      setHoldingClear(false);
+      dispatch(clearCart());
+    }, HOLD_TO_CLEAR_MS);
+  };
+
+  const cancelClearHold = () => {
+    clearTimeout(holdTimer.current);
+    setHoldingClear(false);
+  };
+
+  // Authored moment: the row collapses, then leaves the list, so removing an item does not snap the summary.
+  const handleRemove = (event: MouseEvent<HTMLButtonElement>, productId: number) => {
+    const row = event.currentTarget.closest("li");
+    if (!row || prefersReducedMotion()) {
+      dispatch(removeItem(productId));
+      return;
+    }
+    const styles = window.getComputedStyle(row);
+    row.style.overflow = "hidden";
+    row.animate(
+      [
+        {
+          height: `${row.getBoundingClientRect().height}px`,
+          paddingTop: styles.paddingTop,
+          paddingBottom: styles.paddingBottom,
+          borderBottomWidth: styles.borderBottomWidth,
+          opacity: 1,
+          transform: "translateX(0)",
+        },
+        {
+          height: "0px",
+          paddingTop: "0px",
+          paddingBottom: "0px",
+          borderBottomWidth: "0px",
+          opacity: 0,
+          transform: "translateX(-6px)",
+        },
+      ],
+      { duration: 220, easing: EASE, fill: "forwards" },
+    ).onfinish = () => dispatch(removeItem(productId));
+  };
 
   const subtotal = cart.reduce((acc: number, item: CartItem) => acc + item.quantity * item.price, 0);
   const itemCount = cart.reduce((acc: number, item: CartItem) => acc + item.quantity, 0);
@@ -85,9 +142,18 @@ function Cart() {
             {cart.length > 0 && (
               <Button
                 variant="outlined"
-                onClick={() => dispatch(clearCart())}
-                startIcon={<DeleteIcon fontSize="small" />}
+                onPointerDown={startClearHold}
+                onPointerUp={cancelClearHold}
+                onPointerLeave={cancelClearHold}
+                onPointerCancel={cancelClearHold}
+                onClick={(event) => {
+                  // Keyboard and assistive-tech activation has no pointer hold; clear at once.
+                  if (event.detail === 0) dispatch(clearCart());
+                }}
+                aria-label="Wyczyść koszyk — przytrzymaj, aby potwierdzić"
                 sx={{
+                  position: "relative",
+                  overflow: "hidden",
                   borderRadius: "999px",
                   px: 2.25,
                   fontWeight: 700,
@@ -98,7 +164,19 @@ function Cart() {
                   "&:hover": { color: "primary.main", borderColor: "primary.main", backgroundColor: "transparent" },
                   "&:focus-visible": { outline: "2px solid", outlineColor: "primary.main", outlineOffset: 2 },
                 }}>
-                Wyczyść koszyk
+                <Box
+                  className="hold-fill"
+                  sx={{
+                    transform: holdingClear ? "scaleX(1)" : "scaleX(0)",
+                    transition: holdingClear ? `transform ${HOLD_TO_CLEAR_MS}ms linear` : `transform 200ms ${EASE}`,
+                  }}
+                />
+                <Box
+                  component="span"
+                  sx={{ position: "relative", zIndex: 1, display: "inline-flex", alignItems: "center", gap: 1 }}>
+                  <DeleteIcon fontSize="small" />
+                  {holdingClear ? "Przytrzymaj…" : "Wyczyść koszyk"}
+                </Box>
               </Button>
             )}
           </Box>
@@ -216,7 +294,7 @@ function Cart() {
 
                       <IconButton
                         aria-label={`Usuń ${item.name} z koszyka`}
-                        onClick={() => dispatch(removeItem(item.productId))}
+                        onClick={(event) => handleRemove(event, item.productId)}
                         size="small"
                         sx={{
                           color: "text.secondary",

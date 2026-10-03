@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Box, Button, Typography } from "@mui/material";
 import SearchOffRoundedIcon from "@mui/icons-material/SearchOffRounded";
 import ProductCard from "./ProductCard.tsx";
@@ -27,6 +27,14 @@ function Products() {
   const totalCount = data?.totalCount;
   const shownCount = data ? Math.min((data.currentPage - 1) * data.pageSize + products.length, data.totalCount) : 0;
   const activeFilterCount = getActiveFilterChips(filters).length;
+
+  // Bump on every fresh result set, so a page or sort change cross-fades through SwapLayers instead of
+  // hard-swapping the cards. Keyed off `data` (not `filters`) so the outgoing page stays put until its
+  // replacement has actually arrived.
+  const [swapKey, setSwapKey] = useState(0);
+  useEffect(() => {
+    if (data) setSwapKey((key) => key + 1);
+  }, [data]);
 
   if (error) {
     return (
@@ -77,7 +85,7 @@ function Products() {
                 opacity: isFetching && !isLoading ? 0.55 : 1,
                 transition: `opacity ${DUR.base}ms ${EASE}`,
               })}>
-              <SwapLayers id={isLoading ? "loading" : "ready"} tween={false}>
+              <SwapLayers id={isLoading ? "loading" : `ready-${swapKey}`} tween={false}>
                 {isLoading ? (
                   <LoadingOverlay />
                 ) : (

@@ -90,3 +90,50 @@ input::-webkit-inner-spin-button {
     opacity: 0;
   }
 }
+
+/* Conditionally rendered blocks grow from zero height and fade, instead of popping the layout.
+   See components/common/Reveal.tsx. */
+.reveal {
+  display: grid;
+  grid-template-rows: 1fr;
+  opacity: 1;
+  transition:
+    grid-template-rows var(--dur-base) var(--ease-out),
+    opacity var(--dur-base) var(--ease-out);
+}
+
+.reveal > * {
+  min-height: 0;
+  overflow: hidden;
+}
+
+@starting-style {
+  .reveal {
+    grid-template-rows: 0fr;
+    opacity: 0;
+  }
+}
+
+/* Filter chips arriving after a filter change. Keyframes, not a transition, so the emotion-injected
+   Chip styles cannot override it. */
+.chip-pop {
+  animation: chip-pop var(--dur-fast) var(--ease-out) both;
+}
+
+@keyframes chip-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.94);
+  }
+}
+
+/* Hold-to-confirm fill overlay (see Cart's "Wyczyść koszyk"). The component owns transform + transition. */
+.hold-fill {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: rgba(0, 206, 124, 0.18);
+  transform: scaleX(0);
+  transform-origin: left center;
+  pointer-events: none;
+}
