@@ -147,8 +147,7 @@ function Login() {
               <Tab label="Logowanie" disableRipple />
               <Tab label="Nowe konto" disableRipple />
             </Tabs>
-            {/* Both forms stay mounted; the active row grows to 1fr while the other collapses to 0fr, so the card
-                height tweens instead of jumping. `inert` keeps the hidden form out of focus and the a11y tree. */}
+            {/* Both forms stay mounted; the inactive row collapses to 0fr and is inert. */}
             {[<LoginForm key="login" />, <RegisterForm key="register" setTab={setTab} />].map((form, index) => {
               const active = tab === index;
               return (

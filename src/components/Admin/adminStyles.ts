@@ -4,12 +4,6 @@ import type { SxProps } from "@mui/material";
 import { EASE, panelSx, tone } from "@/components/listingStyles.ts";
 import { OrderStatuses } from "@/enums/OrderStatuses.ts";
 
-/**
- * The admin console speaks the storefront's language, but as a work surface: the same
- * pills, 24px panels, hairlines and Lato weights, with green reserved for actions and
- * live states. Everything here is admin-only, so the storefront is left untouched.
- */
-
 /** Compiled once: the DataGrid sx follows the MUI v8 callback-theme convention. */
 export const adminGridSx: SxProps<Theme> = (theme) => ({
   border: 0,
@@ -74,10 +68,6 @@ export const moneyCellSx = {
   fontVariantNumeric: "tabular-nums",
 } as const;
 
-/**
- * IDs are machine values, not data: keep them quiet and tabular so the eye skips them.
- * Lato stays the single family — no second face, per the design system's one-family rule.
- */
 export const monoCellSx = {
   fontSize: "0.82rem",
   color: "text.secondary",
@@ -99,11 +89,6 @@ const PILL_BASE = {
   whiteSpace: "nowrap",
 } as const;
 
-/**
- * Order status → brand pill. Green marks orders moving forward, a neutral ink marks
- * ones waiting on the customer, and a finished order greys out — one semantic hue
- * reused across the whole console, never the rainbow of a status palette.
- */
 export function orderStatusChipSx(theme: Theme, status: string): SystemStyleObject<Theme> {
   const toneFor = (color: string, alpha: number) => {
     const rgb = color.replace("#", "");
@@ -129,7 +114,7 @@ export function orderStatusChipSx(theme: Theme, status: string): SystemStyleObje
         borderColor: theme.palette.divider,
       };
     default:
-      // Waiting on the customer to pay or confirm — neutral ink, not a forward signal.
+      // Waiting on the customer: neutral ink, not a forward signal.
       return {
         ...PILL_BASE,
         color: "text.primary",

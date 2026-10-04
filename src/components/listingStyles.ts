@@ -12,10 +12,7 @@ export const BRAND_INK = "#0b1410";
 export const tone = (theme: Theme, alpha: number) =>
   theme.palette.mode === "dark" ? `rgba(0, 206, 124, ${alpha + 0.02})` : `rgba(0, 206, 124, ${alpha})`;
 
-/**
- * Green for small text sitting on a light surface. Brand green (#00ce7c) is ~2:1 on white, so
- * light mode drops to the darker brand tone (#007d4e, ~5.2:1) to clear WCAG AA.
- */
+/** Darker green for small text on light surfaces: brand #00ce7c is ~2:1 on white, this clears WCAG AA. */
 export const accentText = (theme: Theme) => (theme.palette.mode === "dark" ? theme.palette.primary.main : "#007d4e");
 
 /** Bordered, rounded surface used by the listing toolbar, sidebar and product rows. */

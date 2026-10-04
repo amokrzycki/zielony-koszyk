@@ -9,10 +9,7 @@ export const HEADER_SHADOW = "0 1px 2px rgba(15, 23, 20, 0.05), 0 14px 30px -24p
 const tint = (theme: Theme, alpha: number) =>
   theme.palette.mode === "dark" ? `rgba(0, 206, 124, ${alpha + 0.02})` : `rgba(0, 206, 124, ${alpha})`;
 
-/**
- * Pill shared by every interactive element in the bar: nav links, cart, account, theme toggle.
- * `.active` is set by react-router's NavLink.
- */
+/** Pill shared by every interactive element in the bar; `.active` is set by NavLink. */
 export const navPillSx = (theme: Theme) => ({
   gap: 1,
   px: 1.75,

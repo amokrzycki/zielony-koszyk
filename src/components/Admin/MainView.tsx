@@ -227,13 +227,11 @@ function MainView() {
           overflow: "hidden",
         })}>
         <Box sx={{ display: "grid", gridTemplateColumns: { xs: "1fr", md: `${RAIL_WIDTH}px 1fr` } }}>
-          {/* Desktop rail — forest ink, brand lockup and the account foot. */}
           <Box sx={{ display: { xs: "none", md: "block" }, minHeight: 640 }}>
             <RailBody user={user} />
           </Box>
 
           <Box sx={{ minWidth: 0, display: "flex", flexDirection: "column" }}>
-            {/* Mobile bar sits above the content only below md. */}
             <Box
               sx={{
                 display: { xs: "flex", md: "none" },
@@ -265,7 +263,6 @@ function MainView() {
         </Box>
       </Box>
 
-      {/* Phone drawer reuses the rail rows; drawer paper is overridden to the brand ink. */}
       <Drawer
         id="admin-drawer"
         anchor="left"

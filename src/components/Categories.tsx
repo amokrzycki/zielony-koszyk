@@ -35,8 +35,7 @@ const categories = [
   },
 ];
 
-// ponytail: hand-tuned column spans (first card runs wide) instead of a nesting layout engine.
-// If categories ever become dynamic, promote these to a data field on each entry.
+// Column spans match categories array order.
 const gridArea = [
   { sm: "span 2", lg: "span 3" },
   { sm: "span 2", lg: "span 3" },

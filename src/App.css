@@ -91,8 +91,7 @@ input::-webkit-inner-spin-button {
   }
 }
 
-/* Conditionally rendered blocks grow from zero height and fade, instead of popping the layout.
-   See components/common/Reveal.tsx. */
+/* Conditionally rendered blocks grow from zero height and fade; see components/common/Reveal.tsx. */
 .reveal {
   display: grid;
   grid-template-rows: 1fr;
@@ -114,8 +113,7 @@ input::-webkit-inner-spin-button {
   }
 }
 
-/* Filter chips arriving after a filter change. Keyframes, not a transition, so the emotion-injected
-   Chip styles cannot override it. */
+/* Filter chips on a filter change; keyframes so emotion's Chip styles cannot override it. */
 .chip-pop {
   animation: chip-pop var(--dur-fast) var(--ease-out) both;
 }

@@ -1,9 +1,6 @@
 import { Box, CircularProgress } from "@mui/material";
 
-/**
- * Spinner that floats over the enclosing SwapLayers box instead of occupying layout, so the panel keeps
- * its height while data loads. Pinned near the top, not centred: a held page can be thousands of px tall. `data-swap-hold` tells SwapLayers not to resize to this (empty) layer.
- */
+/** Spinner that floats over the SwapLayers box, pinned top; `data-swap-hold` keeps the panel height. */
 function LoadingOverlay() {
   return (
     <Box

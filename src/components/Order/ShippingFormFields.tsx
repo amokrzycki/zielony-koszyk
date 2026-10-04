@@ -30,7 +30,6 @@ export default function ShippingFormFields({ form, setCustomerType }: Props) {
         Dane do wysyłki
       </Typography>
 
-      {/* Radio: osoba prywatna/firma */}
       <CustomerTypeRadios customerType={customerType} setCustomerType={handleCustomerTypeChange} />
 
       {customerType === CustomerType.PERSON && (
@@ -111,7 +110,6 @@ export default function ShippingFormFields({ form, setCustomerType }: Props) {
         />
       </Box>
 
-      {/* Ulica, numer budynku i mieszkania */}
       <Box sx={{ ...fieldGrid, gridTemplateColumns: { xs: "1fr", sm: "2fr 1fr 1fr" } }}>
         <TextField
           fullWidth

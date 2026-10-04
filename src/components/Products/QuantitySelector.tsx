@@ -24,7 +24,6 @@ function QuantitySelector({ quantity, setQuantity }: QuantitySelectorProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const prevQuantity = useRef(quantity);
 
-  // Authored moment: the value settles in from the direction it moved.
   useEffect(() => {
     if (prevQuantity.current === quantity) return;
     const direction = quantity > prevQuantity.current ? 1 : -1;

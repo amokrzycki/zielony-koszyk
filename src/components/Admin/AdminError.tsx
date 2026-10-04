@@ -10,7 +10,6 @@ interface AdminErrorProps {
   onRetry?: () => void;
 }
 
-/** A quiet failure surface: hairline panel, one clear line, one recovery action. No red h3. */
 function AdminError({ message, hint, onRetry }: AdminErrorProps) {
   return (
     <Box

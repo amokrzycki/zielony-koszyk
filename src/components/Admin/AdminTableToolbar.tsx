@@ -4,18 +4,12 @@ import DeleteOutline from "@mui/icons-material/DeleteOutline";
 import { GridToolbarContainer, GridToolbarQuickFilter } from "@mui/x-data-grid";
 
 interface AdminTableToolbarProps {
-  /** Shown only once rows are selected — destructive never sits in the toolbar idly. */
   selectedCount?: number;
   onDeleteSelected?: () => void;
   addAction?: { label: string; icon?: ReactNode; onClick: () => void };
   extra?: ReactNode;
 }
 
-/**
- * The console's table toolbar: optional "add" action first, a destructive button that
- * appears with selection, then the quick filter pushed to the end. The quick filter must
- * sit inside MUI's GridToolbarContainer, so a full-width Box carries the layout.
- */
 function AdminTableToolbar({ selectedCount = 0, onDeleteSelected, addAction, extra }: AdminTableToolbarProps) {
   return (
     <GridToolbarContainer>

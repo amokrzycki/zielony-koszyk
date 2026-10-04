@@ -58,11 +58,6 @@ const railRowSx = (theme: Theme) => ({
   "&.active:hover": { backgroundColor: "rgba(0,206,124,0.22)" },
 });
 
-/**
- * The admin navigation. Live count badges are deliberately absent — they would need new
- * queries and the brief forbids invented numbers. On desktop it is the rail body; on
- * phones the same rows render inside the shell's drawer.
- */
 function Navigation({ onNavigate }: { onNavigate?: () => void }) {
   const navigate = useNavigate();
   const { pathname } = useLocation();

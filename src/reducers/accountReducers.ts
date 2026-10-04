@@ -46,7 +46,7 @@ export const accountReducers = {
       address.address_id === action.payload.address_id ? action.payload : address,
     );
 
-    // User data is now kept only in Redux state (cleared on logout and page refresh)
+    // User data is now kept only in Redux state (cleared on logout and page refresh).
   },
   updateUserDetails(state: AccountState, action: PayloadAction<Partial<User>>) {
     state.user = { ...state.user, ...action.payload };

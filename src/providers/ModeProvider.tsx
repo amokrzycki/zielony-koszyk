@@ -7,11 +7,10 @@ import { flushSync } from "react-dom";
 const ModeContext = createContext({
   mode: "light",
   toggleMode: () => {
-    //
+    // Fallback; ModeProvider supplies the real toggle.
   },
 });
 
-/* eslint-disable */
 export const useMode = () => useContext(ModeContext);
 
 export const ModeProvider = ({ children }: { children: ReactNode }) => {
@@ -26,7 +25,7 @@ export const ModeProvider = ({ children }: { children: ReactNode }) => {
 
   const toggleMode = () => {
     const newMode = mode === "light" ? "dark" : "light";
-    // Cross-fade the whole page through the View Transitions API (no-op fallback: instant swap).
+    // Cross-fade via the View Transitions API; falls back to an instant swap.
     if (!document.startViewTransition || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       setMode(newMode);
       return;

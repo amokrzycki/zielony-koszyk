@@ -97,7 +97,6 @@ export default function BillingFormFields({ form, setCustomerType }: Props) {
         error={Boolean(form.errors["billing.phone"]) && form.isTouched("billing.phone")}
       />
 
-      {/* Ulica, numer budynku i mieszkania */}
       <Box sx={{ ...fieldGrid, gridTemplateColumns: { xs: "1fr", sm: "2fr 1fr 1fr" } }}>
         <TextField
           fullWidth

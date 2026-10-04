@@ -83,7 +83,6 @@ function AddOrderItemsDataGrid({ orderId, handleClose }: AddOrderItemsDataGridPr
       quantity: 1,
     })) ?? [];
 
-  // Authored moment: a removed line fades out before it leaves the picker.
   const handleRemoveItem = (event: MouseEvent<HTMLButtonElement>, productId: number) => {
     const row = event.currentTarget.parentElement;
     if (!row || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {

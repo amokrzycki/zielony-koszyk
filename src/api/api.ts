@@ -20,7 +20,6 @@ const baseQueryWithReauth: BaseQueryFn = async (args, api, extraOptions) => {
     },
   })(args, api, extraOptions);
 
-  // Handle 401 errors with token refresh
   const url = typeof args === "string" ? args : args.url;
   if (result.error && result.error.status === 401 && !url.startsWith("auth/")) {
     if (!isRefreshing) {
@@ -54,7 +53,6 @@ const baseQueryWithReauth: BaseQueryFn = async (args, api, extraOptions) => {
 
       const token = (api.getState() as RootState).auth.token;
       if (token) {
-        // Retry original request with refreshed token
         result = await fetchBaseQuery({
           baseUrl: API_URL,
           credentials: "include",

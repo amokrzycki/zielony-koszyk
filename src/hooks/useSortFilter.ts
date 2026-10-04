@@ -14,7 +14,6 @@ const useSortFilter = (
   const direction = (searchParams.get(sortDirectionParamName) as SortDirection) ?? sortDirectionInitialValue;
   const sortBy = searchParams.get(sortByParamName) ?? sortByInitialValue;
 
-  // set initial Value
   useEffect(() => {
     if (!searchParams || searchParams.size === 0) {
       setSearchParams(

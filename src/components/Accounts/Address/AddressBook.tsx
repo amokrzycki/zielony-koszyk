@@ -18,7 +18,6 @@ import { useEffect } from "react";
 import { updateUserDetails } from "@/components/Accounts/accountSlice.ts";
 import { accentText, ctaButtonSx, sectionHeadingSx, tone } from "@/components/listingStyles.ts";
 
-// ponytail: local section header — only the two address sections use it, not worth a shared component yet.
 function AddressSection({ icon, title, children }: { icon: ReactNode; title: string; children: ReactNode }) {
   return (
     <Box component="section" sx={{ mt: { xs: 4, md: 5 } }}>

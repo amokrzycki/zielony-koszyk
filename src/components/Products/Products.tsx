@@ -28,9 +28,7 @@ function Products() {
   const shownCount = data ? Math.min((data.currentPage - 1) * data.pageSize + products.length, data.totalCount) : 0;
   const activeFilterCount = getActiveFilterChips(filters).length;
 
-  // Bump on every fresh result set, so a page or sort change cross-fades through SwapLayers instead of
-  // hard-swapping the cards. Keyed off `data` (not `filters`) so the outgoing page stays put until its
-  // replacement has actually arrived.
+  // Cross-fade each fresh result set through SwapLayers; keyed off `data` so the old page stays until the new arrives.
   const [swapKey, setSwapKey] = useState(0);
   useEffect(() => {
     if (data) setSwapKey((key) => key + 1);
@@ -76,8 +74,6 @@ function Products() {
           <Box className="flex min-w-0 w-full flex-col gap-4">
             <FiltersBar onOpenFilters={() => setFiltersOpen(true)} activeFilterCount={activeFilterCount} />
             <ActiveFilters />
-            {/* One constant panel: the spinner floats over it and the list fades in, so nothing blinks or swaps out.
-                Later pages dim the current list instead (isFetching). */}
             <Box
               aria-busy={isFetching}
               sx={(t) => ({

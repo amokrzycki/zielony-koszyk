@@ -13,11 +13,6 @@ interface AdminModalProps {
   footer?: ReactNode;
 }
 
-/**
- * The one modal shape for the console: warm paper, 24px, hairline border, soft panel
- * shadow, a heavy title and a labelled close. MUI's Modal owns focus trapping, Escape
- * and the backdrop so the panel only has to carry the visual language.
- */
 function AdminModal({ open, onClose, title, subtitle, children, maxWidth = 480, footer }: AdminModalProps) {
   return (
     <Modal

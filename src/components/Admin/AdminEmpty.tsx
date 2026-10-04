@@ -9,7 +9,6 @@ interface AdminEmptyProps {
   action?: ReactNode;
 }
 
-/** A blank table should teach, not just sit empty: medallion, plain heading, one next step. */
 function AdminEmpty({ icon, title, hint, action }: AdminEmptyProps) {
   return (
     <Box

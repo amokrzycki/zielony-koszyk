@@ -49,7 +49,7 @@ function Cart() {
     setHoldingClear(false);
   };
 
-  // Authored moment: the row collapses, then leaves the list, so removing an item does not snap the summary.
+  // Row collapses then leaves, so removing an item does not snap the summary.
   const handleRemove = (event: MouseEvent<HTMLButtonElement>, productId: number) => {
     const row = event.currentTarget.closest("li");
     if (!row || prefersReducedMotion()) {
