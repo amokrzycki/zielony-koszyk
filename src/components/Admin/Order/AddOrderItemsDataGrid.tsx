@@ -7,10 +7,11 @@ import AddIcon from "@mui/icons-material/Add";
 import DeleteOutline from "@mui/icons-material/DeleteOutline";
 import { useCreateOrderItemsMutation } from "../../Order/orderItemsApiSlice.ts";
 import type { OrderItemCreate } from "@/types/OrderItemCreate.ts";
-import { useState } from "react";
+import { type MouseEvent, useState } from "react";
 import toast from "react-hot-toast";
+import Reveal from "@/components/common/Reveal.tsx";
 import { adminGridSx, adminPanelSx, moneyCellSx } from "../adminStyles.ts";
-import { accentText, tone } from "@/components/listingStyles.ts";
+import { EASE, accentText, tone } from "@/components/listingStyles.ts";
 
 interface AddOrderItemsDataGridProps {
   orderId: number;
@@ -82,6 +83,21 @@ function AddOrderItemsDataGrid({ orderId, handleClose }: AddOrderItemsDataGridPr
       quantity: 1,
     })) ?? [];
 
+  const handleRemoveItem = (event: MouseEvent<HTMLButtonElement>, productId: number) => {
+    const row = event.currentTarget.parentElement;
+    if (!row || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setOrderItems((items) => items.filter((item) => item.product_id !== productId));
+      return;
+    }
+    row.animate(
+      [
+        { opacity: 1, transform: "translateX(0)" },
+        { opacity: 0, transform: "translateX(-6px)" },
+      ],
+      { duration: 120, easing: EASE, fill: "forwards" },
+    ).onfinish = () => setOrderItems((items) => items.filter((item) => item.product_id !== productId));
+  };
+
   const handleAddProducts = () => {
     toast
       .promise(createOrderItems(orderItems).unwrap(), {
@@ -102,35 +118,37 @@ function AddOrderItemsDataGrid({ orderId, handleClose }: AddOrderItemsDataGridPr
   return (
     <Box sx={{ display: "flex", flexDirection: "column", gap: 2.5 }}>
       {orderItems.length > 0 && (
-        <Box
-          sx={(theme) => ({
-            border: "1px solid",
-            borderColor: "divider",
-            borderRadius: "16px",
-            bgcolor: tone(theme, 0.05),
-            p: 2,
-          })}>
-          <Typography sx={{ fontWeight: 800, fontSize: "0.95rem", mb: 1 }}>
-            Wybrane produkty ({orderItems.length})
-          </Typography>
-          <Box sx={{ display: "flex", flexDirection: "column", gap: 0.75 }}>
-            {orderItems.map((orderItem) => (
-              <Box key={orderItem.product_id} sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
-                <Typography sx={{ flex: 1, fontSize: "0.9rem" }}>
-                  {orderItem.product_name} · {orderItem.quantity} szt.
-                </Typography>
-                <Button
-                  size="small"
-                  color="error"
-                  startIcon={<DeleteOutline />}
-                  onClick={() => setOrderItems(orderItems.filter((item) => item.product_id !== orderItem.product_id))}
-                  sx={{ borderRadius: "999px", fontWeight: 700, fontSize: "0.8rem" }}>
-                  Usuń
-                </Button>
-              </Box>
-            ))}
+        <Reveal>
+          <Box
+            sx={(theme) => ({
+              border: "1px solid",
+              borderColor: "divider",
+              borderRadius: "16px",
+              bgcolor: tone(theme, 0.05),
+              p: 2,
+            })}>
+            <Typography sx={{ fontWeight: 800, fontSize: "0.95rem", mb: 1 }}>
+              Wybrane produkty ({orderItems.length})
+            </Typography>
+            <Box sx={{ display: "flex", flexDirection: "column", gap: 0.75 }}>
+              {orderItems.map((orderItem) => (
+                <Box key={orderItem.product_id} sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
+                  <Typography sx={{ flex: 1, fontSize: "0.9rem" }}>
+                    {orderItem.product_name} · {orderItem.quantity} szt.
+                  </Typography>
+                  <Button
+                    size="small"
+                    color="error"
+                    startIcon={<DeleteOutline />}
+                    onClick={(event) => handleRemoveItem(event, orderItem.product_id)}
+                    sx={{ borderRadius: "999px", fontWeight: 700, fontSize: "0.8rem" }}>
+                    Usuń
+                  </Button>
+                </Box>
+              ))}
+            </Box>
           </Box>
-        </Box>
+        </Reveal>
       )}
 
       <Box sx={(theme) => ({ ...adminPanelSx(theme), width: "100%" })}>

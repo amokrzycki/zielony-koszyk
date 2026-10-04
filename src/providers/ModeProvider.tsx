@@ -2,15 +2,15 @@ import { createContext, useContext, useState, type ReactNode, useEffect } from "
 import { ThemeProvider, CssBaseline } from "@mui/material";
 import { darkTheme, lightTheme } from "../../theme.ts";
 import { MantineProvider } from "@mantine/core";
+import { flushSync } from "react-dom";
 
 const ModeContext = createContext({
   mode: "light",
   toggleMode: () => {
-    //
+    // Fallback; ModeProvider supplies the real toggle.
   },
 });
 
-/* eslint-disable */
 export const useMode = () => useContext(ModeContext);
 
 export const ModeProvider = ({ children }: { children: ReactNode }) => {
@@ -25,7 +25,12 @@ export const ModeProvider = ({ children }: { children: ReactNode }) => {
 
   const toggleMode = () => {
     const newMode = mode === "light" ? "dark" : "light";
-    setMode(newMode);
+    // Cross-fade via the View Transitions API; falls back to an instant swap.
+    if (!document.startViewTransition || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setMode(newMode);
+      return;
+    }
+    document.startViewTransition(() => flushSync(() => setMode(newMode)));
   };
 
   return (

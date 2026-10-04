@@ -2,6 +2,7 @@ import { Box, TextField, Typography } from "@mui/material";
 import type { UseFormReturnType } from "@mantine/form";
 import type { Address } from "@/types/Address";
 import CustomerTypeRadios from "@/components/common/CustomerTypeRadios";
+import Reveal from "@/components/common/Reveal.tsx";
 import { CustomerType } from "@/enums/CustomerType";
 import type { IFormValues } from "@/components/Order/OrderDetails.tsx";
 
@@ -29,56 +30,59 @@ export default function ShippingFormFields({ form, setCustomerType }: Props) {
         Dane do wysyłki
       </Typography>
 
-      {/* Radio: osoba prywatna/firma */}
       <CustomerTypeRadios customerType={customerType} setCustomerType={handleCustomerTypeChange} />
 
       {customerType === CustomerType.PERSON && (
-        <Box sx={{ ...fieldGrid, gridTemplateColumns: { xs: "1fr", sm: "1fr 1fr" } }}>
-          <TextField
-            fullWidth
-            label="Imię"
-            required
-            placeholder="Jan"
-            autoComplete="given-name"
-            {...getShippingProps("first_name")}
-            helperText={form.errors["shipping.first_name"]}
-            error={Boolean(form.errors["shipping.first_name"]) && form.isTouched("shipping.first_name")}
-          />
-          <TextField
-            fullWidth
-            label="Nazwisko"
-            required
-            placeholder="Kowalski"
-            autoComplete="family-name"
-            {...getShippingProps("last_name")}
-            helperText={form.errors["shipping.last_name"]}
-            error={Boolean(form.errors["shipping.last_name"]) && form.isTouched("shipping.last_name")}
-          />
-        </Box>
+        <Reveal>
+          <Box sx={{ ...fieldGrid, gridTemplateColumns: { xs: "1fr", sm: "1fr 1fr" } }}>
+            <TextField
+              fullWidth
+              label="Imię"
+              required
+              placeholder="Jan"
+              autoComplete="given-name"
+              {...getShippingProps("first_name")}
+              helperText={form.errors["shipping.first_name"]}
+              error={Boolean(form.errors["shipping.first_name"]) && form.isTouched("shipping.first_name")}
+            />
+            <TextField
+              fullWidth
+              label="Nazwisko"
+              required
+              placeholder="Kowalski"
+              autoComplete="family-name"
+              {...getShippingProps("last_name")}
+              helperText={form.errors["shipping.last_name"]}
+              error={Boolean(form.errors["shipping.last_name"]) && form.isTouched("shipping.last_name")}
+            />
+          </Box>
+        </Reveal>
       )}
 
       {customerType === CustomerType.COMPANY && (
-        <Box sx={{ ...fieldGrid, gridTemplateColumns: { xs: "1fr", sm: "1fr 1fr" } }}>
-          <TextField
-            fullWidth
-            label="Nazwa firmy"
-            required
-            placeholder="Firma XYZ"
-            autoComplete="organization"
-            {...getShippingProps("company_name")}
-            helperText={form.errors["shipping.company_name"]}
-            error={Boolean(form.errors["shipping.company_name"]) && form.isTouched("shipping.company_name")}
-          />
-          <TextField
-            fullWidth
-            label="NIP"
-            required
-            placeholder="1234567890"
-            {...getShippingProps("nip")}
-            helperText={form.errors["shipping.nip"]}
-            error={Boolean(form.errors["shipping.nip"]) && form.isTouched("shipping.nip")}
-          />
-        </Box>
+        <Reveal>
+          <Box sx={{ ...fieldGrid, gridTemplateColumns: { xs: "1fr", sm: "1fr 1fr" } }}>
+            <TextField
+              fullWidth
+              label="Nazwa firmy"
+              required
+              placeholder="Firma XYZ"
+              autoComplete="organization"
+              {...getShippingProps("company_name")}
+              helperText={form.errors["shipping.company_name"]}
+              error={Boolean(form.errors["shipping.company_name"]) && form.isTouched("shipping.company_name")}
+            />
+            <TextField
+              fullWidth
+              label="NIP"
+              required
+              placeholder="1234567890"
+              {...getShippingProps("nip")}
+              helperText={form.errors["shipping.nip"]}
+              error={Boolean(form.errors["shipping.nip"]) && form.isTouched("shipping.nip")}
+            />
+          </Box>
+        </Reveal>
       )}
 
       <Box sx={{ ...fieldGrid, gridTemplateColumns: { xs: "1fr", sm: "1fr 1fr" } }}>
@@ -106,7 +110,6 @@ export default function ShippingFormFields({ form, setCustomerType }: Props) {
         />
       </Box>
 
-      {/* Ulica, numer budynku i mieszkania */}
       <Box sx={{ ...fieldGrid, gridTemplateColumns: { xs: "1fr", sm: "2fr 1fr 1fr" } }}>
         <TextField
           fullWidth

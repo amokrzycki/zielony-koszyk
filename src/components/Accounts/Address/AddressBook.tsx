@@ -1,5 +1,6 @@
 import { useAppDispatch, useAppSelector } from "@/hooks/hooks.ts";
-import { Box, Button, CircularProgress, Typography } from "@mui/material";
+import LoadingOverlay from "@/components/common/LoadingOverlay.tsx";
+import { Box, Button, Typography } from "@mui/material";
 import AddRounded from "@mui/icons-material/AddRounded";
 import ReceiptLongOutlined from "@mui/icons-material/ReceiptLongOutlined";
 import LocalShippingOutlined from "@mui/icons-material/LocalShippingOutlined";
@@ -17,7 +18,6 @@ import { useEffect } from "react";
 import { updateUserDetails } from "@/components/Accounts/accountSlice.ts";
 import { accentText, ctaButtonSx, sectionHeadingSx, tone } from "@/components/listingStyles.ts";
 
-// ponytail: local section header — only the two address sections use it, not worth a shared component yet.
 function AddressSection({ icon, title, children }: { icon: ReactNode; title: string; children: ReactNode }) {
   return (
     <Box component="section" sx={{ mt: { xs: 4, md: 5 } }}>
@@ -99,7 +99,7 @@ function AddressBook() {
   const user: User = useAppSelector((state) => state.auth.user);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const { data, isLoading, isFetching } = useGetAddressesQuery(user.user_id);
+  const { data, isLoading } = useGetAddressesQuery(user.user_id);
 
   useEffect(() => {
     if (data && data !== user.addresses) {
@@ -121,14 +121,11 @@ function AddressBook() {
     navigate("/konto/ksiazka-adresowa/edytuj-dane");
   };
 
-  const addresses = user.addresses ?? [];
+  // Query data wins: the copy on the session user can be stale (it briefly rendered duplicated cards).
+  const addresses = data ?? user.addresses ?? [];
 
-  if ((isLoading || isFetching) && addresses.length === 0) {
-    return (
-      <Box sx={{ display: "grid", placeItems: "center", py: 10 }}>
-        <CircularProgress />
-      </Box>
-    );
+  if (isLoading) {
+    return <LoadingOverlay />;
   }
 
   const byDefaultFirst = (a: Address, b: Address) => Number(b.default) - Number(a.default);
@@ -137,86 +134,88 @@ function AddressBook() {
   const isEmpty = addresses.length === 0;
 
   return (
-    <Box sx={{ maxWidth: 860, mx: "auto", textAlign: "left" }}>
-      <Box
-        sx={{
-          display: "flex",
-          alignItems: "flex-start",
-          justifyContent: "space-between",
-          gap: 2,
-          flexWrap: "wrap",
-        }}>
-        <Box sx={{ minWidth: 0 }}>
-          <Typography
-            component="h1"
-            sx={{
-              m: 0,
-              fontSize: { xs: "1.7rem", md: "2.05rem" },
-              fontWeight: 900,
-              lineHeight: 1.1,
-              letterSpacing: "-0.03em",
-            }}>
-            Książka adresowa
-          </Typography>
-          <Typography sx={{ mt: 1, color: "text.secondary", maxWidth: "54ch", lineHeight: 1.6 }}>
-            Zarządzaj adresami do rachunku i dostawy. Adres oznaczony jako domyślny podpowiemy Ci przy składaniu
-            zamówienia.
-          </Typography>
+    <div className="fade-in">
+      <Box sx={{ maxWidth: 860, mx: "auto", textAlign: "left" }}>
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "flex-start",
+            justifyContent: "space-between",
+            gap: 2,
+            flexWrap: "wrap",
+          }}>
+          <Box sx={{ minWidth: 0 }}>
+            <Typography
+              component="h1"
+              sx={{
+                m: 0,
+                fontSize: { xs: "1.7rem", md: "2.05rem" },
+                fontWeight: 900,
+                lineHeight: 1.1,
+                letterSpacing: "-0.03em",
+              }}>
+              Książka adresowa
+            </Typography>
+            <Typography sx={{ mt: 1, color: "text.secondary", maxWidth: "54ch", lineHeight: 1.6 }}>
+              Zarządzaj adresami do rachunku i dostawy. Adres oznaczony jako domyślny podpowiemy Ci przy składaniu
+              zamówienia.
+            </Typography>
+          </Box>
+          {!isEmpty && (
+            <Button onClick={handleAddNew} startIcon={<AddRounded />} sx={{ ...ctaButtonSx, flexShrink: 0 }}>
+              Dodaj nowy adres
+            </Button>
+          )}
         </Box>
-        {!isEmpty && (
-          <Button onClick={handleAddNew} startIcon={<AddRounded />} sx={{ ...ctaButtonSx, flexShrink: 0 }}>
-            Dodaj nowy adres
-          </Button>
+
+        {isEmpty ? (
+          <Box
+            sx={(theme) => ({
+              mt: { xs: 3, md: 3.5 },
+              px: { xs: 3, sm: 4 },
+              py: { xs: 5, sm: 6 },
+              borderRadius: "24px",
+              textAlign: "center",
+              bgcolor: tone(theme, 0.05),
+            })}>
+            <Box
+              aria-hidden
+              sx={{
+                display: "grid",
+                placeItems: "center",
+                width: 56,
+                height: 56,
+                mx: "auto",
+                borderRadius: "50%",
+                color: (t) => accentText(t),
+                bgcolor: (t) => tone(t, 0.12),
+                "& svg": { fontSize: 28 },
+              }}>
+              <PlaceOutlined />
+            </Box>
+            <Typography component="h2" sx={{ ...sectionHeadingSx, mt: 2, mb: 0 }}>
+              Nie masz jeszcze zapisanych adresów
+            </Typography>
+            <Typography sx={{ mt: 0.75, mx: "auto", maxWidth: "42ch", color: "text.secondary", lineHeight: 1.6 }}>
+              Dodaj adres do rachunku lub dostawy, a zapamiętamy go przy kolejnych zamówieniach.
+            </Typography>
+            <Button onClick={handleAddNew} startIcon={<AddRounded />} sx={{ ...ctaButtonSx, mt: 3 }}>
+              Dodaj pierwszy adres
+            </Button>
+          </Box>
+        ) : (
+          <>
+            <AddressSection icon={<ReceiptLongOutlined />} title="Dane do rachunku">
+              <AddressGrid addresses={billingAddresses} onEdit={handleEditData} userId={user.user_id} />
+            </AddressSection>
+
+            <AddressSection icon={<LocalShippingOutlined />} title="Adresy dostawy">
+              <AddressGrid addresses={deliveryAddresses} onEdit={handleEditData} userId={user.user_id} />
+            </AddressSection>
+          </>
         )}
       </Box>
-
-      {isEmpty ? (
-        <Box
-          sx={(theme) => ({
-            mt: { xs: 3, md: 3.5 },
-            px: { xs: 3, sm: 4 },
-            py: { xs: 5, sm: 6 },
-            borderRadius: "24px",
-            textAlign: "center",
-            bgcolor: tone(theme, 0.05),
-          })}>
-          <Box
-            aria-hidden
-            sx={{
-              display: "grid",
-              placeItems: "center",
-              width: 56,
-              height: 56,
-              mx: "auto",
-              borderRadius: "50%",
-              color: (t) => accentText(t),
-              bgcolor: (t) => tone(t, 0.12),
-              "& svg": { fontSize: 28 },
-            }}>
-            <PlaceOutlined />
-          </Box>
-          <Typography component="h2" sx={{ ...sectionHeadingSx, mt: 2, mb: 0 }}>
-            Nie masz jeszcze zapisanych adresów
-          </Typography>
-          <Typography sx={{ mt: 0.75, mx: "auto", maxWidth: "42ch", color: "text.secondary", lineHeight: 1.6 }}>
-            Dodaj adres do rachunku lub dostawy, a zapamiętamy go przy kolejnych zamówieniach.
-          </Typography>
-          <Button onClick={handleAddNew} startIcon={<AddRounded />} sx={{ ...ctaButtonSx, mt: 3 }}>
-            Dodaj pierwszy adres
-          </Button>
-        </Box>
-      ) : (
-        <>
-          <AddressSection icon={<ReceiptLongOutlined />} title="Dane do rachunku">
-            <AddressGrid addresses={billingAddresses} onEdit={handleEditData} userId={user.user_id} />
-          </AddressSection>
-
-          <AddressSection icon={<LocalShippingOutlined />} title="Adresy dostawy">
-            <AddressGrid addresses={deliveryAddresses} onEdit={handleEditData} userId={user.user_id} />
-          </AddressSection>
-        </>
-      )}
-    </Box>
+    </div>
   );
 }
 

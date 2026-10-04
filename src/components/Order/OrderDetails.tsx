@@ -11,6 +11,7 @@ import { AddressType } from "@/enums/AddressType";
 import { CustomerType } from "@/enums/CustomerType";
 import type { CreateOrder } from "@/types/CreateOrder.ts";
 import CartSummary from "@/components/Cart/CartSummary.tsx";
+import Reveal from "@/components/common/Reveal.tsx";
 import ShippingFormFields from "@/components/Order/ShippingFormFields.tsx";
 import BillingFormFields from "@/components/Order/BillingFormFields.tsx";
 import { setOrder } from "@/components/Order/orderSlice.ts";
@@ -226,27 +227,31 @@ function OrderDetails() {
                 />
 
                 {!useDifferentAddress ? (
-                  <Box
-                    sx={{
-                      mt: 1.5,
-                      display: "flex",
-                      alignItems: "flex-start",
-                      gap: 1,
-                      px: 2,
-                      py: 1.5,
-                      borderRadius: "12px",
-                      bgcolor: (theme) => tone(theme, 0.1),
-                      color: (theme) => accentText(theme),
-                    }}>
-                    <ReceiptLongOutlined fontSize="small" sx={{ mt: "1px" }} />
-                    <Typography sx={{ color: "inherit", fontSize: "0.9rem", lineHeight: 1.5 }}>
-                      {!user.user_id
-                        ? "Dane do faktury: takie same jak do wysyłki."
-                        : "Dane do faktury: domyślne dane z Twojego konta."}
-                    </Typography>
-                  </Box>
+                  <Reveal key="same">
+                    <Box
+                      sx={{
+                        mt: 1.5,
+                        display: "flex",
+                        alignItems: "flex-start",
+                        gap: 1,
+                        px: 2,
+                        py: 1.5,
+                        borderRadius: "12px",
+                        bgcolor: (theme) => tone(theme, 0.1),
+                        color: (theme) => accentText(theme),
+                      }}>
+                      <ReceiptLongOutlined fontSize="small" sx={{ mt: "1px" }} />
+                      <Typography sx={{ color: "inherit", fontSize: "0.9rem", lineHeight: 1.5 }}>
+                        {!user.user_id
+                          ? "Dane do faktury: takie same jak do wysyłki."
+                          : "Dane do faktury: domyślne dane z Twojego konta."}
+                      </Typography>
+                    </Box>
+                  </Reveal>
                 ) : (
-                  <BillingFormFields form={form} setCustomerType={setBillingType} />
+                  <Reveal key="different">
+                    <BillingFormFields form={form} setCustomerType={setBillingType} />
+                  </Reveal>
                 )}
               </Box>
 

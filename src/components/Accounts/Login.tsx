@@ -4,7 +4,7 @@ import type React from "react";
 import { useState } from "react";
 import RegisterForm from "./RegisterForm.tsx";
 import LoginForm from "./LoginForm.tsx";
-import { BRAND_INK, EASE, accentText, panelSx, tone } from "@/components/listingStyles.ts";
+import { BRAND_INK, DUR, EASE, accentText, panelSx, tone } from "@/components/listingStyles.ts";
 
 const brandPoints = [
   "Codzienna dostawa w Rzeszowie i okolicach",
@@ -147,9 +147,25 @@ function Login() {
               <Tab label="Logowanie" disableRipple />
               <Tab label="Nowe konto" disableRipple />
             </Tabs>
-            <Box className={"flex justify-center flex-wrap"}>
-              {tab === 0 ? <LoginForm /> : <RegisterForm setTab={setTab} />}
-            </Box>
+            {/* Both forms stay mounted; the inactive row collapses to 0fr and is inert. */}
+            {[<LoginForm key="login" />, <RegisterForm key="register" setTab={setTab} />].map((form, index) => {
+              const active = tab === index;
+              return (
+                <Box
+                  key={form.key}
+                  inert={!active}
+                  sx={{
+                    display: "grid",
+                    gridTemplateRows: active ? "1fr" : "0fr",
+                    opacity: active ? 1 : 0,
+                    transition: `grid-template-rows ${DUR.slow}ms ${EASE}, opacity ${DUR.base}ms ${EASE}`,
+                  }}>
+                  <Box sx={{ minHeight: 0, overflow: "hidden" }}>
+                    <Box className={"flex justify-center flex-wrap"}>{form}</Box>
+                  </Box>
+                </Box>
+              );
+            })}
           </Box>
         </Box>
       </Box>

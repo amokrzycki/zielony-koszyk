@@ -15,6 +15,7 @@ function ActiveFilters() {
       {chips.map((chip) => (
         <Chip
           key={chip.key}
+          className="chip-pop"
           label={chip.label}
           onDelete={() => setParams(chip.clear)}
           deleteIcon={<CloseRoundedIcon />}

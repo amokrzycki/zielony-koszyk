@@ -9,11 +9,6 @@ interface AdminPageHeaderProps {
   actions?: ReactNode;
 }
 
-/**
- * One page opening for the console: a green icon medallion, a heavy title with tight
- * tracking, one short factual line, and the page's actions on the right. No eyebrow,
- * no kicker — the heading carries its own weight.
- */
 function AdminPageHeader({ icon, title, subtitle, actions }: AdminPageHeaderProps) {
   return (
     <Box

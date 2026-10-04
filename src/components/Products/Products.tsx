@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Box, Button, Typography } from "@mui/material";
 import SearchOffRoundedIcon from "@mui/icons-material/SearchOffRounded";
 import ProductCard from "./ProductCard.tsx";
 import type Product from "@/types/Product.ts";
-import Loading from "../common/Loading.tsx";
+import LoadingOverlay from "../common/LoadingOverlay.tsx";
+import SwapLayers from "../common/SwapLayers.tsx";
 import FiltersBar from "../Filters/FiltersBar.tsx";
 import FiltersBox from "../Filters/FiltersBox.tsx";
 import FiltersDrawer from "../Filters/FiltersDrawer.tsx";
@@ -14,7 +15,7 @@ import useProductFilters from "@/hooks/useProductFilters.ts";
 import { getActiveFilterChips } from "@/helpers/getActiveFilterChips.ts";
 import FiltersPagination from "@/components/Filters/FiltersPagination.tsx";
 import GoToTop from "@/components/Products/GoToTop.tsx";
-import { accentText, panelSx, tone } from "@/components/listingStyles.ts";
+import { DUR, EASE, accentText, panelSx, tone } from "@/components/listingStyles.ts";
 
 function Products() {
   const { filters, setParams } = useProductFilters();
@@ -25,8 +26,13 @@ function Products() {
   const searchQuery = filters.search;
   const totalCount = data?.totalCount;
   const shownCount = data ? Math.min((data.currentPage - 1) * data.pageSize + products.length, data.totalCount) : 0;
-  const isBusy = isLoading || isFetching;
   const activeFilterCount = getActiveFilterChips(filters).length;
+
+  // Cross-fade each fresh result set through SwapLayers; keyed off `data` so the old page stays until the new arrives.
+  const [swapKey, setSwapKey] = useState(0);
+  useEffect(() => {
+    if (data) setSwapKey((key) => key + 1);
+  }, [data]);
 
   if (error) {
     return (
@@ -68,21 +74,29 @@ function Products() {
           <Box className="flex min-w-0 w-full flex-col gap-4">
             <FiltersBar onOpenFilters={() => setFiltersOpen(true)} activeFilterCount={activeFilterCount} />
             <ActiveFilters />
-            {isBusy ? (
-              <Box className="flex h-[50vh] items-center justify-center p-8" sx={panelSx}>
-                <Loading />
-              </Box>
-            ) : (
-              <Box className="flex flex-col gap-3 p-4 sm:p-5" sx={panelSx}>
-                {products.length === 0 ? (
-                  <EmptyResults searchQuery={searchQuery} onClear={() => setParams({ search: "", page: "1" })} />
+            <Box
+              aria-busy={isFetching}
+              sx={(t) => ({
+                ...panelSx(t),
+                opacity: isFetching && !isLoading ? 0.55 : 1,
+                transition: `opacity ${DUR.base}ms ${EASE}`,
+              })}>
+              <SwapLayers id={isLoading ? "loading" : `ready-${swapKey}`} tween={false}>
+                {isLoading ? (
+                  <LoadingOverlay />
                 ) : (
-                  products.map((product: Product) => <ProductCard key={product.product_id} product={product} />)
+                  <Box className="flex flex-col gap-3 p-4 sm:p-5">
+                    {products.length === 0 ? (
+                      <EmptyResults searchQuery={searchQuery} onClear={() => setParams({ search: "", page: "1" })} />
+                    ) : (
+                      products.map((product: Product) => <ProductCard key={product.product_id} product={product} />)
+                    )}
+                  </Box>
                 )}
-              </Box>
-            )}
-            {!isBusy && products.length > 0 && (
-              <Box className="flex flex-col items-center gap-4 sm:flex-row sm:justify-between">
+              </SwapLayers>
+            </Box>
+            {!isLoading && products.length > 0 && (
+              <Box className="fade-in flex flex-col items-center gap-4 sm:flex-row sm:justify-between">
                 <Typography
                   className="order-2 sm:order-1"
                   sx={{ color: "text.secondary", fontWeight: 600, fontVariantNumeric: "tabular-nums" }}>

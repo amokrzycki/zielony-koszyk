@@ -9,6 +9,7 @@ import toast from "react-hot-toast";
 import { NavLink } from "react-router-dom";
 import ProductPrice from "@/components/Products/ProductPrice.tsx";
 import { API_URL } from "@/constants/api.ts";
+import FadeImage from "@/components/common/FadeImage.tsx";
 import { EASE, panelSx, tone } from "@/components/listingStyles.ts";
 
 interface ProductCardProps {
@@ -36,7 +37,7 @@ function ProductCard({ product }: ProductCardProps) {
       className="group relative flex w-full gap-4 rounded-2xl p-4 sm:gap-5 sm:p-5"
       sx={(theme) => ({
         ...panelSx(theme),
-        transition: `transform 400ms ${EASE}, box-shadow 400ms ${EASE}, border-color 400ms ${EASE}`,
+        transition: `transform 300ms ${EASE}, box-shadow 300ms ${EASE}, border-color 300ms ${EASE}`,
         "&:hover, &:focus-within": {
           transform: "translateY(-2px)",
           borderColor: "primary.main",
@@ -48,7 +49,7 @@ function ProductCard({ product }: ProductCardProps) {
       <NavLink
         to={`/produkty/${product.product_id}`}
         aria-label={product.name}
-        className={"absolute inset-0 z-[1] rounded-2xl focus:outline-none"}
+        className={"absolute inset-0 z-1 rounded-2xl focus:outline-none"}
       />
       <Box
         className={"MuiProductCardPhoto-root"}
@@ -61,10 +62,9 @@ function ProductCard({ product }: ProductCardProps) {
           p: 1.5,
           borderRadius: "18px",
           bgcolor: (t) => tone(t, 0.07),
-          transition: `transform 700ms ${EASE}`,
+          transition: `transform 500ms ${EASE}`,
         }}>
-        <Box
-          component="img"
+        <FadeImage
           src={`${API_URL}/${product.image}`}
           alt=""
           sx={{ maxWidth: "100%", maxHeight: "100%", objectFit: "contain" }}
@@ -89,8 +89,9 @@ function ProductCard({ product }: ProductCardProps) {
                 fontWeight: 700,
                 textTransform: "none",
                 boxShadow: "none",
-                transition: `transform 300ms ${EASE}, box-shadow 300ms ${EASE}`,
+                transition: `transform 160ms ${EASE}, box-shadow 300ms ${EASE}`,
                 "&:hover": { bgcolor: "primary.main", boxShadow: "none", transform: "translateY(-2px)" },
+                "&:active": { transform: "translateY(-2px) scale(0.97)" },
                 "&:focus-visible": { outline: "2px solid", outlineColor: "primary.main", outlineOffset: 3 },
               }}>
               Do koszyka

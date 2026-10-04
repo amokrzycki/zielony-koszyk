@@ -2,6 +2,8 @@ import type { Theme } from "@mui/material/styles";
 
 /** Motion curve shared across the brand surfaces (header, hero, categories). */
 export const EASE = "cubic-bezier(0.16, 1, 0.3, 1)";
+/** Motion durations (ms). Mirrors --dur-* in App.css. Exits run at DUR.fast. */
+export const DUR = { fast: 150, base: 200, slow: 300, move: 400 } as const;
 
 /** Forest-green ink used by the footer, the auth brand panel and labels on the bright primary. */
 export const BRAND_INK = "#0b1410";
@@ -10,10 +12,7 @@ export const BRAND_INK = "#0b1410";
 export const tone = (theme: Theme, alpha: number) =>
   theme.palette.mode === "dark" ? `rgba(0, 206, 124, ${alpha + 0.02})` : `rgba(0, 206, 124, ${alpha})`;
 
-/**
- * Green for small text sitting on a light surface. Brand green (#00ce7c) is ~2:1 on white, so
- * light mode drops to the darker brand tone (#007d4e, ~5.2:1) to clear WCAG AA.
- */
+/** Darker green for small text on light surfaces: brand #00ce7c is ~2:1 on white, this clears WCAG AA. */
 export const accentText = (theme: Theme) => (theme.palette.mode === "dark" ? theme.palette.primary.main : "#007d4e");
 
 /** Bordered, rounded surface used by the listing toolbar, sidebar and product rows. */
@@ -44,8 +43,9 @@ export const ctaButtonSx = {
   fontWeight: 700,
   textTransform: "none" as const,
   boxShadow: "none",
-  transition: `transform 300ms ${EASE}, box-shadow 300ms ${EASE}`,
+  transition: `transform 160ms ${EASE}, box-shadow 300ms ${EASE}`,
   "&:hover": { bgcolor: "primary.main", boxShadow: "none", transform: "translateY(-2px)" },
+  "&:active": { transform: "translateY(-2px) scale(0.97)" },
   "&:focus-visible": { outline: "2px solid", outlineColor: "primary.main", outlineOffset: 3 },
   "&.Mui-disabled": { bgcolor: "action.disabledBackground", color: "action.disabled" },
 };

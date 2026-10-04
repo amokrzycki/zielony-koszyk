@@ -7,7 +7,6 @@ import CategoryList from "@/components/Filters/CategoryList.tsx";
 import { accentText, panelSx } from "@/components/listingStyles.ts";
 import { DEFAULT_PRICE_MAX, DEFAULT_PRICE_MIN } from "@/constants/app.ts";
 
-// Micro-label shared with the footer column headings, darkened for legibility on the light panel.
 const groupLabelSx = {
   mb: 1.5,
   color: (t: Theme) => accentText(t),

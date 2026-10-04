@@ -2,16 +2,15 @@ import { Box, Skeleton } from "@mui/material";
 import { panelSx } from "@/components/listingStyles.ts";
 
 interface AdminLoadingProps {
-  /** Number of skeleton rows to draw under the header strip. */
   rows?: number;
   /** Optional narrow column so the skeleton reads as a table, not a block. */
   compact?: boolean;
 }
 
-/** Skeletons beat a spinner here: the work surface keeps its shape while data streams in. */
+/** Skeleton rows; `data-swap-hold` keeps SwapLayers at the previous height while loading. */
 function AdminLoading({ rows = 6, compact = false }: AdminLoadingProps) {
   return (
-    <Box sx={(theme) => ({ ...panelSx(theme), overflow: "hidden", width: "100%" })}>
+    <Box data-swap-hold sx={(theme) => ({ ...panelSx(theme), overflow: "hidden", width: "100%" })}>
       <Box
         sx={{ display: "flex", alignItems: "center", gap: 2, p: 2, borderBottom: "1px solid", borderColor: "divider" }}>
         <Skeleton variant="rounded" width={120} height={28} />

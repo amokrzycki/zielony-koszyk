@@ -1,7 +1,8 @@
 import { Avatar, Box, Button, Typography } from "@mui/material";
 import CheckRounded from "@mui/icons-material/CheckRounded";
+import SwapLayers from "../common/SwapLayers.tsx";
 import AutoBreadcrumbs from "../AutoBreadcrumbs.tsx";
-import { Outlet, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useOutlet } from "react-router-dom";
 import type User from "../../types/User.ts";
 import { useAppSelector } from "@/hooks/hooks.ts";
 import type { RootState } from "@/store/store.ts";
@@ -13,6 +14,13 @@ const accountBenefits = [
   "Zapisane adresy dostawy",
   "Hasło, e-mail i ustawienia MFA",
 ];
+
+/** Subpage swap: the panel tweens between page heights instead of jumping. */
+function AccountOutlet() {
+  const outlet = useOutlet();
+  const { pathname } = useLocation();
+  return <SwapLayers id={pathname}>{outlet}</SwapLayers>;
+}
 
 function AccountView() {
   const user: User = useAppSelector((state: RootState) => state.auth.user);
@@ -163,7 +171,7 @@ function AccountView() {
         </Box>
 
         <Box sx={{ px: { xs: 2.5, sm: 4 }, py: { xs: 3, sm: 4 }, textAlign: "center" }}>
-          <Outlet />
+          <AccountOutlet />
         </Box>
       </Box>
     </Box>
