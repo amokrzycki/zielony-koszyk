@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import { Box, Button } from "@mui/material";
 import RefreshIcon from "@mui/icons-material/Refresh";
+import { useTranslation } from "react-i18next";
 import { accentText, panelSx, tone } from "@/components/listingStyles.ts";
 
 interface AdminErrorProps {
@@ -11,6 +12,8 @@ interface AdminErrorProps {
 }
 
 function AdminError({ message, hint, onRetry }: AdminErrorProps) {
+  const { t } = useTranslation("admin");
+
   return (
     <Box
       role="alert"
@@ -37,7 +40,7 @@ function AdminError({ message, hint, onRetry }: AdminErrorProps) {
             color: accentText(theme),
             "&:hover": { borderColor: accentText(theme), bgcolor: tone(theme, 0.08) },
           })}>
-          Spróbuj ponownie
+          {t("general.retry")}
         </Button>
       )}
     </Box>

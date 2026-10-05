@@ -5,6 +5,8 @@ import { useChangeUserAddressMutation } from "@/components/Accounts/accountsApiS
 import { useAppDispatch } from "@/hooks/hooks.ts";
 import { updateUserAddresses } from "@/components/Accounts/accountSlice.ts";
 import toast from "react-hot-toast";
+import { useTranslation } from "react-i18next";
+import { apiErrorMessage } from "@/helpers/apiError.ts";
 import { accentText, tone } from "@/components/listingStyles.ts";
 
 interface DefaultCheckboxProps {
@@ -13,6 +15,7 @@ interface DefaultCheckboxProps {
 }
 
 function DefaultCheckbox({ address, userId }: DefaultCheckboxProps) {
+  const { t, i18n } = useTranslation("account");
   const [changeAddress, { isLoading }] = useChangeUserAddressMutation();
   const dispatch = useAppDispatch();
 
@@ -29,9 +32,9 @@ function DefaultCheckbox({ address, userId }: DefaultCheckboxProps) {
           user_id: userId,
         }).unwrap(),
         {
-          loading: "Zmienianie adresu...",
-          success: "Adres został zmieniony",
-          error: "Wystąpił błąd podczas zmiany adresu",
+          loading: t("defaultCheckbox.toast.loading"),
+          success: t("defaultCheckbox.toast.success"),
+          error: (error) => apiErrorMessage(i18n.t, error, t("defaultCheckbox.toast.error")),
         },
       )
       .then(() => dispatch(updateUserAddresses(updatedAddress)));
@@ -53,7 +56,7 @@ function DefaultCheckbox({ address, userId }: DefaultCheckboxProps) {
           fontWeight: 700,
         }}>
         <CheckRounded sx={{ fontSize: 15 }} />
-        Domyślny
+        {t("defaultCheckbox.isDefault")}
       </Box>
     );
   }
@@ -61,7 +64,7 @@ function DefaultCheckbox({ address, userId }: DefaultCheckboxProps) {
   return (
     <FormControlLabel
       control={<Checkbox checked={false} size="small" disabled={isLoading} onChange={handleChange} />}
-      label={<Typography sx={{ fontSize: "0.85rem", fontWeight: 600 }}>Ustaw jako domyślny</Typography>}
+      label={<Typography sx={{ fontSize: "0.85rem", fontWeight: 600 }}>{t("defaultCheckbox.setDefault")}</Typography>}
     />
   );
 }

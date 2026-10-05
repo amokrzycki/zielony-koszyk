@@ -7,6 +7,8 @@ import QuantitySelector from "./QuantitySelector.tsx";
 import ProductInfo from "./ProductInfo.tsx";
 import toast from "react-hot-toast";
 import { NavLink } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import { useLocalePath } from "@/i18n/useLocale.ts";
 import ProductPrice from "@/components/Products/ProductPrice.tsx";
 import { API_URL } from "@/constants/api.ts";
 import FadeImage from "@/components/common/FadeImage.tsx";
@@ -17,6 +19,8 @@ interface ProductCardProps {
 }
 
 function ProductCard({ product }: ProductCardProps) {
+  const { t } = useTranslation("catalog");
+  const to = useLocalePath();
   const [quantity, setQuantity] = useState(1);
   const dispatch = useAppDispatch();
 
@@ -29,7 +33,7 @@ function ProductCard({ product }: ProductCardProps) {
         price: product.price,
       }),
     );
-    toast.success("Produkt został dodany do koszyka");
+    toast.success(t("product.addedToCart"));
   };
 
   return (
@@ -47,7 +51,7 @@ function ProductCard({ product }: ProductCardProps) {
         "&:hover .MuiProductCardPhoto-root": { transform: "scale(1.05)" },
       })}>
       <NavLink
-        to={`/produkty/${product.product_id}`}
+        to={to("productDetails", { productId: product.product_id })}
         aria-label={product.name}
         className={"absolute inset-0 z-1 rounded-2xl focus:outline-none"}
       />
@@ -94,7 +98,7 @@ function ProductCard({ product }: ProductCardProps) {
                 "&:active": { transform: "translateY(-2px) scale(0.97)" },
                 "&:focus-visible": { outline: "2px solid", outlineColor: "primary.main", outlineOffset: 3 },
               }}>
-              Do koszyka
+              {t("product.addToCart")}
             </Button>
           </Box>
         </Box>

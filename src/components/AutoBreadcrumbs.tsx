@@ -2,53 +2,40 @@ import { useLocation, Link as RouterLink } from "react-router-dom";
 import Breadcrumbs from "@mui/material/Breadcrumbs";
 import Link from "@mui/material/Link";
 import { Typography } from "@mui/material";
-import { friendlyRoutingNames } from "../constants/friendlyRoutingNames.ts";
+import { useTranslation } from "react-i18next";
+import { useLocalePath } from "@/i18n/useLocale.ts";
+import { matchRoute } from "@/i18n/routes.ts";
 
+/** One crumb per URL prefix that is itself a known route; the label comes from the route id, never from the slug. */
 export default function AutoBreadcrumbs() {
-  const numericRegex = /^\d+$/;
-  const location = useLocation();
-  const pathNames = location.pathname.split("/").filter((x) => x);
+  const { t } = useTranslation();
+  const to = useLocalePath();
+  const { pathname } = useLocation();
+  const segments = pathname.split("/").filter(Boolean);
 
-  function getFriendlyName(segment: string, isLast: boolean): string {
-    const decoded = decodeURIComponent(segment);
-
-    if (isLast && pathNames[0] === "produkty" && numericRegex.test(decoded)) {
-      return `Szczegóły produktu`;
-    }
-
-    if (isLast && numericRegex.test(decoded)) {
-      return `Szczegóły zamówienia`;
-    }
-
-    if (friendlyRoutingNames[decoded]) {
-      return friendlyRoutingNames[decoded];
-    }
-
-    return decoded.charAt(0).toUpperCase() + decoded.slice(1);
-  }
+  const crumbs = segments.slice(1).flatMap((_, index) => {
+    const path = `/${segments.slice(0, index + 2).join("/")}`;
+    const match = matchRoute(path);
+    return match ? [{ path, id: match.id }] : [];
+  });
 
   return (
-    <Breadcrumbs aria-label="breadcrumb">
-      <Link component={RouterLink} underline="hover" color="textSecondary" to="/">
-        Zielony koszyk
+    <Breadcrumbs aria-label={t("breadcrumbs.label")}>
+      <Link component={RouterLink} underline="hover" color="textSecondary" to={to("home")}>
+        {t("breadcrumbs.root")}
       </Link>
 
-      {pathNames.map((value, index) => {
-        const to = `/${pathNames.slice(0, index + 1).join("/")}`;
-
-        const isLast = index === pathNames.length - 1;
-        const friendlyName = getFriendlyName(value, isLast);
-
-        return isLast ? (
-          <Typography color="textPrimary" key={to}>
-            {friendlyName}
+      {crumbs.map(({ path, id }, index) =>
+        index === crumbs.length - 1 ? (
+          <Typography color="textPrimary" key={path}>
+            {t(`breadcrumbs.${id}`)}
           </Typography>
         ) : (
-          <Link component={RouterLink} underline="hover" color="inherit" to={to} key={to}>
-            {friendlyName}
+          <Link component={RouterLink} underline="hover" color="inherit" to={path} key={path}>
+            {t(`breadcrumbs.${id}`)}
           </Link>
-        );
-      })}
+        ),
+      )}
     </Breadcrumbs>
   );
 }

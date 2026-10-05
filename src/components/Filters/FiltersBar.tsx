@@ -1,5 +1,6 @@
 import { Box, Button } from "@mui/material";
 import TuneRoundedIcon from "@mui/icons-material/TuneRounded";
+import { useTranslation } from "react-i18next";
 import Search from "./Search.tsx";
 import SortSelector from "@/components/Filters/SortSelector.tsx";
 import { accentText, panelSx, tone } from "@/components/listingStyles.ts";
@@ -10,6 +11,8 @@ interface FiltersBarProps {
 }
 
 function FiltersBar({ onOpenFilters, activeFilterCount }: FiltersBarProps) {
+  const { t } = useTranslation("catalog");
+
   return (
     <Box id="search-wrapper" className={"flex flex-wrap items-center gap-3 p-3 sm:p-4"} sx={panelSx}>
       <Search />
@@ -17,7 +20,11 @@ function FiltersBar({ onOpenFilters, activeFilterCount }: FiltersBarProps) {
         <Button
           onClick={onOpenFilters}
           startIcon={<TuneRoundedIcon />}
-          aria-label={activeFilterCount > 0 ? `Filtry, aktywne filtry: ${activeFilterCount}` : "Filtry"}
+          aria-label={
+            activeFilterCount > 0
+              ? t("filters.openButtonAriaActive", { active: activeFilterCount })
+              : t("filters.openButtonAria")
+          }
           sx={{
             display: { lg: "none" },
             flexShrink: 0,
@@ -32,7 +39,9 @@ function FiltersBar({ onOpenFilters, activeFilterCount }: FiltersBarProps) {
             whiteSpace: "nowrap",
             "&:hover": { borderColor: "primary.main", bgcolor: (t) => tone(t, 0.1) },
           }}>
-          Filtry{activeFilterCount > 0 ? ` (${activeFilterCount})` : ""}
+          {activeFilterCount > 0
+            ? t("filters.openButtonActive", { active: activeFilterCount })
+            : t("filters.openButton")}
         </Button>
         <SortSelector />
       </Box>

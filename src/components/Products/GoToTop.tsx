@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
 import { Fab, Fade } from "@mui/material";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
+import { useTranslation } from "react-i18next";
 
 export default function GoToTop() {
+  const { t } = useTranslation("catalog");
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
@@ -34,7 +36,7 @@ export default function GoToTop() {
         color={"primary"}
         className={"bottom-8 right-8"}
         sx={{ position: "fixed" }}
-        aria-label={"Go to top"}
+        aria-label={t("product.backToTop")}
         onClick={scrollToTop}>
         <ArrowUpwardIcon />
       </Fab>

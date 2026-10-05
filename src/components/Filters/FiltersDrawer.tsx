@@ -1,5 +1,6 @@
 import { Box, Button, Drawer, IconButton, Typography } from "@mui/material";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
+import { useTranslation } from "react-i18next";
 import { FiltersContent } from "@/components/Filters/FiltersBox.tsx";
 
 interface FiltersDrawerProps {
@@ -8,6 +9,8 @@ interface FiltersDrawerProps {
 }
 
 function FiltersDrawer({ open, onClose }: FiltersDrawerProps) {
+  const { t } = useTranslation("catalog");
+
   return (
     <Drawer
       anchor="bottom"
@@ -24,9 +27,9 @@ function FiltersDrawer({ open, onClose }: FiltersDrawerProps) {
       <Box className={"flex max-h-[85vh] flex-col p-5 sm:p-6"}>
         <Box className={"mb-4 flex items-center justify-between"}>
           <Typography component="h2" sx={{ fontSize: "1.15rem", fontWeight: 800, letterSpacing: "-0.02em" }}>
-            Filtry
+            {t("filters.title")}
           </Typography>
-          <IconButton onClick={onClose} aria-label="Zamknij filtry" size="small">
+          <IconButton onClick={onClose} aria-label={t("filters.close")} size="small">
             <CloseRoundedIcon />
           </IconButton>
         </Box>
@@ -47,7 +50,7 @@ function FiltersDrawer({ open, onClose }: FiltersDrawerProps) {
             boxShadow: "none",
             "&:hover": { bgcolor: "primary.main", boxShadow: "none" },
           }}>
-          Pokaż produkty
+          {t("filters.showProducts")}
         </Button>
       </Box>
     </Drawer>

@@ -6,6 +6,9 @@ import PlaceOutlined from "@mui/icons-material/PlaceOutlined";
 import LocalShippingOutlined from "@mui/icons-material/LocalShippingOutlined";
 import { OrderType } from "@/enums/OrderType.ts";
 import { CustomerType } from "@/enums/CustomerType.ts";
+import { useTranslation } from "react-i18next";
+import { useFormat } from "@/i18n/useLocale.ts";
+import { DELIVERY_FEE } from "@/reducers/cartReducers.ts";
 import { generateOrderAddress } from "@/helpers/generateOrderAddress.ts";
 import { accentText, panelSx, tone } from "@/components/listingStyles.ts";
 
@@ -44,6 +47,8 @@ function AddressCard({ icon, title, children }: { icon: ReactNode; title: string
 }
 
 function OrderAddresses({ order }: OrderAddressesProps) {
+  const { t } = useTranslation("account");
+  const { currency } = useFormat();
   const billing = order.billingAddress;
   const shipping = order.shippingAddress;
   const billingIsCompany = order.order_type === OrderType.COMPANY;
@@ -51,21 +56,21 @@ function OrderAddresses({ order }: OrderAddressesProps) {
 
   return (
     <>
-      <AddressCard icon={<ReceiptLongOutlined />} title="Dane do faktury">
+      <AddressCard icon={<ReceiptLongOutlined />} title={t("orderAddresses.billing")}>
         <Typography sx={{ fontWeight: 700, lineHeight: 1.4 }}>
           {billingIsCompany ? billing.company_name : `${billing.first_name} ${billing.last_name}`}
         </Typography>
-        {billingIsCompany && <Typography sx={lineSx}>NIP: {billing.nip}</Typography>}
+        {billingIsCompany && <Typography sx={lineSx}>{t("orderAddresses.nip", { nip: billing.nip })}</Typography>}
         <Typography sx={lineSx}>{order.customer_email}</Typography>
         <Typography sx={lineSx}>{billing.phone}</Typography>
         <Typography sx={lineSx}>{generateOrderAddress(billing)}</Typography>
       </AddressCard>
 
-      <AddressCard icon={<PlaceOutlined />} title="Dostawa">
+      <AddressCard icon={<PlaceOutlined />} title={t("orderAddresses.shipping")}>
         <Typography sx={{ fontWeight: 700, lineHeight: 1.4 }}>
           {shippingIsCompany ? shipping.company_name : `${shipping.first_name} ${shipping.last_name}`}
         </Typography>
-        {shippingIsCompany && <Typography sx={lineSx}>NIP: {shipping.nip}</Typography>}
+        {shippingIsCompany && <Typography sx={lineSx}>{t("orderAddresses.nip", { nip: shipping.nip })}</Typography>}
         <Typography sx={lineSx}>{shipping.phone}</Typography>
         <Typography sx={lineSx}>{generateOrderAddress(shipping)}</Typography>
         <Box
@@ -84,7 +89,7 @@ function OrderAddresses({ order }: OrderAddressesProps) {
             fontWeight: 700,
           }}>
           <LocalShippingOutlined sx={{ fontSize: 15 }} />
-          Kurier DPD · 10 zł
+          {t("orderAddresses.courier", { price: currency(DELIVERY_FEE) })}
         </Box>
       </AddressCard>
     </>

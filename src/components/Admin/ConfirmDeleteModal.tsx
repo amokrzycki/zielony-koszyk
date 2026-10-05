@@ -1,5 +1,6 @@
 import { Button } from "@mui/material";
 import DeleteOutline from "@mui/icons-material/DeleteOutline";
+import { useTranslation } from "react-i18next";
 import AdminModal from "./AdminModal.tsx";
 
 interface ConfirmDeleteModalProps {
@@ -7,30 +8,24 @@ interface ConfirmDeleteModalProps {
   handleClose: () => void;
   onConfirm: () => Promise<void>;
   count: number;
-  /** What is being deleted, so the copy names the noun ("3 produkty" vs "3 elementy"). */
-  entityLabel?: string;
+  /** What is being deleted, so the title names the noun ("3 produkty" vs "3 elementy"). */
+  entity?: "generic" | "products" | "orders" | "users" | "orderItems";
 }
 
-const pluralize = (count: number) => {
-  if (count === 1) return "element";
-  if (count > 1 && count < 5) return "elementy";
-  return "elementów";
-};
-
-function ConfirmDeleteModal({ open, handleClose, onConfirm, count, entityLabel }: ConfirmDeleteModalProps) {
-  const noun = entityLabel ?? pluralize(count);
+function ConfirmDeleteModal({ open, handleClose, onConfirm, count, entity = "generic" }: ConfirmDeleteModalProps) {
+  const { t } = useTranslation("admin");
 
   return (
     <AdminModal
       open={open}
       onClose={handleClose}
-      title={`Usunąć ${count} ${noun}?`}
-      subtitle="Tej operacji nie można cofnąć."
+      title={t(`confirmDelete.title.${entity}`, { count })}
+      subtitle={t("confirmDelete.subtitle")}
       maxWidth={560}
       footer={
         <>
           <Button variant="text" onClick={handleClose} sx={{ borderRadius: "999px", fontWeight: 700 }}>
-            Anuluj
+            {t("actions.cancel", { ns: "common" })}
           </Button>
           <Button
             startIcon={<DeleteOutline />}
@@ -44,7 +39,7 @@ function ConfirmDeleteModal({ open, handleClose, onConfirm, count, entityLabel }
                 });
             }}
             sx={{ borderRadius: "999px", fontWeight: 700 }}>
-            Usuń
+            {t("actions.delete", { ns: "common" })}
           </Button>
         </>
       }>

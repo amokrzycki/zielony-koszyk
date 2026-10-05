@@ -1,24 +1,26 @@
 import { Box, Divider, Typography } from "@mui/material";
 import type CartItem from "@/types/CartItem.ts";
-import { useSelector } from "react-redux";
-import type { RootState } from "@/store/store.ts";
-
-const DELIVERY_FEE = 10;
+import { DELIVERY_FEE } from "@/reducers/cartReducers.ts";
+import { useTranslation } from "react-i18next";
+import { useFormat } from "@/i18n/useLocale.ts";
+import { useLocalizedCartItems } from "./useLocalizedCartItems.ts";
 
 const amountSx = { fontWeight: 700, fontVariantNumeric: "tabular-nums" };
 
 function CartSummary() {
-  const cart = useSelector((state: RootState) => state.cart.items);
+  const { t } = useTranslation(["checkout", "common"]);
+  const { currency } = useFormat();
+  const cart = useLocalizedCartItems();
   const subtotal = cart.reduce((acc: number, item: CartItem) => acc + item.quantity * item.price, 0);
 
   return (
     <>
       <Typography sx={{ m: 0, mb: 2, fontSize: "1.05rem", fontWeight: 800, letterSpacing: "-0.02em" }}>
-        Podsumowanie
+        {t("summary.title")}
       </Typography>
 
       {cart.length === 0 ? (
-        <Typography sx={{ color: "text.secondary", lineHeight: 1.6 }}>Twój koszyk jest pusty.</Typography>
+        <Typography sx={{ color: "text.secondary", lineHeight: 1.6 }}>{t("summary.empty")}</Typography>
       ) : (
         <>
           <Box
@@ -36,11 +38,11 @@ function CartSummary() {
                     {item.name}
                   </Typography>
                   <Typography component="span" sx={{ color: "text.secondary", fontSize: "0.85rem" }}>
-                    {item.quantity} szt. × {item.price.toFixed(2)} zł
+                    {t("quantity.line", { ns: "common", count: item.quantity, price: currency(item.price) })}
                   </Typography>
                 </Box>
                 <Typography component="span" sx={{ ...amountSx, whiteSpace: "nowrap" }}>
-                  {(item.quantity * item.price).toFixed(2)} zł
+                  {currency(item.quantity * item.price)}
                 </Typography>
               </Box>
             ))}
@@ -49,18 +51,18 @@ function CartSummary() {
           <Divider sx={{ my: 2 }} />
 
           <Box sx={{ display: "flex", justifyContent: "space-between", mb: 1 }}>
-            <Typography sx={{ color: "text.secondary" }}>Wartość produktów</Typography>
-            <Typography sx={amountSx}>{subtotal.toFixed(2)} zł</Typography>
+            <Typography sx={{ color: "text.secondary" }}>{t("summary.subtotal")}</Typography>
+            <Typography sx={amountSx}>{currency(subtotal)}</Typography>
           </Box>
           <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-            <Typography sx={{ color: "text.secondary" }}>Dostawa</Typography>
-            <Typography sx={amountSx}>{DELIVERY_FEE} zł</Typography>
+            <Typography sx={{ color: "text.secondary" }}>{t("summary.delivery")}</Typography>
+            <Typography sx={amountSx}>{currency(DELIVERY_FEE)}</Typography>
           </Box>
 
           <Divider sx={{ my: 2 }} />
 
           <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
-            <Typography sx={{ fontWeight: 800 }}>Razem</Typography>
+            <Typography sx={{ fontWeight: 800 }}>{t("summary.total")}</Typography>
             <Typography
               sx={{
                 fontWeight: 900,
@@ -68,7 +70,7 @@ function CartSummary() {
                 letterSpacing: "-0.03em",
                 fontVariantNumeric: "tabular-nums",
               }}>
-              {(subtotal + DELIVERY_FEE).toFixed(2)} zł
+              {currency(subtotal + DELIVERY_FEE)}
             </Typography>
           </Box>
         </>

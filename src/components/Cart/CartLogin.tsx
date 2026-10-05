@@ -3,11 +3,13 @@ import ArrowBack from "@mui/icons-material/ArrowBack";
 import OrderNoAccount from "../Order/OrderNoAccount.tsx";
 import LoginForm from "../Accounts/LoginForm.tsx";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { useMode } from "@/providers/ModeProvider.tsx";
 import { ghostButtonSx, panelSx } from "@/components/listingStyles.ts";
 
 function CartLogin() {
   const navigate = useNavigate();
+  const { t } = useTranslation("checkout");
   const { mode } = useMode();
   return (
     <Box id="main-wrapper" sx={{ px: { xs: 2, sm: 3 } }}>
@@ -25,7 +27,7 @@ function CartLogin() {
         <Box
           component="img"
           src={`/${mode}_logo.png`}
-          alt="Zielony Koszyk"
+          alt={t("app.name", { ns: "common" })}
           sx={{ height: { xs: 72, md: 84 }, width: "auto" }}
         />
         <Typography
@@ -40,7 +42,7 @@ function CartLogin() {
             textWrap: "balance",
             maxWidth: "24ch",
           }}>
-          Jak chcesz dokończyć zakupy?
+          {t("cartLogin.title")}
         </Typography>
 
         <Box
@@ -63,10 +65,10 @@ function CartLogin() {
             <Typography
               component="h2"
               sx={{ m: 0, mb: 1, fontSize: "1.35rem", fontWeight: 800, letterSpacing: "-0.02em" }}>
-              Mam konto
+              {t("cartLogin.haveAccount")}
             </Typography>
             <Typography sx={{ mb: 3, color: "text.secondary", lineHeight: 1.55 }}>
-              Zaloguj się, aby przejść do dostawy i płatności.
+              {t("cartLogin.haveAccountText")}
             </Typography>
             <LoginForm />
           </Box>
@@ -74,7 +76,7 @@ function CartLogin() {
         </Box>
 
         <Button onClick={() => navigate(-1)} startIcon={<ArrowBack />} sx={(theme) => ghostButtonSx(theme)}>
-          Wróć do koszyka
+          {t("cartLogin.backToCart")}
         </Button>
       </Box>
     </Box>

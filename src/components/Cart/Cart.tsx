@@ -4,10 +4,14 @@ import type { RootState } from "@/store/store.ts";
 import { calculateTotalAmount, changeQuantity, clearCart, removeItem } from "./cartSlice.ts";
 import { Box, Button, Divider, IconButton, Typography } from "@mui/material";
 import type CartItem from "../../types/CartItem.ts";
+import { DELIVERY_FEE } from "@/reducers/cartReducers.ts";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import { Link, useNavigate } from "react-router-dom";
 import { useAppSelector } from "@/hooks/hooks.ts";
+import { useTranslation } from "react-i18next";
+import { useFormat, useLocalePath } from "@/i18n/useLocale.ts";
+import { useLocalizedCartItems } from "./useLocalizedCartItems.ts";
 import QuantitySelector from "@/components/Products/QuantitySelector.tsx";
 import type User from "@/types/User.ts";
 import { AddressType } from "@/enums/AddressType.ts";
@@ -15,7 +19,6 @@ import { setBillingAddress, setShippingAddress } from "@/components/Order/orderS
 import { EASE, accentText, ctaButtonSx, panelSx, tone } from "@/components/listingStyles.ts";
 import SwapLayers from "@/components/common/SwapLayers.tsx";
 
-const DELIVERY_FEE = 10;
 /** Press-and-hold time for clearing the whole cart. Quick clicks do not clear. */
 const HOLD_TO_CLEAR_MS = 700;
 
@@ -24,7 +27,10 @@ const prefersReducedMotion = () => window.matchMedia("(prefers-reduced-motion: r
 
 function Cart() {
   const navigate = useNavigate();
-  const cart = useAppSelector((state: RootState) => state.cart.items);
+  const { t } = useTranslation(["checkout", "common"]);
+  const { currency } = useFormat();
+  const to = useLocalePath();
+  const cart = useLocalizedCartItems();
   const user: User = useAppSelector((state: RootState) => state.auth.user);
   const dispatch = useDispatch();
   const holdTimer = useRef<ReturnType<typeof setTimeout>>(undefined);
@@ -93,9 +99,9 @@ function Cart() {
     if (user && billingAddress && deliveryAddress) {
       dispatch(setBillingAddress({ ...billingAddress, address_id: 0 }));
       dispatch(setShippingAddress({ ...deliveryAddress, address_id: 0 }));
-      navigate("/zamowienie");
+      navigate(to("order"));
     } else {
-      navigate("/cart-login");
+      navigate(to("cartLogin"));
     }
   };
 
@@ -118,7 +124,7 @@ function Cart() {
             }}>
             <Box>
               <Typography variant="h4" sx={{ fontWeight: 900, letterSpacing: "-0.03em", lineHeight: 1.1 }}>
-                Twój koszyk
+                {t("cart.title")}
               </Typography>
               {cart.length > 0 && (
                 <Box
@@ -135,7 +141,7 @@ function Cart() {
                     fontWeight: 700,
                     lineHeight: 1.2,
                   }}>
-                  {itemCount} szt.
+                  {t("quantity.pieces", { ns: "common", count: itemCount })}
                 </Box>
               )}
             </Box>
@@ -150,7 +156,7 @@ function Cart() {
                   // Keyboard and assistive-tech activation has no pointer hold; clear at once.
                   if (event.detail === 0) dispatch(clearCart());
                 }}
-                aria-label="Wyczyść koszyk — przytrzymaj, aby potwierdzić"
+                aria-label={t("cart.clearAria")}
                 sx={{
                   position: "relative",
                   overflow: "hidden",
@@ -175,7 +181,7 @@ function Cart() {
                   component="span"
                   sx={{ position: "relative", zIndex: 1, display: "inline-flex", alignItems: "center", gap: 1 }}>
                   <DeleteIcon fontSize="small" />
-                  {holdingClear ? "Przytrzymaj…" : "Wyczyść koszyk"}
+                  {holdingClear ? t("cart.holding") : t("cart.clear")}
                 </Box>
               </Button>
             )}
@@ -209,13 +215,13 @@ function Cart() {
                   <ShoppingCartOutlinedIcon />
                 </Box>
                 <Typography variant="h5" sx={{ fontWeight: 800, letterSpacing: "-0.02em" }}>
-                  Twój koszyk jest pusty
+                  {t("cart.emptyTitle")}
                 </Typography>
                 <Typography sx={{ color: "text.secondary", lineHeight: 1.6, maxWidth: "42ch" }}>
-                  Zajrzyj do naszej oferty i dodaj pierwsze produkty do koszyka.
+                  {t("cart.emptyText")}
                 </Typography>
-                <Button component={Link} to="/produkty" sx={{ ...ctaButtonSx, mt: 2 }}>
-                  Przeglądaj produkty
+                <Button component={Link} to={to("products")} sx={{ ...ctaButtonSx, mt: 2 }}>
+                  {t("cart.browse")}
                 </Button>
               </Box>
             ) : (
@@ -228,7 +234,7 @@ function Cart() {
                 }}>
                 <Box
                   component="ul"
-                  aria-label="Produkty w koszyku"
+                  aria-label={t("cart.itemsAria")}
                   sx={(theme) => ({
                     ...panelSx(theme),
                     listStyle: "none",
@@ -264,7 +270,7 @@ function Cart() {
                           {item.name}
                         </Typography>
                         <Typography component="span" sx={{ color: "text.secondary", fontSize: "0.85rem" }}>
-                          {item.price.toFixed(2)} zł / szt.
+                          {t("quantity.unitPrice", { ns: "common", price: currency(item.price) })}
                         </Typography>
                       </Box>
 
@@ -289,11 +295,11 @@ function Cart() {
                           letterSpacing: "-0.02em",
                           fontVariantNumeric: "tabular-nums",
                         }}>
-                        {(item.quantity * item.price).toFixed(2)} zł
+                        {currency(item.quantity * item.price)}
                       </Typography>
 
                       <IconButton
-                        aria-label={`Usuń ${item.name} z koszyka`}
+                        aria-label={t("cart.removeAria", { name: item.name })}
                         onClick={(event) => handleRemove(event, item.productId)}
                         size="small"
                         sx={{
@@ -309,21 +315,21 @@ function Cart() {
                 </Box>
 
                 <Box component="aside" sx={(theme) => ({ ...panelSx(theme), p: { xs: 2.5, sm: 3 } })}>
-                  <Typography sx={{ fontWeight: 800, fontSize: "1.05rem", mb: 2 }}>Podsumowanie</Typography>
+                  <Typography sx={{ fontWeight: 800, fontSize: "1.05rem", mb: 2 }}>{t("summary.title")}</Typography>
 
                   <Box sx={{ display: "flex", justifyContent: "space-between", mb: 1 }}>
-                    <Typography sx={{ color: "text.secondary" }}>Wartość produktów</Typography>
-                    <Typography sx={amountSx}>{subtotal.toFixed(2)} zł</Typography>
+                    <Typography sx={{ color: "text.secondary" }}>{t("summary.subtotal")}</Typography>
+                    <Typography sx={amountSx}>{currency(subtotal)}</Typography>
                   </Box>
                   <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-                    <Typography sx={{ color: "text.secondary" }}>Dostawa</Typography>
-                    <Typography sx={amountSx}>{DELIVERY_FEE} zł</Typography>
+                    <Typography sx={{ color: "text.secondary" }}>{t("summary.delivery")}</Typography>
+                    <Typography sx={amountSx}>{currency(DELIVERY_FEE)}</Typography>
                   </Box>
 
                   <Divider sx={{ my: 2 }} />
 
                   <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", mb: 3 }}>
-                    <Typography sx={{ fontWeight: 800 }}>Razem</Typography>
+                    <Typography sx={{ fontWeight: 800 }}>{t("summary.total")}</Typography>
                     <Typography
                       sx={{
                         fontWeight: 900,
@@ -331,12 +337,12 @@ function Cart() {
                         letterSpacing: "-0.03em",
                         fontVariantNumeric: "tabular-nums",
                       }}>
-                      {(subtotal + DELIVERY_FEE).toFixed(2)} zł
+                      {currency(subtotal + DELIVERY_FEE)}
                     </Typography>
                   </Box>
 
                   <Button fullWidth onClick={handleOrder} sx={ctaButtonSx}>
-                    Wybierz dostawę i płatność
+                    {t("cart.checkout")}
                   </Button>
                 </Box>
               </Box>

@@ -1,3 +1,5 @@
+import { useTranslation } from "react-i18next";
+import { useApiError } from "../useAdminI18n.ts";
 import { useAppDispatch, useAppSelector } from "@/hooks/hooks.ts";
 import type User from "../../../types/User.ts";
 import { useForm } from "@mantine/form";
@@ -37,6 +39,8 @@ const grid = { display: "grid", gap: 2 } as const;
 const twoCol = { ...grid, gridTemplateColumns: { xs: "1fr", sm: "1fr 1fr" } } as const;
 
 function EditUserView() {
+  const { t } = useTranslation("admin");
+  const apiError = useApiError();
   const user: User = useAppSelector((state) => state.app.userToEdit);
   const [changeDetails] = useChangeUserDetailsMutation();
   const dispatch = useAppDispatch();
@@ -62,14 +66,14 @@ function EditUserView() {
   });
 
   if (!user) {
-    return <ErrorView message={"Nie znaleziono użytkownika."} errorText={"Spróbuj ponownie"} />;
+    return <ErrorView message={t("editUser.notFound")} errorText={t("general.retry")} />;
   }
 
   const billingAddress = user.addresses.find((address) => address.type === AddressType.BILLING);
   const shippingAddress = user.addresses.find((address) => address.type === AddressType.DELIVERY);
 
   if (!billingAddress || !shippingAddress) {
-    return <ErrorView message={"Nie znaleziono adresów użytkownika."} errorText={"Spróbuj ponownie"} />;
+    return <ErrorView message={t("editUser.addressesNotFound")} errorText={t("general.retry")} />;
   }
 
   const isValid = form.isValid();
@@ -82,9 +86,9 @@ function EditUserView() {
 
     toast
       .promise(changeDetails(updatedUser).unwrap(), {
-        loading: "Aktualizowanie danych...",
-        success: "Dane zaktualizowane.",
-        error: "Nie udało się zaktualizować danych.",
+        loading: t("editUser.updating"),
+        success: t("editUser.updated"),
+        error: (error) => apiError(error, t("editUser.updateError")),
       })
       .then(() => {
         dispatch(setUserToEdit(updatedUser));
@@ -95,7 +99,7 @@ function EditUserView() {
     <Box sx={{ width: "100%" }}>
       <AdminPageHeader
         icon={<ManageAccountsOutlined />}
-        title={`Edycja: ${user.first_name} ${user.last_name}`}
+        title={t("editUser.title", { name: `${user.first_name} ${user.last_name}` })}
         subtitle={user.email}
       />
 
@@ -105,24 +109,24 @@ function EditUserView() {
           onSubmit={form.onSubmit(handleSubmit)}
           sx={(theme) => ({ ...panelSx(theme), p: { xs: 2.5, sm: 3.5 } })}>
           <Typography component="h2" sx={{ ...adminSubheadingSx, mb: 2.5 }}>
-            Dane użytkownika
+            {t("editUser.dataHeading")}
           </Typography>
           <Box sx={grid}>
             <Box sx={twoCol}>
               <TextField
                 variant="outlined"
-                label="Imię"
+                label={t("userForm.firstName")}
                 required
-                placeholder="Jan"
+                placeholder={t("userForm.firstNamePlaceholder")}
                 {...form.getInputProps("first_name")}
                 error={Boolean(form.errors.first_name) && form.isTouched("first_name")}
                 helperText={form.errors.first_name}
               />
               <TextField
                 variant="outlined"
-                label="Nazwisko"
+                label={t("userForm.lastName")}
                 required
-                placeholder="Kowalski"
+                placeholder={t("userForm.lastNamePlaceholder")}
                 {...form.getInputProps("last_name")}
                 error={Boolean(form.errors.last_name) && form.isTouched("last_name")}
                 helperText={form.errors.last_name}
@@ -130,7 +134,7 @@ function EditUserView() {
             </Box>
             <TextField
               variant="outlined"
-              label="E-mail"
+              label={t("userForm.email")}
               type="email"
               required
               {...form.getInputProps("email")}
@@ -139,7 +143,7 @@ function EditUserView() {
             />
             <TextField
               variant="outlined"
-              label="Numer telefonu"
+              label={t("userForm.phone")}
               type="tel"
               required
               {...form.getInputProps("phone")}
@@ -151,14 +155,14 @@ function EditUserView() {
               required
               sx={{ maxWidth: 320 }}
               error={Boolean(form.errors.role) && form.isTouched("role")}>
-              <InputLabel id="role-label">Rola</InputLabel>
+              <InputLabel id="role-label">{t("userForm.role")}</InputLabel>
               <Select
                 labelId="role-label"
-                label="Rola"
+                label={t("userForm.role")}
                 value={form.values.role}
                 onChange={(e) => form.setFieldValue("role", e.target.value as Roles)}>
-                <MenuItem value={Roles.ADMIN}>Administrator</MenuItem>
-                <MenuItem value={Roles.USER}>Użytkownik</MenuItem>
+                <MenuItem value={Roles.ADMIN}>{t("roles.ADMIN")}</MenuItem>
+                <MenuItem value={Roles.USER}>{t("roles.USER")}</MenuItem>
               </Select>
               {Boolean(form.errors.role) && form.isTouched("role") && (
                 <FormHelperText>{form.errors.role}</FormHelperText>
@@ -171,7 +175,7 @@ function EditUserView() {
               variant="contained"
               disabled={!isValid && form.isTouched()}
               sx={{ borderRadius: "999px", fontWeight: 700 }}>
-              Zapisz dane
+              {t("editUser.save")}
             </Button>
           </Box>
         </Box>
@@ -179,13 +183,13 @@ function EditUserView() {
         <Box sx={{ display: "flex", flexDirection: "column", gap: 2.5 }}>
           <Box sx={(theme) => ({ ...panelSx(theme), p: { xs: 2.5, sm: 3.5 } })}>
             <Typography component="h2" sx={{ ...adminSubheadingSx, mb: 2.5 }}>
-              Adres dostawy
+              {t("editUser.deliveryAddress")}
             </Typography>
             <ChangeAddress user={user} address={shippingAddress} />
           </Box>
           <Box sx={(theme) => ({ ...panelSx(theme), p: { xs: 2.5, sm: 3.5 } })}>
             <Typography component="h2" sx={{ ...adminSubheadingSx, mb: 2.5 }}>
-              Adres do faktury
+              {t("editUser.billingAddress")}
             </Typography>
             <ChangeAddress user={user} address={billingAddress} />
           </Box>

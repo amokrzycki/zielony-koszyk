@@ -1,12 +1,8 @@
 import { Box, useTheme } from "@mui/material";
 import { NavLink } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import { useLocalePath } from "@/i18n/useLocale.ts";
 import { navPillSx, navRowSx } from "./navStyles.ts";
-
-const links = [
-  { to: "/", label: "Strona główna", end: true },
-  { to: "/produkty", label: "Produkty" },
-  { to: "/o-nas", label: "O nas" },
-];
 
 interface NavProps {
   vertical?: boolean;
@@ -16,10 +12,17 @@ interface NavProps {
 
 function Nav({ vertical = false, onNavigate }: NavProps) {
   const theme = useTheme();
+  const { t } = useTranslation();
+  const to = useLocalePath();
+  const links = [
+    { to: to("home"), label: t("nav.home"), end: true },
+    { to: to("products"), label: t("nav.products") },
+    { to: to("about"), label: t("nav.about") },
+  ];
   return (
     <Box
       component="nav"
-      aria-label="Nawigacja główna"
+      aria-label={t("nav.label")}
       sx={{
         display: "flex",
         flexDirection: vertical ? "column" : "row",

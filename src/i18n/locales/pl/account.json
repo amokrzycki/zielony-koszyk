@@ -1,0 +1,311 @@
+{
+  "fields": {
+    "firstName": "Imię",
+    "firstNamePlaceholder": "Jan",
+    "lastName": "Nazwisko",
+    "lastNamePlaceholder": "Kowalski",
+    "companyName": "Nazwa firmy",
+    "companyNamePlaceholder": "Firma XYZ",
+    "nip": "NIP",
+    "email": "Email",
+    "phone": "Numer telefonu",
+    "password": "Hasło",
+    "street": "Ulica",
+    "streetPlaceholder": "ul. Przykładowa",
+    "buildingNumber": "Numer domu/budynku",
+    "flatNumber": "Numer mieszkania",
+    "zip": "Kod pocztowy",
+    "city": "Miejscowość",
+    "cityPlaceholder": "Warszawa"
+  },
+  "badge": {
+    "profile": "Profil",
+    "orders": "Zamówienia",
+    "admin": "Panel administracyjny",
+    "account": "Konto",
+    "myAccount": "Moje konto",
+    "greeting": "Witaj {{name}}!",
+    "menuAria": "Menu konta: {{name}}",
+    "logout": "Wyloguj się",
+    "loggedOut": "Zostałeś wylogowany",
+    "logoutFailed": "Nie udało się wylogować"
+  },
+  "auth": {
+    "tabsAria": "logowanie",
+    "tabLogin": "Logowanie",
+    "tabRegister": "Nowe konto",
+    "login": {
+      "title": "Witaj z powrotem.",
+      "body": "Zaloguj się, aby dokończyć zakupy, śledzić zamówienia i wracać do ulubionych produktów."
+    },
+    "register": {
+      "title": "Zacznij z Zielonym Koszykiem.",
+      "body": "Konto to szybsze zakupy, podgląd statusów zamówień i cała historia Twoich dostaw."
+    },
+    "points": {
+      "delivery": "Codzienna dostawa w Rzeszowie i okolicach",
+      "organic": "Produkty z ekologicznych upraw",
+      "wholesale": "Ceny hurtowe przy większych zamówieniach"
+    }
+  },
+  "login": {
+    "email": "Email",
+    "password": "Hasło",
+    "rememberMe": "Zapamiętaj mnie",
+    "submit": "Zaloguj się",
+    "success": "Zalogowano pomyślnie",
+    "failed": "Nie udało się zalogować",
+    "mfaRequired": "Wymagane dodatkowe uwierzytelnienie: {{method}}",
+    "backToLogin": "Wróć do logowania"
+  },
+  "register": {
+    "passwordConfirmation": "Potwierdź hasło",
+    "address": "Adres",
+    "terms": "Akceptuję regulamin*",
+    "submit": "Utwórz konto",
+    "toast": {
+      "loading": "Tworzenie konta...",
+      "success": "Konto zostało utworzone",
+      "error": "Nie udało się utworzyć konta"
+    }
+  },
+  "mfaCode": {
+    "instructionEmail": "Wpisz sześciocyfrowy kod wysłany e-mailem.",
+    "instructionTotp": "Wpisz sześciocyfrowy kod z aplikacji uwierzytelniającej.",
+    "label": "Kod jednorazowy",
+    "invalid": "Kod jest nieprawidłowy lub wygasł",
+    "back": "Wróć",
+    "confirm": "Potwierdź",
+    "verifying": "Weryfikowanie…"
+  },
+  "webauthn": {
+    "instruction": "Potwierdź logowanie kluczem platformowym (np. Windows Hello).",
+    "use": "Użyj klucza platformowego",
+    "waiting": "Oczekiwanie…",
+    "errors": {
+      "cancelled": "Uwierzytelnienie zostało anulowane.",
+      "startFailed": "Nie udało się uruchomić klucza platformowego.",
+      "failed": "Uwierzytelnienie nie powiodło się."
+    }
+  },
+  "view": {
+    "loginTitle": "Zaloguj się, aby zobaczyć swoje konto",
+    "loginText": "Zamówienia, adresy dostawy i ustawienia bezpieczeństwa czekają w jednym miejscu.",
+    "login": "Zaloguj się",
+    "welcome": "Witaj, {{name}}!",
+    "benefits": {
+      "orders": "Historia zamówień i ich statusy",
+      "addresses": "Zapisane adresy dostawy",
+      "security": "Hasło, e-mail i ustawienia MFA"
+    }
+  },
+  "options": {
+    "title": "Twoje konto",
+    "subtitle": "Zarządzaj zamówieniami, adresami dostawy i bezpieczeństwem konta.",
+    "sections": {
+      "orders": "Zamówienia i dostawa",
+      "security": "Bezpieczeństwo",
+      "admin": "Administracja"
+    },
+    "accountOrders": {
+      "title": "Twoje zamówienia",
+      "description": "Historia i statusy Twoich zamówień."
+    },
+    "accountAddresses": {
+      "title": "Książka adresowa",
+      "description": "Adresy dostawy i dane do rachunku."
+    },
+    "accountEmailChange": {
+      "title": "Zmiana adresu email",
+      "description": "Zmień adres przypisany do konta."
+    },
+    "accountPasswordChange": {
+      "title": "Zmiana hasła",
+      "description": "Zaktualizuj hasło do konta."
+    },
+    "accountMfa": {
+      "title": "Ustawienia MFA",
+      "description": "Dodatkowe potwierdzanie logowania."
+    },
+    "admin": {
+      "title": "Panel administratora",
+      "description": "Produkty, zamówienia i użytkownicy."
+    }
+  },
+  "email": {
+    "title": "Zmiana adresu email",
+    "subtitle": "Zmień adres przypisany do konta. Ze względów bezpieczeństwa wylogujemy Cię z tego urządzenia.",
+    "current": "Obecny adres email",
+    "newLabel": "Nowy adres email",
+    "newPlaceholder": "nowy@adres.pl",
+    "mustDiffer": "Nowy adres email musi się różnić od obecnego",
+    "saving": "Zapisywanie…",
+    "submit": "Zmień adres email",
+    "error": "Nie udało się zmienić adresu email. Sprawdź, czy nowy adres nie jest już używany.",
+    "success": "Adres email został zmieniony",
+    "successLoggedOut": "Adres email został zmieniony. Wylogowaliśmy Cię.",
+    "logoutFailed": "Nie udało się wylogować. Wyloguj się ręcznie."
+  },
+  "password": {
+    "title": "Zmiana hasła",
+    "subtitle": "Ustaw nowe hasło do konta. Po zmianie pozostaniesz zalogowany na tym urządzeniu.",
+    "show": "Pokaż hasła",
+    "hide": "Ukryj hasła",
+    "current": "Aktualne hasło",
+    "new": "Nowe hasło",
+    "confirm": "Potwierdź nowe hasło",
+    "hint": "Minimum 8 znaków, z jedną cyfrą i jednym znakiem specjalnym.",
+    "saving": "Zapisywanie…",
+    "submit": "Zmień hasło",
+    "error": "Nie udało się zmienić hasła. Sprawdź aktualne hasło i spróbuj ponownie.",
+    "success": "Hasło zostało zmienione"
+  },
+  "mfa": {
+    "title": "Ustawienia MFA",
+    "subtitle": "Wybierz jeden dodatkowy sposób potwierdzania logowania.",
+    "disabledChip": "MFA wyłączone",
+    "activeChip": "Aktywna: {{method}}",
+    "activeLabels": {
+      "NONE": "Wyłączone",
+      "EMAIL_OTP": "Kod e-mail",
+      "TOTP": "Aplikacja uwierzytelniająca (TOTP)",
+      "WEBAUTHN": "Klucz platformowy (WebAuthn)"
+    },
+    "chooseMethod": "Wybierz metodę",
+    "methods": {
+      "EMAIL_OTP": {
+        "label": "Kod e-mail",
+        "description": "Sześciocyfrowy kod wysyłany na adres przypisany do konta."
+      },
+      "TOTP": {
+        "label": "Aplikacja uwierzytelniająca",
+        "description": "Kod TOTP z aplikacji takiej jak Google Authenticator lub 2FAS."
+      },
+      "WEBAUTHN": {
+        "label": "Klucz platformowy",
+        "description": "Passkey zapisany na urządzeniu, np. Windows Hello."
+      },
+      "NONE": {
+        "label": "Wyłączone",
+        "description": "Logowanie tylko za pomocą hasła."
+      }
+    },
+    "alreadyActive": "Ta metoda jest już aktywna. Wybierz inną, aby ją zmienić.",
+    "confirmWithPassword": "Potwierdź zmianę aktualnym hasłem.",
+    "currentPassword": "Aktualne hasło",
+    "totp": {
+      "title": "Dokończ konfigurację TOTP",
+      "note": "Dotychczasowa metoda pozostaje aktywna, dopóki nie potwierdzisz pierwszego kodu.",
+      "alert": "Dodaj konto w aplikacji uwierzytelniającej przy użyciu URI lub sekretu, potem wpisz pierwszy kod.",
+      "uri": "URI otpauth://",
+      "secret": "Sekret do ręcznego wpisania",
+      "instruction": "Wpisz pierwszy sześciocyfrowy kod z aplikacji uwierzytelniającej."
+    },
+    "submit": {
+      "saving": "Zapisywanie…",
+      "none": "Wyłącz MFA",
+      "emailOtp": "Włącz kody e-mail",
+      "totp": "Skonfiguruj TOTP",
+      "totpAgain": "Skonfiguruj TOTP ponownie",
+      "webauthn": "Skonfiguruj klucz platformowy",
+      "webauthnAgain": "Zarejestruj nowy klucz"
+    },
+    "success": {
+      "none": "MFA zostało wyłączone",
+      "emailOtp": "Kody e-mail zostały włączone",
+      "totp": "Uwierzytelnianie TOTP zostało włączone",
+      "webauthn": "Klucz platformowy został skonfigurowany"
+    },
+    "errors": {
+      "registrationCancelled": "Rejestracja klucza została anulowana. Wybierz metodę i spróbuj ponownie.",
+      "registrationFailed": "Nie udało się uruchomić klucza platformowego. Spróbuj ponownie.",
+      "saveFailed": "Nie udało się zapisać zmiany. Sprawdź aktualne hasło i spróbuj ponownie."
+    }
+  },
+  "addressBook": {
+    "title": "Książka adresowa",
+    "subtitle": "Zarządzaj adresami do rachunku i dostawy. Adres oznaczony jako domyślny podpowiemy Ci przy składaniu zamówienia.",
+    "addNew": "Dodaj nowy adres",
+    "addFirst": "Dodaj pierwszy adres",
+    "emptyTitle": "Nie masz jeszcze zapisanych adresów",
+    "emptyText": "Dodaj adres do rachunku lub dostawy, a zapamiętamy go przy kolejnych zamówieniach.",
+    "noneOfType": "Nie masz jeszcze adresu tego typu.",
+    "billing": "Dane do rachunku",
+    "delivery": "Adresy dostawy"
+  },
+  "addressBox": {
+    "nip": "NIP: {{nip}}",
+    "edit": "Edytuj"
+  },
+  "addressType": {
+    "label": "Adres używany w:",
+    "billing": "rachunku",
+    "delivery": "dostawie"
+  },
+  "defaultCheckbox": {
+    "isDefault": "Domyślny",
+    "setDefault": "Ustaw jako domyślny",
+    "toast": {
+      "loading": "Zmienianie adresu...",
+      "success": "Adres został zmieniony",
+      "error": "Wystąpił błąd podczas zmiany adresu"
+    }
+  },
+  "addressForm": {
+    "newTitle": "Nowy adres",
+    "editTitle": "Edytuj adres",
+    "newSubtitle": "Uzupełnij dane nowego adresu do rachunku lub dostawy.",
+    "editSubtitle": "Zmień dane adresu. Zapisz, aby zaktualizować go w książce adresowej.",
+    "houseNumber": "Nr domu",
+    "flatNumber": "Nr mieszkania",
+    "cityPlaceholder": "Rzeszów",
+    "add": "Dodaj adres",
+    "saveChanges": "Zapisz zmiany",
+    "cancel": "Anuluj",
+    "fillRequired": "Uzupełnij wymagane pola, aby zapisać adres.",
+    "toast": {
+      "addLoading": "Dodawanie adresu...",
+      "addSuccess": "Adres został dodany",
+      "addError": "Wystąpił błąd podczas dodawania adresu",
+      "saveLoading": "Zapisywanie zmian...",
+      "saveSuccess": "Zmiany zostały zapisane",
+      "saveError": "Wystąpił błąd podczas zapisywania zmian"
+    }
+  },
+  "orders": {
+    "title": "Zamówienia",
+    "subtitle": "Twoja historia zakupów — sprawdź status i szczegóły każdego zamówienia.",
+    "error": "Nie udało się pobrać Twoich zamówień",
+    "emptyTitle": "Nie masz jeszcze zamówień",
+    "emptyText": "Gdy złożysz pierwsze zamówienie, pojawi się tutaj wraz z aktualnym statusem dostawy.",
+    "browse": "Przejdź do produktów"
+  },
+  "orderDetails": {
+    "title": "Zamówienie #{{id}}",
+    "error": "Nie udało się pobrać danych zamówienia",
+    "type": "Typ zamówienia",
+    "typeCompany": "Firma",
+    "typePrivate": "Osoba prywatna",
+    "date": "Data złożenia",
+    "contact": "Kontakt",
+    "products": "Produkty",
+    "positions_one": "{{count}} pozycja",
+    "positions_few": "{{count}} pozycje",
+    "positions_many": "{{count}} pozycji",
+    "positions_other": "{{count}} pozycji",
+    "addresses": "Dane do faktury i dostawy"
+  },
+  "orderAddresses": {
+    "billing": "Dane do faktury",
+    "shipping": "Dostawa",
+    "nip": "NIP: {{nip}}",
+    "courier": "Kurier DPD · {{price}}"
+  },
+  "orderTable": {
+    "product": "Produkt",
+    "quantity": "Ilość",
+    "price": "Cena",
+    "value": "Wartość",
+    "total": "Razem"
+  }
+}

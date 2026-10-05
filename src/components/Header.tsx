@@ -4,6 +4,9 @@ import { useState } from "react";
 import Nav from "./Nav.tsx";
 import CartBadge from "./Cart/CartBadge.tsx";
 import ModeSwitcher from "./ModeSwitcher.tsx";
+import LanguageSwitcher from "./LanguageSwitcher.tsx";
+import { useTranslation } from "react-i18next";
+import { useLocalePath } from "@/i18n/useLocale.ts";
 import UserBadge from "./Accounts/UserBadge.tsx";
 import MobileMenu from "./MobileMenu.tsx";
 import { useNavigate } from "react-router-dom";
@@ -13,6 +16,8 @@ import { HEADER_SHADOW, NAV_HEIGHT, navPillSx } from "./navStyles.ts";
 function Header() {
   const theme = useTheme();
   const navigate = useNavigate();
+  const { t } = useTranslation();
+  const to = useLocalePath();
   const { mode } = useMode();
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -44,14 +49,14 @@ function Header() {
             <Box
               component="img"
               src={`/${mode}_logo.png`}
-              alt="Zielony koszyk — strona główna"
+              alt={t("nav.homeLogo")}
               role="button"
               tabIndex={0}
-              onClick={() => navigate("/")}
+              onClick={() => navigate(to("home"))}
               onKeyDown={(e: React.KeyboardEvent) => {
                 if (e.key === "Enter" || e.key === " ") {
                   e.preventDefault();
-                  navigate("/");
+                  navigate(to("home"));
                 }
               }}
               sx={{ height: { xs: 34, md: 44 }, width: "auto", cursor: "pointer", flexShrink: 0 }}
@@ -66,6 +71,9 @@ function Header() {
             direction="row"
             spacing={{ xs: 0.5, sm: 1 }}
             sx={{ flex: 1, alignItems: "center", justifyContent: "flex-end" }}>
+            <Box sx={{ display: { xs: "none", md: "block" } }}>
+              <LanguageSwitcher />
+            </Box>
             <ModeSwitcher />
             <CartBadge />
             <Box sx={{ display: { xs: "none", md: "block" } }}>
@@ -73,7 +81,7 @@ function Header() {
             </Box>
             <IconButton
               onClick={() => setMenuOpen(true)}
-              aria-label="Otwórz menu"
+              aria-label={t("nav.openMenu")}
               aria-controls="mobile-menu"
               aria-expanded={menuOpen}
               sx={{ ...navPillSx(theme), display: { md: "none" } }}>

@@ -1,29 +1,18 @@
 import { Box, Tab, Tabs, Typography } from "@mui/material";
 import CheckRounded from "@mui/icons-material/CheckRounded";
 import type React from "react";
+import { useTranslation } from "react-i18next";
 import { useState } from "react";
 import RegisterForm from "./RegisterForm.tsx";
 import LoginForm from "./LoginForm.tsx";
 import { BRAND_INK, DUR, EASE, accentText, panelSx, tone } from "@/components/listingStyles.ts";
 
-const brandPoints = [
-  "Codzienna dostawa w Rzeszowie i okolicach",
-  "Produkty z ekologicznych upraw",
-  "Ceny hurtowe przy większych zamówieniach",
-];
+const brandPoints = ["delivery", "organic", "wholesale"] as const;
 
-const brandCopy = [
-  {
-    title: "Witaj z powrotem.",
-    body: "Zaloguj się, aby dokończyć zakupy, śledzić zamówienia i wracać do ulubionych produktów.",
-  },
-  {
-    title: "Zacznij z Zielonym Koszykiem.",
-    body: "Konto to szybsze zakupy, podgląd statusów zamówień i cała historia Twoich dostaw.",
-  },
-];
+const brandCopy = ["login", "register"] as const;
 
 function Login() {
+  const { t } = useTranslation(["account", "common"]);
   const query = new URLSearchParams(window.location.search);
   const [tab, setTab] = useState<number>(query.get("tab") === "1" ? 1 : 0);
   const copy = brandCopy[tab] ?? brandCopy[0];
@@ -62,7 +51,7 @@ function Login() {
             <Box
               component="img"
               src="/dark_logo.png"
-              alt="Zielony Koszyk"
+              alt={t("app.name", { ns: "common" })}
               sx={{ height: 52, width: "auto", alignSelf: "flex-start" }}
             />
             <Box>
@@ -75,10 +64,10 @@ function Login() {
                   letterSpacing: "-0.03em",
                   textWrap: "balance",
                 }}>
-                {copy.title}
+                {t(`auth.${copy}.title`)}
               </Typography>
               <Typography sx={{ mt: 2, color: "rgba(255,255,255,0.72)", lineHeight: 1.6, maxWidth: "42ch" }}>
-                {copy.body}
+                {t(`auth.${copy}.body`)}
               </Typography>
               <Box component="ul" sx={{ mt: 4, listStyle: "none", p: 0, display: "grid", gap: 1.5 }}>
                 {brandPoints.map((point) => (
@@ -98,7 +87,7 @@ function Login() {
                       <CheckRounded />
                     </Box>
                     <Typography sx={{ color: "rgba(255,255,255,0.85)", fontSize: "0.95rem", lineHeight: 1.45 }}>
-                      {point}
+                      {t(`auth.points.${point}`)}
                     </Typography>
                   </Box>
                 ))}
@@ -117,7 +106,7 @@ function Login() {
             <Tabs
               value={tab}
               onChange={handleTabChange}
-              aria-label="logowanie"
+              aria-label={t("auth.tabsAria")}
               variant="fullWidth"
               sx={(theme) => ({
                 minHeight: 0,
@@ -144,8 +133,8 @@ function Login() {
                 },
                 "& .Mui-selected": { color: accentText(theme) },
               })}>
-              <Tab label="Logowanie" disableRipple />
-              <Tab label="Nowe konto" disableRipple />
+              <Tab label={t("auth.tabLogin")} disableRipple />
+              <Tab label={t("auth.tabRegister")} disableRipple />
             </Tabs>
             {/* Both forms stay mounted; the inactive row collapses to 0fr and is inert. */}
             {[<LoginForm key="login" />, <RegisterForm key="register" setTab={setTab} />].map((form, index) => {

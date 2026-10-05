@@ -2,21 +2,14 @@ import { useEffect, useRef, useState } from "react";
 import { Box, IconButton, Typography, useMediaQuery, keyframes } from "@mui/material";
 import { KeyboardArrowLeft, KeyboardArrowRight, ArrowForward } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import { useLocalePath } from "@/i18n/useLocale.ts";
 
 const carouselImages = [
-  {
-    label: "Codzienne dostawy",
-    imgPath: "/images/karuzela1.jpeg",
-  },
-  {
-    label: "Produkty sezonowe z dostawą do domu",
-    imgPath: "/images/karuzela2.jpeg",
-  },
-  {
-    label: "Artykuły spożywcze w zasięgu ręki",
-    imgPath: "/images/karuzela3.jpeg",
-  },
-];
+  { id: "delivery", imgPath: "/images/karuzela1.jpeg" },
+  { id: "seasonal", imgPath: "/images/karuzela2.jpeg" },
+  { id: "grocery", imgPath: "/images/karuzela3.jpeg" },
+] as const;
 
 const SLIDE_COUNT = carouselImages.length;
 const SLIDE_MS = 6000;
@@ -35,6 +28,8 @@ export default function ImageCarousel() {
   const lastStep = useRef(0);
   const reduceMotion = useMediaQuery("(prefers-reduced-motion: reduce)");
   const navigate = useNavigate();
+  const { t } = useTranslation("catalog");
+  const to = useLocalePath();
 
   const go = (step: number) => setActiveStep((step + SLIDE_COUNT) % SLIDE_COUNT);
   const handleNext = () => setActiveStep((s) => (s + 1) % SLIDE_COUNT);
@@ -58,8 +53,8 @@ export default function ImageCarousel() {
   return (
     <Box
       component="section"
-      aria-roledescription="karuzela"
-      aria-label="Dostawa i oferta"
+      aria-roledescription={t("carousel.roleDescription")}
+      aria-label={t("carousel.label")}
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
       onFocusCapture={() => setPaused(true)}
@@ -149,7 +144,7 @@ export default function ImageCarousel() {
               textWrap: "balance",
               textShadow: "0 2px 24px rgba(0,0,0,0.55)",
             }}>
-            {carouselImages[activeStep].label}
+            {t(`carousel.slides.${carouselImages[activeStep].id}`)}
           </Typography>
           <Typography
             sx={{
@@ -160,13 +155,13 @@ export default function ImageCarousel() {
               maxWidth: "46ch",
               textShadow: "0 1px 12px rgba(0,0,0,0.5)",
             }}>
-            Warzywa, owoce i produkty spożywcze prosto z gospodarstw. Dostawa na terenie Rzeszowa i okolic.
+            {t("carousel.description")}
           </Typography>
           <Box className="flex flex-wrap items-center gap-3 mt-7">
             <Box
               component="button"
               type="button"
-              onClick={() => navigate("/produkty")}
+              onClick={() => navigate(to("products"))}
               className="group inline-flex items-center gap-2 rounded-full px-7 py-3 text-[0.95rem] font-bold focus-visible:outline-2 focus-visible:outline-offset-4"
               sx={{
                 bgcolor: "primary.main",
@@ -178,13 +173,13 @@ export default function ImageCarousel() {
                 "& .MuiSvgIcon-root": { transition: "transform 300ms" },
                 "&:hover .MuiSvgIcon-root": { transform: "translateX(4px)" },
               }}>
-              Zobacz produkty
+              {t("carousel.products")}
               <ArrowForward fontSize="small" />
             </Box>
             <Box
               component="button"
               type="button"
-              onClick={() => navigate("/o-nas")}
+              onClick={() => navigate(to("about"))}
               className="rounded-full px-6 py-3 text-[0.95rem] font-bold focus-visible:outline-2 focus-visible:outline-offset-4"
               sx={{
                 bgcolor: "rgba(255,255,255,0.14)",
@@ -195,7 +190,7 @@ export default function ImageCarousel() {
                 "&:hover": { bgcolor: "rgba(255,255,255,0.26)", transform: "translateY(-2px)" },
                 "&:focus-visible": { outlineColor: "#fff" },
               }}>
-              O nas
+              {t("carousel.about")}
             </Box>
           </Box>
         </Box>
@@ -203,7 +198,7 @@ export default function ImageCarousel() {
         <Box sx={{ display: "flex", alignItems: "center", gap: { xs: 2, sm: 3 }, width: { xs: "100%", lg: 420 } }}>
           <IconButton
             onClick={handleBack}
-            aria-label="Poprzednie zdjęcie"
+            aria-label={t("carousel.previous")}
             sx={{
               color: "#fff",
               border: "1px solid rgba(255,255,255,0.4)",
@@ -212,7 +207,7 @@ export default function ImageCarousel() {
             <KeyboardArrowLeft />
           </IconButton>
 
-          <Box className="flex items-center gap-2 grow" role="tablist" aria-label="Wybierz zdjęcie">
+          <Box className="flex items-center gap-2 grow" role="tablist" aria-label={t("carousel.pick")}>
             {carouselImages.map((item, index) => (
               <Box
                 component="button"
@@ -220,7 +215,7 @@ export default function ImageCarousel() {
                 key={item.imgPath}
                 role="tab"
                 aria-selected={activeStep === index}
-                aria-label={item.label}
+                aria-label={t(`carousel.slides.${item.id}`)}
                 onClick={() => go(index)}
                 sx={{
                   position: "relative",
@@ -253,7 +248,7 @@ export default function ImageCarousel() {
 
           <IconButton
             onClick={handleNext}
-            aria-label="Następne zdjęcie"
+            aria-label={t("carousel.next")}
             sx={{
               color: "#fff",
               border: "1px solid rgba(255,255,255,0.4)",

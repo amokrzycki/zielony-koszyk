@@ -1,10 +1,12 @@
 import { CATEGORIES } from "@/constants/app";
 import useProductFilters from "@/hooks/useProductFilters.ts";
 import { Box, Button } from "@mui/material";
+import { useTranslation } from "react-i18next";
 import type { MouseEventHandler } from "react";
 import { accentText, tone } from "@/components/listingStyles.ts";
 
 function CategoryList() {
+  const { t } = useTranslation(["catalog", "common"]);
   const { filters, setParams } = useProductFilters();
 
   const handleCategoryChange: MouseEventHandler<HTMLButtonElement> = (e) => {
@@ -38,7 +40,7 @@ function CategoryList() {
               "&:hover": { bgcolor: (t) => tone(t, 0.1), color: (t) => accentText(t), borderColor: "divider" },
               "&:focus-visible": { outline: "2px solid", outlineColor: "primary.main", outlineOffset: 2 },
             }}>
-            {cat.label}
+            {t(cat.labelKey, { ns: "common" })}
           </Button>
         );
       })}
@@ -56,7 +58,7 @@ function CategoryList() {
             textTransform: "none",
             "&:hover": { color: (t) => accentText(t), bgcolor: (t) => tone(t, 0.08) },
           }}>
-          Wyczyść
+          {t("filters.clearCategory")}
         </Button>
       )}
     </Box>

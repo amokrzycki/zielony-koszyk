@@ -1,14 +1,15 @@
 import { Box, Link, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import FacebookIcon from "@mui/icons-material/Facebook";
+import { useTranslation } from "react-i18next";
 
-const OFFER = ["Ziemniaki", "Kapustę", "Jabłka"];
+const OFFER = ["potatoes", "cabbage", "apples"] as const;
 
 const DELIVERY_LINKS = [
-  { label: "Dostawa i płatność", href: "#" },
-  { label: "Polityka prywatności", href: "#" },
-  { label: "Regulamin", href: "#" },
-];
+  { id: "delivery", href: "#" },
+  { id: "privacy", href: "#" },
+  { id: "terms", href: "#" },
+] as const;
 
 const headingSx = {
   mb: 1.5,
@@ -31,6 +32,8 @@ const linkSx = {
 const listSx = { listStyle: "none", m: 0, p: 0, display: "grid", gap: 1.25 };
 
 function Footer() {
+  const { t } = useTranslation();
+
   return (
     <Box
       component="footer"
@@ -44,22 +47,21 @@ function Footer() {
       <Box sx={{ maxWidth: 1560, mx: "auto", px: { xs: 3, sm: 6, lg: 10 }, py: { xs: 6, lg: 9 } }}>
         <Grid container spacing={{ xs: 4, md: 6 }}>
           <Grid size={{ xs: 12, md: 4 }}>
-            <Box component="img" src="/dark_logo.png" alt="Zielony Koszyk" sx={{ height: 44, width: "auto", mb: 2 }} />
+            <Box component="img" src="/dark_logo.png" alt={t("app.name")} sx={{ height: 44, width: "auto", mb: 2 }} />
             <Typography
               sx={{ color: "rgba(255,255,255,0.72)", fontSize: "0.95rem", lineHeight: 1.65, maxWidth: "38ch" }}>
-              Zielony Koszyk oferuje warzywa i owoce, jak również susze, grochy, przyprawy, oliwę z oliwek oraz inne
-              produkty greckie.
+              {t("footer.about")}
             </Typography>
           </Grid>
 
           <Grid size={{ xs: 6, md: 2 }}>
             <Typography component="h2" sx={headingSx}>
-              Oferujemy m.in:
+              {t("footer.offerTitle")}
             </Typography>
             <Box component="ul" sx={listSx}>
               {OFFER.map((item) => (
                 <Typography component="li" key={item} sx={{ color: "rgba(255,255,255,0.72)", fontSize: "0.95rem" }}>
-                  {item}
+                  {t(`footer.offer.${item}`)}
                 </Typography>
               ))}
             </Box>
@@ -67,13 +69,13 @@ function Footer() {
 
           <Grid size={{ xs: 6, md: 3 }}>
             <Typography component="h2" sx={headingSx}>
-              Szybka dostawa
+              {t("footer.deliveryTitle")}
             </Typography>
             <Box component="ul" sx={listSx}>
-              {DELIVERY_LINKS.map(({ label, href }) => (
-                <Box component="li" key={label}>
+              {DELIVERY_LINKS.map(({ id, href }) => (
+                <Box component="li" key={id}>
                   <Link href={href} underline="none" sx={linkSx}>
-                    {label}
+                    {t(`footer.links.${id}`)}
                   </Link>
                 </Box>
               ))}
@@ -82,7 +84,7 @@ function Footer() {
 
           <Grid size={{ xs: 12, md: 3 }}>
             <Typography component="h2" sx={headingSx}>
-              Znajdź nas:
+              {t("footer.findUs")}
             </Typography>
             <Link
               href="https://www.facebook.com"
@@ -111,9 +113,9 @@ function Footer() {
             justifyContent: "space-between",
           }}>
           <Typography sx={{ color: "rgba(255,255,255,0.6)", fontSize: "0.85rem" }}>
-            © {new Date().getFullYear()} Zielony Koszyk
+            {t("footer.copyright", { year: new Date().getFullYear() })}
           </Typography>
-          <Typography sx={{ color: "rgba(255,255,255,0.6)", fontSize: "0.85rem" }}>Rzeszów i okolice</Typography>
+          <Typography sx={{ color: "rgba(255,255,255,0.6)", fontSize: "0.85rem" }}>{t("footer.region")}</Typography>
         </Box>
       </Box>
     </Box>

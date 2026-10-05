@@ -1,5 +1,7 @@
 import { Box, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import { useLocalePath } from "@/i18n/useLocale.ts";
 import ArrowForward from "@mui/icons-material/ArrowForward";
 import ShoppingBagIcon from "@mui/icons-material/ShoppingBag";
 import AlternateEmailIcon from "@mui/icons-material/AlternateEmail";
@@ -14,71 +16,45 @@ import { useAppSelector } from "@/hooks/hooks.ts";
 import type { RootState } from "@/store/store.ts";
 import { EASE, accentText, tone } from "@/components/listingStyles.ts";
 
+type OptionId =
+  | "accountOrders"
+  | "accountAddresses"
+  | "accountEmailChange"
+  | "accountPasswordChange"
+  | "accountMfa"
+  | "admin";
+
 interface AccountOption {
   icon: ReactNode;
-  title: string;
-  description: string;
-  route: string;
+  id: OptionId;
 }
 
 interface AccountSection {
-  label: string;
+  id: "orders" | "security" | "admin";
   options: AccountOption[];
 }
 
 const sections: AccountSection[] = [
   {
-    label: "Zamówienia i dostawa",
+    id: "orders",
     options: [
-      {
-        icon: <ShoppingBagIcon />,
-        title: "Twoje zamówienia",
-        description: "Historia i statusy Twoich zamówień.",
-        route: "/konto/zamowienia",
-      },
-      {
-        icon: <ImportContactsIcon />,
-        title: "Książka adresowa",
-        description: "Adresy dostawy i dane do rachunku.",
-        route: "/konto/ksiazka-adresowa",
-      },
+      { icon: <ShoppingBagIcon />, id: "accountOrders" },
+      { icon: <ImportContactsIcon />, id: "accountAddresses" },
     ],
   },
   {
-    label: "Bezpieczeństwo",
+    id: "security",
     options: [
-      {
-        icon: <AlternateEmailIcon />,
-        title: "Zmiana adresu email",
-        description: "Zmień adres przypisany do konta.",
-        route: "/konto/zmiana-email",
-      },
-      {
-        icon: <PasswordIcon />,
-        title: "Zmiana hasła",
-        description: "Zaktualizuj hasło do konta.",
-        route: "/konto/zmiana-hasla",
-      },
-      {
-        icon: <SecurityIcon />,
-        title: "Ustawienia MFA",
-        description: "Dodatkowe potwierdzanie logowania.",
-        route: "/konto/mfa",
-      },
+      { icon: <AlternateEmailIcon />, id: "accountEmailChange" },
+      { icon: <PasswordIcon />, id: "accountPasswordChange" },
+      { icon: <SecurityIcon />, id: "accountMfa" },
     ],
   },
 ];
 
 const adminSection: AccountSection = {
-  label: "Administracja",
-  options: [
-    {
-      icon: <BuildIcon />,
-      title: "Panel administratora",
-      description: "Produkty, zamówienia i użytkownicy.",
-      route: "/admin",
-    },
-  ],
+  id: "admin",
+  options: [{ icon: <BuildIcon />, id: "admin" }],
 };
 
 const labelSx = {
@@ -92,10 +68,12 @@ const labelSx = {
 };
 
 function AccountRow({ option }: { option: AccountOption }) {
+  const { t } = useTranslation("account");
+  const to = useLocalePath();
   return (
     <Box
       component={Link}
-      to={option.route}
+      to={to(option.id)}
       sx={(theme) => ({
         display: "flex",
         alignItems: "center",
@@ -126,9 +104,9 @@ function AccountRow({ option }: { option: AccountOption }) {
         {option.icon}
       </Box>
       <Box sx={{ minWidth: 0, flex: 1 }}>
-        <Typography sx={{ fontWeight: 700, lineHeight: 1.3 }}>{option.title}</Typography>
+        <Typography sx={{ fontWeight: 700, lineHeight: 1.3 }}>{t(`options.${option.id}.title`)}</Typography>
         <Typography variant="body2" sx={{ mt: 0.25, color: "text.secondary", lineHeight: 1.45 }}>
-          {option.description}
+          {t(`options.${option.id}.description`)}
         </Typography>
       </Box>
       <ArrowForward
@@ -145,6 +123,7 @@ function AccountRow({ option }: { option: AccountOption }) {
 }
 
 function AccountOptions() {
+  const { t } = useTranslation("account");
   const user: User = useAppSelector((state: RootState) => state.auth.user);
 
   const visibleSections = user.role === Roles.ADMIN ? [...sections, adminSection] : sections;
@@ -160,20 +139,20 @@ function AccountOptions() {
           lineHeight: 1.1,
           letterSpacing: "-0.03em",
         }}>
-        Twoje konto
+        {t("options.title")}
       </Typography>
       <Typography sx={{ mt: 1, color: "text.secondary", maxWidth: "54ch", lineHeight: 1.6 }}>
-        Zarządzaj zamówieniami, adresami dostawy i bezpieczeństwem konta.
+        {t("options.subtitle")}
       </Typography>
 
       {visibleSections.map((section) => (
-        <Box component="section" key={section.label} sx={{ mt: { xs: 3.5, md: 4 } }}>
+        <Box component="section" key={section.id} sx={{ mt: { xs: 3.5, md: 4 } }}>
           <Typography component="h2" sx={labelSx}>
-            {section.label}
+            {t(`options.sections.${section.id}`)}
           </Typography>
           <Box sx={{ display: "grid", gap: 1 }}>
             {section.options.map((option) => (
-              <AccountRow key={option.route} option={option} />
+              <AccountRow key={option.id} option={option} />
             ))}
           </Box>
         </Box>

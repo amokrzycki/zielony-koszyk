@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import { Backdrop, Box, Fade, IconButton, Modal } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
+import { useTranslation } from "react-i18next";
 import { DUR, EASE, accentText, tone } from "@/components/listingStyles.ts";
 
 interface AdminModalProps {
@@ -14,6 +15,8 @@ interface AdminModalProps {
 }
 
 function AdminModal({ open, onClose, title, subtitle, children, maxWidth = 480, footer }: AdminModalProps) {
+  const { t } = useTranslation("common");
+
   return (
     <Modal
       open={open}
@@ -46,7 +49,7 @@ function AdminModal({ open, onClose, title, subtitle, children, maxWidth = 480, 
           })}>
           <IconButton
             onClick={onClose}
-            aria-label="Zamknij"
+            aria-label={t("actions.close")}
             size="small"
             sx={(theme) => ({
               position: "absolute",

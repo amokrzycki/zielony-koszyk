@@ -1,5 +1,7 @@
 import type User from "../../../types/User.ts";
 import { useForm } from "@mantine/form";
+import { useTranslation } from "react-i18next";
+import { useApiError } from "../useAdminI18n.ts";
 import { Box, Button, TextField } from "@mui/material";
 import type { Address } from "@/types/Address.ts";
 import {
@@ -46,6 +48,8 @@ const twoCol = { ...grid, gridTemplateColumns: { xs: "1fr", sm: "1fr 1fr" } } as
 const streetGrid = { ...grid, gridTemplateColumns: { xs: "1fr", sm: "2fr 1fr 1fr" } } as const;
 
 function ChangeAddress({ address, user }: ChangeUserAddressProps) {
+  const { t } = useTranslation("admin");
+  const apiError = useApiError();
   const [changeDetails] = useChangeUserAddressMutation();
   const dispatch = useAppDispatch();
 
@@ -104,9 +108,9 @@ function ChangeAddress({ address, user }: ChangeUserAddressProps) {
 
     toast
       .promise(changeDetails(updatedDetails).unwrap(), {
-        loading: "Zapisywanie zmian...",
-        success: "Zmiany zostały zapisane",
-        error: "Wystąpił błąd podczas zapisywania zmian",
+        loading: t("changeAddress.saving"),
+        success: t("changeAddress.saved"),
+        error: (error) => apiError(error, t("changeAddress.error")),
       })
       .then(() => {
         dispatch(setUserToEdit(updatedUser));
@@ -131,18 +135,18 @@ function ChangeAddress({ address, user }: ChangeUserAddressProps) {
           <Box sx={twoCol}>
             <TextField
               variant="outlined"
-              label="Imię"
+              label={t("userForm.firstName")}
               required
-              placeholder="Jan"
+              placeholder={t("userForm.firstNamePlaceholder")}
               {...form.getInputProps("first_name")}
               error={Boolean(form.errors.first_name) && form.isTouched("first_name")}
               helperText={form.errors.first_name}
             />
             <TextField
               variant="outlined"
-              label="Nazwisko"
+              label={t("userForm.lastName")}
               required
-              placeholder="Kowalski"
+              placeholder={t("userForm.lastNamePlaceholder")}
               {...form.getInputProps("last_name")}
               error={Boolean(form.errors.last_name) && form.isTouched("last_name")}
               helperText={form.errors.last_name}
@@ -152,18 +156,18 @@ function ChangeAddress({ address, user }: ChangeUserAddressProps) {
           <Box sx={twoCol}>
             <TextField
               variant="outlined"
-              label="Nazwa firmy"
+              label={t("userForm.companyName")}
               required
-              placeholder="Firma XYZ"
+              placeholder={t("userForm.companyNamePlaceholder")}
               {...form.getInputProps("company_name")}
               error={Boolean(form.errors.company_name) && form.isTouched("company_name")}
               helperText={form.errors.company_name}
             />
             <TextField
               variant="outlined"
-              label="NIP"
+              label={t("userForm.nip")}
               required
-              placeholder="1234567890"
+              placeholder={t("userForm.nipPlaceholder")}
               {...form.getInputProps("nip")}
               error={Boolean(form.errors.nip) && form.isTouched("nip")}
               helperText={form.errors.nip}
@@ -173,7 +177,7 @@ function ChangeAddress({ address, user }: ChangeUserAddressProps) {
 
         <TextField
           variant="outlined"
-          label="Numer telefonu"
+          label={t("userForm.phone")}
           type="tel"
           required
           {...form.getInputProps("phone")}
@@ -183,17 +187,17 @@ function ChangeAddress({ address, user }: ChangeUserAddressProps) {
         <Box sx={streetGrid}>
           <TextField
             variant="outlined"
-            label="Ulica"
+            label={t("userForm.street")}
             required
-            placeholder="ul. Przykładowa"
+            placeholder={t("userForm.streetPlaceholder")}
             {...form.getInputProps("street")}
             helperText={form.errors.street}
             error={Boolean(form.errors.street) && form.isTouched("street")}
           />
           <TextField
             variant="outlined"
-            label="Nr budynku"
-            placeholder="1A"
+            label={t("userForm.buildingNumber")}
+            placeholder={t("userForm.buildingNumberPlaceholder")}
             required
             {...form.getInputProps("building_number")}
             helperText={form.errors.building_number}
@@ -201,8 +205,8 @@ function ChangeAddress({ address, user }: ChangeUserAddressProps) {
           />
           <TextField
             variant="outlined"
-            label="Nr mieszkania"
-            placeholder="14"
+            label={t("userForm.flatNumber")}
+            placeholder={t("userForm.flatNumberPlaceholder")}
             {...form.getInputProps("flat_number")}
             helperText={form.errors.flat_number}
             error={Boolean(form.errors.flat_number) && form.isTouched("flat_number")}
@@ -211,8 +215,8 @@ function ChangeAddress({ address, user }: ChangeUserAddressProps) {
         <Box sx={twoCol}>
           <TextField
             variant="outlined"
-            label="Kod pocztowy"
-            placeholder="00-000"
+            label={t("userForm.zip")}
+            placeholder={t("userForm.zipPlaceholder")}
             required
             {...form.getInputProps("zip")}
             helperText={form.errors.zip}
@@ -220,9 +224,9 @@ function ChangeAddress({ address, user }: ChangeUserAddressProps) {
           />
           <TextField
             variant="outlined"
-            label="Miejscowość"
+            label={t("userForm.city")}
             required
-            placeholder="Rzeszów"
+            placeholder={t("userForm.cityPlaceholder")}
             {...form.getInputProps("city")}
             helperText={form.errors.city}
             error={Boolean(form.errors.city) && form.isTouched("city")}
@@ -235,7 +239,7 @@ function ChangeAddress({ address, user }: ChangeUserAddressProps) {
           variant="contained"
           disabled={!isValid && form.isTouched()}
           sx={{ borderRadius: "999px", fontWeight: 700 }}>
-          Zapisz adres
+          {t("changeAddress.save")}
         </Button>
       </Box>
     </form>

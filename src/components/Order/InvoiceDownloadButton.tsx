@@ -1,10 +1,13 @@
+import { useTranslation } from "react-i18next";
+import { apiErrorMessage } from "@/helpers/apiError.ts";
 import { Button, CircularProgress, Typography } from "@mui/material";
 import FileDownloadOutlined from "@mui/icons-material/FileDownloadOutlined";
 import { useGetInvoiceQuery } from "@/components/Order/orderApiSlice.ts";
 import { ghostButtonSx } from "@/components/listingStyles.ts";
 
 function InvoiceDownloadButton({ orderId }: { orderId: number }) {
-  const { data: invoiceBlob, isFetching, isError } = useGetInvoiceQuery(orderId);
+  const { t, i18n } = useTranslation("checkout");
+  const { data: invoiceBlob, isFetching, isError, error } = useGetInvoiceQuery(orderId);
 
   const handleDownload = () => {
     if (!invoiceBlob) return;
@@ -13,7 +16,7 @@ function InvoiceDownloadButton({ orderId }: { orderId: number }) {
 
     const link = document.createElement("a");
     link.href = url;
-    link.download = `faktura-do-zamowienia-${orderId}.pdf`;
+    link.download = t("invoice.fileName", { id: orderId });
     document.body.appendChild(link);
 
     link.click();
@@ -25,7 +28,7 @@ function InvoiceDownloadButton({ orderId }: { orderId: number }) {
   if (isError) {
     return (
       <Typography component="span" sx={{ color: "error.main", fontSize: "0.85rem", lineHeight: 1.4 }}>
-        Nie udało się pobrać faktury
+        {apiErrorMessage(i18n.t, error, t("invoice.error"))}
       </Typography>
     );
   }
@@ -36,7 +39,7 @@ function InvoiceDownloadButton({ orderId }: { orderId: number }) {
       disabled={isFetching || !invoiceBlob}
       startIcon={isFetching ? <CircularProgress size={16} color="inherit" /> : <FileDownloadOutlined />}
       sx={(theme) => ghostButtonSx(theme)}>
-      Faktura elektroniczna
+      {t("invoice.download")}
     </Button>
   );
 }

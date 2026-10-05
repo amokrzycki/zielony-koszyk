@@ -1,4 +1,5 @@
 import { Box, TextField, Typography } from "@mui/material";
+import { useTranslation } from "react-i18next";
 import type { UseFormReturnType } from "@mantine/form";
 import type { Address } from "@/types/Address";
 import { CustomerType } from "@/enums/CustomerType";
@@ -14,6 +15,7 @@ interface Props {
 const fieldGrid = { display: "grid", gap: 2 };
 
 export default function BillingFormFields({ form, setCustomerType }: Props) {
+  const { t } = useTranslation("checkout");
   const billing = form.values.billing;
   const customerType = billing.customer_type;
 
@@ -27,7 +29,7 @@ export default function BillingFormFields({ form, setCustomerType }: Props) {
   return (
     <Box className="flex flex-col gap-4" sx={{ mt: 3 }}>
       <Typography component="h2" sx={{ m: 0, fontSize: "1.35rem", fontWeight: 800, letterSpacing: "-0.02em" }}>
-        Dane do faktury
+        {t("billing.title")}
       </Typography>
 
       <CustomerTypeRadios customerType={customerType} setCustomerType={handleCustomerTypeChange} />
@@ -37,9 +39,9 @@ export default function BillingFormFields({ form, setCustomerType }: Props) {
           <Box sx={{ ...fieldGrid, gridTemplateColumns: { xs: "1fr", sm: "1fr 1fr" } }}>
             <TextField
               fullWidth
-              label="Imię"
+              label={t("form.firstName")}
               required
-              placeholder="Jan"
+              placeholder={t("form.firstNamePlaceholder")}
               autoComplete="given-name"
               {...getBillingProps("first_name")}
               helperText={form.errors["billing.first_name"]}
@@ -47,9 +49,9 @@ export default function BillingFormFields({ form, setCustomerType }: Props) {
             />
             <TextField
               fullWidth
-              label="Nazwisko"
+              label={t("form.lastName")}
               required
-              placeholder="Kowalski"
+              placeholder={t("form.lastNamePlaceholder")}
               autoComplete="family-name"
               {...getBillingProps("last_name")}
               helperText={form.errors["billing.last_name"]}
@@ -64,9 +66,9 @@ export default function BillingFormFields({ form, setCustomerType }: Props) {
           <Box sx={{ ...fieldGrid, gridTemplateColumns: { xs: "1fr", sm: "1fr 1fr" } }}>
             <TextField
               fullWidth
-              label="Nazwa firmy"
+              label={t("form.companyName")}
               required
-              placeholder="Firma XYZ"
+              placeholder={t("form.companyNamePlaceholder")}
               autoComplete="organization"
               {...getBillingProps("company_name")}
               helperText={form.errors["billing.company_name"]}
@@ -74,7 +76,7 @@ export default function BillingFormFields({ form, setCustomerType }: Props) {
             />
             <TextField
               fullWidth
-              label="NIP"
+              label={t("form.nip")}
               required
               placeholder="1234567890"
               {...getBillingProps("nip")}
@@ -87,7 +89,7 @@ export default function BillingFormFields({ form, setCustomerType }: Props) {
 
       <TextField
         fullWidth
-        label="Numer telefonu"
+        label={t("form.phone")}
         required
         type="tel"
         placeholder="+48123456789"
@@ -100,9 +102,9 @@ export default function BillingFormFields({ form, setCustomerType }: Props) {
       <Box sx={{ ...fieldGrid, gridTemplateColumns: { xs: "1fr", sm: "2fr 1fr 1fr" } }}>
         <TextField
           fullWidth
-          label="Ulica"
+          label={t("form.street")}
           required
-          placeholder="ul. Przykładowa"
+          placeholder={t("form.streetPlaceholder")}
           autoComplete="address-line1"
           {...getBillingProps("street")}
           helperText={form.errors["billing.street"]}
@@ -110,7 +112,7 @@ export default function BillingFormFields({ form, setCustomerType }: Props) {
         />
         <TextField
           fullWidth
-          label="Nr budynku"
+          label={t("form.buildingNumber")}
           required
           placeholder="1A"
           {...getBillingProps("building_number")}
@@ -119,7 +121,7 @@ export default function BillingFormFields({ form, setCustomerType }: Props) {
         />
         <TextField
           fullWidth
-          label="Nr mieszkania"
+          label={t("form.flatNumber")}
           placeholder="14"
           {...getBillingProps("flat_number")}
           helperText={form.errors["billing.flat_number"]}
@@ -130,7 +132,7 @@ export default function BillingFormFields({ form, setCustomerType }: Props) {
       <Box sx={{ ...fieldGrid, gridTemplateColumns: { xs: "1fr", sm: "1fr 2fr" } }}>
         <TextField
           fullWidth
-          label="Kod pocztowy"
+          label={t("form.zip")}
           required
           placeholder="00-000"
           autoComplete="postal-code"
@@ -140,9 +142,9 @@ export default function BillingFormFields({ form, setCustomerType }: Props) {
         />
         <TextField
           fullWidth
-          label="Miejscowość"
+          label={t("form.city")}
           required
-          placeholder="Warszawa"
+          placeholder={t("form.cityPlaceholder")}
           autoComplete="address-level2"
           {...getBillingProps("city")}
           helperText={form.errors["billing.city"]}

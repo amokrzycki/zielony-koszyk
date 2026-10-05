@@ -4,13 +4,14 @@ import RefreshIcon from "@mui/icons-material/Refresh";
 import SellOutlined from "@mui/icons-material/SellOutlined";
 import { DataGrid, type GridColDef, type GridRowSelectionModel } from "@mui/x-data-grid";
 import type { Order } from "@/types/Order.ts";
-import { useState } from "react";
+import { useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import ConfirmDeleteModal from "../ConfirmDeleteModal.tsx";
 import toast from "react-hot-toast";
-import { getFormattedDate } from "@/helpers/getFormattedDate.ts";
 import { useNavigate } from "react-router-dom";
 import { OrderType } from "@/enums/OrderType.ts";
-import { getPolishStatus } from "@/helpers/getPolishStatus.ts";
+import { useFormat, useLocalePath } from "@/i18n/useLocale.ts";
+import { useApiError, useGridLocaleText, useIdentifierLabels } from "../useAdminI18n.ts";
 import { adminGridSx, adminPanelSx, moneyCellSx, orderStatusChipSx } from "../adminStyles.ts";
 import AdminPageHeader from "../AdminPageHeader.tsx";
 import AdminTableToolbar from "../AdminTableToolbar.tsx";
@@ -20,6 +21,12 @@ import AdminLoading from "../AdminLoading.tsx";
 import { EASE, accentText, ghostButtonSx, tone } from "@/components/listingStyles.ts";
 
 function OrdersView() {
+  const { t } = useTranslation("admin");
+  const format = useFormat();
+  const to = useLocalePath();
+  const labels = useIdentifierLabels();
+  const apiError = useApiError();
+  const localeText = useGridLocaleText();
   const { data: orders, isError, isLoading, refetch } = useGetOrdersQuery();
   const navigate = useNavigate();
   const [openConfirmDeleteModal, setOpenConfirmDeleteModal] = useState(false);
@@ -35,83 +42,95 @@ function OrdersView() {
   const onDelete = async () => {
     const ids = Array.from(rowSelectionModel.ids) as number[];
     if (ids.length === 0) {
-      toast.error("Nie wybrano zamówień do usunięcia.");
+      toast.error(t("orders.delete.none"));
       return;
     }
 
     try {
       await toast.promise(Promise.all(ids.map((id) => deleteOrder(id).unwrap())), {
-        loading: `Usuwanie ${ids.length > 1 ? "zamówień" : "zamówienia"}...`,
-        success: `${ids.length > 1 ? "Zamówienia zostały usunięte." : "Zamówienie zostało usunięte."}`,
-        error: `Wystąpił błąd podczas usuwania ${ids.length > 1 ? "zamówień" : "zamówienia"}.`,
+        loading: t("orders.delete.loading", { count: ids.length }),
+        success: t("orders.delete.success", { count: ids.length }),
+        error: (error) => apiError(error, t("orders.delete.error", { count: ids.length })),
       });
       setRowSelectionModel({ type: "include", ids: new Set<number>() });
     } catch (error) {
       console.error("Delete failed:", error);
-      toast.error("Nie udało się usunąć.");
+      toast.error(t("general.deleteFailed"));
     }
   };
 
-  const columns: GridColDef[] = [
-    { field: "id", headerName: "Nr", width: 80 },
-    {
-      field: "actions",
-      headerName: "",
-      width: 140,
-      sortable: false,
-      disableColumnMenu: true,
-      renderCell: (params) => (
-        <Button
-          variant="outlined"
-          size="small"
-          onClick={() => navigate(`/admin/zarzadzanie-zamowieniami/${params.row.id}`)}
-          sx={(theme) => ({ ...ghostButtonSx(theme), px: 2, py: 0.5, fontSize: "0.82rem" })}>
-          Szczegóły
-        </Button>
-      ),
-    },
-    { field: "customer_name", headerName: "Klient", flex: 1, minWidth: 160 },
-    { field: "customer_email", headerName: "E-mail", width: 200 },
-    { field: "order_date", headerName: "Data", width: 160 },
-    {
-      field: "total_amount",
-      headerName: "Kwota",
-      width: 120,
-      sortComparator: (v1, v2) => Number.parseFloat(v1) - Number.parseFloat(v2),
-      renderCell: (params) => (
-        <Box component="span" sx={moneyCellSx}>
-          {params.value}
-        </Box>
-      ),
-    },
-    {
-      field: "status",
-      headerName: "Status",
-      width: 200,
-      renderCell: (params) => (
-        <Box component="span" sx={(theme) => orderStatusChipSx(theme, params.row.rawStatus)}>
-          {params.value}
-        </Box>
-      ),
-    },
-  ];
+  const columns = useMemo<GridColDef[]>(
+    () => [
+      { field: "id", headerName: t("orders.columns.id"), width: 80 },
+      {
+        field: "actions",
+        headerName: "",
+        width: 140,
+        sortable: false,
+        disableColumnMenu: true,
+        renderCell: (params) => (
+          <Button
+            variant="outlined"
+            size="small"
+            onClick={() => navigate(to("adminOrderItems", { orderId: params.row.id }))}
+            sx={(theme) => ({ ...ghostButtonSx(theme), px: 2, py: 0.5, fontSize: "0.82rem" })}>
+            {t("orders.details")}
+          </Button>
+        ),
+      },
+      { field: "customer_name", headerName: t("orders.columns.customer"), flex: 1, minWidth: 160 },
+      { field: "customer_email", headerName: t("orders.columns.email"), width: 200 },
+      {
+        field: "order_date",
+        headerName: t("orders.columns.date"),
+        width: 190,
+        type: "dateTime",
+        valueFormatter: (value: Date) => format.dateTime(value),
+      },
+      {
+        field: "total_amount",
+        headerName: t("orders.columns.amount"),
+        width: 130,
+        type: "number",
+        renderCell: (params) => (
+          <Box component="span" sx={moneyCellSx}>
+            {format.currency(params.value)}
+          </Box>
+        ),
+      },
+      {
+        field: "status",
+        headerName: t("orders.columns.status"),
+        width: 220,
+        renderCell: (params) => (
+          <Box component="span" sx={(theme) => orderStatusChipSx(theme, params.row.rawStatus)}>
+            {params.value}
+          </Box>
+        ),
+      },
+    ],
+    [t, format, navigate, to],
+  );
 
-  const rows =
-    orders?.map((order: Order) => {
-      const customer_name =
-        order.order_type === OrderType.COMPANY
-          ? `${order.billingAddress.company_name || ""}`
-          : `${order.billingAddress.first_name || ""} ${order.billingAddress.last_name || ""}`.trim();
-      return {
-        id: order.order_id,
-        customer_name: customer_name || "—",
-        customer_email: order.customer_email,
-        order_date: getFormattedDate(order.order_date.toString()),
-        total_amount: `${order.total_amount} zł`,
-        status: getPolishStatus(order.status),
-        rawStatus: order.status,
-      };
-    }) ?? [];
+  const rows = useMemo(
+    () =>
+      orders?.map((order: Order) => {
+        const customer_name =
+          order.order_type === OrderType.COMPANY
+            ? `${order.billingAddress.company_name || ""}`
+            : `${order.billingAddress.first_name || ""} ${order.billingAddress.last_name || ""}`.trim();
+        return {
+          id: order.order_id,
+          customer_name: customer_name || "—",
+          customer_email: order.customer_email,
+          order_date: new Date(order.order_date),
+          total_amount: Number.parseFloat(order.total_amount),
+          status: labels.status(order.status),
+          rawStatus: order.status,
+        };
+      }) ?? [],
+    [orders, labels],
+  );
 
   const selectedCount = rowSelectionModel.ids.size;
 
@@ -123,12 +142,12 @@ function OrdersView() {
     <Box sx={{ display: "flex", flexDirection: "column", width: "100%", minWidth: 0 }}>
       <AdminPageHeader
         icon={<SellOutlined />}
-        title="Zamówienia"
-        subtitle="Wszystkie zamówienia sklepu z danymi klienta i statusem realizacji."
+        title={t("orders.title")}
+        subtitle={t("orders.subtitle")}
         actions={
           <IconButton
             onClick={() => refetch()}
-            aria-label="Odśwież listę zamówień"
+            aria-label={t("orders.refresh")}
             sx={(theme) => ({
               border: "1px solid",
               borderColor: "divider",
@@ -143,8 +162,8 @@ function OrdersView() {
 
       {isError ? (
         <AdminError
-          message="Nie udało się pobrać zamówień."
-          hint="Sprawdź połączenie i odśwież listę."
+          message={t("orders.loadError.message")}
+          hint={t("orders.loadError.hint")}
           onRetry={() => refetch()}
         />
       ) : isLoading ? (
@@ -158,16 +177,13 @@ function OrdersView() {
             columns={columns}
             rows={rows}
             rowHeight={56}
+            localeText={localeText}
             pageSizeOptions={[5, 10, 25, 50, 100]}
             sx={adminGridSx}
             slots={{
               toolbar: CustomToolbar,
               noRowsOverlay: () => (
-                <AdminEmpty
-                  icon={<SellOutlined />}
-                  title="Brak zamówień"
-                  hint="Gdy klienci złożą zamówienia, pojawią się tutaj."
-                />
+                <AdminEmpty icon={<SellOutlined />} title={t("orders.empty.title")} hint={t("orders.empty.hint")} />
               ),
             }}
             initialState={{
@@ -181,6 +197,7 @@ function OrdersView() {
       )}
 
       <ConfirmDeleteModal
+        entity="orders"
         open={openConfirmDeleteModal}
         handleClose={handleConfirmDeleteModalClose}
         onConfirm={onDelete}

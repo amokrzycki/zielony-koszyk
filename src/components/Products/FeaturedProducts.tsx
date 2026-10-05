@@ -5,10 +5,14 @@ import LoadingOverlay from "@/components/common/LoadingOverlay.tsx";
 import SwapLayers from "@/components/common/SwapLayers.tsx";
 import ErrorView from "@/components/common/ErrorView.tsx";
 import { useMemo } from "react";
+import { useTranslation } from "react-i18next";
+import { useLocale } from "@/i18n/useLocale.ts";
 import type Product from "@/types/Product.ts";
 
 function FeaturedProducts() {
-  const { data: products, isError, isLoading } = useGetProductsQuery();
+  const { t } = useTranslation("catalog");
+  const locale = useLocale();
+  const { data: products, isError, isLoading } = useGetProductsQuery({ locale });
 
   const featuredProducts = useMemo(() => {
     if (!products) return [];
@@ -34,7 +38,7 @@ function FeaturedProducts() {
   if (isError || !products) {
     return (
       <SwapLayers id="error" tween={false}>
-        <ErrorView message={"Wystąpił błąd podczas pobierania polecanych produktów"} />
+        <ErrorView message={t("featured.error")} />
       </SwapLayers>
     );
   }
@@ -52,7 +56,7 @@ function FeaturedProducts() {
             lineHeight: 1.1,
             letterSpacing: "-0.03em",
           }}>
-          Polecane produkty
+          {t("featured.title")}
         </Typography>
         <Box sx={{ display: "flex", flexDirection: "column", gap: { xs: 2.5, lg: 3 } }}>
           {featuredProducts.map((product) => (

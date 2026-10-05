@@ -1,4 +1,6 @@
 import { Box, Typography } from "@mui/material";
+import { useTranslation } from "react-i18next";
+import { useFormat } from "@/i18n/useLocale.ts";
 
 interface ProductPriceProps {
   price: number;
@@ -6,6 +8,8 @@ interface ProductPriceProps {
 }
 
 function ProductPrice({ price, quantity }: ProductPriceProps) {
+  const { t } = useTranslation();
+  const { currency } = useFormat();
   const hasQuantity = quantity > 1;
 
   return (
@@ -19,14 +23,11 @@ function ProductPrice({ price, quantity }: ProductPriceProps) {
           letterSpacing: "-0.02em",
           fontVariantNumeric: "tabular-nums",
         }}>
-        {(price * quantity).toFixed(2)}
-      </Typography>
-      <Typography component="span" sx={{ color: "text.secondary", fontWeight: 600 }}>
-        zł
+        {currency(price * quantity)}
       </Typography>
       {hasQuantity && (
         <Typography component="span" sx={{ color: "text.secondary", fontSize: "0.85rem" }}>
-          × {quantity} szt.
+          × {t("quantity.pieces", { count: quantity })}
         </Typography>
       )}
     </Box>

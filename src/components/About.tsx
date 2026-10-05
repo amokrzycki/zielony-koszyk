@@ -1,26 +1,11 @@
 import { Box, Typography } from "@mui/material";
 import { ArrowForward, CheckRounded } from "@mui/icons-material";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import { useLocalePath } from "@/i18n/useLocale.ts";
 
-const intro =
-  "Zielony Koszyk to sklep internetowy ze świeżymi warzywami, owocami i produktami spożywczymi od lokalnych rolników i sprawdzonych dostawców. Obsługujemy klientów indywidualnych i firmy, a produkty z kraju i z zagranicy dowozimy na terenie Rzeszowa i okolic.";
-
-const offerings = [
-  "Świeże owoce i warzywa prosto od lokalnych rolników",
-  "Produkty egzotyczne, gdy mają Państwo ochotę na coś nowego",
-  "Przyprawy, oliwy z oliwek i suszone produkty, czyli greckie smaki w Państwa kuchni",
-  "Specjalności kuchni greckiej",
-];
-
-const service = [
-  "Opieka nad zamówieniem od pierwszego kontaktu do dostawy",
-  "Terminy dostaw dopasowane do Państwa dnia",
-  "Dobre ceny i promocje",
-  "Darmowa dostawa przy większych zamówieniach",
-];
-
-const closing =
-  "Zapraszamy do współpracy klientów indywidualnych oraz firmy z branży gastronomicznej, cateringowej i handlowej. Świeże warzywa i greckie smaki znajdą Państwo w Zielonym Koszyku.";
+const OFFER_ITEMS = ["fresh", "exotic", "greekPantry", "greekSpecialities"] as const;
+const SERVICE_ITEMS = ["care", "schedule", "prices", "freeDelivery"] as const;
 
 function ListPanel({ title, items }: { title: string; items: string[] }) {
   return (
@@ -72,6 +57,9 @@ function ListPanel({ title, items }: { title: string; items: string[] }) {
 }
 
 function About() {
+  const { t } = useTranslation("catalog");
+  const to = useLocalePath();
+
   return (
     <Box id="main-wrapper">
       <Box
@@ -98,7 +86,7 @@ function About() {
                 letterSpacing: "-0.035em",
                 textWrap: "balance",
               }}>
-              Dzień dobry!
+              {t("about.greeting")}
             </Typography>
             <Typography
               sx={{
@@ -108,7 +96,7 @@ function About() {
                 fontSize: { xs: "1.05rem", sm: "1.15rem" },
                 lineHeight: 1.65,
               }}>
-              {intro}
+              {t("about.intro")}
             </Typography>
           </Box>
 
@@ -124,7 +112,7 @@ function About() {
             <Box
               component="img"
               src="/images/vegatables.jpeg"
-              alt="Świeże warzywa z oferty Zielonego Koszyka"
+              alt={t("about.imageAlt")}
               sx={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 55%" }}
             />
           </Box>
@@ -145,8 +133,11 @@ function About() {
         <Box
           className="grid gap-4 lg:gap-6"
           sx={{ gridTemplateColumns: { xs: "1fr", md: "1fr 1fr" }, alignItems: "stretch" }}>
-          <ListPanel title="Nasza oferta:" items={offerings} />
-          <ListPanel title="Jakość obsługi:" items={service} />
+          <ListPanel title={t("about.offer.title")} items={OFFER_ITEMS.map((item) => t(`about.offer.items.${item}`))} />
+          <ListPanel
+            title={t("about.service.title")}
+            items={SERVICE_ITEMS.map((item) => t(`about.service.items.${item}`))}
+          />
         </Box>
       </Box>
 
@@ -181,11 +172,11 @@ function About() {
               letterSpacing: "-0.01em",
               textWrap: "balance",
             }}>
-            {closing}
+            {t("about.closing")}
           </Typography>
           <Box
             component={Link}
-            to="/produkty"
+            to={to("products")}
             className="group inline-flex items-center gap-2 rounded-full no-underline mt-7 px-7 py-3 text-[0.95rem] font-bold focus-visible:outline-2 focus-visible:outline-offset-4"
             sx={{
               bgcolor: "primary.main",
@@ -196,10 +187,10 @@ function About() {
               "& .MuiSvgIcon-root": { transition: "transform 300ms" },
               "&:hover .MuiSvgIcon-root": { transform: "translateX(4px)" },
             }}>
-            Zobacz naszą ofertę
+            {t("about.cta")}
             <ArrowForward fontSize="small" />
           </Box>
-          <Typography sx={{ mt: 4, fontWeight: 700 }}>Zespół Zielonego Koszyka</Typography>
+          <Typography sx={{ mt: 4, fontWeight: 700 }}>{t("about.team")}</Typography>
         </Box>
       </Box>
     </Box>

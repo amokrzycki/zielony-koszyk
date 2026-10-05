@@ -3,8 +3,12 @@
 import { act } from "react";
 import { createRoot } from "react-dom/client";
 import { createMemoryRouter, RouterProvider } from "react-router-dom";
-import { expect, it, vi } from "vitest";
+import { beforeEach, expect, it, vi } from "vitest";
+import i18n from "@/i18n/index.ts";
 import CategoryList from "./CategoryList.tsx";
+
+// setup.ts only resets the locale after a test, so the first test would see the browser language.
+beforeEach(() => i18n.changeLanguage("pl"));
 
 it("updates and clears category with page reset while preserving other filters", async () => {
   vi.stubGlobal("IS_REACT_ACT_ENVIRONMENT", true);

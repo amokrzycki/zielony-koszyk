@@ -3,17 +3,15 @@ import CheckRounded from "@mui/icons-material/CheckRounded";
 import SwapLayers from "../common/SwapLayers.tsx";
 import AutoBreadcrumbs from "../AutoBreadcrumbs.tsx";
 import { useLocation, useNavigate, useOutlet } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import { useLocalePath } from "@/i18n/useLocale.ts";
 import type User from "../../types/User.ts";
 import { useAppSelector } from "@/hooks/hooks.ts";
 import type { RootState } from "@/store/store.ts";
 import { useMode } from "@/providers/ModeProvider.tsx";
 import { accentText, ctaButtonSx, panelSx, tone } from "@/components/listingStyles.ts";
 
-const accountBenefits = [
-  "Historia zamówień i ich statusy",
-  "Zapisane adresy dostawy",
-  "Hasło, e-mail i ustawienia MFA",
-];
+const accountBenefits = ["orders", "addresses", "security"] as const;
 
 /** Subpage swap: the panel tweens between page heights instead of jumping. */
 function AccountOutlet() {
@@ -25,6 +23,8 @@ function AccountOutlet() {
 function AccountView() {
   const user: User = useAppSelector((state: RootState) => state.auth.user);
   const navigate = useNavigate();
+  const { t } = useTranslation(["account", "common"]);
+  const to = useLocalePath();
   const { mode } = useMode();
 
   if (Object.keys(user).length === 0) {
@@ -46,7 +46,7 @@ function AccountView() {
           <Box
             component="img"
             src={`/${mode}_logo.png`}
-            alt="Zielony Koszyk"
+            alt={t("app.name", { ns: "common" })}
             sx={{ height: { xs: 60, md: 72 }, width: "auto" }}
           />
           <Typography
@@ -61,10 +61,10 @@ function AccountView() {
               letterSpacing: "-0.03em",
               textWrap: "balance",
             }}>
-            Zaloguj się, aby zobaczyć swoje konto
+            {t("view.loginTitle")}
           </Typography>
           <Typography sx={{ mt: 2, mx: "auto", maxWidth: "40ch", color: "text.secondary", lineHeight: 1.6 }}>
-            Zamówienia, adresy dostawy i ustawienia bezpieczeństwa czekają w jednym miejscu.
+            {t("view.loginText")}
           </Typography>
           <Box
             component="ul"
@@ -95,16 +95,16 @@ function AccountView() {
                   }}>
                   <CheckRounded />
                 </Box>
-                <Typography sx={{ fontSize: "0.95rem", lineHeight: 1.45 }}>{benefit}</Typography>
+                <Typography sx={{ fontSize: "0.95rem", lineHeight: 1.45 }}>{t(`view.benefits.${benefit}`)}</Typography>
               </Box>
             ))}
           </Box>
           <Button
             onClick={() => {
-              navigate("/login");
+              navigate(to("login"));
             }}
             sx={{ ...ctaButtonSx, mt: 4, minWidth: 200 }}>
-            Zaloguj się
+            {t("view.login")}
           </Button>
         </Box>
       </Box>
@@ -165,7 +165,7 @@ function AccountView() {
               {initial}
             </Avatar>
             <Typography sx={{ fontSize: "0.875rem", fontWeight: 700, lineHeight: 1.2 }}>
-              Witaj, {user.first_name}!
+              {t("view.welcome", { name: user.first_name })}
             </Typography>
           </Box>
         </Box>

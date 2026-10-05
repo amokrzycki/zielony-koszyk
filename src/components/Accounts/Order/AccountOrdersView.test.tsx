@@ -53,7 +53,7 @@ describe("AccountOrdersView", () => {
     await render();
 
     expect(container.textContent).toContain("Nie masz jeszcze zamówień");
-    expect(container.querySelector('a[href="/produkty"]')).not.toBeNull();
+    expect(container.querySelector('a[href="/pl/produkty"]')).not.toBeNull();
   });
 
   it("lists an order with its localized status, formatted amount and detail link", async () => {
@@ -70,7 +70,7 @@ describe("AccountOrdersView", () => {
 
     expect(container.textContent).toContain("#1042");
     expect(container.textContent).toContain("W trakcie realizacji");
-    expect(container.textContent).toContain("1234.50");
-    expect(container.querySelector('a[href="/konto/zamowienia/1042"]')).not.toBeNull();
+    expect(container.textContent).toMatch(/1234,50\s*zł/);
+    expect(container.querySelector('a[href="/pl/konto/zamowienia/1042"]')).not.toBeNull();
   });
 });

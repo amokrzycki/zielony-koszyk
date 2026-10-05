@@ -1,0 +1,145 @@
+{
+  "badge": {
+    "label": "Mój koszyk"
+  },
+  "cart": {
+    "title": "Twój koszyk",
+    "clear": "Wyczyść koszyk",
+    "holding": "Przytrzymaj…",
+    "clearAria": "Wyczyść koszyk — przytrzymaj, aby potwierdzić",
+    "emptyTitle": "Twój koszyk jest pusty",
+    "emptyText": "Zajrzyj do naszej oferty i dodaj pierwsze produkty do koszyka.",
+    "browse": "Przeglądaj produkty",
+    "itemsAria": "Produkty w koszyku",
+    "removeAria": "Usuń {{name}} z koszyka",
+    "checkout": "Wybierz dostawę i płatność"
+  },
+  "summary": {
+    "title": "Podsumowanie",
+    "empty": "Twój koszyk jest pusty.",
+    "subtotal": "Wartość produktów",
+    "delivery": "Dostawa",
+    "total": "Razem",
+    "asideAria": "Podsumowanie zamówienia"
+  },
+  "cartLogin": {
+    "title": "Jak chcesz dokończyć zakupy?",
+    "haveAccount": "Mam konto",
+    "haveAccountText": "Zaloguj się, aby przejść do dostawy i płatności.",
+    "backToCart": "Wróć do koszyka"
+  },
+  "noAccount": {
+    "title": "Nie mam konta",
+    "text": "Kup bez rejestracji albo załóż konto, aby wracać do historii zamówień.",
+    "guest": "Kup bez rejestracji",
+    "or": "lub",
+    "register": "Utwórz konto",
+    "benefits": "Zakładając konto, będziesz mógł dokonywać zakupów szybciej, być na bieżąco z statusami zamówień oraz śledzić historię swoich zakupów."
+  },
+  "form": {
+    "firstName": "Imię",
+    "firstNamePlaceholder": "Jan",
+    "lastName": "Nazwisko",
+    "lastNamePlaceholder": "Kowalski",
+    "companyName": "Nazwa firmy",
+    "companyNamePlaceholder": "Firma XYZ",
+    "nip": "NIP",
+    "phone": "Numer telefonu",
+    "email": "Adres e-mail",
+    "emailPlaceholder": "jan@przyklad.pl",
+    "street": "Ulica",
+    "streetPlaceholder": "ul. Przykładowa",
+    "buildingNumber": "Nr budynku",
+    "flatNumber": "Nr mieszkania",
+    "zip": "Kod pocztowy",
+    "city": "Miejscowość",
+    "cityPlaceholder": "Warszawa"
+  },
+  "shipping": {
+    "title": "Dane do wysyłki"
+  },
+  "billing": {
+    "title": "Dane do faktury"
+  },
+  "details": {
+    "title": "Dostawa i płatność",
+    "subtitle": "Uzupełnij dane do wysyłki i faktury. Zamówienie potwierdzisz w następnym kroku.",
+    "differentBilling": "Faktura na inne dane",
+    "billingSameAsShipping": "Dane do faktury: takie same jak do wysyłki.",
+    "billingFromAccount": "Dane do faktury: domyślne dane z Twojego konta.",
+    "next": "Przejdź dalej",
+    "fillRequired": "Uzupełnij wymagane pola, aby przejść dalej."
+  },
+  "orderSummary": {
+    "title": "Podsumowanie zamówienia",
+    "subtitle": "Sprawdź dane do dostawy i faktury, a następnie złóż zamówienie.",
+    "missingTitle": "Brak danych zamówienia",
+    "missingText": "Nie udało się pobrać danych zamówienia. Przejdź proszę do koszyka i spróbuj ponownie.",
+    "shippingTitle": "Dane do dostawy",
+    "recipient": "Odbiorca",
+    "buyer": "Nabywca",
+    "company": "Firma",
+    "phone": "Telefon",
+    "email": "E-mail",
+    "address": "Adres",
+    "billingSame": "Dane do faktury są takie same jak dane do dostawy.",
+    "terms": "Zapoznałem się z regulaminem i akceptuję jego warunki",
+    "submit": "Zamawiam i płacę",
+    "acceptTerms": "Zaakceptuj regulamin, aby złożyć zamówienie.",
+    "contractNote": "Umowa sprzedaży zostanie zawarta dopiero po potwierdzeniu zamówienia do realizacji przez Sprzedawcę.",
+    "back": "Wróć do poprzedniej strony",
+    "toast": {
+      "loading": "Trwa składanie zamówienia...",
+      "success": "Zamówienie złożone pomyślnie!",
+      "error": "Wystąpił błąd podczas składania zamówienia"
+    }
+  },
+  "confirm": {
+    "title": "Dziękujemy za złożenie zamówienia!",
+    "text": "Otrzymasz potwierdzenie zamówienia na adres email.",
+    "back": "Wróć do zakupów"
+  },
+  "invoice": {
+    "download": "Faktura elektroniczna",
+    "error": "Nie udało się pobrać faktury",
+    "fileName": "faktura-do-zamowienia-{{id}}.pdf"
+  },
+  "statusInfo": {
+    "title": "Statusy zamówień",
+    "subtitle": "Jak czytać etapy realizacji Twojego zamówienia.",
+    "items": {
+      "NEW": {
+        "name": "Nowe",
+        "description": "Zamówienie nie zostało jeszcze potwierdzone i proces realizacji jeszcze się nie rozpoczął."
+      },
+      "WAITING_FOR_PAYMENT": {
+        "name": "W oczekiwaniu na płatność",
+        "description": "Zamówienie oczekuje na potwierdzenie płatności."
+      },
+      "WAITING_FOR_CONFIRMATION": {
+        "name": "W oczekiwaniu na potwierdzenie",
+        "description": "Zamówienie oczekuje na potwierdzenie przez sprzedawcę."
+      },
+      "IN_PROGRESS": {
+        "name": "W realizacji",
+        "description": "Zamówienie jest w trakcie realizacji."
+      },
+      "SHIPPED": {
+        "name": "Wysłane",
+        "description": "Zamówienie zostało wysłane."
+      },
+      "DELIVERED": {
+        "name": "Dostarczone",
+        "description": "Zamówienie zostało dostarczone."
+      },
+      "CANCELLED": {
+        "name": "Anulowane",
+        "description": "Zamówienie zostało anulowane."
+      },
+      "DONE": {
+        "name": "Zakończone",
+        "description": "Zamówienie zostało zakończone."
+      }
+    }
+  }
+}

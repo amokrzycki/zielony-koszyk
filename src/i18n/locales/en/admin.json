@@ -1,0 +1,329 @@
+{
+  "nav": {
+    "label": "Admin navigation",
+    "open": "Open admin navigation",
+    "close": "Close navigation",
+    "items": {
+      "products": { "label": "Products", "hint": "Catalogue and stock" },
+      "orders": { "label": "Orders", "hint": "Fulfilment and statuses" },
+      "users": { "label": "Users", "hint": "Accounts and addresses" }
+    }
+  },
+  "shell": {
+    "title": "Admin panel",
+    "backToShop": "Shop",
+    "defaultName": "Administrator",
+    "signedOut": {
+      "title": "Sign in to open the admin panel",
+      "lead": "Managing products, orders and customers is waiting for you once you sign in.",
+      "benefits": {
+        "products": "Products, stock levels and photos",
+        "orders": "Orders, addresses and their statuses",
+        "users": "Customer accounts and roles"
+      },
+      "login": "Sign in"
+    }
+  },
+  "welcome": {
+    "greeting": "Hello, {{name}}!",
+    "greetingAnonymous": "Hello!",
+    "intro": "This is the admin panel of the “Zielony Koszyk” shop. Pick a section below to manage products, orders and customers.",
+    "go": "Open",
+    "sections": {
+      "products": "Add products, change prices and stock levels, and swap out photos.",
+      "orders": "Browse orders, their statuses and customer details, and issue invoices.",
+      "users": "Manage customer accounts, delivery addresses and roles in the shop."
+    }
+  },
+  "general": {
+    "retry": "Try again",
+    "deleteFailed": "Could not delete.",
+    "deleteSelected": "Delete selected ({{selected}})"
+  },
+  "roles": {
+    "ADMIN": "Administrator",
+    "USER": "User"
+  },
+  "confirmDelete": {
+    "subtitle": "This action cannot be undone.",
+    "title": {
+      "generic_one": "Delete {{count}} item?",
+      "generic_other": "Delete {{count}} items?",
+      "products_one": "Delete {{count}} product?",
+      "products_other": "Delete {{count}} products?",
+      "orders_one": "Delete {{count}} order?",
+      "orders_other": "Delete {{count}} orders?",
+      "users_one": "Delete {{count}} user?",
+      "users_other": "Delete {{count}} users?",
+      "orderItems_one": "Delete {{count}} order item?",
+      "orderItems_other": "Delete {{count}} order items?"
+    }
+  },
+  "products": {
+    "title": "Products",
+    "subtitle": "Catalogue, prices and stock levels. Edit price, stock and category in the table, and the name and description in the edit window.",
+    "add": "Add product",
+    "columns": {
+      "id": "ID",
+      "name": "Name",
+      "category": "Category",
+      "price": "Price",
+      "stock": "Stock",
+      "createdAt": "Added",
+      "description": "Description"
+    },
+    "changeImage": "Change image",
+    "loadError": {
+      "message": "Something went wrong while loading products.",
+      "hint": "Refresh the list to try again."
+    },
+    "empty": {
+      "title": "No products",
+      "hint": "Add your first product to make it appear in the shop catalogue."
+    },
+    "update": {
+      "loading": "Updating product...",
+      "success": "The product has been updated.",
+      "error": "Something went wrong while updating the product.",
+      "failed": "Could not update the product."
+    },
+    "delete": {
+      "none": "No products selected for deletion.",
+      "loading_one": "Deleting product...",
+      "loading_other": "Deleting products...",
+      "success_one": "The product has been deleted.",
+      "success_other": "The products have been deleted.",
+      "error_one": "Something went wrong while deleting the product.",
+      "error_other": "Something went wrong while deleting the products."
+    },
+    "form": {
+      "sharedSection": "Shared details",
+      "name": "Product name ({{language}})",
+      "description": "Product description ({{language}})",
+      "stock": "Stock quantity",
+      "price": "Price (PLN)",
+      "category": "Category",
+      "image": "Choose an image (optional)",
+      "errors": {
+        "name": "Enter the product name",
+        "description": "Enter the product description",
+        "stock": "Enter the stock quantity",
+        "price": "Enter the price"
+      }
+    },
+    "create": {
+      "title": "Add product",
+      "subtitle": "The product appears in the catalogue as soon as it is saved. The name and description are required in both languages.",
+      "submit": "Add product",
+      "loading": "Adding product...",
+      "success": "Product added",
+      "error": "Could not add the product"
+    },
+    "edit": {
+      "title": "Edit product",
+      "subtitle": "Change the name and description in both languages, along with the shared product details.",
+      "submit": "Save changes",
+      "loadError": "Could not load the product translations."
+    },
+    "image": {
+      "title": "Product image",
+      "subtitle": "A single image file will replace the current product image.",
+      "choose": "Choose an image file",
+      "change": "Change selected file",
+      "loading": "Uploading...",
+      "success": "The image has been updated",
+      "error": "Something went wrong while updating the image",
+      "sending": "Uploading…",
+      "save": "Save image"
+    }
+  },
+  "orders": {
+    "title": "Orders",
+    "subtitle": "All shop orders with customer details and fulfilment status.",
+    "refresh": "Refresh the orders list",
+    "details": "Details",
+    "columns": {
+      "id": "No.",
+      "customer": "Customer",
+      "email": "Email",
+      "date": "Date",
+      "amount": "Amount",
+      "status": "Status"
+    },
+    "loadError": {
+      "message": "Could not load orders.",
+      "hint": "Check your connection and refresh the list."
+    },
+    "empty": {
+      "title": "No orders",
+      "hint": "Orders will show up here once customers place them."
+    },
+    "delete": {
+      "none": "No orders selected for deletion.",
+      "loading_one": "Deleting order...",
+      "loading_other": "Deleting orders...",
+      "success_one": "The order has been deleted.",
+      "success_other": "The orders have been deleted.",
+      "error_one": "Something went wrong while deleting the order.",
+      "error_other": "Something went wrong while deleting the orders."
+    }
+  },
+  "orderItems": {
+    "loadingTitle": "Order",
+    "loadingSubtitle": "Loading order details…",
+    "loadError": {
+      "message": "Could not load the order details.",
+      "hint": "Go back to the orders list and open the order again."
+    },
+    "title": "Order #{{id}}",
+    "subtitleGuest": "Guest order (no account)",
+    "subtitlePlaced": "Placed {{date}}",
+    "editDetails": "Edit details",
+    "status": "Status",
+    "amount": "Order total",
+    "date": "Order date",
+    "heading": "Order items",
+    "toolbarHint": "Edit quantity and price in the table",
+    "columns": {
+      "product": "Product",
+      "quantity": "Quantity",
+      "price": "Price",
+      "total": "Line total"
+    },
+    "empty": {
+      "title": "No items in this order",
+      "hint": "Add products to this order using the button above."
+    },
+    "update": {
+      "loading": "Updating order item...",
+      "success": "The order item has been updated.",
+      "error": "Something went wrong while updating the order item.",
+      "failed": "Could not update the order item."
+    },
+    "delete": {
+      "none": "No items selected for deletion.",
+      "loading_one": "Deleting order item...",
+      "loading_other": "Deleting order items...",
+      "success_one": "The order item has been deleted.",
+      "success_other": "The order items have been deleted.",
+      "error_one": "Something went wrong while deleting the order item.",
+      "error_other": "Something went wrong while deleting the order items."
+    }
+  },
+  "addItems": {
+    "title": "Add products to the order",
+    "subtitle": "Choose the products and quantities to add to order #{{id}}.",
+    "columns": {
+      "id": "ID",
+      "name": "Name",
+      "category": "Category",
+      "price": "Price",
+      "stock": "Stock",
+      "quantity": "Quantity"
+    },
+    "select": "Select",
+    "selectedHeading": "Selected products ({{selected}})",
+    "submit": "Add selected products ({{selected}})",
+    "loading": "Adding products to order no. {{id}}...",
+    "success": "The products have been added to order no. {{id}}.",
+    "error": "Something went wrong while adding the products.",
+    "loadError": "Something went wrong while loading products."
+  },
+  "editOrder": {
+    "loadingTitle": "Edit order details",
+    "loadingSubtitle": "Loading…",
+    "loadError": "Could not load the order details",
+    "title": "Edit order #{{id}}",
+    "subtitle": "Change addresses, contact details and fulfilment status.",
+    "statusHeading": "Order status",
+    "status": "Status",
+    "save": "Save changes",
+    "saving": "Saving changes...",
+    "saved": "Changes saved",
+    "saveError": "Could not save the changes"
+  },
+  "users": {
+    "title": "Users",
+    "subtitle": "Customer accounts, their addresses and roles in the shop.",
+    "refresh": "Refresh the users list",
+    "add": "Add user",
+    "columns": {
+      "id": "ID",
+      "email": "Email",
+      "firstName": "First name",
+      "lastName": "Last name",
+      "phone": "Phone",
+      "deliveryAddress": "Delivery address",
+      "role": "Role",
+      "createdAt": "Created"
+    },
+    "loadError": {
+      "message": "Could not load users.",
+      "hint": "Check your connection and refresh the list."
+    },
+    "empty": {
+      "title": "No users",
+      "hint": "Customer accounts will show up here after they sign up."
+    },
+    "delete": {
+      "none": "No users selected for deletion.",
+      "loading_one": "Deleting user...",
+      "loading_other": "Deleting users...",
+      "success_one": "The user has been deleted.",
+      "success_other": "The users have been deleted.",
+      "error_one": "Something went wrong while deleting the user.",
+      "error_other": "Something went wrong while deleting the users."
+    }
+  },
+  "userForm": {
+    "firstName": "First name",
+    "firstNamePlaceholder": "John",
+    "lastName": "Last name",
+    "lastNamePlaceholder": "Smith",
+    "email": "Email",
+    "phone": "Phone number",
+    "role": "Role",
+    "companyName": "Company name",
+    "companyNamePlaceholder": "XYZ Ltd",
+    "nip": "Tax ID (NIP)",
+    "nipPlaceholder": "1234567890",
+    "street": "Street",
+    "streetPlaceholder": "ul. Przykładowa",
+    "buildingNumber": "Building no.",
+    "buildingNumberPlaceholder": "1A",
+    "flatNumber": "Flat no.",
+    "flatNumberPlaceholder": "14",
+    "zip": "Postcode",
+    "zipPlaceholder": "00-000",
+    "city": "City",
+    "cityPlaceholder": "Rzeszów"
+  },
+  "editUser": {
+    "notFound": "User not found.",
+    "addressesNotFound": "User addresses not found.",
+    "title": "Editing: {{name}}",
+    "dataHeading": "User details",
+    "save": "Save details",
+    "updating": "Updating details...",
+    "updated": "Details updated.",
+    "updateError": "Could not update the details.",
+    "deliveryAddress": "Delivery address",
+    "billingAddress": "Invoice address"
+  },
+  "addUser": {
+    "title": "Add user",
+    "subtitle": "Create a customer account together with a default delivery address.",
+    "accountHeading": "Account details",
+    "addressHeading": "Default delivery address",
+    "submit": "Create user",
+    "loading": "Creating account...",
+    "success": "Account created for {{email}}.",
+    "error": "Could not create the account"
+  },
+  "changeAddress": {
+    "save": "Save address",
+    "saving": "Saving changes...",
+    "saved": "Changes saved",
+    "error": "Something went wrong while saving the changes"
+  }
+}

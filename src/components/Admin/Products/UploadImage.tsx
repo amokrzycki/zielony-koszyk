@@ -3,6 +3,8 @@ import UploadFileOutlined from "@mui/icons-material/UploadFileOutlined";
 import { type ChangeEvent, useState } from "react";
 import { useUploadImageMutation } from "@/components/Products/productsApiSlice.ts";
 import toast from "react-hot-toast";
+import { useTranslation } from "react-i18next";
+import { useApiError } from "../useAdminI18n.ts";
 import { EASE, accentText, tone } from "@/components/listingStyles.ts";
 
 interface UploadFileProps {
@@ -10,6 +12,8 @@ interface UploadFileProps {
 }
 
 function UploadImage({ productId }: UploadFileProps) {
+  const { t } = useTranslation("admin");
+  const apiError = useApiError();
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [uploadImage, { isLoading }] = useUploadImageMutation();
 
@@ -22,12 +26,15 @@ function UploadImage({ productId }: UploadFileProps) {
   const handleSaveChanges = async () => {
     if (!selectedFile) return;
     toast
-      .promise(uploadImage({ id: productId, file: selectedFile }), {
-        loading: "Ładowanie...",
-        success: "Zdjęcie zostało zaktualizowane",
-        error: "Wystąpił błąd podczas aktualizacji zdjęcia",
+      .promise(uploadImage({ id: productId, file: selectedFile }).unwrap(), {
+        loading: t("products.image.loading"),
+        success: t("products.image.success"),
+        error: (error) => apiError(error, t("products.image.error")),
       })
-      .then(() => setSelectedFile(null));
+      .then(() => setSelectedFile(null))
+      .catch(() => {
+        /* surfaced by the toast; the chosen file stays selected for a retry */
+      });
   };
 
   return (
@@ -52,7 +59,7 @@ function UploadImage({ productId }: UploadFileProps) {
         })}>
         <Box sx={{ display: "flex", flexDirection: "column", alignItems: "flex-start", ml: 1, minWidth: 0 }}>
           <Box component="span" sx={{ fontWeight: 700 }}>
-            {selectedFile ? "Zmień wybrany plik" : "Wybierz plik ze zdjęciem"}
+            {selectedFile ? t("products.image.change") : t("products.image.choose")}
           </Box>
           {selectedFile && (
             <Typography component="span" sx={{ color: "text.secondary", fontSize: "0.82rem" }} noWrap>
@@ -68,7 +75,7 @@ function UploadImage({ productId }: UploadFileProps) {
           onClick={handleSaveChanges}
           disabled={isLoading || !selectedFile}
           sx={{ borderRadius: "999px", fontWeight: 700 }}>
-          {isLoading ? "Wysyłanie…" : "Zapisz zdjęcie"}
+          {isLoading ? t("products.image.sending") : t("products.image.save")}
         </Button>
       </Box>
     </Box>

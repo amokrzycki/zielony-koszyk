@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { Box, Button, Typography } from "@mui/material";
+import { useTranslation } from "react-i18next";
+import { useFormat, useLocale } from "@/i18n/useLocale.ts";
 import SearchOffRoundedIcon from "@mui/icons-material/SearchOffRounded";
 import ProductCard from "./ProductCard.tsx";
 import type Product from "@/types/Product.ts";
@@ -18,15 +20,18 @@ import GoToTop from "@/components/Products/GoToTop.tsx";
 import { DUR, EASE, accentText, panelSx, tone } from "@/components/listingStyles.ts";
 
 function Products() {
+  const { t } = useTranslation(["catalog", "common"]);
+  const locale = useLocale();
+  const { number } = useFormat();
   const { filters, setParams } = useProductFilters();
   const [filtersOpen, setFiltersOpen] = useState(false);
-  const fetchedProducts = useGetProductsByParamsQuery(filters);
+  const fetchedProducts = useGetProductsByParamsQuery({ ...filters, locale });
   const { data, error, isLoading, isFetching } = fetchedProducts;
   const products = data?.data || [];
   const searchQuery = filters.search;
   const totalCount = data?.totalCount;
   const shownCount = data ? Math.min((data.currentPage - 1) * data.pageSize + products.length, data.totalCount) : 0;
-  const activeFilterCount = getActiveFilterChips(filters).length;
+  const activeFilterCount = getActiveFilterChips(filters, { t, locale }).length;
 
   // Cross-fade each fresh result set through SwapLayers; keyed off `data` so the old page stays until the new arrives.
   const [swapKey, setSwapKey] = useState(0);
@@ -40,7 +45,7 @@ function Products() {
         id="main-wrapper"
         sx={{ display: "flex", minHeight: "60vh", alignItems: "center", justifyContent: "center", px: 3 }}>
         <Typography variant="h5" component="h2" sx={{ textAlign: "center" }}>
-          Wystąpił błąd podczas pobierania produktów.
+          {t("products.error")}
         </Typography>
       </Box>
     );
@@ -62,10 +67,10 @@ function Products() {
               letterSpacing: "-0.03em",
               textWrap: "balance",
             }}>
-            Produkty
+            {t("products.title")}
           </Typography>
           <Typography sx={{ mt: 1, color: "text.secondary", lineHeight: 1.5, maxWidth: "60ch" }}>
-            Świeże warzywa, owoce i produkty spożywcze od lokalnych dostawców.
+            {t("products.subtitle")}
           </Typography>
         </Box>
 
@@ -100,7 +105,7 @@ function Products() {
                 <Typography
                   className="order-2 sm:order-1"
                   sx={{ color: "text.secondary", fontWeight: 600, fontVariantNumeric: "tabular-nums" }}>
-                  Wyświetlono {shownCount} z {totalCount}
+                  {t("products.shown", { shown: number(shownCount), total: number(totalCount ?? 0) })}
                 </Typography>
                 <Box className="order-1 sm:order-2">
                   <FiltersPagination totalCount={data?.totalPages} />
@@ -120,6 +125,8 @@ function Products() {
 }
 
 function EmptyResults({ searchQuery, onClear }: { searchQuery?: string; onClear: () => void }) {
+  const { t } = useTranslation("catalog");
+
   return (
     <Box className="flex flex-col items-center gap-3 py-14 text-center">
       <Box
@@ -136,12 +143,10 @@ function EmptyResults({ searchQuery, onClear }: { searchQuery?: string; onClear:
         <SearchOffRoundedIcon />
       </Box>
       <Typography component="h2" sx={{ fontSize: "1.25rem", fontWeight: 800, letterSpacing: "-0.02em" }}>
-        Brak produktów
+        {t("products.empty.title")}
       </Typography>
       <Typography sx={{ maxWidth: "46ch", color: "text.secondary", lineHeight: 1.55 }}>
-        {searchQuery
-          ? `Nie znaleźliśmy nic dla frazy „${searchQuery}”.`
-          : "Żaden produkt nie spełnia wybranych filtrów."}
+        {searchQuery ? t("products.empty.forQuery", { query: searchQuery }) : t("products.empty.noMatch")}
       </Typography>
       {searchQuery && (
         <Button
@@ -156,7 +161,7 @@ function EmptyResults({ searchQuery, onClear }: { searchQuery?: string; onClear:
             textTransform: "none",
             "&:hover": { borderColor: "primary.main", color: (t) => accentText(t) },
           }}>
-          Wyczyść wyszukiwanie
+          {t("products.empty.clearSearch")}
         </Button>
       )}
     </Box>

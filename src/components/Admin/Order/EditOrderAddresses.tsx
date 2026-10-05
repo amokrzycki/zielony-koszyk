@@ -8,6 +8,7 @@ import type { Address } from "@/types/Address.ts";
 import ShippingFormFields from "@/components/Order/ShippingFormFields.tsx";
 import type { IFormValues } from "@/components/Order/OrderDetails.tsx";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { CustomerType } from "@/enums/CustomerType.ts";
 import BillingFormFields from "@/components/Order/BillingFormFields.tsx";
 import {
@@ -24,7 +25,8 @@ import {
 } from "@/helpers/validators.ts";
 import toast from "react-hot-toast";
 import { OrderStatuses } from "@/enums/OrderStatuses.ts";
-import { getPolishStatus } from "@/helpers/getPolishStatus.ts";
+import { useLocalePath } from "@/i18n/useLocale.ts";
+import { useApiError, useIdentifierLabels } from "../useAdminI18n.ts";
 import { OrderType } from "@/enums/OrderType.ts";
 import EditOutlined from "@mui/icons-material/EditOutlined";
 import AdminPageHeader from "@/components/Admin/AdminPageHeader.tsx";
@@ -34,6 +36,10 @@ import { adminSubheadingSx } from "@/components/Admin/adminStyles.ts";
 function EditOrderAddresses() {
   const { orderId } = useParams();
   const navigate = useNavigate();
+  const { t } = useTranslation("admin");
+  const to = useLocalePath();
+  const labels = useIdentifierLabels();
+  const apiError = useApiError();
   const { data: order, isLoading: isOrderLoading, isError: isOrderError } = useGetOrderQuery(orderId as string);
   const [updateOrder] = useUpdateOrderMutation();
 
@@ -93,14 +99,18 @@ function EditOrderAddresses() {
   if (isOrderLoading) {
     return (
       <Box sx={{ width: "100%" }}>
-        <AdminPageHeader icon={<EditOutlined />} title="Edycja danych zamówienia" subtitle="Wczytywanie…" />
+        <AdminPageHeader
+          icon={<EditOutlined />}
+          title={t("editOrder.loadingTitle")}
+          subtitle={t("editOrder.loadingSubtitle")}
+        />
         <AdminLoading rows={6} />
       </Box>
     );
   }
 
   if (isOrderError || !order) {
-    return <ErrorView message={"Nie udało się pobrać danych zamówienia"} />;
+    return <ErrorView message={t("editOrder.loadError")} />;
   }
 
   const isValid = form.isValid();
@@ -137,13 +147,13 @@ function EditOrderAddresses() {
           },
         }).unwrap(),
         {
-          loading: "Zapisywanie zmian...",
-          success: "Zmiany zostały zapisane",
-          error: "Nie udało się zapisać zmian",
+          loading: t("editOrder.saving"),
+          success: t("editOrder.saved"),
+          error: (error) => apiError(error, t("editOrder.saveError")),
         },
       )
       .then(() => {
-        navigate(`/admin/zarzadzanie-zamowieniami/${order.order_id}`);
+        navigate(to("adminOrderItems", { orderId: order.order_id }));
       });
   };
 
@@ -151,8 +161,8 @@ function EditOrderAddresses() {
     <Box sx={{ width: "100%", maxWidth: 1000 }}>
       <AdminPageHeader
         icon={<EditOutlined />}
-        title={`Edycja zamówienia #${order.order_id}`}
-        subtitle="Zmień adresy, dane kontaktowe i status realizacji."
+        title={t("editOrder.title", { id: order.order_id })}
+        subtitle={t("editOrder.subtitle")}
       />
 
       <form onSubmit={form.onSubmit(handleSubmit)}>
@@ -164,18 +174,18 @@ function EditOrderAddresses() {
 
           <Box sx={(theme) => ({ ...panelSx(theme), p: { xs: 2.5, sm: 3.5 }, display: "grid", gap: 2 })}>
             <Typography component="h2" sx={adminSubheadingSx}>
-              Status zamówienia
+              {t("editOrder.statusHeading")}
             </Typography>
             <FormControl variant="outlined" fullWidth>
-              <InputLabel id="order-status-label">Status</InputLabel>
+              <InputLabel id="order-status-label">{t("editOrder.status")}</InputLabel>
               <Select
                 labelId="order-status-label"
-                label="Status"
+                label={t("editOrder.status")}
                 value={orderStatus}
                 onChange={(e) => setOrderStatus(e.target.value)}>
                 {Object.values(OrderStatuses).map((status) => (
                   <MenuItem key={status} value={status}>
-                    {getPolishStatus(status)}
+                    {labels.status(status)}
                   </MenuItem>
                 ))}
               </Select>
@@ -185,13 +195,13 @@ function EditOrderAddresses() {
               disabled={!isValid && form.isTouched()}
               variant="contained"
               sx={{ borderRadius: "999px", fontWeight: 700, mt: 1 }}>
-              Zapisz zmiany
+              {t("editOrder.save")}
             </Button>
             <Button
               variant="text"
-              onClick={() => navigate(`/admin/zarzadzanie-zamowieniami/${order.order_id}`)}
+              onClick={() => navigate(to("adminOrderItems", { orderId: order.order_id }))}
               sx={{ borderRadius: "999px", fontWeight: 700 }}>
-              Anuluj
+              {t("actions.cancel", { ns: "common" })}
             </Button>
           </Box>
         </Box>

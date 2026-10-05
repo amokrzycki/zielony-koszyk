@@ -4,33 +4,22 @@ import SellOutlined from "@mui/icons-material/SellOutlined";
 import GroupOutlined from "@mui/icons-material/GroupOutlined";
 import ArrowForward from "@mui/icons-material/ArrowForward";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { useAppSelector } from "@/hooks/hooks.ts";
 import type { RootState } from "@/store/store.ts";
 import { panelSx, accentText, EASE, tone } from "@/components/listingStyles.ts";
+import { useLocalePath } from "@/i18n/useLocale.ts";
 
 const sections = [
-  {
-    icon: Inventory2Outlined,
-    title: "Produkty",
-    description: "Dodawaj produkty, zmieniaj ceny i stany magazynowe oraz podmieniaj zdjęcia.",
-    route: "/admin/zarzadzanie-produktami",
-  },
-  {
-    icon: SellOutlined,
-    title: "Zamówienia",
-    description: "Przeglądaj zamówienia, ich statusy, dane klientów i wystawiaj faktury.",
-    route: "/admin/zarzadzanie-zamowieniami",
-  },
-  {
-    icon: GroupOutlined,
-    title: "Użytkownicy",
-    description: "Zarządzaj kontami klientów, adresami dostawy oraz rolami w sklepie.",
-    route: "/admin/zarzadzanie-uzytkownikami",
-  },
-];
+  { icon: Inventory2Outlined, id: "products", route: "adminProducts" },
+  { icon: SellOutlined, id: "orders", route: "adminOrders" },
+  { icon: GroupOutlined, id: "users", route: "adminUsers" },
+] as const;
 
 function WelcomeMessage() {
   const navigate = useNavigate();
+  const { t } = useTranslation("admin");
+  const to = useLocalePath();
   const user = useAppSelector((state: RootState) => state.auth.user);
   const firstName = user?.first_name?.trim();
 
@@ -58,19 +47,18 @@ function WelcomeMessage() {
             letterSpacing: "-0.03em",
             textWrap: "balance",
           }}>
-          {firstName ? `Dzień dobry, ${firstName}!` : "Dzień dobry!"}
+          {firstName ? t("welcome.greeting", { name: firstName }) : t("welcome.greetingAnonymous")}
         </Typography>
         <Typography sx={{ mt: 1.5, maxWidth: "60ch", color: "text.secondary", lineHeight: 1.6 }}>
-          To panel administracyjny sklepu „Zielony Koszyk”. Wybierz sekcję poniżej, aby zarządzać produktami,
-          zamówieniami i klientami.
+          {t("welcome.intro")}
         </Typography>
       </Box>
 
       <Box sx={{ display: "grid", gridTemplateColumns: { xs: "1fr", md: "repeat(3, 1fr)" }, gap: 2.5 }}>
-        {sections.map(({ icon: Icon, title, description, route }) => (
+        {sections.map(({ icon: Icon, id, route }) => (
           <Button
             key={route}
-            onClick={() => navigate(route)}
+            onClick={() => navigate(to(route))}
             sx={(theme) => ({
               ...panelSx(theme),
               display: "flex",
@@ -105,9 +93,11 @@ function WelcomeMessage() {
               <Icon />
             </Box>
             <Typography sx={{ fontWeight: 800, fontSize: "1rem", letterSpacing: "-0.01em", color: "text.primary" }}>
-              {title}
+              {t(`nav.items.${id}.label`)}
             </Typography>
-            <Typography sx={{ color: "text.secondary", fontSize: "0.9rem", lineHeight: 1.5 }}>{description}</Typography>
+            <Typography sx={{ color: "text.secondary", fontSize: "0.9rem", lineHeight: 1.5 }}>
+              {t(`welcome.sections.${id}`)}
+            </Typography>
             <Box
               sx={(theme) => ({
                 mt: 0.5,
@@ -118,7 +108,7 @@ function WelcomeMessage() {
                 fontWeight: 700,
                 fontSize: "0.9rem",
               })}>
-              Przejdź
+              {t("welcome.go")}
               <ArrowForward sx={{ fontSize: 18 }} />
             </Box>
           </Button>
