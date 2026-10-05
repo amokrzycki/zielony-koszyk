@@ -8,6 +8,7 @@ import AccountOrderDetails from "./AccountOrderDetails.tsx";
 import { OrderStatuses } from "@/enums/OrderStatuses.ts";
 import { OrderType } from "@/enums/OrderType.ts";
 import { CustomerType } from "@/enums/CustomerType.ts";
+import i18n from "@/i18n/index.ts";
 
 const mocks = vi.hoisted(() => ({
   items: {
@@ -60,6 +61,7 @@ describe("AccountOrderDetails", () => {
         status: OrderStatuses.IN_PROGRESS,
         order_date: "2025-05-12T14:30:00",
         total_amount: "29.50",
+        locale: "pl",
         billingAddress: address,
         shippingAddress: address,
       },
@@ -96,10 +98,33 @@ describe("AccountOrderDetails", () => {
     expect(container.textContent).toContain("W trakcie realizacji");
     expect(container.textContent).toContain("2 pozycje");
     expect(container.textContent).toContain("Razem");
-    expect(container.textContent).toContain("29.50 zł");
+    expect(container.textContent).toMatch(/29,50\s*zł/);
     expect(container.textContent).toContain("Dane do faktury");
     expect(container.textContent).toContain("Dostawa");
     expect(container.textContent).toContain("Osoba prywatna");
+  });
+
+  it("renders the same order in English with locale-aware currency, dates and plurals", async () => {
+    await i18n.changeLanguage("en");
+    mocks.items.data = [
+      { order_item_id: 1, product_name: "Pomidory", quantity: 2, price: "12.00", item_type: "PRODUCT" },
+      { order_item_id: 2, product_name: "Oliwa", quantity: 1, price: "5.50", item_type: "PRODUCT" },
+      { order_item_id: 3, product_name: "Kurier DPD", quantity: 1, price: "10.00", item_type: "DELIVERY" },
+    ];
+
+    await render();
+
+    const text = container.textContent ?? "";
+    expect(text).toContain("Order #1042");
+    expect(text).toContain("In progress");
+    expect(text).toContain("2 items");
+    expect(text).toContain("Private customer");
+    expect(text).toContain("Total");
+    expect(text).toMatch(/PLN\s*39\.50/);
+    expect(text).toContain("12 May 2025");
+    expect(text).toContain("DPD courier");
+    expect(text).toContain("Pomidory");
+    expect(text).not.toContain("Zamówienie");
   });
 
   it("uses the singular form for a single line item", async () => {

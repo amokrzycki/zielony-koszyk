@@ -1,4 +1,5 @@
 import { Box, Typography } from "@mui/material";
+import { useTranslation } from "react-i18next";
 
 interface ErrorProps {
   message?: string;
@@ -6,6 +7,8 @@ interface ErrorProps {
 }
 
 function ErrorView({ message, errorText }: ErrorProps) {
+  const { t } = useTranslation();
+
   return (
     <Box className={"flex w-full h-full items-center justify-center flex-col"}>
       <Typography
@@ -14,7 +17,7 @@ function ErrorView({ message, errorText }: ErrorProps) {
           color: "error.main",
         }}
         gutterBottom>
-        {message}
+        {message ?? (errorText ? null : t("errors.generic"))}
       </Typography>
       <Typography
         variant={"body1"}

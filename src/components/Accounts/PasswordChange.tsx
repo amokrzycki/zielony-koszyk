@@ -11,6 +11,9 @@ import { useAppSelector } from "@/hooks/hooks.ts";
 import type { UpdatePasswordBody } from "@/types/UpdatePasswordBody.ts";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+import { useTranslation } from "react-i18next";
+import { apiErrorMessage } from "@/helpers/apiError.ts";
+import { useLocalePath } from "@/i18n/useLocale.ts";
 import { accentText, ctaButtonSx, tone } from "@/components/listingStyles.ts";
 
 export interface IPasswordChangeFormValues {
@@ -19,12 +22,12 @@ export interface IPasswordChangeFormValues {
   passwordConfirmation: string;
 }
 
-const PASSWORD_HINT = "Minimum 8 znaków, z jedną cyfrą i jednym znakiem specjalnym.";
-
 function PasswordChange() {
   const user: User = useAppSelector((state) => state.auth.user);
   const [updatePassword, { isLoading }] = useChangePasswordMutation();
   const navigate = useNavigate();
+  const { t, i18n } = useTranslation("account");
+  const to = useLocalePath();
   const [showPasswords, setShowPasswords] = useState(false);
   const [error, setError] = useState("");
 
@@ -58,13 +61,13 @@ function PasswordChange() {
 
     try {
       await updatePassword(body).unwrap();
-    } catch {
-      setError("Nie udało się zmienić hasła. Sprawdź aktualne hasło i spróbuj ponownie.");
+    } catch (e) {
+      setError(apiErrorMessage(i18n.t, e, t("password.error")));
       return;
     }
 
-    toast.success("Hasło zostało zmienione");
-    navigate("/konto");
+    toast.success(t("password.success"));
+    navigate(to("account"));
   };
 
   const inputType = showPasswords ? "text" : "password";
@@ -100,10 +103,10 @@ function PasswordChange() {
               lineHeight: 1.1,
               letterSpacing: "-0.03em",
             }}>
-            Zmiana hasła
+            {t("password.title")}
           </Typography>
           <Typography sx={{ mt: 0.75, color: "text.secondary", maxWidth: "56ch", lineHeight: 1.6 }}>
-            Ustaw nowe hasło do konta. Po zmianie pozostaniesz zalogowany na tym urządzeniu.
+            {t("password.subtitle")}
           </Typography>
         </Box>
       </Stack>
@@ -120,7 +123,7 @@ function PasswordChange() {
               color: "text.secondary",
               "&:hover": { color: (t) => accentText(t), bgcolor: "transparent" },
             }}>
-            {showPasswords ? "Ukryj hasła" : "Pokaż hasła"}
+            {showPasswords ? t("password.hide") : t("password.show")}
           </Button>
         </Stack>
 
@@ -136,7 +139,7 @@ function PasswordChange() {
             required
             variant="outlined"
             type={inputType}
-            label="Aktualne hasło"
+            label={t("password.current")}
             {...form.getInputProps("oldPassword")}
             error={fieldError("oldPassword")}
             helperText={fieldHelper("oldPassword")}
@@ -149,10 +152,10 @@ function PasswordChange() {
             required
             variant="outlined"
             type={inputType}
-            label="Nowe hasło"
+            label={t("password.new")}
             {...form.getInputProps("password")}
             error={fieldError("password")}
-            helperText={fieldHelper("password") ?? PASSWORD_HINT}
+            helperText={fieldHelper("password") ?? t("password.hint")}
             disabled={isLoading}
             slotProps={{ htmlInput: { autoComplete: "new-password" } }}
           />
@@ -162,7 +165,7 @@ function PasswordChange() {
             required
             variant="outlined"
             type={inputType}
-            label="Potwierdź nowe hasło"
+            label={t("password.confirm")}
             {...form.getInputProps("passwordConfirmation")}
             error={fieldError("passwordConfirmation")}
             helperText={fieldHelper("passwordConfirmation")}
@@ -174,7 +177,7 @@ function PasswordChange() {
             type="submit"
             disabled={(!isValid && form.isTouched()) || isLoading}
             sx={{ ...ctaButtonSx, alignSelf: "flex-start", minWidth: 220, mt: 1 }}>
-            {isLoading ? "Zapisywanie…" : "Zmień hasło"}
+            {isLoading ? t("password.saving") : t("password.submit")}
           </Button>
         </Stack>
       </Box>

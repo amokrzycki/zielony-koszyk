@@ -7,6 +7,7 @@ import PhoneOutlined from "@mui/icons-material/PhoneOutlined";
 import PlaceOutlined from "@mui/icons-material/PlaceOutlined";
 import { CustomerType } from "@/enums/CustomerType.ts";
 import type { ReactNode } from "react";
+import { useTranslation } from "react-i18next";
 import { accentText, ghostButtonSx, panelSx, tone } from "@/components/listingStyles.ts";
 
 interface AddressBoxProps {
@@ -25,6 +26,7 @@ const lineSx = {
 } as const;
 
 function AddressBox({ address, onEdit, checkBox }: AddressBoxProps) {
+  const { t } = useTranslation("account");
   const isCompany = address.customer_type === CustomerType.COMPANY;
   const name = isCompany ? address.company_name : `${address.first_name ?? ""} ${address.last_name ?? ""}`.trim();
 
@@ -67,7 +69,7 @@ function AddressBox({ address, onEdit, checkBox }: AddressBoxProps) {
           </Typography>
           {isCompany && (
             <Typography sx={{ mt: 0.25, color: "text.secondary", fontSize: "0.85rem", lineHeight: 1.4 }}>
-              NIP: {address.nip}
+              {t("addressBox.nip", { nip: address.nip })}
             </Typography>
           )}
         </Box>
@@ -106,7 +108,7 @@ function AddressBox({ address, onEdit, checkBox }: AddressBoxProps) {
           }}
           startIcon={<EditOutlined sx={{ fontSize: 18 }} />}
           sx={(theme) => ({ ...ghostButtonSx(theme), px: 2, py: 0.75 })}>
-          Edytuj
+          {t("addressBox.edit")}
         </Button>
       </Box>
     </Box>

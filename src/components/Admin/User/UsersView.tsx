@@ -1,5 +1,6 @@
 import { useDeleteUsersMutation, useGetUsersQuery } from "../../Accounts/accountsApiSlice.ts";
-import { useState } from "react";
+import { useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import toast from "react-hot-toast";
 import { DataGrid, type GridColDef, type GridRowSelectionModel } from "@mui/x-data-grid";
 import { Box, Button, IconButton } from "@mui/material";
@@ -9,7 +10,8 @@ import GroupOutlined from "@mui/icons-material/GroupOutlined";
 import type User from "../../../types/User.ts";
 import { AddressType } from "@/enums/AddressType.ts";
 import ConfirmDeleteModal from "../ConfirmDeleteModal.tsx";
-import { getFormattedDate } from "@/helpers/getFormattedDate.ts";
+import { useFormat, useLocalePath } from "@/i18n/useLocale.ts";
+import { useApiError, useGridLocaleText } from "../useAdminI18n.ts";
 import { useAppDispatch } from "@/hooks/hooks.ts";
 import { setUserToEdit } from "@/store/appSlice.ts";
 import { useNavigate } from "react-router-dom";
@@ -22,6 +24,11 @@ import AdminLoading from "../AdminLoading.tsx";
 import { EASE, accentText, ghostButtonSx, tone } from "@/components/listingStyles.ts";
 
 function UsersView() {
+  const { t } = useTranslation("admin");
+  const format = useFormat();
+  const to = useLocalePath();
+  const apiError = useApiError();
+  const localeText = useGridLocaleText();
   const { data: users, isError, isLoading, refetch } = useGetUsersQuery();
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -38,20 +45,20 @@ function UsersView() {
   const onDelete = async () => {
     const ids = Array.from(rowSelectionModel.ids) as string[];
     if (ids.length === 0) {
-      toast.error("Nie wybrano użytkowników do usunięcia.");
+      toast.error(t("users.delete.none"));
       return;
     }
 
     try {
       await toast.promise(Promise.all(ids.map((id) => deleteUsers(id).unwrap())), {
-        loading: `Usuwanie ${ids.length > 1 ? "użytkowników" : "użytkownika"}...`,
-        success: `${ids.length > 1 ? "Użytkownicy zostali usunięci." : "Użytkownik został usunięty."}`,
-        error: `Wystąpił błąd podczas usuwania ${ids.length > 1 ? "użytkowników" : "użytkownika"}.`,
+        loading: t("users.delete.loading", { count: ids.length }),
+        success: t("users.delete.success", { count: ids.length }),
+        error: (error) => apiError(error, t("users.delete.error", { count: ids.length })),
       });
       setRowSelectionModel({ type: "include", ids: new Set<string>() });
     } catch (error) {
       console.error("Delete failed:", error);
-      toast.error("Nie udało się usunąć.");
+      toast.error(t("general.deleteFailed"));
     }
   };
 
@@ -59,61 +66,79 @@ function UsersView() {
     const user = users?.find((user) => user.user_id === id);
     if (user) {
       dispatch(setUserToEdit(user));
-      navigate("/admin/zarzadzanie-uzytkownikami/edycja-uzytkownika");
+      navigate(to("adminUserEdit"));
     }
   };
 
-  const columns: GridColDef[] = [
-    { field: "id", headerName: "ID", width: 190, renderCell: (params) => <Box sx={monoCellSx}>{params.value}</Box> },
-    { field: "email", headerName: "E-mail", flex: 1, minWidth: 220 },
-    { field: "first_name", headerName: "Imię", width: 130 },
-    { field: "last_name", headerName: "Nazwisko", width: 150 },
-    { field: "phone", headerName: "Telefon", width: 140 },
-    { field: "delivery_address", headerName: "Adres dostawy", width: 240 },
-    { field: "role", headerName: "Rola", width: 130 },
-    { field: "created_at", headerName: "Utworzono", width: 120 },
-    {
-      field: "actions",
-      headerName: "",
-      width: 120,
-      sortable: false,
-      disableColumnMenu: true,
-      renderCell: (params) => (
-        <Button
-          variant="outlined"
-          size="small"
-          onClick={() => handleEdit(params.row.id as string)}
-          sx={(theme) => ({ ...ghostButtonSx(theme), px: 2, py: 0.5, fontSize: "0.82rem" })}>
-          Edytuj
-        </Button>
-      ),
-    },
-  ];
+  // biome-ignore lint/correctness/useExhaustiveDependencies: handleEdit only reads `users` and stable setters
+  const columns = useMemo<GridColDef[]>(
+    () => [
+      {
+        field: "id",
+        headerName: t("users.columns.id"),
+        width: 190,
+        renderCell: (params) => <Box sx={monoCellSx}>{params.value}</Box>,
+      },
+      { field: "email", headerName: t("users.columns.email"), flex: 1, minWidth: 220 },
+      { field: "first_name", headerName: t("users.columns.firstName"), width: 130 },
+      { field: "last_name", headerName: t("users.columns.lastName"), width: 150 },
+      { field: "phone", headerName: t("users.columns.phone"), width: 140 },
+      { field: "delivery_address", headerName: t("users.columns.deliveryAddress"), width: 240 },
+      { field: "role", headerName: t("users.columns.role"), width: 150 },
+      {
+        field: "created_at",
+        headerName: t("users.columns.createdAt"),
+        width: 170,
+        type: "dateTime",
+        valueFormatter: (value: Date) => format.dateTime(value),
+      },
+      {
+        field: "actions",
+        headerName: "",
+        width: 120,
+        sortable: false,
+        disableColumnMenu: true,
+        renderCell: (params) => (
+          <Button
+            variant="outlined"
+            size="small"
+            onClick={() => handleEdit(params.row.id as string)}
+            sx={(theme) => ({ ...ghostButtonSx(theme), px: 2, py: 0.5, fontSize: "0.82rem" })}>
+            {t("actions.edit", { ns: "common" })}
+          </Button>
+        ),
+      },
+    ],
+    [t, format, users, to],
+  );
 
-  const rows =
-    users?.map((user: User) => {
-      const billingAddress = user.addresses.find((address) => address.type === AddressType.BILLING);
-      const shippingAddress = user.addresses.find((address) => address.type === AddressType.DELIVERY);
+  const rows = useMemo(
+    () =>
+      users?.map((user: User) => {
+        const billingAddress = user.addresses.find((address) => address.type === AddressType.BILLING);
+        const shippingAddress = user.addresses.find((address) => address.type === AddressType.DELIVERY);
 
-      const formatAddress = (address?: (typeof user.addresses)[number]) => {
-        if (!address?.street) return "—";
-        const flat = address.flat_number ? `/${address.flat_number}` : "";
-        const tail = [address.zip, address.city].filter(Boolean).join(", ");
-        return [address.street, `${address.building_number ?? ""}${flat}`.trim(), tail].filter(Boolean).join(" ");
-      };
+        const formatAddress = (address?: (typeof user.addresses)[number]) => {
+          if (!address?.street) return "—";
+          const flat = address.flat_number ? `/${address.flat_number}` : "";
+          const tail = [address.zip, address.city].filter(Boolean).join(", ");
+          return [address.street, `${address.building_number ?? ""}${flat}`.trim(), tail].filter(Boolean).join(" ");
+        };
 
-      return {
-        id: user.user_id,
-        email: user.email,
-        first_name: user.first_name || "—",
-        last_name: user.last_name || "—",
-        phone: user.phone || "—",
-        delivery_address: formatAddress(shippingAddress),
-        billing_address: formatAddress(billingAddress),
-        role: user.role,
-        created_at: getFormattedDate(user.created_at),
-      };
-    }) ?? [];
+        return {
+          id: user.user_id,
+          email: user.email,
+          first_name: user.first_name || "—",
+          last_name: user.last_name || "—",
+          phone: user.phone || "—",
+          delivery_address: formatAddress(shippingAddress),
+          billing_address: formatAddress(billingAddress),
+          role: t(`roles.${user.role}`),
+          created_at: new Date(user.created_at),
+        };
+      }) ?? [],
+    [users, t],
+  );
 
   const selectedCount = rowSelectionModel.ids.size;
 
@@ -122,9 +147,9 @@ function UsersView() {
       selectedCount={selectedCount}
       onDeleteSelected={handleConfirmDeleteModalOpen}
       addAction={{
-        label: "Dodaj użytkownika",
+        label: t("users.add"),
         icon: <AddIcon />,
-        onClick: () => navigate("/admin/zarzadzanie-uzytkownikami/dodaj-uzytkownika"),
+        onClick: () => navigate(to("adminUserAdd")),
       }}
     />
   );
@@ -133,12 +158,12 @@ function UsersView() {
     <Box sx={{ display: "flex", flexDirection: "column", width: "100%", minWidth: 0 }}>
       <AdminPageHeader
         icon={<GroupOutlined />}
-        title="Użytkownicy"
-        subtitle="Konta klientów, ich adresy oraz role w sklepie."
+        title={t("users.title")}
+        subtitle={t("users.subtitle")}
         actions={
           <IconButton
             onClick={() => refetch()}
-            aria-label="Odśwież listę użytkowników"
+            aria-label={t("users.refresh")}
             sx={(theme) => ({
               border: "1px solid",
               borderColor: "divider",
@@ -152,11 +177,7 @@ function UsersView() {
       />
 
       {isError ? (
-        <AdminError
-          message="Nie udało się pobrać użytkowników."
-          hint="Sprawdź połączenie i odśwież listę."
-          onRetry={() => refetch()}
-        />
+        <AdminError message={t("users.loadError.message")} hint={t("users.loadError.hint")} onRetry={() => refetch()} />
       ) : isLoading ? (
         <AdminLoading rows={7} />
       ) : (
@@ -168,16 +189,13 @@ function UsersView() {
             columns={columns}
             rows={rows}
             rowHeight={52}
+            localeText={localeText}
             pageSizeOptions={[5, 10, 25, 50, 100]}
             sx={adminGridSx}
             slots={{
               toolbar: CustomToolbar,
               noRowsOverlay: () => (
-                <AdminEmpty
-                  icon={<GroupOutlined />}
-                  title="Brak użytkowników"
-                  hint="Konta klientów pojawią się tutaj po rejestracji."
-                />
+                <AdminEmpty icon={<GroupOutlined />} title={t("users.empty.title")} hint={t("users.empty.hint")} />
               ),
             }}
             initialState={{
@@ -191,6 +209,7 @@ function UsersView() {
       )}
 
       <ConfirmDeleteModal
+        entity="users"
         open={openConfirmDeleteModal}
         handleClose={handleConfirmDeleteModalClose}
         onConfirm={onDelete}

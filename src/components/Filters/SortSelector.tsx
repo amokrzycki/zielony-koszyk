@@ -1,5 +1,6 @@
 import { SORT_MODES } from "@/constants/app";
 import useProductFilters from "@/hooks/useProductFilters.ts";
+import { useTranslation } from "react-i18next";
 import { FormControl, InputLabel, MenuItem, Select, type SelectChangeEvent } from "@mui/material";
 
 const controlSx = {
@@ -11,6 +12,7 @@ const controlSx = {
 };
 
 function SortSelector() {
+  const { t } = useTranslation("catalog");
   const { filters, setParams } = useProductFilters();
   const sortValue =
     SORT_MODES.find((mode) => mode.orderBy === filters.orderBy && mode.orderDir === filters.orderDir)?.value ??
@@ -27,16 +29,16 @@ function SortSelector() {
 
   return (
     <FormControl size="small" variant="outlined" sx={controlSx}>
-      <InputLabel id="sort-select-label">Sortowanie</InputLabel>
+      <InputLabel id="sort-select-label">{t("filters.sortLabel")}</InputLabel>
       <Select
         labelId="sort-select-label"
         id="sort-select"
-        label="Sortowanie"
+        label={t("filters.sortLabel")}
         value={sortValue}
         onChange={handleSortChange}>
         {SORT_MODES.map((mode) => (
           <MenuItem key={mode.value} value={mode.value}>
-            {mode.label}
+            {t(mode.labelKey)}
           </MenuItem>
         ))}
       </Select>

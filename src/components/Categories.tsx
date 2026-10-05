@@ -1,39 +1,16 @@
 import { Box, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import { useLocalePath } from "@/i18n/useLocale.ts";
 import { ArrowOutward } from "@mui/icons-material";
 
 const categories = [
-  {
-    name: "Owoce",
-    description: "Warzywa sprzedajemy w cenie hurtowej",
-    image: "/images/fruits.jpeg",
-    category: "owoce",
-  },
-  {
-    name: "Warzywa",
-    description: "Oferujemy warzywa pochodzące z ekologicznych upraw",
-    image: "/images/vegatables.jpeg",
-    category: "warzywa",
-  },
-  {
-    name: "Artykuły spożywcze",
-    description: "W ofercie posiadamy również produkty greckie m.in. oliwy, miody, herbaty",
-    image: "/images/others.jpeg",
-    category: "inne",
-  },
-  {
-    name: "Produkty sezonowe",
-    description: "Susze, kasze, grochy czyli produkty, które warto mieć w swojej kuchni",
-    image: "/images/seasonal.jpeg",
-    category: "sezonowe",
-  },
-  {
-    name: "Opakowania zbiorcze",
-    description: "Produkty pakowane w workach oraz skrzynkach w niższych cenach",
-    image: "/images/collective.jpeg",
-    category: "worki",
-  },
-];
+  { image: "/images/fruits.jpeg", category: "owoce" },
+  { image: "/images/vegatables.jpeg", category: "warzywa" },
+  { image: "/images/others.jpeg", category: "inne" },
+  { image: "/images/seasonal.jpeg", category: "sezonowe" },
+  { image: "/images/collective.jpeg", category: "worki" },
+] as const;
 
 // Column spans match categories array order.
 const gridArea = [
@@ -45,6 +22,9 @@ const gridArea = [
 ];
 
 function Categories() {
+  const { t } = useTranslation("catalog");
+  const to = useLocalePath();
+
   return (
     <Box
       component="section"
@@ -63,16 +43,16 @@ function Categories() {
               letterSpacing: "-0.03em",
               textWrap: "balance",
             }}>
-            Wybierz, czego dziś potrzebujesz
+            {t("homeCategories.title")}
           </Typography>
           <Typography sx={{ mt: 2, color: "text.secondary", maxWidth: "52ch", lineHeight: 1.6 }}>
-            Pięć kategorii, w których znajdziesz świeże produkty prosto od lokalnych dostawców.
+            {t("homeCategories.subtitle")}
           </Typography>
         </Box>
 
         <Box
           component={Link}
-          to="/produkty"
+          to={to("products")}
           className="inline-flex items-center gap-1.5 rounded-full px-5 py-2.5 text-[0.9rem] font-bold no-underline transition-colors duration-300 focus-visible:outline-2 focus-visible:outline-offset-4"
           sx={{
             color: "text.primary",
@@ -81,7 +61,7 @@ function Categories() {
             "&:hover": { borderColor: "primary.main", color: "primary.main" },
             "&:focus-visible": { outlineColor: "primary.main" },
           }}>
-          Wszystkie produkty
+          {t("homeCategories.all")}
           <ArrowOutward fontSize="small" />
         </Box>
       </Box>
@@ -89,80 +69,84 @@ function Categories() {
       <Box
         className="grid gap-3 lg:gap-4"
         sx={{ gridTemplateColumns: { xs: "1fr", sm: "repeat(4, 1fr)", lg: "repeat(6, 1fr)" } }}>
-        {categories.map((category, index) => (
-          <Box
-            component={Link}
-            to={`/produkty/?category=${category.category}`}
-            key={category.category}
-            aria-label={`${category.name} — ${category.description}`}
-            className="group relative overflow-hidden rounded-2xl no-underline"
-            sx={{
-              gridColumn: { xs: "auto", sm: gridArea[index].sm, lg: gridArea[index].lg },
-              minHeight: { xs: 200, sm: 240, lg: 260 },
-              height: "100%",
-              display: "flex",
-              alignItems: "flex-end",
-              boxShadow: (t) =>
-                t.palette.mode === "dark" ? "0 10px 30px rgba(0,0,0,0.45)" : "0 10px 30px rgba(15,40,28,0.10)",
-              transition: "transform 300ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 300ms",
-              "&:hover, &:focus-visible": {
-                transform: "translateY(-4px)",
+        {categories.map((category, index) => {
+          const name = t(`homeCategories.items.${category.category}.name`);
+          const description = t(`homeCategories.items.${category.category}.description`);
+          return (
+            <Box
+              component={Link}
+              to={to("products", undefined, { search: `category=${category.category}` })}
+              key={category.category}
+              aria-label={t("homeCategories.aria", { name, description })}
+              className="group relative overflow-hidden rounded-2xl no-underline"
+              sx={{
+                gridColumn: { xs: "auto", sm: gridArea[index].sm, lg: gridArea[index].lg },
+                minHeight: { xs: 200, sm: 240, lg: 260 },
+                height: "100%",
+                display: "flex",
+                alignItems: "flex-end",
                 boxShadow: (t) =>
-                  t.palette.mode === "dark" ? "0 18px 44px rgba(0,0,0,0.6)" : "0 18px 44px rgba(15,40,28,0.16)",
-                "& .MuiCategoryPhoto-root": { transform: "scale(1.06)" },
-                "& .MuiCategoryScrim-root": { opacity: 0.72 },
-              },
-              "&:focus-visible": { outline: "2px solid", outlineColor: "primary.main", outlineOffset: 3 },
-            }}>
-            <Box
-              className="MuiCategoryPhoto-root"
-              sx={{
-                position: "absolute",
-                inset: 0,
-                backgroundImage: `url(${category.image})`,
-                backgroundSize: "cover",
-                backgroundPosition: "center 42%",
-                transition: "transform 500ms cubic-bezier(0.16, 1, 0.3, 1)",
-              }}
-            />
-            <Box
-              className="MuiCategoryScrim-root"
-              aria-hidden
-              sx={{
-                position: "absolute",
-                inset: 0,
-                background:
-                  "linear-gradient(to top, rgba(4,14,9,0.92) 0%, rgba(4,14,9,0.55) 45%, rgba(4,14,9,0.2) 100%)",
-                transition: "opacity 300ms",
-              }}
-            />
+                  t.palette.mode === "dark" ? "0 10px 30px rgba(0,0,0,0.45)" : "0 10px 30px rgba(15,40,28,0.10)",
+                transition: "transform 300ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 300ms",
+                "&:hover, &:focus-visible": {
+                  transform: "translateY(-4px)",
+                  boxShadow: (t) =>
+                    t.palette.mode === "dark" ? "0 18px 44px rgba(0,0,0,0.6)" : "0 18px 44px rgba(15,40,28,0.16)",
+                  "& .MuiCategoryPhoto-root": { transform: "scale(1.06)" },
+                  "& .MuiCategoryScrim-root": { opacity: 0.72 },
+                },
+                "&:focus-visible": { outline: "2px solid", outlineColor: "primary.main", outlineOffset: 3 },
+              }}>
+              <Box
+                className="MuiCategoryPhoto-root"
+                sx={{
+                  position: "absolute",
+                  inset: 0,
+                  backgroundImage: `url(${category.image})`,
+                  backgroundSize: "cover",
+                  backgroundPosition: "center 42%",
+                  transition: "transform 500ms cubic-bezier(0.16, 1, 0.3, 1)",
+                }}
+              />
+              <Box
+                className="MuiCategoryScrim-root"
+                aria-hidden
+                sx={{
+                  position: "absolute",
+                  inset: 0,
+                  background:
+                    "linear-gradient(to top, rgba(4,14,9,0.92) 0%, rgba(4,14,9,0.55) 45%, rgba(4,14,9,0.2) 100%)",
+                  transition: "opacity 300ms",
+                }}
+              />
 
-            <Box sx={{ position: "relative", p: { xs: 3, lg: 4 }, width: "100%" }}>
-              <Typography
-                component="h3"
-                sx={{
-                  color: "#fff",
-                  fontSize: { xs: "1.25rem", lg: index === 0 ? "1.75rem" : "1.3rem" },
-                  fontWeight: 800,
-                  lineHeight: 1.15,
-                  letterSpacing: "-0.02em",
-                  textWrap: "balance",
-                }}>
-                {category.name}
-              </Typography>
-              <Typography
-                sx={{
-                  mt: 1,
-                  color: "rgba(255,255,255,0.92)",
-                  fontSize: "0.9rem",
-                  lineHeight: 1.5,
-                  maxWidth: "34ch",
-                }}>
-                {category.description}
-              </Typography>
+              <Box sx={{ position: "relative", p: { xs: 3, lg: 4 }, width: "100%" }}>
+                <Typography
+                  component="h3"
+                  sx={{
+                    color: "#fff",
+                    fontSize: { xs: "1.25rem", lg: index === 0 ? "1.75rem" : "1.3rem" },
+                    fontWeight: 800,
+                    lineHeight: 1.15,
+                    letterSpacing: "-0.02em",
+                    textWrap: "balance",
+                  }}>
+                  {name}
+                </Typography>
+                <Typography
+                  sx={{
+                    mt: 1,
+                    color: "rgba(255,255,255,0.92)",
+                    fontSize: "0.9rem",
+                    lineHeight: 1.5,
+                    maxWidth: "34ch",
+                  }}>
+                  {description}
+                </Typography>
+              </Box>
             </Box>
-          </Box>
-        ))}
+          );
+        })}
       </Box>
     </Box>
   );

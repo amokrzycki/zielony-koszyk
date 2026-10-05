@@ -35,3 +35,12 @@ Witamy w **Zielony Koszyk**! To aplikacja umożliwiająca zakup świeżych warzy
 8. Skonfiguruj i uruchom backend zgodnie z jego `README.md`.
 9. Backend będzie dostępny pod adresem: `http://localhost:3000`.
 10. Frontend będzie dostępny pod adresem: `http://localhost:5173`.
+
+## Wersje językowe (PL / EN)
+
+- **Biblioteki**: `i18next`, `react-i18next`, `i18next-browser-languagedetector`. Tłumaczenia (`src/i18n/locales/{pl,en}/*.json`) są wbudowane w bundle; klucze są typowane na podstawie plików `pl`.
+- **Kolejność wyboru języka**: język w adresie URL → wcześniej jawnie wybrany język (`localStorage.preferredLocale`) → język przeglądarki → polski. Sam język z URL ani z przeglądarki nigdy nie zapisuje się jako jawny wybór.
+- **Adresy**: `/pl/produkty/15`, `/en/products/15`. Wszystkie ścieżki są zdefiniowane w jednym miejscu (`src/i18n/routes.ts`); w komponentach używamy `useLocalePath()` / `pathFor()`. Adresy bez prefiksu (np. `/`, stare zakładki `/produkty/15`) są przekierowywane (`replace`) na preferowany język z zachowaniem trasy, parametrów, query i hasha.
+- **Formatowanie**: `useFormat()` (natywne `Intl`; waluta zawsze PLN).
+- **API**: język jest wysyłany w nagłówku `Accept-Language`; zapytania zwracające zlokalizowane dane (`products`) mają `locale` w argumentach, więc jest on częścią klucza cache RTK Query.
+- **Ograniczenie (SPA)**: aplikacja nie ma SSR, więc `hreflang`/kanoniczne adresy językowe dla robotów wymagałyby prerenderowania i nie są częścią tej zmiany. Aktualizowane są `<html lang>` i `document.title`.

@@ -1,4 +1,5 @@
 import AddOrderItemsDataGrid from "./AddOrderItemsDataGrid.tsx";
+import { useTranslation } from "react-i18next";
 import AdminModal from "../AdminModal.tsx";
 
 interface AddOrderItemsModalProps {
@@ -8,12 +9,14 @@ interface AddOrderItemsModalProps {
 }
 
 function AddOrderItemsModal({ open, handleClose, orderId }: AddOrderItemsModalProps) {
+  const { t } = useTranslation("admin");
+
   return (
     <AdminModal
       open={open}
       onClose={handleClose}
-      title="Dodaj produkty do zamówienia"
-      subtitle={`Wybierz produkty i ilości, które trafią do zamówienia #${orderId}.`}
+      title={t("addItems.title")}
+      subtitle={t("addItems.subtitle", { id: orderId })}
       maxWidth={960}>
       <AddOrderItemsDataGrid orderId={orderId} handleClose={handleClose} />
     </AdminModal>

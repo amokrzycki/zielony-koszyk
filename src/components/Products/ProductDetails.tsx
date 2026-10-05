@@ -2,6 +2,9 @@ import { Box, Button, Divider, Typography } from "@mui/material";
 import AddShoppingCartOutlinedIcon from "@mui/icons-material/AddShoppingCartOutlined";
 import LocalShippingOutlinedIcon from "@mui/icons-material/LocalShippingOutlined";
 import { useParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import { apiErrorMessage } from "@/helpers/apiError.ts";
+import { useLocale } from "@/i18n/useLocale.ts";
 import { useGetProductByIdQuery } from "@/components/Products/productsApiSlice.ts";
 import AutoBreadcrumbs from "@/components/AutoBreadcrumbs.tsx";
 import LoadingOverlay from "@/components/common/LoadingOverlay.tsx";
@@ -20,6 +23,9 @@ import FadeImage from "@/components/common/FadeImage.tsx";
 import { accentText, ctaButtonSx, panelSx, tone } from "@/components/listingStyles.ts";
 
 function ProductDetails() {
+  const { t } = useTranslation("catalog");
+  const { t: tCommon } = useTranslation();
+  const locale = useLocale();
   const { productId } = useParams();
   const [quantity, setQuantity] = useState(1);
   const dispatch = useAppDispatch();
@@ -28,7 +34,15 @@ function ProductDetails() {
     throw new Error("Product ID is required");
   }
 
-  const { data: product, isLoading, isError } = useGetProductByIdQuery(parseInt(productId, 10));
+  const {
+    data: product,
+    isLoading,
+    isError,
+    error,
+  } = useGetProductByIdQuery({
+    id: parseInt(productId, 10),
+    locale,
+  });
 
   if (isLoading) {
     return (
@@ -41,7 +55,7 @@ function ProductDetails() {
   if (isError || !product) {
     return (
       <SwapLayers id="error" tween={false}>
-        <ErrorView />
+        <ErrorView message={apiErrorMessage(tCommon, error)} />
       </SwapLayers>
     );
   }
@@ -55,7 +69,7 @@ function ProductDetails() {
         price: product.price,
       }),
     );
-    toast.success("Produkt został dodany do koszyka");
+    toast.success(t("product.addedToCart"));
   };
 
   return (
@@ -76,7 +90,7 @@ function ProductDetails() {
 
           <Box
             component="article"
-            aria-label="Szczegóły produktu"
+            aria-label={t("product.details")}
             sx={(theme) => ({ ...panelSx(theme), p: { xs: 2.5, sm: 3.5, lg: 5 } })}>
             <Box
               sx={{
@@ -124,13 +138,13 @@ function ProductDetails() {
                   onClick={handleAddToCart}
                   startIcon={<AddShoppingCartOutlinedIcon />}
                   sx={{ ...ctaButtonSx, mt: 3, alignSelf: { xs: "stretch", sm: "flex-start" } }}>
-                  Do koszyka
+                  {t("product.addToCart")}
                 </Button>
 
                 <Box sx={{ mt: 2.5, display: "flex", alignItems: "center", gap: 1 }}>
                   <LocalShippingOutlinedIcon sx={{ fontSize: 20, color: (t) => accentText(t) }} />
                   <Typography sx={{ color: "text.secondary", fontSize: "0.875rem", lineHeight: 1.45 }}>
-                    Dostawa w Rzeszowie i okolicach.
+                    {t("product.delivery")}
                   </Typography>
                 </Box>
               </Box>

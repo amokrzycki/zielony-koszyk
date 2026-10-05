@@ -3,9 +3,11 @@ import SearchIcon from "@mui/icons-material/Search";
 import { type ChangeEvent, useEffect, useState } from "react";
 import useProductFilters from "@/hooks/useProductFilters.ts";
 import { useDebouncedValue } from "@mantine/hooks";
+import { useTranslation } from "react-i18next";
 import { EASE, tone } from "@/components/listingStyles.ts";
 
 function Search() {
+  const { t } = useTranslation("catalog");
   const { filters, setParams } = useProductFilters();
   const [searchTerm, setSearchTerm] = useState(filters.search);
   const [debouncedSearchTerm] = useDebouncedValue(searchTerm, 300);
@@ -38,10 +40,10 @@ function Search() {
       <SearchIcon sx={{ color: "text.secondary", fontSize: 20 }} />
       <TextField
         variant="standard"
-        placeholder="Wyszukaj produkty"
+        placeholder={t("filters.searchPlaceholder")}
         value={searchTerm}
         onChange={handleInputChange}
-        slotProps={{ htmlInput: { "aria-label": "Wyszukaj produkty" } }}
+        slotProps={{ htmlInput: { "aria-label": t("filters.searchPlaceholder") } }}
         sx={{
           flex: 1,
           "& .MuiInputBase-root::before, & .MuiInputBase-root::after": { borderBottom: "none" },

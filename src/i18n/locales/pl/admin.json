@@ -1,0 +1,363 @@
+{
+  "nav": {
+    "label": "Nawigacja panelu",
+    "open": "Otwórz nawigację panelu",
+    "close": "Zamknij nawigację",
+    "items": {
+      "products": { "label": "Produkty", "hint": "Katalog i stany" },
+      "orders": { "label": "Zamówienia", "hint": "Realizacja i statusy" },
+      "users": { "label": "Użytkownicy", "hint": "Konta i adresy" }
+    }
+  },
+  "shell": {
+    "title": "Panel administracyjny",
+    "backToShop": "Sklep",
+    "defaultName": "Administrator",
+    "signedOut": {
+      "title": "Zaloguj się, aby uruchomić panel administracyjny",
+      "lead": "Zarządzanie produktami, zamówieniami i klientami czeka po zalogowaniu.",
+      "benefits": {
+        "products": "Produkty, stany magazynowe i zdjęcia",
+        "orders": "Zamówienia, adresy i ich statusy",
+        "users": "Konta klientów oraz role"
+      },
+      "login": "Zaloguj się"
+    }
+  },
+  "welcome": {
+    "greeting": "Dzień dobry, {{name}}!",
+    "greetingAnonymous": "Dzień dobry!",
+    "intro": "To panel administracyjny sklepu „Zielony Koszyk”. Wybierz sekcję poniżej, aby zarządzać produktami, zamówieniami i klientami.",
+    "go": "Przejdź",
+    "sections": {
+      "products": "Dodawaj produkty, zmieniaj ceny i stany magazynowe oraz podmieniaj zdjęcia.",
+      "orders": "Przeglądaj zamówienia, ich statusy, dane klientów i wystawiaj faktury.",
+      "users": "Zarządzaj kontami klientów, adresami dostawy oraz rolami w sklepie."
+    }
+  },
+  "general": {
+    "retry": "Spróbuj ponownie",
+    "deleteFailed": "Nie udało się usunąć.",
+    "deleteSelected": "Usuń zaznaczone ({{selected}})"
+  },
+  "roles": {
+    "ADMIN": "Administrator",
+    "USER": "Użytkownik"
+  },
+  "confirmDelete": {
+    "subtitle": "Tej operacji nie można cofnąć.",
+    "title": {
+      "generic_one": "Usunąć {{count}} element?",
+      "generic_few": "Usunąć {{count}} elementy?",
+      "generic_many": "Usunąć {{count}} elementów?",
+      "generic_other": "Usunąć {{count}} elementu?",
+      "products_one": "Usunąć {{count}} produkt?",
+      "products_few": "Usunąć {{count}} produkty?",
+      "products_many": "Usunąć {{count}} produktów?",
+      "products_other": "Usunąć {{count}} produktu?",
+      "orders_one": "Usunąć {{count}} zamówienie?",
+      "orders_few": "Usunąć {{count}} zamówienia?",
+      "orders_many": "Usunąć {{count}} zamówień?",
+      "orders_other": "Usunąć {{count}} zamówienia?",
+      "users_one": "Usunąć {{count}} użytkownika?",
+      "users_few": "Usunąć {{count}} użytkowników?",
+      "users_many": "Usunąć {{count}} użytkowników?",
+      "users_other": "Usunąć {{count}} użytkownika?",
+      "orderItems_one": "Usunąć {{count}} pozycję zamówienia?",
+      "orderItems_few": "Usunąć {{count}} pozycje zamówienia?",
+      "orderItems_many": "Usunąć {{count}} pozycji zamówienia?",
+      "orderItems_other": "Usunąć {{count}} pozycji zamówienia?"
+    }
+  },
+  "products": {
+    "title": "Produkty",
+    "subtitle": "Katalog, ceny i stany magazynowe. Cenę, stan i kategorię edytujesz w tabeli, a nazwę i opis w oknie edycji.",
+    "add": "Dodaj produkt",
+    "columns": {
+      "id": "ID",
+      "name": "Nazwa",
+      "category": "Kategoria",
+      "price": "Cena",
+      "stock": "Stan",
+      "createdAt": "Dodano",
+      "description": "Opis"
+    },
+    "changeImage": "Zmień zdjęcie",
+    "loadError": {
+      "message": "Wystąpił błąd podczas pobierania produktów.",
+      "hint": "Odśwież listę, aby spróbować ponownie."
+    },
+    "empty": {
+      "title": "Brak produktów",
+      "hint": "Dodaj pierwszy produkt, aby pojawił się w katalogu sklepu."
+    },
+    "update": {
+      "loading": "Aktualizowanie produktu...",
+      "success": "Produkt został zaktualizowany.",
+      "error": "Wystąpił błąd podczas aktualizacji produktu.",
+      "failed": "Nie udało się zaktualizować produktu."
+    },
+    "delete": {
+      "none": "Nie wybrano produktów do usunięcia.",
+      "loading_one": "Usuwanie produktu...",
+      "loading_few": "Usuwanie produktów...",
+      "loading_many": "Usuwanie produktów...",
+      "loading_other": "Usuwanie produktów...",
+      "success_one": "Produkt został usunięty.",
+      "success_few": "Produkty zostały usunięte.",
+      "success_many": "Produkty zostały usunięte.",
+      "success_other": "Produkty zostały usunięte.",
+      "error_one": "Wystąpił błąd podczas usuwania produktu.",
+      "error_few": "Wystąpił błąd podczas usuwania produktów.",
+      "error_many": "Wystąpił błąd podczas usuwania produktów.",
+      "error_other": "Wystąpił błąd podczas usuwania produktów."
+    },
+    "form": {
+      "sharedSection": "Dane wspólne",
+      "name": "Nazwa produktu ({{language}})",
+      "description": "Opis produktu ({{language}})",
+      "stock": "Ilość w magazynie",
+      "price": "Cena (PLN)",
+      "category": "Kategoria",
+      "image": "Wybierz zdjęcie (opcjonalnie)",
+      "errors": {
+        "name": "Podaj nazwę produktu",
+        "description": "Podaj opis produktu",
+        "stock": "Podaj ilość w magazynie",
+        "price": "Podaj cenę"
+      }
+    },
+    "create": {
+      "title": "Dodaj produkt",
+      "subtitle": "Produkt pojawi się w katalogu od razu po zapisaniu. Nazwa i opis są wymagane w obu językach.",
+      "submit": "Dodaj produkt",
+      "loading": "Dodawanie produktu...",
+      "success": "Dodano produkt",
+      "error": "Błąd dodawania produktu"
+    },
+    "edit": {
+      "title": "Edytuj produkt",
+      "subtitle": "Zmień nazwę i opis w obu językach oraz dane wspólne produktu.",
+      "submit": "Zapisz zmiany",
+      "loadError": "Nie udało się pobrać tłumaczeń produktu."
+    },
+    "image": {
+      "title": "Zdjęcie produktu",
+      "subtitle": "Jeden plik graficzny zastąpi obecne zdjęcie produktu.",
+      "choose": "Wybierz plik ze zdjęciem",
+      "change": "Zmień wybrany plik",
+      "loading": "Ładowanie...",
+      "success": "Zdjęcie zostało zaktualizowane",
+      "error": "Wystąpił błąd podczas aktualizacji zdjęcia",
+      "sending": "Wysyłanie…",
+      "save": "Zapisz zdjęcie"
+    }
+  },
+  "orders": {
+    "title": "Zamówienia",
+    "subtitle": "Wszystkie zamówienia sklepu z danymi klienta i statusem realizacji.",
+    "refresh": "Odśwież listę zamówień",
+    "details": "Szczegóły",
+    "columns": {
+      "id": "Nr",
+      "customer": "Klient",
+      "email": "E-mail",
+      "date": "Data",
+      "amount": "Kwota",
+      "status": "Status"
+    },
+    "loadError": {
+      "message": "Nie udało się pobrać zamówień.",
+      "hint": "Sprawdź połączenie i odśwież listę."
+    },
+    "empty": {
+      "title": "Brak zamówień",
+      "hint": "Gdy klienci złożą zamówienia, pojawią się tutaj."
+    },
+    "delete": {
+      "none": "Nie wybrano zamówień do usunięcia.",
+      "loading_one": "Usuwanie zamówienia...",
+      "loading_few": "Usuwanie zamówień...",
+      "loading_many": "Usuwanie zamówień...",
+      "loading_other": "Usuwanie zamówień...",
+      "success_one": "Zamówienie zostało usunięte.",
+      "success_few": "Zamówienia zostały usunięte.",
+      "success_many": "Zamówienia zostały usunięte.",
+      "success_other": "Zamówienia zostały usunięte.",
+      "error_one": "Wystąpił błąd podczas usuwania zamówienia.",
+      "error_few": "Wystąpił błąd podczas usuwania zamówień.",
+      "error_many": "Wystąpił błąd podczas usuwania zamówień.",
+      "error_other": "Wystąpił błąd podczas usuwania zamówień."
+    }
+  },
+  "orderItems": {
+    "loadingTitle": "Zamówienie",
+    "loadingSubtitle": "Wczytywanie danych zamówienia…",
+    "loadError": {
+      "message": "Nie udało się pobrać danych zamówienia.",
+      "hint": "Wróć do listy zamówień i otwórz je ponownie."
+    },
+    "title": "Zamówienie #{{id}}",
+    "subtitleGuest": "Zamówienie bez konta",
+    "subtitlePlaced": "Złożone {{date}}",
+    "editDetails": "Edytuj dane",
+    "status": "Status",
+    "amount": "Kwota zamówienia",
+    "date": "Data zamówienia",
+    "heading": "Pozycje zamówienia",
+    "toolbarHint": "Edytuj ilość i cenę w tabeli",
+    "columns": {
+      "product": "Produkt",
+      "quantity": "Ilość",
+      "price": "Cena",
+      "total": "Suma pozycji"
+    },
+    "empty": {
+      "title": "Brak pozycji w zamówieniu",
+      "hint": "Dodaj produkty do tego zamówienia powyżej."
+    },
+    "update": {
+      "loading": "Aktualizowanie elementu zamówienia...",
+      "success": "Element zamówienia został zaktualizowany.",
+      "error": "Wystąpił błąd podczas aktualizowania elementu zamówienia.",
+      "failed": "Nie udało się zaktualizować elementu zamówienia."
+    },
+    "delete": {
+      "none": "Nie wybrano pozycji do usunięcia.",
+      "loading_one": "Usuwanie elementu zamówienia...",
+      "loading_few": "Usuwanie elementów zamówienia...",
+      "loading_many": "Usuwanie elementów zamówienia...",
+      "loading_other": "Usuwanie elementów zamówienia...",
+      "success_one": "Element zamówienia został usunięty.",
+      "success_few": "Elementy zamówienia zostały usunięte.",
+      "success_many": "Elementy zamówienia zostały usunięte.",
+      "success_other": "Elementy zamówienia zostały usunięte.",
+      "error_one": "Wystąpił błąd podczas usuwania elementu zamówienia.",
+      "error_few": "Wystąpił błąd podczas usuwania elementów zamówienia.",
+      "error_many": "Wystąpił błąd podczas usuwania elementów zamówienia.",
+      "error_other": "Wystąpił błąd podczas usuwania elementów zamówienia."
+    }
+  },
+  "addItems": {
+    "title": "Dodaj produkty do zamówienia",
+    "subtitle": "Wybierz produkty i ilości, które trafią do zamówienia #{{id}}.",
+    "columns": {
+      "id": "ID",
+      "name": "Nazwa",
+      "category": "Kategoria",
+      "price": "Cena",
+      "stock": "Stan",
+      "quantity": "Ilość"
+    },
+    "select": "Wybierz",
+    "selectedHeading": "Wybrane produkty ({{selected}})",
+    "submit": "Dodaj wybrane produkty ({{selected}})",
+    "loading": "Dodawanie produktów do zamówienia nr {{id}}...",
+    "success": "Produkty zostały dodane do zamówienia nr {{id}}.",
+    "error": "Wystąpił błąd podczas dodawania produktów.",
+    "loadError": "Wystąpił błąd podczas pobierania produktów."
+  },
+  "editOrder": {
+    "loadingTitle": "Edycja danych zamówienia",
+    "loadingSubtitle": "Wczytywanie…",
+    "loadError": "Nie udało się pobrać danych zamówienia",
+    "title": "Edycja zamówienia #{{id}}",
+    "subtitle": "Zmień adresy, dane kontaktowe i status realizacji.",
+    "statusHeading": "Status zamówienia",
+    "status": "Status",
+    "save": "Zapisz zmiany",
+    "saving": "Zapisywanie zmian...",
+    "saved": "Zmiany zostały zapisane",
+    "saveError": "Nie udało się zapisać zmian"
+  },
+  "users": {
+    "title": "Użytkownicy",
+    "subtitle": "Konta klientów, ich adresy oraz role w sklepie.",
+    "refresh": "Odśwież listę użytkowników",
+    "add": "Dodaj użytkownika",
+    "columns": {
+      "id": "ID",
+      "email": "E-mail",
+      "firstName": "Imię",
+      "lastName": "Nazwisko",
+      "phone": "Telefon",
+      "deliveryAddress": "Adres dostawy",
+      "role": "Rola",
+      "createdAt": "Utworzono"
+    },
+    "loadError": {
+      "message": "Nie udało się pobrać użytkowników.",
+      "hint": "Sprawdź połączenie i odśwież listę."
+    },
+    "empty": {
+      "title": "Brak użytkowników",
+      "hint": "Konta klientów pojawią się tutaj po rejestracji."
+    },
+    "delete": {
+      "none": "Nie wybrano użytkowników do usunięcia.",
+      "loading_one": "Usuwanie użytkownika...",
+      "loading_few": "Usuwanie użytkowników...",
+      "loading_many": "Usuwanie użytkowników...",
+      "loading_other": "Usuwanie użytkowników...",
+      "success_one": "Użytkownik został usunięty.",
+      "success_few": "Użytkownicy zostali usunięci.",
+      "success_many": "Użytkownicy zostali usunięci.",
+      "success_other": "Użytkownicy zostali usunięci.",
+      "error_one": "Wystąpił błąd podczas usuwania użytkownika.",
+      "error_few": "Wystąpił błąd podczas usuwania użytkowników.",
+      "error_many": "Wystąpił błąd podczas usuwania użytkowników.",
+      "error_other": "Wystąpił błąd podczas usuwania użytkowników."
+    }
+  },
+  "userForm": {
+    "firstName": "Imię",
+    "firstNamePlaceholder": "Jan",
+    "lastName": "Nazwisko",
+    "lastNamePlaceholder": "Kowalski",
+    "email": "E-mail",
+    "phone": "Numer telefonu",
+    "role": "Rola",
+    "companyName": "Nazwa firmy",
+    "companyNamePlaceholder": "Firma XYZ",
+    "nip": "NIP",
+    "nipPlaceholder": "1234567890",
+    "street": "Ulica",
+    "streetPlaceholder": "ul. Przykładowa",
+    "buildingNumber": "Nr budynku",
+    "buildingNumberPlaceholder": "1A",
+    "flatNumber": "Nr mieszkania",
+    "flatNumberPlaceholder": "14",
+    "zip": "Kod pocztowy",
+    "zipPlaceholder": "00-000",
+    "city": "Miejscowość",
+    "cityPlaceholder": "Rzeszów"
+  },
+  "editUser": {
+    "notFound": "Nie znaleziono użytkownika.",
+    "addressesNotFound": "Nie znaleziono adresów użytkownika.",
+    "title": "Edycja: {{name}}",
+    "dataHeading": "Dane użytkownika",
+    "save": "Zapisz dane",
+    "updating": "Aktualizowanie danych...",
+    "updated": "Dane zaktualizowane.",
+    "updateError": "Nie udało się zaktualizować danych.",
+    "deliveryAddress": "Adres dostawy",
+    "billingAddress": "Adres do faktury"
+  },
+  "addUser": {
+    "title": "Dodaj użytkownika",
+    "subtitle": "Utwórz konto klienta wraz z domyślnym adresem dostawy.",
+    "accountHeading": "Dane konta",
+    "addressHeading": "Domyślny adres dostawy",
+    "submit": "Utwórz użytkownika",
+    "loading": "Tworzenie konta...",
+    "success": "Konto zostało utworzone dla {{email}}.",
+    "error": "Nie udało się utworzyć konta"
+  },
+  "changeAddress": {
+    "save": "Zapisz adres",
+    "saving": "Zapisywanie zmian...",
+    "saved": "Zmiany zostały zapisane",
+    "error": "Wystąpił błąd podczas zapisywania zmian"
+  }
+}

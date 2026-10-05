@@ -14,6 +14,9 @@ import {
 import { Box, Button, TextField, Typography } from "@mui/material";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import { apiErrorMessage } from "@/helpers/apiError.ts";
+import { useLocalePath } from "@/i18n/useLocale.ts";
 import type { Address } from "@/types/Address.ts";
 import type { RootState } from "@/store/store.ts";
 import type { UpdateDetailsBody } from "@/types/updateDetailsBody.ts";
@@ -50,6 +53,8 @@ function AddressForm() {
   const userAddress: Address = useAppSelector((state: RootState) => state.app.addressToEdit);
   const [customerType, setCustomerType] = useState<CustomerType>(userAddress?.customer_type || CustomerType.PERSON);
   const navigate = useNavigate();
+  const { t, i18n } = useTranslation("account");
+  const to = useLocalePath();
   const [changeDetails, { isLoading: isSaving }] = useChangeUserAddressMutation();
   const [addAddress, { isLoading: isAdding }] = useCreateNewAddressMutation();
   const dispatch = useAppDispatch();
@@ -116,28 +121,28 @@ function AddressForm() {
             address: values,
           }).unwrap(),
           {
-            loading: "Dodawanie adresu...",
-            success: "Adres został dodany",
-            error: "Wystąpił błąd podczas dodawania adresu",
+            loading: t("addressForm.toast.addLoading"),
+            success: t("addressForm.toast.addSuccess"),
+            error: (error) => apiErrorMessage(i18n.t, error, t("addressForm.toast.addError")),
           },
         )
         .then(() => {
-          navigate("/konto/ksiazka-adresowa", { replace: true });
+          navigate(to("accountAddresses"), { replace: true });
         });
       return;
     }
 
     toast
       .promise(changeDetails(updatedDetails).unwrap(), {
-        loading: "Zapisywanie zmian...",
-        success: "Zmiany zostały zapisane",
-        error: "Wystąpił błąd podczas zapisywania zmian",
+        loading: t("addressForm.toast.saveLoading"),
+        success: t("addressForm.toast.saveSuccess"),
+        error: (error) => apiErrorMessage(i18n.t, error, t("addressForm.toast.saveError")),
       })
       .then(() => {
         dispatch(updateUserAddresses(updatedAddress));
         dispatch(updateUserDetails({ phone: values.phone }));
         dispatch(clearAddressToEdit());
-        navigate("/konto/ksiazka-adresowa");
+        navigate(to("accountAddresses"));
       });
   };
 
@@ -157,12 +162,10 @@ function AddressForm() {
           lineHeight: 1.1,
           letterSpacing: "-0.03em",
         }}>
-        {isEdit ? "Edytuj adres" : "Nowy adres"}
+        {isEdit ? t("addressForm.editTitle") : t("addressForm.newTitle")}
       </Typography>
       <Typography sx={{ mt: 1, color: "text.secondary", maxWidth: "54ch", lineHeight: 1.6 }}>
-        {isEdit
-          ? "Zmień dane adresu. Zapisz, aby zaktualizować go w książce adresowej."
-          : "Uzupełnij dane nowego adresu do rachunku lub dostawy."}
+        {isEdit ? t("addressForm.editSubtitle") : t("addressForm.newSubtitle")}
       </Typography>
 
       <Box
@@ -185,9 +188,9 @@ function AddressForm() {
             <>
               <TextField
                 fullWidth
-                label="Imię"
+                label={t("fields.firstName")}
                 required
-                placeholder="Jan"
+                placeholder={t("fields.firstNamePlaceholder")}
                 autoComplete="given-name"
                 {...form.getInputProps("first_name")}
                 error={Boolean(form.errors.first_name) && form.isTouched("first_name")}
@@ -195,9 +198,9 @@ function AddressForm() {
               />
               <TextField
                 fullWidth
-                label="Nazwisko"
+                label={t("fields.lastName")}
                 required
-                placeholder="Kowalski"
+                placeholder={t("fields.lastNamePlaceholder")}
                 autoComplete="family-name"
                 {...form.getInputProps("last_name")}
                 error={Boolean(form.errors.last_name) && form.isTouched("last_name")}
@@ -208,9 +211,9 @@ function AddressForm() {
             <>
               <TextField
                 fullWidth
-                label="Nazwa firmy"
+                label={t("fields.companyName")}
                 required
-                placeholder="Firma XYZ"
+                placeholder={t("fields.companyNamePlaceholder")}
                 autoComplete="organization"
                 {...form.getInputProps("company_name")}
                 error={Boolean(form.errors.company_name) && form.isTouched("company_name")}
@@ -218,7 +221,7 @@ function AddressForm() {
               />
               <TextField
                 fullWidth
-                label="NIP"
+                label={t("fields.nip")}
                 required
                 placeholder="1234567890"
                 {...form.getInputProps("nip")}
@@ -231,7 +234,7 @@ function AddressForm() {
 
         <TextField
           fullWidth
-          label="Numer telefonu"
+          label={t("fields.phone")}
           required
           type="tel"
           placeholder="+48123456789"
@@ -245,9 +248,9 @@ function AddressForm() {
         <Box sx={{ ...fieldGrid, mt: 2, gridTemplateColumns: { xs: "1fr", sm: "2fr 1fr 1fr" } }}>
           <TextField
             fullWidth
-            label="Ulica"
+            label={t("fields.street")}
             required
-            placeholder="ul. Przykładowa"
+            placeholder={t("fields.streetPlaceholder")}
             autoComplete="address-line1"
             {...form.getInputProps("street")}
             helperText={form.errors.street}
@@ -255,7 +258,7 @@ function AddressForm() {
           />
           <TextField
             fullWidth
-            label="Nr domu"
+            label={t("addressForm.houseNumber")}
             required
             placeholder="1A"
             {...form.getInputProps("building_number")}
@@ -264,7 +267,7 @@ function AddressForm() {
           />
           <TextField
             fullWidth
-            label="Nr mieszkania"
+            label={t("addressForm.flatNumber")}
             placeholder="14"
             {...form.getInputProps("flat_number")}
             helperText={form.errors.flat_number}
@@ -275,7 +278,7 @@ function AddressForm() {
         <Box sx={{ ...fieldGrid, mt: 2, gridTemplateColumns: { xs: "1fr", sm: "1fr 2fr" } }}>
           <TextField
             fullWidth
-            label="Kod pocztowy"
+            label={t("fields.zip")}
             required
             placeholder="00-000"
             autoComplete="postal-code"
@@ -285,9 +288,9 @@ function AddressForm() {
           />
           <TextField
             fullWidth
-            label="Miejscowość"
+            label={t("fields.city")}
             required
-            placeholder="Rzeszów"
+            placeholder={t("addressForm.cityPlaceholder")}
             autoComplete="address-level2"
             {...form.getInputProps("city")}
             helperText={form.errors.city}
@@ -297,20 +300,20 @@ function AddressForm() {
 
         <Box sx={{ display: "flex", alignItems: "center", gap: 1.5, flexWrap: "wrap", mt: 3.5 }}>
           <Button type="submit" disabled={!isValid || isSubmitting} sx={ctaButtonSx}>
-            {isEdit ? "Zapisz zmiany" : "Dodaj adres"}
+            {isEdit ? t("addressForm.saveChanges") : t("addressForm.add")}
           </Button>
           <Button
             type="button"
             onClick={() => {
-              navigate("/konto/ksiazka-adresowa");
+              navigate(to("accountAddresses"));
             }}
             sx={(theme) => ghostButtonSx(theme)}>
-            Anuluj
+            {t("addressForm.cancel")}
           </Button>
         </Box>
         {!isValid && (
           <Typography sx={{ mt: 1.5, color: "text.secondary", fontSize: "0.85rem", lineHeight: 1.5 }}>
-            Uzupełnij wymagane pola, aby zapisać adres.
+            {t("addressForm.fillRequired")}
           </Typography>
         )}
       </Box>

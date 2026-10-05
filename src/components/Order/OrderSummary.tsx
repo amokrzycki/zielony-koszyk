@@ -7,6 +7,9 @@ import type CartItem from "../../types/CartItem.ts";
 import type { CreateOrder } from "@/types/CreateOrder.ts";
 import { useCreateOrderMutation } from "./orderApiSlice.ts";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import { apiErrorMessage } from "@/helpers/apiError.ts";
+import { useLocalePath } from "@/i18n/useLocale.ts";
 import { clearCart } from "../Cart/cartSlice.ts";
 import { clearOrder } from "./orderSlice.ts";
 import toast from "react-hot-toast";
@@ -47,6 +50,8 @@ function OrderSummary() {
   const [checked, setChecked] = useState(false);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const { t, i18n } = useTranslation("checkout");
+  const to = useLocalePath();
   const orderInfo: CreateOrder = useAppSelector((state) => state.order.orderInfo);
   const cart: CartState = useAppSelector((state: RootState) => state.cart);
   const cartItems = cart.items;
@@ -58,10 +63,7 @@ function OrderSummary() {
         <Box className="main-container" sx={{ bgcolor: "background.paper" }}>
           <Box className="main-container" sx={{ mt: 0 }}>
             <Box sx={(theme) => ({ ...panelSx(theme), p: { xs: 3, sm: 4 } })}>
-              <ErrorView
-                message={"Brak danych zamówienia"}
-                errorText={"Nie udało się pobrać danych zamówienia. Przejdź proszę do koszyka i spróbuj ponownie."}
-              />
+              <ErrorView message={t("orderSummary.missingTitle")} errorText={t("orderSummary.missingText")} />
             </Box>
           </Box>
         </Box>
@@ -84,14 +86,14 @@ function OrderSummary() {
     };
     toast
       .promise(createOrder(order).unwrap(), {
-        loading: "Trwa składanie zamówienia...",
-        success: "Zamówienie złożone pomyślnie!",
-        error: "Wystąpił błąd podczas składania zamówienia",
+        loading: t("orderSummary.toast.loading"),
+        success: t("orderSummary.toast.success"),
+        error: (error) => apiErrorMessage(i18n.t, error, t("orderSummary.toast.error")),
       })
       .then(() => {
         dispatch(clearCart());
         dispatch(clearOrder());
-        navigate("/zamowienie/potwierdzenie");
+        navigate(to("orderConfirmation"));
       });
   };
 
@@ -112,10 +114,10 @@ function OrderSummary() {
                 lineHeight: 1.1,
                 letterSpacing: "-0.03em",
               }}>
-              Podsumowanie zamówienia
+              {t("orderSummary.title")}
             </Typography>
             <Typography sx={{ mt: 1, color: "text.secondary", lineHeight: 1.6, maxWidth: "52ch" }}>
-              Sprawdź dane do dostawy i faktury, a następnie złóż zamówienie.
+              {t("orderSummary.subtitle")}
             </Typography>
           </Box>
 
@@ -131,25 +133,25 @@ function OrderSummary() {
               aria-labelledby="order-shipping-heading"
               sx={(theme) => ({ ...panelSx(theme), p: { xs: 2, sm: 3 } })}>
               <Typography component="h2" id="order-shipping-heading" sx={sectionHeadingSx}>
-                Dane do dostawy
+                {t("orderSummary.shippingTitle")}
               </Typography>
               <Box component="dl" sx={{ m: 0 }}>
-                <DetailRow label="Odbiorca" value={`${shipping.first_name} ${shipping.last_name}`} />
+                <DetailRow label={t("orderSummary.recipient")} value={`${shipping.first_name} ${shipping.last_name}`} />
                 {shipping.customer_type === CustomerType.COMPANY && (
                   <>
-                    <DetailRow label="Firma" value={shipping.company_name} />
-                    <DetailRow label="NIP" value={shipping.nip} />
+                    <DetailRow label={t("orderSummary.company")} value={shipping.company_name} />
+                    <DetailRow label={t("form.nip")} value={shipping.nip} />
                   </>
                 )}
-                <DetailRow label="Telefon" value={shipping.phone} />
-                <DetailRow label="E-mail" value={orderInfo.customer_email} />
-                <DetailRow label="Adres" value={generateOrderAddress(shipping)} />
+                <DetailRow label={t("orderSummary.phone")} value={shipping.phone} />
+                <DetailRow label={t("orderSummary.email")} value={orderInfo.customer_email} />
+                <DetailRow label={t("orderSummary.address")} value={generateOrderAddress(shipping)} />
               </Box>
 
               <Divider sx={{ my: 3 }} />
 
               <Typography component="h2" id="order-billing-heading" sx={sectionHeadingSx}>
-                Dane do faktury
+                {t("billing.title")}
               </Typography>
               {orderInfo.same_address ? (
                 <Box
@@ -166,27 +168,27 @@ function OrderSummary() {
                   }}>
                   <ReceiptLongOutlined fontSize="small" sx={{ mt: "1px" }} />
                   <Typography sx={{ color: "inherit", fontSize: "0.9rem", lineHeight: 1.5 }}>
-                    Dane do faktury są takie same jak dane do dostawy.
+                    {t("orderSummary.billingSame")}
                   </Typography>
                 </Box>
               ) : (
                 <Box component="dl" sx={{ m: 0 }}>
-                  <DetailRow label="Nabywca" value={`${billing.first_name} ${billing.last_name}`} />
+                  <DetailRow label={t("orderSummary.buyer")} value={`${billing.first_name} ${billing.last_name}`} />
                   {orderInfo.order_type === OrderType.COMPANY && (
                     <>
-                      <DetailRow label="Firma" value={billing.company_name} />
-                      <DetailRow label="NIP" value={billing.nip} />
+                      <DetailRow label={t("orderSummary.company")} value={billing.company_name} />
+                      <DetailRow label={t("form.nip")} value={billing.nip} />
                     </>
                   )}
-                  <DetailRow label="Telefon" value={billing.phone} />
-                  <DetailRow label="Adres" value={generateOrderAddress(billing)} />
+                  <DetailRow label={t("orderSummary.phone")} value={billing.phone} />
+                  <DetailRow label={t("orderSummary.address")} value={generateOrderAddress(billing)} />
                 </Box>
               )}
             </Box>
 
             <Box
               component="aside"
-              aria-label="Podsumowanie zamówienia"
+              aria-label={t("summary.asideAria")}
               sx={(theme) => ({ ...panelSx(theme), p: { xs: 2.5, sm: 3 } })}>
               <CartSummary />
 
@@ -205,11 +207,11 @@ function OrderSummary() {
                     sx={{ p: 0.75, mt: -0.25 }}
                   />
                 }
-                label="Zapoznałem się z regulaminem i akceptuję jego warunki"
+                label={t("orderSummary.terms")}
               />
 
               <Button fullWidth disabled={!checked} onClick={handleOrder} sx={{ ...ctaButtonSx, mt: 2 }}>
-                Zamawiam i płacę
+                {t("orderSummary.submit")}
               </Button>
 
               {!checked && (
@@ -221,19 +223,19 @@ function OrderSummary() {
                     lineHeight: 1.5,
                     textAlign: "center",
                   }}>
-                  Zaakceptuj regulamin, aby złożyć zamówienie.
+                  {t("orderSummary.acceptTerms")}
                 </Typography>
               )}
 
               <Typography component="p" sx={{ mt: 2, color: "text.secondary", fontSize: "0.8rem", lineHeight: 1.55 }}>
-                Umowa sprzedaży zostanie zawarta dopiero po potwierdzeniu zamówienia do realizacji przez Sprzedawcę.
+                {t("orderSummary.contractNote")}
               </Typography>
 
               <Button
                 fullWidth
-                onClick={() => navigate("/zamowienie")}
+                onClick={() => navigate(to("order"))}
                 sx={(theme) => ({ ...ghostButtonSx(theme), mt: 2 })}>
-                Wróć do poprzedniej strony
+                {t("orderSummary.back")}
               </Button>
             </Box>
           </Box>

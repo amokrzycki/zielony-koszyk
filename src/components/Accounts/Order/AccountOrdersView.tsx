@@ -4,18 +4,22 @@ import ArrowForward from "@mui/icons-material/ArrowForward";
 import ScheduleOutlined from "@mui/icons-material/ScheduleOutlined";
 import ShoppingBagOutlined from "@mui/icons-material/ShoppingBagOutlined";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import { useFormat, useLocalePath } from "@/i18n/useLocale.ts";
 import { useEffect } from "react";
 import { useGetUserOrdersQuery } from "../../Order/orderApiSlice.ts";
 import { useAppSelector } from "@/hooks/hooks.ts";
 import type { RootState } from "@/store/store.ts";
 import type User from "../../../types/User.ts";
-import { getFormattedDate } from "@/helpers/getFormattedDate.ts";
 import OrderStatusPill from "@/components/Order/OrderStatusPill.tsx";
 import ErrorView from "@/components/common/ErrorView.tsx";
 import { EASE, accentText, ctaButtonSx, tone } from "@/components/listingStyles.ts";
 
 function AccountOrdersView() {
   const user: User = useAppSelector((state: RootState) => state.auth.user);
+  const { t } = useTranslation("account");
+  const { currency, dateTime } = useFormat();
+  const to = useLocalePath();
   const userOrders = useGetUserOrdersQuery(user.user_id);
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: Only want to refetch on mount
@@ -30,7 +34,7 @@ function AccountOrdersView() {
   if (userOrders.isError || !userOrders.data) {
     return (
       <div className="fade-in">
-        <ErrorView message="Nie udało się pobrać Twoich zamówień" />
+        <ErrorView message={t("orders.error")} />
       </div>
     );
   }
@@ -49,10 +53,10 @@ function AccountOrdersView() {
             lineHeight: 1.1,
             letterSpacing: "-0.03em",
           }}>
-          Zamówienia
+          {t("orders.title")}
         </Typography>
         <Typography sx={{ mt: 1, color: "text.secondary", maxWidth: "54ch", lineHeight: 1.6 }}>
-          Twoja historia zakupów — sprawdź status i szczegóły każdego zamówienia.
+          {t("orders.subtitle")}
         </Typography>
 
         {orders.length === 0 ? (
@@ -83,26 +87,26 @@ function AccountOrdersView() {
             <Typography
               component="h2"
               sx={{ mt: 2, fontSize: "clamp(1.6rem, 3vw, 2.1rem)", fontWeight: 800, letterSpacing: "-0.02em" }}>
-              Nie masz jeszcze zamówień
+              {t("orders.emptyTitle")}
             </Typography>
             <Typography sx={{ mt: 0.75, mx: "auto", maxWidth: "40ch", color: "text.secondary", lineHeight: 1.6 }}>
-              Gdy złożysz pierwsze zamówienie, pojawi się tutaj wraz z aktualnym statusem dostawy.
+              {t("orders.emptyText")}
             </Typography>
-            <Button component={Link} to="/produkty" sx={{ ...ctaButtonSx, mt: 3 }}>
-              Przejdź do produktów
+            <Button component={Link} to={to("products")} sx={{ ...ctaButtonSx, mt: 3 }}>
+              {t("orders.browse")}
             </Button>
           </Box>
         ) : (
           <Box component="ul" sx={{ listStyle: "none", m: 0, p: 0, mt: { xs: 3, md: 3.5 }, display: "grid", gap: 1 }}>
             {orders.map((order) => {
               const total = Number(order.total_amount);
-              const amount = Number.isFinite(total) ? total.toFixed(2) : order.total_amount;
+              const amount = Number.isFinite(total) ? currency(total) : order.total_amount;
 
               return (
                 <Box component="li" key={order.order_id}>
                   <Box
                     component={Link}
-                    to={`/konto/zamowienia/${order.order_id}`}
+                    to={to("accountOrderDetails", { orderId: order.order_id })}
                     sx={(theme) => ({
                       display: "flex",
                       alignItems: "center",
@@ -135,7 +139,7 @@ function AccountOrdersView() {
                         <Typography
                           component="span"
                           sx={{ fontSize: "0.85rem", lineHeight: 1.4, fontVariantNumeric: "tabular-nums" }}>
-                          {getFormattedDate(order.order_date)}
+                          {dateTime(order.order_date)}
                         </Typography>
                       </Box>
                     </Box>
@@ -147,10 +151,7 @@ function AccountOrdersView() {
                         letterSpacing: "-0.01em",
                         whiteSpace: "nowrap",
                       }}>
-                      {amount}{" "}
-                      <Box component="span" sx={{ color: "text.secondary", fontWeight: 600, fontSize: "0.85em" }}>
-                        zł
-                      </Box>
+                      {amount}
                     </Typography>
                     <ArrowForward
                       className="order-row-arrow"

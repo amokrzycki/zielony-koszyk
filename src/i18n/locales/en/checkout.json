@@ -1,0 +1,145 @@
+{
+  "badge": {
+    "label": "My cart"
+  },
+  "cart": {
+    "title": "Your cart",
+    "clear": "Clear cart",
+    "holding": "Keep holding…",
+    "clearAria": "Clear cart — press and hold to confirm",
+    "emptyTitle": "Your cart is empty",
+    "emptyText": "Take a look at our range and add your first products to the cart.",
+    "browse": "Browse products",
+    "itemsAria": "Products in your cart",
+    "removeAria": "Remove {{name}} from cart",
+    "checkout": "Choose delivery and payment"
+  },
+  "summary": {
+    "title": "Summary",
+    "empty": "Your cart is empty.",
+    "subtotal": "Products total",
+    "delivery": "Delivery",
+    "total": "Total",
+    "asideAria": "Order summary"
+  },
+  "cartLogin": {
+    "title": "How would you like to finish your order?",
+    "haveAccount": "I have an account",
+    "haveAccountText": "Log in to continue to delivery and payment.",
+    "backToCart": "Back to cart"
+  },
+  "noAccount": {
+    "title": "I don't have an account",
+    "text": "Check out as a guest, or create an account to keep your order history.",
+    "guest": "Check out as a guest",
+    "or": "or",
+    "register": "Create account",
+    "benefits": "With an account you can check out faster, follow your order statuses and keep track of your purchase history."
+  },
+  "form": {
+    "firstName": "First name",
+    "firstNamePlaceholder": "John",
+    "lastName": "Last name",
+    "lastNamePlaceholder": "Smith",
+    "companyName": "Company name",
+    "companyNamePlaceholder": "Acme Ltd",
+    "nip": "Tax ID (NIP)",
+    "phone": "Phone number",
+    "email": "Email address",
+    "emailPlaceholder": "john@example.com",
+    "street": "Street",
+    "streetPlaceholder": "ul. Przykładowa",
+    "buildingNumber": "Building no.",
+    "flatNumber": "Flat no.",
+    "zip": "Postcode",
+    "city": "City",
+    "cityPlaceholder": "Warszawa"
+  },
+  "shipping": {
+    "title": "Shipping details"
+  },
+  "billing": {
+    "title": "Invoice details"
+  },
+  "details": {
+    "title": "Delivery and payment",
+    "subtitle": "Fill in your shipping and invoice details. You will confirm the order in the next step.",
+    "differentBilling": "Invoice to different details",
+    "billingSameAsShipping": "Invoice details: same as shipping.",
+    "billingFromAccount": "Invoice details: the defaults from your account.",
+    "next": "Continue",
+    "fillRequired": "Fill in the required fields to continue."
+  },
+  "orderSummary": {
+    "title": "Order summary",
+    "subtitle": "Check your delivery and invoice details, then place your order.",
+    "missingTitle": "No order data",
+    "missingText": "We could not load your order data. Please go back to the cart and try again.",
+    "shippingTitle": "Delivery details",
+    "recipient": "Recipient",
+    "buyer": "Buyer",
+    "company": "Company",
+    "phone": "Phone",
+    "email": "Email",
+    "address": "Address",
+    "billingSame": "Invoice details are the same as the delivery details.",
+    "terms": "I have read the terms and conditions and accept them",
+    "submit": "Place order and pay",
+    "acceptTerms": "Accept the terms and conditions to place your order.",
+    "contractNote": "The sales contract is concluded only once the Seller confirms the order for fulfilment.",
+    "back": "Back to previous page",
+    "toast": {
+      "loading": "Placing your order...",
+      "success": "Order placed successfully!",
+      "error": "Something went wrong while placing your order"
+    }
+  },
+  "confirm": {
+    "title": "Thank you for your order!",
+    "text": "You will receive an order confirmation by email.",
+    "back": "Continue shopping"
+  },
+  "invoice": {
+    "download": "Electronic invoice",
+    "error": "Could not download the invoice",
+    "fileName": "invoice-for-order-{{id}}.pdf"
+  },
+  "statusInfo": {
+    "title": "Order statuses",
+    "subtitle": "How to read the stages of your order.",
+    "items": {
+      "NEW": {
+        "name": "New",
+        "description": "The order has not been confirmed yet and processing has not started."
+      },
+      "WAITING_FOR_PAYMENT": {
+        "name": "Awaiting payment",
+        "description": "The order is waiting for payment to be confirmed."
+      },
+      "WAITING_FOR_CONFIRMATION": {
+        "name": "Awaiting confirmation",
+        "description": "The order is waiting to be confirmed by the seller."
+      },
+      "IN_PROGRESS": {
+        "name": "In progress",
+        "description": "The order is being prepared."
+      },
+      "SHIPPED": {
+        "name": "Shipped",
+        "description": "The order has been shipped."
+      },
+      "DELIVERED": {
+        "name": "Delivered",
+        "description": "The order has been delivered."
+      },
+      "CANCELLED": {
+        "name": "Cancelled",
+        "description": "The order has been cancelled."
+      },
+      "DONE": {
+        "name": "Completed",
+        "description": "The order has been completed."
+      }
+    }
+  }
+}

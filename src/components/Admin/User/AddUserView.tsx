@@ -10,6 +10,9 @@ import {
   validateZip,
 } from "@/helpers/validators.ts";
 import { useForm } from "@mantine/form";
+import { useTranslation } from "react-i18next";
+import { useApiError } from "../useAdminI18n.ts";
+import { useLocalePath } from "@/i18n/useLocale.ts";
 import toast from "react-hot-toast";
 import {
   Box,
@@ -50,6 +53,9 @@ const streetGrid = { ...grid, gridTemplateColumns: { xs: "1fr", sm: "2fr 1fr 1fr
 function AddUserView() {
   const [createUser] = useCreateUserFromAdminMutation();
   const navigate = useNavigate();
+  const { t } = useTranslation("admin");
+  const to = useLocalePath();
+  const apiError = useApiError();
 
   const validate = {
     firstName: validateFirstName,
@@ -98,22 +104,18 @@ function AddUserView() {
 
     toast
       .promise(createUser(registerData).unwrap(), {
-        loading: "Tworzenie konta...",
-        success: `Konto zostało utworzone dla ${values.email}.`,
-        error: "Nie udało się utworzyć konta",
+        loading: t("addUser.loading"),
+        success: t("addUser.success", { email: values.email }),
+        error: (error) => apiError(error, t("addUser.error")),
       })
       .then(() => {
-        navigate("/admin/zarzadzanie-uzytkownikami");
+        navigate(to("adminUsers"));
       });
   };
 
   return (
     <Box sx={{ width: "100%", maxWidth: 760 }}>
-      <AdminPageHeader
-        icon={<GroupAddOutlined />}
-        title="Dodaj użytkownika"
-        subtitle="Utwórz konto klienta wraz z domyślnym adresem dostawy."
-      />
+      <AdminPageHeader icon={<GroupAddOutlined />} title={t("addUser.title")} subtitle={t("addUser.subtitle")} />
 
       <form onSubmit={form.onSubmit(handleSubmit)}>
         <Box
@@ -126,14 +128,14 @@ function AddUserView() {
           })}>
           <Box>
             <Typography component="h2" sx={{ ...adminSubheadingSx, mb: 2 }}>
-              Dane konta
+              {t("addUser.accountHeading")}
             </Typography>
             <Box sx={grid}>
               <Box sx={twoCol}>
                 <TextField
                   variant="outlined"
-                  label="Imię"
-                  placeholder="Jan"
+                  label={t("userForm.firstName")}
+                  placeholder={t("userForm.firstNamePlaceholder")}
                   required
                   {...form.getInputProps("firstName")}
                   error={Boolean(form.errors.firstName) && form.isTouched("firstName")}
@@ -141,8 +143,8 @@ function AddUserView() {
                 />
                 <TextField
                   variant="outlined"
-                  label="Nazwisko"
-                  placeholder="Kowalski"
+                  label={t("userForm.lastName")}
+                  placeholder={t("userForm.lastNamePlaceholder")}
                   required
                   {...form.getInputProps("lastName")}
                   error={Boolean(form.errors.lastName) && form.isTouched("lastName")}
@@ -152,7 +154,7 @@ function AddUserView() {
               <Box sx={twoCol}>
                 <TextField
                   variant="outlined"
-                  label="E-mail"
+                  label={t("userForm.email")}
                   type="email"
                   required
                   {...form.getInputProps("email")}
@@ -161,7 +163,7 @@ function AddUserView() {
                 />
                 <TextField
                   variant="outlined"
-                  label="Numer telefonu"
+                  label={t("userForm.phone")}
                   type="tel"
                   required
                   {...form.getInputProps("phone")}
@@ -174,14 +176,14 @@ function AddUserView() {
                 required
                 sx={{ maxWidth: 300 }}
                 error={Boolean(form.errors.role) && form.isTouched("role")}>
-                <InputLabel id="role-label">Rola</InputLabel>
+                <InputLabel id="role-label">{t("userForm.role")}</InputLabel>
                 <Select
                   labelId="role-label"
-                  label="Rola"
+                  label={t("userForm.role")}
                   value={form.values.role}
                   onChange={(e) => form.setFieldValue("role", e.target.value as Roles)}>
-                  <MenuItem value={Roles.ADMIN}>Administrator</MenuItem>
-                  <MenuItem value={Roles.USER}>Użytkownik</MenuItem>
+                  <MenuItem value={Roles.ADMIN}>{t("roles.ADMIN")}</MenuItem>
+                  <MenuItem value={Roles.USER}>{t("roles.USER")}</MenuItem>
                 </Select>
                 {Boolean(form.errors.role) && form.isTouched("role") && (
                   <FormHelperText>{form.errors.role}</FormHelperText>
@@ -194,30 +196,30 @@ function AddUserView() {
 
           <Box>
             <Typography component="h2" sx={{ ...adminSubheadingSx, mb: 2 }}>
-              Domyślny adres dostawy
+              {t("addUser.addressHeading")}
             </Typography>
             <Box sx={grid}>
               <Box sx={streetGrid}>
                 <TextField
                   variant="outlined"
-                  label="Ulica"
-                  placeholder="ul. Przykładowa"
+                  label={t("userForm.street")}
+                  placeholder={t("userForm.streetPlaceholder")}
                   {...form.getInputProps("street")}
                   helperText={form.errors.street}
                   error={Boolean(form.errors.street) && form.isTouched("street")}
                 />
                 <TextField
                   variant="outlined"
-                  label="Nr budynku"
-                  placeholder="1A"
+                  label={t("userForm.buildingNumber")}
+                  placeholder={t("userForm.buildingNumberPlaceholder")}
                   {...form.getInputProps("buildingNumber")}
                   helperText={form.errors.buildingNumber}
                   error={Boolean(form.errors.buildingNumber) && form.isTouched("buildingNumber")}
                 />
                 <TextField
                   variant="outlined"
-                  label="Nr mieszkania"
-                  placeholder="150"
+                  label={t("userForm.flatNumber")}
+                  placeholder={t("userForm.flatNumberPlaceholder")}
                   {...form.getInputProps("flatNumber")}
                   helperText={form.errors.flatNumber}
                   error={Boolean(form.errors.flatNumber) && form.isTouched("flatNumber")}
@@ -226,16 +228,16 @@ function AddUserView() {
               <Box sx={twoCol}>
                 <TextField
                   variant="outlined"
-                  label="Kod pocztowy"
-                  placeholder="00-000"
+                  label={t("userForm.zip")}
+                  placeholder={t("userForm.zipPlaceholder")}
                   {...form.getInputProps("zip")}
                   helperText={form.errors.zip}
                   error={Boolean(form.errors.zip) && form.isTouched("zip")}
                 />
                 <TextField
                   variant="outlined"
-                  label="Miejscowość"
-                  placeholder="Rzeszów"
+                  label={t("userForm.city")}
+                  placeholder={t("userForm.cityPlaceholder")}
                   {...form.getInputProps("city")}
                   helperText={form.errors.city}
                   error={Boolean(form.errors.city) && form.isTouched("city")}
@@ -248,16 +250,16 @@ function AddUserView() {
         <Box sx={{ display: "flex", justifyContent: "flex-end", gap: 1.5, mt: 3 }}>
           <Button
             variant="text"
-            onClick={() => navigate("/admin/zarzadzanie-uzytkownikami")}
+            onClick={() => navigate(to("adminUsers"))}
             sx={{ borderRadius: "999px", fontWeight: 700 }}>
-            Anuluj
+            {t("actions.cancel", { ns: "common" })}
           </Button>
           <Button
             type="submit"
             variant="contained"
             disabled={!isValid && form.isTouched()}
             sx={{ borderRadius: "999px", fontWeight: 700 }}>
-            Utwórz użytkownika
+            {t("addUser.submit")}
           </Button>
         </Box>
       </form>

@@ -1,4 +1,5 @@
 import { useState, type FormEvent } from "react";
+import { useTranslation } from "react-i18next";
 import { Box, Button, TextField, Typography } from "@mui/material";
 import { ctaButtonSx, ghostButtonSx } from "@/components/listingStyles.ts";
 
@@ -9,8 +10,9 @@ type Props = {
 };
 
 function MfaCodeForm({ instruction, onSubmit, onCancel }: Props) {
+  const { t } = useTranslation("account");
   const [code, setCode] = useState("");
-  const [error, setError] = useState("");
+  const [failed, setFailed] = useState(false);
   const [submitting, setSubmitting] = useState(false);
 
   const handleSubmit = async (event: FormEvent) => {
@@ -18,11 +20,11 @@ function MfaCodeForm({ instruction, onSubmit, onCancel }: Props) {
     if (!/^\d{6}$/.test(code)) return;
 
     setSubmitting(true);
-    setError("");
+    setFailed(false);
     try {
       await onSubmit(code);
     } catch {
-      setError("Kod jest nieprawidłowy lub wygasł");
+      setFailed(true);
       setSubmitting(false);
     }
   };
@@ -32,14 +34,14 @@ function MfaCodeForm({ instruction, onSubmit, onCancel }: Props) {
       <Typography>{instruction}</Typography>
       <TextField
         autoFocus
-        label="Kod jednorazowy"
+        label={t("mfaCode.label")}
         value={code}
         onChange={(event) => {
           setCode(event.target.value.replace(/\D/g, "").slice(0, 6));
-          setError("");
+          setFailed(false);
         }}
-        error={Boolean(error)}
-        helperText={error}
+        error={failed}
+        helperText={failed ? t("mfaCode.invalid") : ""}
         slotProps={{
           htmlInput: { inputMode: "numeric", autoComplete: "one-time-code", maxLength: 6 },
           formHelperText: { role: "alert" },
@@ -48,10 +50,10 @@ function MfaCodeForm({ instruction, onSubmit, onCancel }: Props) {
       />
       <Box className="flex gap-2">
         <Button type="button" onClick={onCancel} disabled={submitting} sx={(theme) => ghostButtonSx(theme)}>
-          Wróć
+          {t("mfaCode.back")}
         </Button>
         <Button type="submit" variant="contained" disabled={code.length !== 6 || submitting} sx={ctaButtonSx}>
-          {submitting ? "Weryfikowanie…" : "Potwierdź"}
+          {submitting ? t("mfaCode.verifying") : t("mfaCode.confirm")}
         </Button>
       </Box>
     </Box>

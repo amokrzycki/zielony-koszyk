@@ -1,16 +1,21 @@
 import { Box, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import { useLocalePath } from "@/i18n/useLocale.ts";
 import { LocalShipping, Verified, WorkspacePremium } from "@mui/icons-material";
 import Categories from "./Categories.tsx";
 import ImageCarousel from "@/components/ImageCarousel.tsx";
 
 const assurances = [
-  { icon: <LocalShipping />, text: "Codzienna dostawa w Rzeszowie i okolicach" },
-  { icon: <Verified />, text: "Produkty z ekologicznych upraw" },
-  { icon: <WorkspacePremium />, text: "Ceny hurtowe przy większych zamówieniach" },
-];
+  { icon: <LocalShipping />, id: "delivery" },
+  { icon: <Verified />, id: "organic" },
+  { icon: <WorkspacePremium />, id: "wholesale" },
+] as const;
 
 function Homepage() {
+  const { t } = useTranslation("catalog");
+  const to = useLocalePath();
+
   return (
     <Box id="main-wrapper" className="flex flex-col items-center">
       <ImageCarousel />
@@ -26,8 +31,8 @@ function Homepage() {
           gridTemplateColumns: { xs: "1fr", md: "repeat(3, 1fr)" },
           "& > li": { display: "flex", alignItems: "center", gap: 2 },
         }}>
-        {assurances.map(({ icon, text }) => (
-          <Box component="li" key={text} className="flex items-center gap-3">
+        {assurances.map(({ icon, id }) => (
+          <Box component="li" key={id} className="flex items-center gap-3">
             <Box
               sx={{
                 display: "grid",
@@ -43,7 +48,7 @@ function Homepage() {
               {icon}
             </Box>
             <Typography component="span" sx={{ fontSize: "0.95rem", lineHeight: 1.45, color: "text.secondary" }}>
-              {text}
+              {t(`home.assurances.${id}`)}
             </Typography>
           </Box>
         ))}
@@ -74,15 +79,14 @@ function Homepage() {
             letterSpacing: "-0.03em",
             textWrap: "balance",
           }}>
-          Zamów hurtowo i oszczędź
+          {t("home.wholesale.title")}
         </Typography>
         <Typography sx={{ mt: 2, mx: "auto", maxWidth: "54ch", color: "text.secondary", lineHeight: 1.6 }}>
-          Przy większych zamówieniach obniżamy ceny. Skontaktuj się z nami, dobierzemy produkty do Twojego sklepu lub
-          biura.
+          {t("home.wholesale.text")}
         </Typography>
         <Box
           component={Link}
-          to="/o-nas"
+          to={to("about")}
           className="inline-flex items-center gap-2 rounded-full no-underline mt-7 px-7 py-3 text-[0.95rem] font-bold focus-visible:outline-2 focus-visible:outline-offset-4"
           sx={{
             color: "text.primary",
@@ -92,7 +96,7 @@ function Homepage() {
             "&:hover": { borderColor: "primary.main", color: "primary.main", transform: "translateY(-2px)" },
             "&:focus-visible": { outlineColor: "primary.main" },
           }}>
-          Napisz do nas
+          {t("home.wholesale.cta")}
         </Box>
       </Box>
     </Box>

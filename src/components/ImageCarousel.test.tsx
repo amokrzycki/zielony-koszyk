@@ -3,6 +3,7 @@
 import { act } from "react";
 import { createRoot, type Root } from "react-dom/client";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import i18n from "@/i18n/index.ts";
 import ImageCarousel from "./ImageCarousel.tsx";
 
 vi.mock("react-router-dom", () => ({
@@ -15,7 +16,8 @@ describe("ImageCarousel", () => {
   let container: HTMLDivElement;
   let root: Root;
 
-  beforeEach(() => {
+  beforeEach(async () => {
+    await i18n.changeLanguage("pl");
     vi.useFakeTimers();
     container = document.createElement("div");
     document.body.replaceChildren(container);
@@ -53,6 +55,23 @@ describe("ImageCarousel", () => {
       vi.advanceTimersByTime(ms);
     });
   };
+
+  it("renders its copy and control labels in the active locale", async () => {
+    await render();
+    expect(container.querySelector("h1")?.textContent).toBe("Codzienne dostawy");
+    expect(section().getAttribute("aria-roledescription")).toBe("karuzela");
+
+    await act(async () => {
+      await i18n.changeLanguage("en");
+    });
+    expect(container.querySelector("h1")?.textContent).toBe("Daily deliveries");
+    expect(
+      container.querySelector('section[aria-label="Delivery and offer"]')?.getAttribute("aria-roledescription"),
+    ).toBe("carousel");
+    expect(container.querySelector('button[aria-label="Browse products"]')).toBeNull();
+    expect(container.textContent).toContain("Browse products");
+    expect(container.querySelector('[aria-label="Next slide"]')).not.toBeNull();
+  });
 
   it("advances every SLIDE_MS", async () => {
     await render();

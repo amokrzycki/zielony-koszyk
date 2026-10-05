@@ -11,6 +11,9 @@ const initialState: CartState = {
   totalAmount: 0,
 };
 
+/** Flat courier fee in PLN; the backend adds the matching delivery line to every order. */
+export const DELIVERY_FEE = 10;
+
 // The API serialises decimals as strings; CartItem.price is a number.
 const toPrice = (price: unknown): number => Number(price);
 
@@ -40,7 +43,7 @@ export const cartReducers = {
     }
   },
   calculateTotalAmount(state: CartState) {
-    state.totalAmount = state.items.reduce((total, item) => total + item.price * item.quantity, 0) + 10;
+    state.totalAmount = state.items.reduce((total, item) => total + item.price * item.quantity, 0) + DELIVERY_FEE;
   },
   clearCart: () => initialState,
 };

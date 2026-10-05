@@ -1,0 +1,148 @@
+{
+  "app": {
+    "title": "Zielony Koszyk",
+    "name": "Zielony Koszyk"
+  },
+  "language": {
+    "label": "Language"
+  },
+  "nav": {
+    "label": "Main navigation",
+    "home": "Home",
+    "products": "Products",
+    "about": "About us",
+    "menu": "Menu",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu",
+    "homeLogo": "Zielony Koszyk — home page"
+  },
+  "theme": {
+    "toDark": "Switch to dark mode",
+    "toLight": "Switch to light mode"
+  },
+  "actions": {
+    "add": "Add",
+    "back": "Back",
+    "cancel": "Cancel",
+    "close": "Close",
+    "confirm": "Confirm",
+    "delete": "Delete",
+    "edit": "Edit",
+    "save": "Save"
+  },
+  "status": {
+    "loading": "Loading…"
+  },
+  "breadcrumbs": {
+    "label": "Breadcrumb",
+    "root": "Zielony Koszyk",
+    "home": "Home",
+    "products": "Products",
+    "productDetails": "Product details",
+    "about": "About us",
+    "cart": "Cart",
+    "cartLogin": "Sign in",
+    "login": "Sign in",
+    "order": "Order",
+    "orderSummary": "Summary",
+    "orderConfirmation": "Confirmation",
+    "account": "My account",
+    "accountOrders": "My orders",
+    "accountOrderDetails": "Order details",
+    "accountAddresses": "Address book",
+    "accountAddressEdit": "Edit details",
+    "accountAddressAdd": "Add address",
+    "accountEmailChange": "Change email",
+    "accountPasswordChange": "Change password",
+    "accountMfa": "MFA settings",
+    "admin": "Admin panel",
+    "adminProducts": "Product management",
+    "adminOrders": "Order management",
+    "adminOrderItems": "Order details",
+    "adminOrderEdit": "Edit order details",
+    "adminUsers": "User management",
+    "adminUserEdit": "Edit user",
+    "adminUserAdd": "Add user"
+  },
+  "orderStatus": {
+    "NEW": "New",
+    "WAITING_FOR_PAYMENT": "Awaiting payment",
+    "WAITING_FOR_CONFIRMATION": "Awaiting confirmation",
+    "IN_PROGRESS": "In progress",
+    "TO_BE_SHIPPED": "Ready to ship",
+    "SHIPPING": "Shipping",
+    "DELIVERED": "Delivered",
+    "DONE": "Completed"
+  },
+  "categories": {
+    "owoce": "Fruit",
+    "warzywa": "Vegetables",
+    "inne": "Groceries",
+    "sezonowe": "Seasonal",
+    "worki": "Bulk"
+  },
+  "quantity": {
+    "pieces_one": "{{count}} pc",
+    "pieces_other": "{{count}} pcs",
+    "unitPrice": "{{price}} / pc",
+    "line_one": "{{count}} pc × {{price}}",
+    "line_other": "{{count}} pcs × {{price}}",
+    "items_one": "{{count}} item",
+    "items_other": "{{count}} items"
+  },
+  "validation": {
+    "email": "Enter a valid email address",
+    "firstName": "Enter a valid first name",
+    "lastName": "Enter a valid last name",
+    "password": "Enter a valid password",
+    "newPasswordSame": "The new password must be different from the old one",
+    "passwordRules": "The password must be at least 8 characters long and contain at least one digit and one special character.",
+    "passwordMismatch": "The passwords do not match",
+    "terms": "Accept the terms and conditions",
+    "phone": "Enter a valid phone number",
+    "street": "Enter a valid street name",
+    "buildingNumber": "Enter a valid building/flat number",
+    "city": "Enter a valid city name",
+    "zip": "Enter a valid postal code",
+    "nip": "Enter a valid tax ID (NIP)",
+    "company": "Enter a valid company name"
+  },
+  "errors": {
+    "generic": "Something went wrong. Please try again.",
+    "PRODUCT_NOT_FOUND": "Product not found.",
+    "PRODUCT_DATA_REQUIRED": "Product data is missing.",
+    "FILE_REQUIRED": "No file selected.",
+    "INVALID_CREDENTIALS": "Incorrect email or password.",
+    "EMAIL_ALREADY_EXISTS": "A user with this email address already exists.",
+    "USER_NOT_FOUND": "User not found.",
+    "OLD_PASSWORD_INCORRECT": "The old password is incorrect.",
+    "ORDER_NOT_FOUND": "Order not found.",
+    "ORDER_ITEM_NOT_FOUND": "Order item not found.",
+    "INVOICE_NOT_FOUND": "Invoice not found.",
+    "INVOICE_FORBIDDEN": "You are not allowed to download this invoice.",
+    "INSUFFICIENT_STOCK": "Not enough of this product in stock."
+  },
+  "customerType": {
+    "label": "Customer type:",
+    "person": "Individual",
+    "company": "Company"
+  },
+  "footer": {
+    "about": "Zielony Koszyk offers vegetables and fruit, as well as dried goods, peas, spices, olive oil and other Greek products.",
+    "offerTitle": "We offer, among others:",
+    "offer": {
+      "potatoes": "Potatoes",
+      "cabbage": "Cabbage",
+      "apples": "Apples"
+    },
+    "deliveryTitle": "Fast delivery",
+    "links": {
+      "delivery": "Delivery and payment",
+      "privacy": "Privacy policy",
+      "terms": "Terms and conditions"
+    },
+    "findUs": "Find us:",
+    "region": "Rzeszów and the surrounding area",
+    "copyright": "© {{year}} Zielony Koszyk"
+  }
+}

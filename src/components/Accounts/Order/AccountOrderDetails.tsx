@@ -3,7 +3,8 @@ import type { ReactNode } from "react";
 import LoadingOverlay from "@/components/common/LoadingOverlay.tsx";
 import { Box, Typography } from "@mui/material";
 import { useGetOrderQuery } from "../../Order/orderApiSlice.ts";
-import { getFormattedDate } from "@/helpers/getFormattedDate.ts";
+import { useTranslation } from "react-i18next";
+import { useFormat } from "@/i18n/useLocale.ts";
 import OrderStatusPill from "@/components/Order/OrderStatusPill.tsx";
 import OrderStatusesInfo from "../../Order/OrderStatusesInfo.tsx";
 import { useGetOrderItemsQuery } from "../../Order/orderItemsApiSlice.ts";
@@ -38,17 +39,10 @@ function Fact({ label, value }: { label: string; value: ReactNode }) {
   );
 }
 
-/** Polish plural for the line-item count. */
-const itemCountLabel = (count: number) => {
-  if (count === 1) return "1 pozycja";
-  const mod10 = count % 10;
-  const mod100 = count % 100;
-  if (mod10 >= 2 && mod10 <= 4 && (mod100 < 12 || mod100 > 14)) return `${count} pozycje`;
-  return `${count} pozycji`;
-};
-
 function AccountOrderDetails() {
   const { orderId } = useParams();
+  const { t } = useTranslation("account");
+  const { dateTime } = useFormat();
   const {
     data: orderDetails,
     isLoading: isOrderDetailsLoading,
@@ -63,7 +57,7 @@ function AccountOrderDetails() {
   if (isOrderDetailsError || isOrderError || !orderDetails || !order) {
     return (
       <div className="fade-in">
-        <ErrorView message={"Nie udało się pobrać danych zamówienia"} />
+        <ErrorView message={t("orderDetails.error")} />
       </div>
     );
   }
@@ -83,7 +77,7 @@ function AccountOrderDetails() {
                 lineHeight: 1.1,
                 letterSpacing: "-0.03em",
               }}>
-              Zamówienie #{order.order_id}
+              {t("orderDetails.title", { id: order.order_id })}
             </Typography>
             <OrderStatusPill status={order.status} size="md" />
           </Box>
@@ -110,18 +104,25 @@ function AccountOrderDetails() {
               pl: { xs: 0, sm: 3 },
             },
           })}>
-          <Fact label="Typ zamówienia" value={order.order_type === OrderType.COMPANY ? "Firma" : "Osoba prywatna"} />
-          <Fact label="Data złożenia" value={getFormattedDate(order.order_date)} />
-          <Fact label="Kontakt" value={order.customer_email} />
+          <Fact
+            label={t("orderDetails.type")}
+            value={
+              order.order_type === OrderType.COMPANY ? t("orderDetails.typeCompany") : t("orderDetails.typePrivate")
+            }
+          />
+          <Fact label={t("orderDetails.date")} value={dateTime(order.order_date)} />
+          <Fact label={t("orderDetails.contact")} value={order.customer_email} />
         </Box>
 
         <Box component="section" sx={{ mt: { xs: 3.5, md: 4 } }}>
           <Box sx={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", gap: 2 }}>
             <Typography component="h2" sx={sectionHeadingSx}>
-              Produkty
+              {t("orderDetails.products")}
             </Typography>
             <Typography sx={{ color: "text.secondary", fontSize: "0.9rem", fontWeight: 600, whiteSpace: "nowrap" }}>
-              {itemCountLabel(orderDetails.length)}
+              {t("orderDetails.positions", {
+                count: orderDetails.filter((item) => item.item_type !== "DELIVERY").length,
+              })}
             </Typography>
           </Box>
           <OrderDetailsTable orderDetails={orderDetails} />
@@ -129,7 +130,7 @@ function AccountOrderDetails() {
 
         <Box component="section" sx={{ mt: { xs: 3.5, md: 4 } }}>
           <Typography component="h2" sx={{ ...sectionHeadingSx, mb: 1.5 }}>
-            Dane do faktury i dostawy
+            {t("orderDetails.addresses")}
           </Typography>
           <Box sx={{ display: "grid", gridTemplateColumns: { xs: "1fr", sm: "1fr 1fr" }, gap: 2 }}>
             <OrderAddresses order={order} />

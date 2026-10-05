@@ -1,0 +1,151 @@
+{
+  "carousel": {
+    "label": "Delivery and offer",
+    "roleDescription": "carousel",
+    "pick": "Choose a slide",
+    "previous": "Previous slide",
+    "next": "Next slide",
+    "description": "Vegetables, fruit and groceries straight from the farm. Delivery across Rzeszów and the surrounding area.",
+    "products": "Browse products",
+    "about": "About us",
+    "slides": {
+      "delivery": "Daily deliveries",
+      "seasonal": "Seasonal produce delivered to your door",
+      "grocery": "Groceries within easy reach"
+    }
+  },
+  "home": {
+    "assurances": {
+      "delivery": "Daily delivery in Rzeszów and the surrounding area",
+      "organic": "Products from organic farms",
+      "wholesale": "Wholesale prices on larger orders"
+    },
+    "wholesale": {
+      "title": "Order in bulk and save",
+      "text": "We lower our prices on larger orders. Get in touch and we will put together a selection for your shop or office.",
+      "cta": "Write to us"
+    }
+  },
+  "homeCategories": {
+    "title": "Choose what you need today",
+    "subtitle": "Five categories of fresh produce straight from local suppliers.",
+    "all": "All products",
+    "aria": "{{name}} — {{description}}",
+    "items": {
+      "owoce": {
+        "name": "Fruit",
+        "description": "We sell fruit at wholesale prices"
+      },
+      "warzywa": {
+        "name": "Vegetables",
+        "description": "Vegetables from organic farms"
+      },
+      "inne": {
+        "name": "Groceries",
+        "description": "We also stock Greek products, including olive oils, honeys and teas"
+      },
+      "sezonowe": {
+        "name": "Seasonal products",
+        "description": "Dried goods, groats and peas: staples worth having in your kitchen"
+      },
+      "worki": {
+        "name": "Bulk packs",
+        "description": "Products packed in sacks and crates at lower prices"
+      }
+    }
+  },
+  "about": {
+    "greeting": "Hello!",
+    "intro": "Zielony Koszyk is an online shop with fresh vegetables, fruit and groceries from local farmers and trusted suppliers. We serve individual customers and businesses, and deliver products from Poland and abroad across Rzeszów and the surrounding area.",
+    "imageAlt": "Fresh vegetables from the Zielony Koszyk range",
+    "offer": {
+      "title": "Our offer:",
+      "items": {
+        "fresh": "Fresh fruit and vegetables straight from local farmers",
+        "exotic": "Exotic products for when you fancy something new",
+        "greekPantry": "Spices, olive oils and dried goods: Greek flavours in your kitchen",
+        "greekSpecialities": "Greek specialities"
+      }
+    },
+    "service": {
+      "title": "Our service:",
+      "items": {
+        "care": "We look after your order from first contact to delivery",
+        "schedule": "Delivery times that fit around your day",
+        "prices": "Good prices and promotions",
+        "freeDelivery": "Free delivery on larger orders"
+      }
+    },
+    "closing": "We welcome individual customers as well as businesses in catering, hospitality and retail. You will find fresh vegetables and Greek flavours at Zielony Koszyk.",
+    "cta": "See our offer",
+    "team": "The Zielony Koszyk team"
+  },
+  "products": {
+    "title": "Products",
+    "subtitle": "Fresh vegetables, fruit and groceries from local suppliers.",
+    "error": "Something went wrong while loading products.",
+    "shown": "Showing {{shown}} of {{total}}",
+    "empty": {
+      "title": "No products",
+      "forQuery": "We couldn't find anything for “{{query}}”.",
+      "noMatch": "No products match the selected filters.",
+      "clearSearch": "Clear search"
+    }
+  },
+  "featured": {
+    "title": "Featured products",
+    "error": "Something went wrong while loading featured products"
+  },
+  "product": {
+    "details": "Product details",
+    "addToCart": "Add to cart",
+    "addedToCart": "Product added to cart",
+    "delivery": "Delivery in Rzeszów and the surrounding area.",
+    "stock": "In stock: {{stock}}",
+    "backToTop": "Back to top"
+  },
+  "quantity": {
+    "label": "Quantity",
+    "decrease": "Decrease quantity",
+    "increase": "Increase quantity"
+  },
+  "filters": {
+    "label": "Product filters",
+    "title": "Filters",
+    "close": "Close filters",
+    "showProducts": "Show products",
+    "category": "Category",
+    "clearCategory": "Clear",
+    "priceRange": "Price range",
+    "priceMin": "Minimum price",
+    "priceMax": "Maximum price",
+    "resetPrice": "Reset",
+    "clearAll": "Clear all",
+    "openButton": "Filters",
+    "openButtonActive": "Filters ({{active}})",
+    "openButtonAria": "Filters",
+    "openButtonAriaActive": "Filters, active filters: {{active}}",
+    "searchPlaceholder": "Search products",
+    "sortLabel": "Sort by",
+    "pageSize": "Per page",
+    "chips": {
+      "search": "Search: “{{query}}”",
+      "category": "Category: {{category}}",
+      "price": "Price: {{range}}"
+    }
+  },
+  "sort": {
+    "priceAsc": "Price: low to high",
+    "priceDesc": "Price: high to low",
+    "nameAsc": "Name: A-Z",
+    "nameDesc": "Name: Z-A"
+  },
+  "pagination": {
+    "page": "Go to page {{page}}",
+    "currentPage": "Page {{page}}",
+    "next": "Next page",
+    "previous": "Previous page",
+    "first": "First page",
+    "last": "Last page"
+  }
+}

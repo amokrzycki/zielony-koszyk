@@ -6,6 +6,8 @@ import { useForm } from "@mantine/form";
 import type { RootState } from "@/store/store";
 import { useAppDispatch } from "@/hooks/hooks";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import { useLocalePath } from "@/i18n/useLocale.ts";
 
 import { AddressType } from "@/enums/AddressType";
 import { CustomerType } from "@/enums/CustomerType";
@@ -42,6 +44,8 @@ export interface IFormValues {
 function OrderDetails() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const { t } = useTranslation("checkout");
+  const to = useLocalePath();
 
   const orderInfo: CreateOrder = useSelector((state: RootState) => state.order.orderInfo);
 
@@ -178,7 +182,7 @@ function OrderDetails() {
       }),
     );
 
-    navigate("/zamowienie/podsumowanie");
+    navigate(to("orderSummary"));
   };
 
   return (
@@ -200,10 +204,10 @@ function OrderDetails() {
                   lineHeight: 1.1,
                   letterSpacing: "-0.03em",
                 }}>
-                Dostawa i płatność
+                {t("details.title")}
               </Typography>
               <Typography sx={{ mt: 1, color: "text.secondary", lineHeight: 1.6, maxWidth: "52ch" }}>
-                Uzupełnij dane do wysyłki i faktury. Zamówienie potwierdzisz w następnym kroku.
+                {t("details.subtitle")}
               </Typography>
             </Box>
 
@@ -223,7 +227,7 @@ function OrderDetails() {
                   control={
                     <Checkbox checked={useDifferentAddress} onChange={() => setUseDifferentAddress((prev) => !prev)} />
                   }
-                  label="Faktura na inne dane"
+                  label={t("details.differentBilling")}
                 />
 
                 {!useDifferentAddress ? (
@@ -242,9 +246,7 @@ function OrderDetails() {
                       }}>
                       <ReceiptLongOutlined fontSize="small" sx={{ mt: "1px" }} />
                       <Typography sx={{ color: "inherit", fontSize: "0.9rem", lineHeight: 1.5 }}>
-                        {!user.user_id
-                          ? "Dane do faktury: takie same jak do wysyłki."
-                          : "Dane do faktury: domyślne dane z Twojego konta."}
+                        {!user.user_id ? t("details.billingSameAsShipping") : t("details.billingFromAccount")}
                       </Typography>
                     </Box>
                   </Reveal>
@@ -257,11 +259,11 @@ function OrderDetails() {
 
               <Box
                 component="aside"
-                aria-label="Podsumowanie zamówienia"
+                aria-label={t("summary.asideAria")}
                 sx={(theme) => ({ ...panelSx(theme), p: { xs: 2.5, sm: 3 } })}>
                 <CartSummary />
                 <Button type="submit" fullWidth disabled={!isValid} sx={{ ...ctaButtonSx, mt: 3 }}>
-                  Przejdź dalej
+                  {t("details.next")}
                 </Button>
                 {!isValid && (
                   <Typography
@@ -272,7 +274,7 @@ function OrderDetails() {
                       lineHeight: 1.5,
                       textAlign: "center",
                     }}>
-                    Uzupełnij wymagane pola, aby przejść dalej.
+                    {t("details.fillRequired")}
                   </Typography>
                 )}
               </Box>

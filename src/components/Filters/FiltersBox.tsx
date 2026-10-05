@@ -1,11 +1,13 @@
 import type React from "react";
 import { useState, useEffect } from "react";
 import { Box, Typography, Stack, Slider, Button } from "@mui/material";
+import { useTranslation } from "react-i18next";
 import type { Theme } from "@mui/material/styles";
 import useProductFilters from "@/hooks/useProductFilters";
 import CategoryList from "@/components/Filters/CategoryList.tsx";
 import { accentText, panelSx } from "@/components/listingStyles.ts";
-import { DEFAULT_PRICE_MAX, DEFAULT_PRICE_MIN } from "@/constants/app.ts";
+import { DEFAULT_PRICE_MAX, DEFAULT_PRICE_MIN, WHOLE_PLN } from "@/constants/app.ts";
+import { useFormat } from "@/i18n/useLocale.ts";
 
 const groupLabelSx = {
   mb: 1.5,
@@ -17,6 +19,9 @@ const groupLabelSx = {
 };
 
 export function FiltersContent() {
+  const { t } = useTranslation("catalog");
+  const { number } = useFormat();
+  const money = (value: number) => number(value, WHOLE_PLN);
   const { filters, setParams } = useProductFilters();
 
   const { priceMin, priceMax } = filters;
@@ -51,19 +56,19 @@ export function FiltersContent() {
   return (
     <>
       <Typography component="h2" sx={groupLabelSx}>
-        Kategoria
+        {t("filters.category")}
       </Typography>
       <CategoryList />
 
       <Box sx={{ height: "1px", my: 3, bgcolor: "divider" }} />
 
       <Typography component="h2" sx={groupLabelSx}>
-        Zakres cenowy
+        {t("filters.priceRange")}
       </Typography>
       <Stack spacing={1.5} direction="column">
         <Stack direction="row" justifyContent="space-between">
-          <Typography sx={{ fontWeight: 700, fontVariantNumeric: "tabular-nums" }}>{priceRange[0]} PLN</Typography>
-          <Typography sx={{ fontWeight: 700, fontVariantNumeric: "tabular-nums" }}>{priceRange[1]} PLN</Typography>
+          <Typography sx={{ fontWeight: 700, fontVariantNumeric: "tabular-nums" }}>{money(priceRange[0])}</Typography>
+          <Typography sx={{ fontWeight: 700, fontVariantNumeric: "tabular-nums" }}>{money(priceRange[1])}</Typography>
         </Stack>
         <Box style={{ paddingLeft: 10, paddingRight: 10 }}>
           <Slider
@@ -71,6 +76,8 @@ export function FiltersContent() {
             onChange={handlePriceChange}
             onChangeCommitted={handlePriceChangeCommitted}
             valueLabelDisplay="auto"
+            valueLabelFormat={money}
+            getAriaLabel={(index) => t(index === 0 ? "filters.priceMin" : "filters.priceMax")}
             min={DEFAULT_PRICE_MIN}
             max={DEFAULT_PRICE_MAX}
           />
@@ -94,7 +101,7 @@ export function FiltersContent() {
               textTransform: "none",
               "&:hover": { color: (t) => accentText(t) },
             }}>
-            Resetuj
+            {t("filters.resetPrice")}
           </Button>
         )}
       </Stack>
@@ -103,10 +110,12 @@ export function FiltersContent() {
 }
 
 function FiltersBox() {
+  const { t } = useTranslation("catalog");
+
   return (
     <Box
       component="aside"
-      aria-label="Filtry produktów"
+      aria-label={t("filters.label")}
       className={"hidden w-full shrink-0 flex-col p-5 sm:p-6 lg:flex lg:w-72 xl:w-80"}
       sx={(theme) => ({ ...panelSx(theme), position: { lg: "sticky" }, top: { lg: "88px" } })}>
       <FiltersContent />

@@ -6,6 +6,8 @@ import ReceiptLongOutlined from "@mui/icons-material/ReceiptLongOutlined";
 import LocalShippingOutlined from "@mui/icons-material/LocalShippingOutlined";
 import PlaceOutlined from "@mui/icons-material/PlaceOutlined";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import { useLocalePath } from "@/i18n/useLocale.ts";
 import type { ReactNode } from "react";
 import type User from "@/types/User.ts";
 import type { Address } from "@/types/Address.ts";
@@ -55,6 +57,7 @@ function AddressGrid({
   onEdit: (a: Address) => void;
   userId: string;
 }) {
+  const { t } = useTranslation("account");
   if (addresses.length === 0) {
     return (
       <Box
@@ -69,7 +72,7 @@ function AddressGrid({
           fontSize: "0.9rem",
           lineHeight: 1.5,
         }}>
-        Nie masz jeszcze adresu tego typu.
+        {t("addressBook.noneOfType")}
       </Box>
     );
   }
@@ -99,6 +102,8 @@ function AddressBook() {
   const user: User = useAppSelector((state) => state.auth.user);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const { t } = useTranslation("account");
+  const to = useLocalePath();
   const { data, isLoading } = useGetAddressesQuery(user.user_id);
 
   useEffect(() => {
@@ -113,12 +118,12 @@ function AddressBook() {
 
   const handleAddNew = () => {
     dispatch(clearAddressToEdit());
-    navigate("/konto/ksiazka-adresowa/dodaj-adres");
+    navigate(to("accountAddressAdd"));
   };
 
   const handleEditData = (address: Address) => {
     dispatch(setAddressToEdit(address));
-    navigate("/konto/ksiazka-adresowa/edytuj-dane");
+    navigate(to("accountAddressEdit"));
   };
 
   // Query data wins: the copy on the session user can be stale (it briefly rendered duplicated cards).
@@ -154,16 +159,15 @@ function AddressBook() {
                 lineHeight: 1.1,
                 letterSpacing: "-0.03em",
               }}>
-              Książka adresowa
+              {t("addressBook.title")}
             </Typography>
             <Typography sx={{ mt: 1, color: "text.secondary", maxWidth: "54ch", lineHeight: 1.6 }}>
-              Zarządzaj adresami do rachunku i dostawy. Adres oznaczony jako domyślny podpowiemy Ci przy składaniu
-              zamówienia.
+              {t("addressBook.subtitle")}
             </Typography>
           </Box>
           {!isEmpty && (
             <Button onClick={handleAddNew} startIcon={<AddRounded />} sx={{ ...ctaButtonSx, flexShrink: 0 }}>
-              Dodaj nowy adres
+              {t("addressBook.addNew")}
             </Button>
           )}
         </Box>
@@ -194,22 +198,22 @@ function AddressBook() {
               <PlaceOutlined />
             </Box>
             <Typography component="h2" sx={{ ...sectionHeadingSx, mt: 2, mb: 0 }}>
-              Nie masz jeszcze zapisanych adresów
+              {t("addressBook.emptyTitle")}
             </Typography>
             <Typography sx={{ mt: 0.75, mx: "auto", maxWidth: "42ch", color: "text.secondary", lineHeight: 1.6 }}>
-              Dodaj adres do rachunku lub dostawy, a zapamiętamy go przy kolejnych zamówieniach.
+              {t("addressBook.emptyText")}
             </Typography>
             <Button onClick={handleAddNew} startIcon={<AddRounded />} sx={{ ...ctaButtonSx, mt: 3 }}>
-              Dodaj pierwszy adres
+              {t("addressBook.addFirst")}
             </Button>
           </Box>
         ) : (
           <>
-            <AddressSection icon={<ReceiptLongOutlined />} title="Dane do rachunku">
+            <AddressSection icon={<ReceiptLongOutlined />} title={t("addressBook.billing")}>
               <AddressGrid addresses={billingAddresses} onEdit={handleEditData} userId={user.user_id} />
             </AddressSection>
 
-            <AddressSection icon={<LocalShippingOutlined />} title="Adresy dostawy">
+            <AddressSection icon={<LocalShippingOutlined />} title={t("addressBook.delivery")}>
               <AddressGrid addresses={deliveryAddresses} onEdit={handleEditData} userId={user.user_id} />
             </AddressSection>
           </>

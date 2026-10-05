@@ -26,6 +26,8 @@ import {
 import type { CreateUser } from "@/types/CreateUser.ts";
 import { useRegisterMutation } from "./accountsApiSlice.ts";
 import toast from "react-hot-toast";
+import { useTranslation } from "react-i18next";
+import { apiErrorMessage } from "@/helpers/apiError.ts";
 import type { Dispatch, SetStateAction } from "react";
 import { ctaButtonSx } from "@/components/listingStyles.ts";
 
@@ -49,6 +51,7 @@ interface RegisterFormProps {
 }
 
 function RegisterForm({ setTab }: RegisterFormProps) {
+  const { t, i18n } = useTranslation("account");
   const [register] = useRegisterMutation();
 
   const validate = {
@@ -103,9 +106,9 @@ function RegisterForm({ setTab }: RegisterFormProps) {
     };
     toast
       .promise(register(registerData).unwrap(), {
-        loading: "Tworzenie konta...",
-        success: "Konto zostało utworzone",
-        error: "Nie udało się utworzyć konta",
+        loading: t("register.toast.loading"),
+        success: t("register.toast.success"),
+        error: (error) => apiErrorMessage(i18n.t, error, t("register.toast.error")),
       })
       .then(() => {
         setTab(0);
@@ -130,9 +133,9 @@ function RegisterForm({ setTab }: RegisterFormProps) {
         <TextField
           fullWidth
           variant="outlined"
-          label="Imię"
+          label={t("fields.firstName")}
           required
-          placeholder={"Jan"}
+          placeholder={t("fields.firstNamePlaceholder")}
           {...form.getInputProps("firstName")}
           slotProps={{ htmlInput: { autoComplete: "given-name" } }}
           error={Boolean(form.errors.firstName)}
@@ -141,9 +144,9 @@ function RegisterForm({ setTab }: RegisterFormProps) {
         <TextField
           fullWidth
           variant="outlined"
-          label="Nazwisko"
+          label={t("fields.lastName")}
           required
-          placeholder={"Kowalski"}
+          placeholder={t("fields.lastNamePlaceholder")}
           {...form.getInputProps("lastName")}
           slotProps={{ htmlInput: { autoComplete: "family-name" } }}
           error={Boolean(form.errors.lastName)}
@@ -152,7 +155,7 @@ function RegisterForm({ setTab }: RegisterFormProps) {
         <TextField
           fullWidth
           variant={"outlined"}
-          label={"Email"}
+          label={t("fields.email")}
           {...form.getInputProps("email")}
           slotProps={{ htmlInput: { autoComplete: "email" } }}
           required
@@ -162,7 +165,7 @@ function RegisterForm({ setTab }: RegisterFormProps) {
         <TextField
           fullWidth
           variant={"outlined"}
-          label={"Numer telefonu"}
+          label={t("fields.phone")}
           placeholder={"+48123456789"}
           required
           {...form.getInputProps("phone")}
@@ -173,7 +176,7 @@ function RegisterForm({ setTab }: RegisterFormProps) {
         <TextField
           fullWidth
           variant={"outlined"}
-          label={"Hasło"}
+          label={t("fields.password")}
           type={"password"}
           required
           {...form.getInputProps("password")}
@@ -184,7 +187,7 @@ function RegisterForm({ setTab }: RegisterFormProps) {
         <TextField
           fullWidth
           variant={"outlined"}
-          label={"Potwierdź hasło"}
+          label={t("register.passwordConfirmation")}
           type={"password"}
           required
           {...form.getInputProps("passwordConfirmation")}
@@ -192,13 +195,15 @@ function RegisterForm({ setTab }: RegisterFormProps) {
           error={Boolean(form.errors.passwordConfirmation)}
           helperText={form.errors.passwordConfirmation}
         />
-        <Typography sx={{ gridColumn: "1 / -1", mt: 1, fontWeight: 700, fontSize: "0.95rem" }}>Adres</Typography>
+        <Typography sx={{ gridColumn: "1 / -1", mt: 1, fontWeight: 700, fontSize: "0.95rem" }}>
+          {t("register.address")}
+        </Typography>
         <TextField
           fullWidth
           variant="outlined"
-          label="Ulica"
+          label={t("fields.street")}
           required
-          placeholder={"ul. Przykładowa"}
+          placeholder={t("fields.streetPlaceholder")}
           {...form.getInputProps("street")}
           helperText={form.errors.street}
           error={Boolean(form.errors.street)}
@@ -207,7 +212,7 @@ function RegisterForm({ setTab }: RegisterFormProps) {
         <TextField
           fullWidth
           variant="outlined"
-          label="Numer domu/budynku"
+          label={t("fields.buildingNumber")}
           placeholder={"1A"}
           required
           {...form.getInputProps("buildingNumber")}
@@ -217,7 +222,7 @@ function RegisterForm({ setTab }: RegisterFormProps) {
         <TextField
           fullWidth
           variant="outlined"
-          label="Numer mieszkania"
+          label={t("fields.flatNumber")}
           placeholder={"150"}
           {...form.getInputProps("flatNumber")}
           helperText={form.errors.flatNumber}
@@ -226,7 +231,7 @@ function RegisterForm({ setTab }: RegisterFormProps) {
         <TextField
           fullWidth
           variant="outlined"
-          label="Kod pocztowy"
+          label={t("fields.zip")}
           placeholder={"00-000"}
           required
           {...form.getInputProps("zip")}
@@ -236,8 +241,8 @@ function RegisterForm({ setTab }: RegisterFormProps) {
         <TextField
           fullWidth
           variant="outlined"
-          label="Miejscowość"
-          placeholder={"Warszawa"}
+          label={t("fields.city")}
+          placeholder={t("fields.cityPlaceholder")}
           required
           {...form.getInputProps("city")}
           helperText={form.errors.city}
@@ -252,7 +257,7 @@ function RegisterForm({ setTab }: RegisterFormProps) {
           <FormGroup>
             <FormControlLabel
               control={<Checkbox {...form.getInputProps("termsAccepted", { type: "checkbox" })} />}
-              label={"Akceptuję regulamin*"}
+              label={t("register.terms")}
             />
           </FormGroup>
           <FormHelperText sx={{ m: 0 }}>{form.errors.termsAccepted}</FormHelperText>
@@ -263,7 +268,7 @@ function RegisterForm({ setTab }: RegisterFormProps) {
           fullWidth
           sx={{ ...ctaButtonSx, gridColumn: "1 / -1", mt: 1, minWidth: 200 }}
           disabled={!isValid && form.isTouched()}>
-          Utwórz konto
+          {t("register.submit")}
         </Button>
       </Box>
     </form>

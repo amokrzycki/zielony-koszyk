@@ -1,0 +1,309 @@
+{
+  "fields": {
+    "firstName": "First name",
+    "firstNamePlaceholder": "John",
+    "lastName": "Last name",
+    "lastNamePlaceholder": "Smith",
+    "companyName": "Company name",
+    "companyNamePlaceholder": "Acme Ltd",
+    "nip": "Tax ID (NIP)",
+    "email": "Email",
+    "phone": "Phone number",
+    "password": "Password",
+    "street": "Street",
+    "streetPlaceholder": "ul. Przykładowa",
+    "buildingNumber": "Building number",
+    "flatNumber": "Flat number",
+    "zip": "Postcode",
+    "city": "City",
+    "cityPlaceholder": "Warszawa"
+  },
+  "badge": {
+    "profile": "Profile",
+    "orders": "Orders",
+    "admin": "Admin panel",
+    "account": "Account",
+    "myAccount": "My account",
+    "greeting": "Hello {{name}}!",
+    "menuAria": "Account menu: {{name}}",
+    "logout": "Log out",
+    "loggedOut": "You have been logged out",
+    "logoutFailed": "Could not log out"
+  },
+  "auth": {
+    "tabsAria": "sign in",
+    "tabLogin": "Log in",
+    "tabRegister": "New account",
+    "login": {
+      "title": "Welcome back.",
+      "body": "Log in to finish your order, follow your deliveries and get back to your favourite products."
+    },
+    "register": {
+      "title": "Get started with Zielony Koszyk.",
+      "body": "An account means faster checkout, live order statuses and your whole delivery history."
+    },
+    "points": {
+      "delivery": "Daily delivery in Rzeszów and the surrounding area",
+      "organic": "Products from organic farms",
+      "wholesale": "Wholesale prices on larger orders"
+    }
+  },
+  "login": {
+    "email": "Email",
+    "password": "Password",
+    "rememberMe": "Remember me",
+    "submit": "Log in",
+    "success": "Logged in successfully",
+    "failed": "Could not log in",
+    "mfaRequired": "Additional authentication required: {{method}}",
+    "backToLogin": "Back to login"
+  },
+  "register": {
+    "passwordConfirmation": "Confirm password",
+    "address": "Address",
+    "terms": "I accept the terms and conditions*",
+    "submit": "Create account",
+    "toast": {
+      "loading": "Creating your account...",
+      "success": "Your account has been created",
+      "error": "Could not create your account"
+    }
+  },
+  "mfaCode": {
+    "instructionEmail": "Enter the six-digit code we emailed you.",
+    "instructionTotp": "Enter the six-digit code from your authenticator app.",
+    "label": "One-time code",
+    "invalid": "The code is incorrect or has expired",
+    "back": "Back",
+    "confirm": "Confirm",
+    "verifying": "Verifying…"
+  },
+  "webauthn": {
+    "instruction": "Confirm your login with a platform key (for example Windows Hello).",
+    "use": "Use platform key",
+    "waiting": "Waiting…",
+    "errors": {
+      "cancelled": "Authentication was cancelled.",
+      "startFailed": "Could not start the platform key.",
+      "failed": "Authentication failed."
+    }
+  },
+  "view": {
+    "loginTitle": "Log in to see your account",
+    "loginText": "Your orders, delivery addresses and security settings are all in one place.",
+    "login": "Log in",
+    "welcome": "Welcome, {{name}}!",
+    "benefits": {
+      "orders": "Order history and statuses",
+      "addresses": "Saved delivery addresses",
+      "security": "Password, email and MFA settings"
+    }
+  },
+  "options": {
+    "title": "Your account",
+    "subtitle": "Manage your orders, delivery addresses and account security.",
+    "sections": {
+      "orders": "Orders and delivery",
+      "security": "Security",
+      "admin": "Administration"
+    },
+    "accountOrders": {
+      "title": "Your orders",
+      "description": "History and statuses of your orders."
+    },
+    "accountAddresses": {
+      "title": "Address book",
+      "description": "Delivery addresses and invoice details."
+    },
+    "accountEmailChange": {
+      "title": "Change email address",
+      "description": "Change the address linked to your account."
+    },
+    "accountPasswordChange": {
+      "title": "Change password",
+      "description": "Update your account password."
+    },
+    "accountMfa": {
+      "title": "MFA settings",
+      "description": "An extra step to confirm your login."
+    },
+    "admin": {
+      "title": "Admin panel",
+      "description": "Products, orders and users."
+    }
+  },
+  "email": {
+    "title": "Change email address",
+    "subtitle": "Change the address linked to your account. For security, we will log you out of this device.",
+    "current": "Current email address",
+    "newLabel": "New email address",
+    "newPlaceholder": "new@address.com",
+    "mustDiffer": "The new email address must be different from the current one",
+    "saving": "Saving…",
+    "submit": "Change email address",
+    "error": "Could not change your email address. Check that the new address is not already in use.",
+    "success": "Your email address has been changed",
+    "successLoggedOut": "Your email address has been changed. We have logged you out.",
+    "logoutFailed": "Could not log you out. Please log out manually."
+  },
+  "password": {
+    "title": "Change password",
+    "subtitle": "Set a new password for your account. You will stay logged in on this device.",
+    "show": "Show passwords",
+    "hide": "Hide passwords",
+    "current": "Current password",
+    "new": "New password",
+    "confirm": "Confirm new password",
+    "hint": "At least 8 characters, with one digit and one special character.",
+    "saving": "Saving…",
+    "submit": "Change password",
+    "error": "Could not change your password. Check your current password and try again.",
+    "success": "Your password has been changed"
+  },
+  "mfa": {
+    "title": "MFA settings",
+    "subtitle": "Choose one extra way to confirm your login.",
+    "disabledChip": "MFA disabled",
+    "activeChip": "Active: {{method}}",
+    "activeLabels": {
+      "NONE": "Disabled",
+      "EMAIL_OTP": "Email code",
+      "TOTP": "Authenticator app (TOTP)",
+      "WEBAUTHN": "Platform key (WebAuthn)"
+    },
+    "chooseMethod": "Choose a method",
+    "methods": {
+      "EMAIL_OTP": {
+        "label": "Email code",
+        "description": "A six-digit code sent to the email address linked to your account."
+      },
+      "TOTP": {
+        "label": "Authenticator app",
+        "description": "A TOTP code from an app such as Google Authenticator or 2FAS."
+      },
+      "WEBAUTHN": {
+        "label": "Platform key",
+        "description": "A passkey stored on your device, for example Windows Hello."
+      },
+      "NONE": {
+        "label": "Disabled",
+        "description": "Log in with your password only."
+      }
+    },
+    "alreadyActive": "This method is already active. Choose another one to change it.",
+    "confirmWithPassword": "Confirm the change with your current password.",
+    "currentPassword": "Current password",
+    "totp": {
+      "title": "Finish setting up TOTP",
+      "note": "Your current method stays active until you confirm the first code.",
+      "alert": "Add the account to your authenticator app using the URI or the secret, then enter the first code.",
+      "uri": "otpauth:// URI",
+      "secret": "Secret for manual entry",
+      "instruction": "Enter the first six-digit code from your authenticator app."
+    },
+    "submit": {
+      "saving": "Saving…",
+      "none": "Disable MFA",
+      "emailOtp": "Enable email codes",
+      "totp": "Set up TOTP",
+      "totpAgain": "Set up TOTP again",
+      "webauthn": "Set up platform key",
+      "webauthnAgain": "Register a new key"
+    },
+    "success": {
+      "none": "MFA has been disabled",
+      "emailOtp": "Email codes have been enabled",
+      "totp": "TOTP authentication has been enabled",
+      "webauthn": "The platform key has been set up"
+    },
+    "errors": {
+      "registrationCancelled": "Key registration was cancelled. Choose a method and try again.",
+      "registrationFailed": "Could not start the platform key. Please try again.",
+      "saveFailed": "Could not save the change. Check your current password and try again."
+    }
+  },
+  "addressBook": {
+    "title": "Address book",
+    "subtitle": "Manage your invoice and delivery addresses. We will suggest your default address when you place an order.",
+    "addNew": "Add new address",
+    "addFirst": "Add your first address",
+    "emptyTitle": "You have no saved addresses yet",
+    "emptyText": "Add an invoice or delivery address and we will remember it for your next orders.",
+    "noneOfType": "You have no address of this type yet.",
+    "billing": "Invoice details",
+    "delivery": "Delivery addresses"
+  },
+  "addressBox": {
+    "nip": "Tax ID (NIP): {{nip}}",
+    "edit": "Edit"
+  },
+  "addressType": {
+    "label": "Address used for:",
+    "billing": "invoices",
+    "delivery": "delivery"
+  },
+  "defaultCheckbox": {
+    "isDefault": "Default",
+    "setDefault": "Set as default",
+    "toast": {
+      "loading": "Updating address...",
+      "success": "Address updated",
+      "error": "Something went wrong while updating the address"
+    }
+  },
+  "addressForm": {
+    "newTitle": "New address",
+    "editTitle": "Edit address",
+    "newSubtitle": "Fill in the details of your new invoice or delivery address.",
+    "editSubtitle": "Change the address details. Save to update it in your address book.",
+    "houseNumber": "House no.",
+    "flatNumber": "Flat no.",
+    "cityPlaceholder": "Rzeszów",
+    "add": "Add address",
+    "saveChanges": "Save changes",
+    "cancel": "Cancel",
+    "fillRequired": "Fill in the required fields to save the address.",
+    "toast": {
+      "addLoading": "Adding address...",
+      "addSuccess": "Address added",
+      "addError": "Something went wrong while adding the address",
+      "saveLoading": "Saving changes...",
+      "saveSuccess": "Changes saved",
+      "saveError": "Something went wrong while saving the changes"
+    }
+  },
+  "orders": {
+    "title": "Orders",
+    "subtitle": "Your purchase history — check the status and details of each order.",
+    "error": "Could not load your orders",
+    "emptyTitle": "You have no orders yet",
+    "emptyText": "Once you place your first order, it will appear here with its current delivery status.",
+    "browse": "Browse products"
+  },
+  "orderDetails": {
+    "title": "Order #{{id}}",
+    "error": "Could not load the order details",
+    "type": "Order type",
+    "typeCompany": "Company",
+    "typePrivate": "Private customer",
+    "date": "Placed on",
+    "contact": "Contact",
+    "products": "Products",
+    "positions_one": "{{count}} item",
+    "positions_other": "{{count}} items",
+    "addresses": "Invoice and delivery details"
+  },
+  "orderAddresses": {
+    "billing": "Invoice details",
+    "shipping": "Delivery",
+    "nip": "Tax ID (NIP): {{nip}}",
+    "courier": "DPD courier · {{price}}"
+  },
+  "orderTable": {
+    "product": "Product",
+    "quantity": "Qty",
+    "price": "Price",
+    "value": "Amount",
+    "total": "Total"
+  }
+}

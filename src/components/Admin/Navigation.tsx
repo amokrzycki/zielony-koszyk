@@ -4,38 +4,21 @@ import Inventory2Icon from "@mui/icons-material/Inventory2";
 import SellIcon from "@mui/icons-material/Sell";
 import GroupIcon from "@mui/icons-material/Group";
 import type { Theme } from "@mui/material/styles";
+import { useTranslation } from "react-i18next";
 import { accentText, EASE } from "@/components/listingStyles.ts";
+import { useLocalePath } from "@/i18n/useLocale.ts";
 
 interface AdminNavItem {
-  label: string;
-  hint: string;
-  route: string;
+  id: "products" | "orders" | "users";
+  route: "adminProducts" | "adminOrders" | "adminUsers";
   icon: typeof Inventory2Icon;
-  match: string;
 }
 
+/** Labels live in the `admin` namespace under `nav.items.<id>`; `route` also drives the active-state prefix match. */
 export const adminNavItems: AdminNavItem[] = [
-  {
-    label: "Produkty",
-    hint: "Katalog i stany",
-    route: "/admin/zarzadzanie-produktami",
-    icon: Inventory2Icon,
-    match: "/admin/zarzadzanie-produktami",
-  },
-  {
-    label: "Zamówienia",
-    hint: "Realizacja i statusy",
-    route: "/admin/zarzadzanie-zamowieniami",
-    icon: SellIcon,
-    match: "/admin/zarzadzanie-zamowieniami",
-  },
-  {
-    label: "Użytkownicy",
-    hint: "Konta i adresy",
-    route: "/admin/zarzadzanie-uzytkownikami",
-    icon: GroupIcon,
-    match: "/admin/zarzadzanie-uzytkownikami",
-  },
+  { id: "products", route: "adminProducts", icon: Inventory2Icon },
+  { id: "orders", route: "adminOrders", icon: SellIcon },
+  { id: "users", route: "adminUsers", icon: GroupIcon },
 ];
 
 /** Nav rows sit on the forest-ink rail, so their states are tuned for a dark ground. */
@@ -61,28 +44,31 @@ const railRowSx = (theme: Theme) => ({
 function Navigation({ onNavigate }: { onNavigate?: () => void }) {
   const navigate = useNavigate();
   const { pathname } = useLocation();
+  const { t } = useTranslation("admin");
+  const to = useLocalePath();
 
-  const go = (route: string) => {
+  const go = (path: string) => {
     onNavigate?.();
-    navigate(route);
+    navigate(path);
   };
 
   return (
-    <Box component="nav" aria-label="Nawigacja panelu" sx={{ display: "flex", flexDirection: "column", gap: 0.5 }}>
+    <Box component="nav" aria-label={t("nav.label")} sx={{ display: "flex", flexDirection: "column", gap: 0.5 }}>
       {adminNavItems.map((item) => {
         const Icon = item.icon;
-        const active = pathname.startsWith(item.match);
+        const path = to(item.route);
+        const active = pathname.startsWith(path);
         return (
           <Button
-            key={item.route}
+            key={item.id}
             disableRipple
-            onClick={() => go(item.route)}
+            onClick={() => go(path)}
             className={active ? "active" : undefined}
             aria-current={active ? "page" : undefined}
             sx={railRowSx}>
             <Icon sx={{ fontSize: 20, flexShrink: 0 }} />
             <Box component="span" sx={{ display: "flex", flexDirection: "column", lineHeight: 1.25, minWidth: 0 }}>
-              <Box component="span">{item.label}</Box>
+              <Box component="span">{t(`nav.items.${item.id}.label`)}</Box>
               <Box
                 component="span"
                 sx={{
@@ -93,7 +79,7 @@ function Navigation({ onNavigate }: { onNavigate?: () => void }) {
                   overflow: "hidden",
                   textOverflow: "ellipsis",
                 }}>
-                {item.hint}
+                {t(`nav.items.${item.id}.hint`)}
               </Box>
             </Box>
           </Button>

@@ -1,5 +1,7 @@
 import type Product from "../../types/Product.ts";
 import { Box, Typography } from "@mui/material";
+import { useTranslation } from "react-i18next";
+import { useFormat } from "@/i18n/useLocale.ts";
 import capitalizeFirstLetter from "@/helpers/capitalizeFirstLetter.ts";
 import { accentText, tone } from "@/components/listingStyles.ts";
 
@@ -10,6 +12,8 @@ interface ProductInfoProps {
 }
 
 function ProductInfo({ product, size = "card" }: ProductInfoProps) {
+  const { t } = useTranslation(["catalog", "common"]);
+  const { number } = useFormat();
   const isDetail = size === "detail";
 
   return (
@@ -55,7 +59,7 @@ function ProductInfo({ product, size = "card" }: ProductInfoProps) {
             color: (t) => accentText(t),
             bgcolor: (t) => tone(t, 0.12),
           }}>
-          {capitalizeFirstLetter(product.category)}
+          {t(`categories.${product.category}`, { ns: "common", defaultValue: capitalizeFirstLetter(product.category) })}
         </Typography>
         <Typography
           component="span"
@@ -69,7 +73,7 @@ function ProductInfo({ product, size = "card" }: ProductInfoProps) {
             color: "text.secondary",
             bgcolor: "action.hover",
           }}>
-          Dostępnych: {product.stock_quantity}
+          {t("product.stock", { stock: number(product.stock_quantity) })}
         </Typography>
       </Box>
     </Box>

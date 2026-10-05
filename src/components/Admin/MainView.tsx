@@ -4,6 +4,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
 import CheckRounded from "@mui/icons-material/CheckRounded";
 import { useLocation, useNavigate, useOutlet } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import SwapLayers from "../common/SwapLayers.tsx";
 import Navigation from "./Navigation.tsx";
 import { useAppSelector } from "@/hooks/hooks.ts";
@@ -12,12 +13,9 @@ import type User from "@/types/User.ts";
 import AutoBreadcrumbs from "../AutoBreadcrumbs.tsx";
 import { useMode } from "@/providers/ModeProvider.tsx";
 import { BRAND_INK, accentText, ctaButtonSx, panelSx, tone } from "@/components/listingStyles.ts";
+import { useLocalePath } from "@/i18n/useLocale.ts";
 
-const adminBenefits = [
-  "Produkty, stany magazynowe i zdjęcia",
-  "Zamówienia, adresy i ich statusy",
-  "Konta klientów oraz role",
-];
+const adminBenefits = ["products", "orders", "users"] as const;
 
 const RAIL_WIDTH = 264;
 
@@ -37,6 +35,8 @@ function AdminOutlet() {
 
 function AdminAccountBlock({ user, onNavigate }: { user: User; onNavigate?: () => void }) {
   const navigate = useNavigate();
+  const { t } = useTranslation("admin");
+  const to = useLocalePath();
   const initial = (user.first_name || user.email || "?").trim().charAt(0).toUpperCase();
 
   return (
@@ -55,7 +55,7 @@ function AdminAccountBlock({ user, onNavigate }: { user: User; onNavigate?: () =
       </Avatar>
       <Box sx={{ minWidth: 0, flex: 1 }}>
         <Typography sx={{ color: "#fff", fontWeight: 700, fontSize: "0.92rem", lineHeight: 1.25 }} noWrap>
-          {user.first_name || "Administrator"}
+          {user.first_name || t("shell.defaultName")}
         </Typography>
         <Typography sx={{ color: "rgba(255,255,255,0.6)", fontSize: "0.78rem" }} noWrap>
           {user.email}
@@ -64,7 +64,7 @@ function AdminAccountBlock({ user, onNavigate }: { user: User; onNavigate?: () =
       <Button
         onClick={() => {
           onNavigate?.();
-          navigate("/");
+          navigate(to("home"));
         }}
         sx={(theme) => ({
           minWidth: 0,
@@ -77,7 +77,7 @@ function AdminAccountBlock({ user, onNavigate }: { user: User; onNavigate?: () =
           transition: `background-color 200ms cubic-bezier(0.16,1,0.3,1)`,
           "&:hover": { backgroundColor: "rgba(0,206,124,0.14)" },
         })}>
-        Sklep
+        {t("shell.backToShop")}
       </Button>
     </Box>
   );
@@ -86,6 +86,8 @@ function AdminAccountBlock({ user, onNavigate }: { user: User; onNavigate?: () =
 function RailBody({ user, onNavigate }: { user: User; onNavigate?: () => void }) {
   const { mode } = useMode();
   const navigate = useNavigate();
+  const { t } = useTranslation("admin");
+  const to = useLocalePath();
 
   return (
     <Box
@@ -103,18 +105,18 @@ function RailBody({ user, onNavigate }: { user: User; onNavigate?: () => void })
         <Box
           component="img"
           src={`/${mode}_logo.png`}
-          alt="Zielony Koszyk"
+          alt={t("app.name", { ns: "common" })}
           role="button"
           tabIndex={0}
           onClick={() => {
             onNavigate?.();
-            navigate("/admin");
+            navigate(to("admin"));
           }}
           onKeyDown={(event: React.KeyboardEvent) => {
             if (event.key === "Enter" || event.key === " ") {
               event.preventDefault();
               onNavigate?.();
-              navigate("/admin");
+              navigate(to("admin"));
             }
           }}
           sx={{ height: 38, width: "auto", ml: 0.5, cursor: "pointer" }}
@@ -122,7 +124,7 @@ function RailBody({ user, onNavigate }: { user: User; onNavigate?: () => void })
         <Box sx={{ display: { xs: "block", md: "none" } }}>
           <IconButton
             onClick={() => onNavigate?.()}
-            aria-label="Zamknij nawigację"
+            aria-label={t("nav.close")}
             size="small"
             sx={{ color: "rgba(255,255,255,0.72)", "&:hover": { bgcolor: "rgba(255,255,255,0.08)" } }}>
             <CloseIcon fontSize="small" />
@@ -141,6 +143,8 @@ function RailBody({ user, onNavigate }: { user: User; onNavigate?: () => void })
 function MainView() {
   const user: User = useAppSelector((state: RootState) => state.auth.user);
   const navigate = useNavigate();
+  const { t } = useTranslation("admin");
+  const to = useLocalePath();
   const [drawerOpen, setDrawerOpen] = useState(false);
 
   if (Object.keys(user).length === 0) {
@@ -171,10 +175,10 @@ function MainView() {
               letterSpacing: "-0.03em",
               textWrap: "balance",
             }}>
-            Zaloguj się, aby uruchomić panel administracyjny
+            {t("shell.signedOut.title")}
           </Typography>
           <Typography sx={{ mt: 2, mx: "auto", maxWidth: "40ch", color: "text.secondary", lineHeight: 1.6 }}>
-            Zarządzanie produktami, zamówieniami i klientami czeka po zalogowaniu.
+            {t("shell.signedOut.lead")}
           </Typography>
           <Box
             component="ul"
@@ -205,12 +209,14 @@ function MainView() {
                   })}>
                   <CheckRounded />
                 </Box>
-                <Typography sx={{ fontSize: "0.95rem", lineHeight: 1.45 }}>{benefit}</Typography>
+                <Typography sx={{ fontSize: "0.95rem", lineHeight: 1.45 }}>
+                  {t(`shell.signedOut.benefits.${benefit}`)}
+                </Typography>
               </Box>
             ))}
           </Box>
-          <Button onClick={() => navigate("/login")} sx={{ ...ctaButtonSx, mt: 4, minWidth: 200 }}>
-            Zaloguj się
+          <Button onClick={() => navigate(to("login"))} sx={{ ...ctaButtonSx, mt: 4, minWidth: 200 }}>
+            {t("shell.signedOut.login")}
           </Button>
         </Box>
       </Box>
@@ -244,13 +250,13 @@ function MainView() {
               }}>
               <IconButton
                 onClick={() => setDrawerOpen(true)}
-                aria-label="Otwórz nawigację panelu"
+                aria-label={t("nav.open")}
                 aria-controls="admin-drawer"
                 aria-expanded={drawerOpen}
                 sx={(theme) => ({ color: "text.primary", "&:hover": { bgcolor: tone(theme, 0.1) } })}>
                 <MenuIcon />
               </IconButton>
-              <Typography sx={{ fontWeight: 800, letterSpacing: "-0.02em" }}>Panel administracyjny</Typography>
+              <Typography sx={{ fontWeight: 800, letterSpacing: "-0.02em" }}>{t("shell.title")}</Typography>
             </Box>
 
             <Box sx={{ px: { xs: 2.5, sm: 4 }, py: { xs: 3, sm: 4 }, minWidth: 0 }}>

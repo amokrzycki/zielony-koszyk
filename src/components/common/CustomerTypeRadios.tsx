@@ -1,4 +1,5 @@
 import { Box, FormControl, FormControlLabel, FormHelperText, Radio, Typography } from "@mui/material";
+import { useTranslation } from "react-i18next";
 import { CustomerType } from "@/enums/CustomerType.ts";
 
 interface CustomerTypeRadiosProps {
@@ -9,9 +10,11 @@ interface CustomerTypeRadiosProps {
 }
 
 function CustomerTypeRadios({ customerType, setCustomerType, error, touched }: CustomerTypeRadiosProps) {
+  const { t } = useTranslation();
+
   return (
     <Box className="flex flex-wrap items-center gap-x-4 gap-y-1">
-      <Typography variant="body1">Typ klienta:</Typography>
+      <Typography variant="body1">{t("customerType.label")}</Typography>
 
       <FormControl
         required
@@ -26,7 +29,7 @@ function CustomerTypeRadios({ customerType, setCustomerType, error, touched }: C
               onChange={() => setCustomerType(CustomerType.PERSON)}
             />
           }
-          label="Osoba prywatna"
+          label={t("customerType.person")}
         />
 
         <FormControlLabel
@@ -36,7 +39,7 @@ function CustomerTypeRadios({ customerType, setCustomerType, error, touched }: C
               onChange={() => setCustomerType(CustomerType.COMPANY)}
             />
           }
-          label="Firma"
+          label={t("customerType.company")}
         />
 
         <FormHelperText sx={{ m: 0 }}>{error}</FormHelperText>

@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import AdminModal from "../AdminModal.tsx";
 import AddProductForm from "./AddProductForm.tsx";
 
@@ -7,13 +8,15 @@ interface AdminAddProductModalProps {
 }
 
 function AddProductModal({ open, handleClose }: AdminAddProductModalProps) {
+  const { t } = useTranslation("admin");
+
   return (
     <AdminModal
       open={open}
       onClose={handleClose}
-      title="Dodaj produkt"
-      subtitle="Produkt pojawi się w katalogu od razu po zapisaniu."
-      maxWidth={520}>
+      title={t("products.create.title")}
+      subtitle={t("products.create.subtitle")}
+      maxWidth={600}>
       <AddProductForm handleClose={handleClose} />
     </AdminModal>
   );

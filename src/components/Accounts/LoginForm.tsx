@@ -1,5 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import { apiErrorMessage } from "@/helpers/apiError.ts";
+import { useLocalePath } from "@/i18n/useLocale.ts";
 import { useForm } from "@mantine/form";
 import { Box, Button, FormControlLabel, FormGroup, TextField, Typography } from "@mui/material";
 import { validateEmail, validatePassword } from "@/helpers/validators.ts";
@@ -29,6 +32,8 @@ export interface ILoginFormValues {
 
 function LoginForm() {
   const navigate = useNavigate();
+  const { t, i18n } = useTranslation("account");
+  const to = useLocalePath();
   const dispatch = useAppDispatch();
   const [login] = useLoginMutation();
   const [verifyEmailOtp] = useVerifyEmailOtpMutation();
@@ -60,8 +65,8 @@ function LoginForm() {
   const completeLogin = (result: FullAuthResponse, rememberMe: boolean) => {
     dispatch(loginUser({ accessToken: result.access_token, user: result.user }));
     rememberSession(rememberMe);
-    navigate("/");
-    toast.success("Zalogowano pomyślnie");
+    navigate(to("home"));
+    toast.success(t("login.success"));
   };
 
   const handleSubmit = async (values: ILoginFormValues) => {
@@ -75,8 +80,8 @@ function LoginForm() {
       }
 
       completeLogin(result, Boolean(values.rememberMe));
-    } catch {
-      toast.error("Nie udało się zalogować");
+    } catch (error) {
+      toast.error(apiErrorMessage(i18n.t, error, t("login.failed")));
     }
   };
 
@@ -85,11 +90,7 @@ function LoginForm() {
       const isEmailOtp = pendingMfa.response.method === MfaMethod.EMAIL_OTP;
       return (
         <MfaCodeForm
-          instruction={
-            isEmailOtp
-              ? "Wpisz sześciocyfrowy kod wysłany e-mailem."
-              : "Wpisz sześciocyfrowy kod z aplikacji uwierzytelniającej."
-          }
+          instruction={isEmailOtp ? t("mfaCode.instructionEmail") : t("mfaCode.instructionTotp")}
           onCancel={() => setPendingMfa(null)}
           onSubmit={async (code) => {
             const request = {
@@ -122,9 +123,9 @@ function LoginForm() {
 
     return (
       <Box className={"flex flex-col items-center gap-4"}>
-        <Typography>Wymagane dodatkowe uwierzytelnienie: {pendingMfa.response.method}</Typography>
+        <Typography>{t("login.mfaRequired", { method: pendingMfa.response.method })}</Typography>
         <Button onClick={() => setPendingMfa(null)} sx={(theme) => ghostButtonSx(theme)}>
-          Wróć do logowania
+          {t("login.backToLogin")}
         </Button>
       </Box>
     );
@@ -138,7 +139,7 @@ function LoginForm() {
       <Box className={"flex flex-col items-center justify-center"}>
         <TextField
           variant={"outlined"}
-          label={"Email"}
+          label={t("login.email")}
           {...form.getInputProps("email")}
           error={Boolean(form.errors.email) && form.isTouched("email")}
           helperText={form.errors.email}
@@ -146,7 +147,7 @@ function LoginForm() {
         />
         <TextField
           variant={"outlined"}
-          label={"Hasło"}
+          label={t("login.password")}
           type={"password"}
           {...form.getInputProps("password")}
           error={Boolean(form.errors.password) && form.isTouched("password")}
@@ -157,7 +158,7 @@ function LoginForm() {
       <FormGroup sx={{ mt: 1 }} className={"items-center"}>
         <FormControlLabel
           control={<Checkbox {...form.getInputProps("rememberMe", { type: "checkbox" })} />}
-          label={"Zapamiętaj mnie"}
+          label={t("login.rememberMe")}
         />
       </FormGroup>
       {/* TODO: forgot password */}
@@ -166,7 +167,7 @@ function LoginForm() {
         disabled={!isValid && form.isTouched()}
         variant={"contained"}
         sx={{ ...ctaButtonSx, mt: "1.5em", minWidth: 200 }}>
-        Zaloguj się
+        {t("login.submit")}
       </Button>
     </form>
   );

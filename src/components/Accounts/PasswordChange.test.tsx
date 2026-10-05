@@ -85,7 +85,7 @@ describe("PasswordChange", () => {
       new_password: "Nowehaslo1!",
     });
     expect(mocks.toastSuccess).toHaveBeenCalledWith("Hasło zostało zmienione");
-    expect(mocks.navigate).toHaveBeenCalledWith("/konto");
+    expect(mocks.navigate).toHaveBeenCalledWith("/pl/konto");
   });
 
   it("shows the failure and keeps the user on the form when the change is rejected", async () => {

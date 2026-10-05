@@ -2,39 +2,59 @@ import { baseApi } from "@/api/api.ts";
 import type Product from "@/types/Product.ts";
 import type { ProductParams } from "@/types/ProductParams.ts";
 import type { PageableProducts } from "@/types/PageableProducts.ts";
+import type { CreateProductBody, ProductTranslations, UpdateProductBody } from "@/types/ProductTranslations.ts";
+import type { Locale } from "@/i18n/locale.ts";
+
+/**
+ * Responses below change with the content language, so `locale` is part of each query's argument and therefore of its
+ * RTK Query cache key: Polish and English results can never be served for one another. The same value feeds the
+ * `Accept-Language` header, so the key and the request cannot disagree.
+ */
+interface Localized {
+  locale: Locale;
+}
+
+const acceptLanguage = (locale: Locale) => ({ "Accept-Language": locale });
+
+const productTags = (id: number) => ({ type: "Products" as const, id });
+const LIST = { type: "Products" as const, id: "LIST" };
 
 export const productsApiSlice = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    getProducts: builder.query<Product[], void>({
-      query: () => ({
+    getProducts: builder.query<Product[], Localized>({
+      query: ({ locale }) => ({
         url: "products",
         method: "GET",
+        headers: acceptLanguage(locale),
       }),
-      providesTags: (result) =>
-        result
-          ? [
-              ...result.map(({ product_id }) => ({
-                type: "Products" as const,
-                product_id,
-              })),
-              { type: "Products", id: "LIST" },
-            ]
-          : [{ type: "Products", id: "LIST" }],
+      providesTags: (result) => [...(result ?? []).map(({ product_id }) => productTags(product_id)), LIST],
     }),
-    getProductById: builder.query<Product, number>({
-      query: (id: number) => ({
+    getProductById: builder.query<Product, Localized & { id: number }>({
+      query: ({ id, locale }) => ({
         url: `products/${id}`,
         method: "GET",
+        headers: acceptLanguage(locale),
       }),
+      providesTags: (_result, _error, { id }) => [productTags(id)],
     }),
-    getProductsByParams: builder.query<PageableProducts, ProductParams>({
-      query: (params) => ({
+    getProductsByParams: builder.query<PageableProducts, ProductParams & Localized>({
+      query: ({ locale, ...params }) => ({
         url: `products/search`,
         params,
         method: "GET",
+        headers: acceptLanguage(locale),
       }),
+      providesTags: (result) => [...(result?.data ?? []).map(({ product_id }) => productTags(product_id)), LIST],
     }),
-    createProduct: builder.mutation<Product, { product: Partial<Product>; file: File | null }>({
+    /** Admin editing: every language at once. Not localized, so no locale in the key. */
+    getProductTranslations: builder.query<ProductTranslations, number>({
+      query: (id) => ({
+        url: `products/${id}/translations`,
+        method: "GET",
+      }),
+      providesTags: (_result, _error, id) => [productTags(id)],
+    }),
+    createProduct: builder.mutation<Product, { product: CreateProductBody; file: File | null }>({
       query: ({ product, file }) => {
         const formData = new FormData();
         formData.append("product", JSON.stringify(product));
@@ -49,25 +69,25 @@ export const productsApiSlice = baseApi.injectEndpoints({
           body: formData,
         };
       },
-      invalidatesTags: [{ type: "Products", id: "LIST" }],
+      invalidatesTags: [LIST],
     }),
-    deleteProduct: builder.mutation({
-      query: (id: number) => ({
+    deleteProduct: builder.mutation<void, number>({
+      query: (id) => ({
         url: `products/${id}`,
         method: "DELETE",
       }),
-      invalidatesTags: [{ type: "Products", id: "LIST" }],
+      invalidatesTags: (_result, _error, id) => [productTags(id), LIST],
     }),
-    updateProduct: builder.mutation({
-      query: (body: { id: number; product: Partial<Product> }) => ({
+    updateProduct: builder.mutation<Product, { id: number; product: UpdateProductBody }>({
+      query: (body) => ({
         url: `products/${body.id}`,
         method: "PUT",
         body: body.product,
       }),
-      invalidatesTags: [{ type: "Products", id: "LIST" }],
+      invalidatesTags: (_result, _error, { id }) => [productTags(id), LIST],
     }),
     uploadImage: builder.mutation<Product, { id: number; file: File }>({
-      query: (body: { id: number; file: File }) => {
+      query: (body) => {
         const formData = new FormData();
         formData.append("file", body.file);
         return {
@@ -76,6 +96,7 @@ export const productsApiSlice = baseApi.injectEndpoints({
           body: formData,
         };
       },
+      invalidatesTags: (_result, _error, { id }) => [productTags(id)],
     }),
   }),
 });
@@ -84,6 +105,7 @@ export const {
   useGetProductsQuery,
   useGetProductByIdQuery,
   useGetProductsByParamsQuery,
+  useGetProductTranslationsQuery,
   useCreateProductMutation,
   useDeleteProductMutation,
   useUpdateProductMutation,

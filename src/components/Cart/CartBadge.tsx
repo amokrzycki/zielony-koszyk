@@ -4,6 +4,8 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { useSelector } from "react-redux";
 import type { RootState } from "@/store/store.ts";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import { useLocalePath } from "@/i18n/useLocale.ts";
 import { navPillSx, navRowSx } from "../navStyles.ts";
 import { EASE } from "../listingStyles.ts";
 
@@ -16,7 +18,9 @@ function CartBadge({ variant = "bar", onNavigate }: CartBadgeProps) {
   const theme = useTheme();
   const navigate = useNavigate();
   const { pathname } = useLocation();
-  const isActive = pathname === "/koszyk";
+  const { t } = useTranslation("checkout");
+  const to = useLocalePath();
+  const isActive = pathname === to("cart");
   const cartItemCounts = useSelector((state: RootState) => state.cart.items.length);
 
   // A short pulse when the count changes, so an add-to-cart is visible in the header. Skips first render.
@@ -43,7 +47,7 @@ function CartBadge({ variant = "bar", onNavigate }: CartBadgeProps) {
 
   const handleClick = () => {
     onNavigate?.();
-    navigate("/koszyk");
+    navigate(to("cart"));
   };
 
   const icon = (
@@ -55,7 +59,8 @@ function CartBadge({ variant = "bar", onNavigate }: CartBadgeProps) {
   if (variant === "drawer") {
     return (
       <Button onClick={handleClick} startIcon={icon} className={isActive ? "active" : undefined} sx={navRowSx(theme)}>
-        Mój koszyk{cartItemCounts > 0 ? ` (${cartItemCounts})` : ""}
+        {t("badge.label")}
+        {cartItemCounts > 0 ? ` (${cartItemCounts})` : ""}
       </Button>
     );
   }
@@ -66,10 +71,10 @@ function CartBadge({ variant = "bar", onNavigate }: CartBadgeProps) {
       onClick={handleClick}
       startIcon={icon}
       className={isActive ? "active" : undefined}
-      aria-label="Mój koszyk"
+      aria-label={t("badge.label")}
       sx={navPillSx(theme)}>
       <Box component="span" sx={{ display: { xs: "none", lg: "inline" } }}>
-        Mój koszyk
+        {t("badge.label")}
       </Box>
     </Button>
   );

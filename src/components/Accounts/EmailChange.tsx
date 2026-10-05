@@ -4,6 +4,9 @@ import AlternateEmailRounded from "@mui/icons-material/AlternateEmailRounded";
 import { useAppDispatch, useAppSelector } from "@/hooks/hooks.ts";
 import type User from "../../types/User.ts";
 import { useNavigate } from "react-router-dom";
+import { Trans, useTranslation } from "react-i18next";
+import { apiErrorMessage } from "@/helpers/apiError.ts";
+import { useLocalePath } from "@/i18n/useLocale.ts";
 import { useForm } from "@mantine/form";
 import { validateEmail } from "@/helpers/validators.ts";
 import { useChangeEmailMutation, useLogoutMutation } from "./accountsApiSlice.ts";
@@ -30,6 +33,8 @@ function EmailChange() {
   const [changeEmail, { isLoading }] = useChangeEmailMutation();
   const [endSession] = useLogoutMutation();
   const navigate = useNavigate();
+  const { t, i18n } = useTranslation("account");
+  const to = useLocalePath();
   const [error, setError] = useState("");
 
   const currentEmail = user.email ?? "";
@@ -41,7 +46,7 @@ function EmailChange() {
     validate: {
       newEmail: (value) => {
         if (value.trim().toLowerCase() === currentEmail.trim().toLowerCase()) {
-          return "Nowy adres email musi się różnić od obecnego";
+          return <Trans i18nKey="email.mustDiffer" ns="account" />;
         }
         return validateEmail(value);
       },
@@ -57,19 +62,19 @@ function EmailChange() {
 
     try {
       await changeEmail({ user_id: user.user_id, email: values.newEmail.trim() }).unwrap();
-    } catch {
-      setError("Nie udało się zmienić adresu email. Sprawdź, czy nowy adres nie jest już używany.");
+    } catch (e) {
+      setError(apiErrorMessage(i18n.t, e, t("email.error")));
       return;
     }
 
     try {
       await endSession().unwrap();
       dispatch(logoutUser());
-      navigate("/");
-      toast.success("Adres email został zmieniony. Wylogowaliśmy Cię.");
+      navigate(to("home"));
+      toast.success(t("email.successLoggedOut"));
     } catch {
-      toast.success("Adres email został zmieniony");
-      toast.error("Nie udało się wylogować. Wyloguj się ręcznie.");
+      toast.success(t("email.success"));
+      toast.error(t("email.logoutFailed"));
     }
   };
 
@@ -101,17 +106,17 @@ function EmailChange() {
               lineHeight: 1.1,
               letterSpacing: "-0.03em",
             }}>
-            Zmiana adresu email
+            {t("email.title")}
           </Typography>
           <Typography sx={{ mt: 0.75, color: "text.secondary", maxWidth: "56ch", lineHeight: 1.6 }}>
-            Zmień adres przypisany do konta. Ze względów bezpieczeństwa wylogujemy Cię z tego urządzenia.
+            {t("email.subtitle")}
           </Typography>
         </Box>
       </Stack>
 
       <Box component="form" noValidate onSubmit={form.onSubmit(handleSubmit)} sx={{ maxWidth: 460 }}>
         <Box sx={{ p: 2, borderRadius: "16px", bgcolor: (t) => tone(t, 0.07) }}>
-          <Typography sx={readoutLabelSx}>Obecny adres email</Typography>
+          <Typography sx={readoutLabelSx}>{t("email.current")}</Typography>
           <Typography sx={{ mt: 0.5, fontWeight: 700, overflowWrap: "anywhere" }}>{currentEmail || "—"}</Typography>
         </Box>
 
@@ -127,8 +132,8 @@ function EmailChange() {
             required
             variant="outlined"
             type="email"
-            label="Nowy adres email"
-            placeholder="nowy@adres.pl"
+            label={t("email.newLabel")}
+            placeholder={t("email.newPlaceholder")}
             {...form.getInputProps("newEmail")}
             error={form.isTouched("newEmail") && Boolean(form.errors.newEmail)}
             helperText={form.isTouched("newEmail") ? form.errors.newEmail : undefined}
@@ -140,7 +145,7 @@ function EmailChange() {
             type="submit"
             disabled={(!isValid && form.isTouched()) || isLoading}
             sx={{ ...ctaButtonSx, alignSelf: "flex-start", minWidth: 220, mt: 1 }}>
-            {isLoading ? "Zapisywanie…" : "Zmień adres email"}
+            {isLoading ? t("email.saving") : t("email.submit")}
           </Button>
         </Stack>
       </Box>

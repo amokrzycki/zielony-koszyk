@@ -1,0 +1,154 @@
+{
+  "app": {
+    "title": "Zielony koszyk",
+    "name": "Zielony Koszyk"
+  },
+  "language": {
+    "label": "Język"
+  },
+  "nav": {
+    "label": "Nawigacja główna",
+    "home": "Strona główna",
+    "products": "Produkty",
+    "about": "O nas",
+    "menu": "Menu",
+    "openMenu": "Otwórz menu",
+    "closeMenu": "Zamknij menu",
+    "homeLogo": "Zielony koszyk — strona główna"
+  },
+  "theme": {
+    "toDark": "Włącz tryb ciemny",
+    "toLight": "Włącz tryb jasny"
+  },
+  "actions": {
+    "add": "Dodaj",
+    "back": "Wróć",
+    "cancel": "Anuluj",
+    "close": "Zamknij",
+    "confirm": "Potwierdź",
+    "delete": "Usuń",
+    "edit": "Edytuj",
+    "save": "Zapisz"
+  },
+  "status": {
+    "loading": "Ładowanie…"
+  },
+  "breadcrumbs": {
+    "label": "Ścieżka nawigacji",
+    "root": "Zielony koszyk",
+    "home": "Strona główna",
+    "products": "Produkty",
+    "productDetails": "Szczegóły produktu",
+    "about": "O nas",
+    "cart": "Koszyk",
+    "cartLogin": "Logowanie",
+    "login": "Logowanie",
+    "order": "Zamówienie",
+    "orderSummary": "Podsumowanie",
+    "orderConfirmation": "Potwierdzenie",
+    "account": "Moje konto",
+    "accountOrders": "Moje zamówienia",
+    "accountOrderDetails": "Szczegóły zamówienia",
+    "accountAddresses": "Książka adresowa",
+    "accountAddressEdit": "Edytuj dane",
+    "accountAddressAdd": "Dodaj adres",
+    "accountEmailChange": "Zmiana email",
+    "accountPasswordChange": "Zmiana hasła",
+    "accountMfa": "Ustawienia MFA",
+    "admin": "Panel administracyjny",
+    "adminProducts": "Zarządzanie produktami",
+    "adminOrders": "Zarządzanie zamówieniami",
+    "adminOrderItems": "Szczegóły zamówienia",
+    "adminOrderEdit": "Edycja danych zamówienia",
+    "adminUsers": "Zarządzanie użytkownikami",
+    "adminUserEdit": "Edycja użytkownika",
+    "adminUserAdd": "Dodaj użytkownika"
+  },
+  "orderStatus": {
+    "NEW": "Nowe",
+    "WAITING_FOR_PAYMENT": "Oczekiwanie na płatność",
+    "WAITING_FOR_CONFIRMATION": "Oczekiwanie na potwierdzenie",
+    "IN_PROGRESS": "W trakcie realizacji",
+    "TO_BE_SHIPPED": "Do wysyłki",
+    "SHIPPING": "Wysyłka",
+    "DELIVERED": "Dostarczone",
+    "DONE": "Zakończone"
+  },
+  "categories": {
+    "owoce": "Owoce",
+    "warzywa": "Warzywa",
+    "inne": "Spożywcze",
+    "sezonowe": "Sezonowe",
+    "worki": "Zbiorcze"
+  },
+  "quantity": {
+    "pieces_one": "{{count}} szt.",
+    "pieces_few": "{{count}} szt.",
+    "pieces_many": "{{count}} szt.",
+    "pieces_other": "{{count}} szt.",
+    "unitPrice": "{{price}} / szt.",
+    "line_one": "{{count}} szt. × {{price}}",
+    "line_few": "{{count}} szt. × {{price}}",
+    "line_many": "{{count}} szt. × {{price}}",
+    "line_other": "{{count}} szt. × {{price}}",
+    "items_one": "{{count}} produkt",
+    "items_few": "{{count}} produkty",
+    "items_many": "{{count}} produktów",
+    "items_other": "{{count}} produktu"
+  },
+  "validation": {
+    "email": "Podaj prawidłowy adres email",
+    "firstName": "Podaj prawidłowe imię",
+    "lastName": "Podaj prawidłowe nazwisko",
+    "password": "Podaj prawidłowe hasło",
+    "newPasswordSame": "Nowe hasło musi się różnić od starego",
+    "passwordRules": "Hasło musi mieć co najmniej 8 znaków, zawierać przynajmniej jedną cyfrę i jeden znak specjalny.",
+    "passwordMismatch": "Hasła nie są takie same",
+    "terms": "Zaakceptuj regulamin",
+    "phone": "Podaj prawidłowy numer telefonu",
+    "street": "Podaj prawidłową nazwę ulicy",
+    "buildingNumber": "Podaj prawidłowy numer domu/lokalu",
+    "city": "Podaj prawidłową nazwę miasta",
+    "zip": "Podaj prawidłowy kod pocztowy",
+    "nip": "Podaj prawidłowy numer NIP",
+    "company": "Podaj prawidłową nazwę firmy"
+  },
+  "errors": {
+    "generic": "Coś poszło nie tak. Spróbuj ponownie.",
+    "PRODUCT_NOT_FOUND": "Nie znaleziono produktu.",
+    "PRODUCT_DATA_REQUIRED": "Brak danych produktu.",
+    "FILE_REQUIRED": "Nie wybrano pliku.",
+    "INVALID_CREDENTIALS": "Nieprawidłowy email lub hasło.",
+    "EMAIL_ALREADY_EXISTS": "Użytkownik z tym adresem email już istnieje.",
+    "USER_NOT_FOUND": "Nie znaleziono użytkownika.",
+    "OLD_PASSWORD_INCORRECT": "Stare hasło jest nieprawidłowe.",
+    "ORDER_NOT_FOUND": "Nie znaleziono zamówienia.",
+    "ORDER_ITEM_NOT_FOUND": "Nie znaleziono pozycji zamówienia.",
+    "INVOICE_NOT_FOUND": "Nie znaleziono faktury.",
+    "INVOICE_FORBIDDEN": "Nie masz uprawnień do pobrania tej faktury.",
+    "INSUFFICIENT_STOCK": "Brak wystarczającej ilości produktu w magazynie."
+  },
+  "customerType": {
+    "label": "Typ klienta:",
+    "person": "Osoba prywatna",
+    "company": "Firma"
+  },
+  "footer": {
+    "about": "Zielony Koszyk oferuje warzywa i owoce, jak również susze, grochy, przyprawy, oliwę z oliwek oraz inne produkty greckie.",
+    "offerTitle": "Oferujemy m.in:",
+    "offer": {
+      "potatoes": "Ziemniaki",
+      "cabbage": "Kapustę",
+      "apples": "Jabłka"
+    },
+    "deliveryTitle": "Szybka dostawa",
+    "links": {
+      "delivery": "Dostawa i płatność",
+      "privacy": "Polityka prywatności",
+      "terms": "Regulamin"
+    },
+    "findUs": "Znajdź nas:",
+    "region": "Rzeszów i okolice",
+    "copyright": "© {{year}} Zielony Koszyk"
+  }
+}

@@ -1,31 +1,30 @@
+import { useTranslation } from "react-i18next";
 import { Box, Typography } from "@mui/material";
 import { accentText, panelSx, sectionHeadingSx } from "@/components/listingStyles.ts";
 
 const statuses = [
-  {
-    name: "Nowe",
-    description: "Zamówienie nie zostało jeszcze potwierdzone i proces realizacji jeszcze się nie rozpoczął.",
-  },
-  { name: "W oczekiwaniu na płatność", description: "Zamówienie oczekuje na potwierdzenie płatności." },
-  { name: "W oczekiwaniu na potwierdzenie", description: "Zamówienie oczekuje na potwierdzenie przez sprzedawcę." },
-  { name: "W realizacji", description: "Zamówienie jest w trakcie realizacji." },
-  { name: "Wysłane", description: "Zamówienie zostało wysłane." },
-  { name: "Dostarczone", description: "Zamówienie zostało dostarczone." },
-  { name: "Anulowane", description: "Zamówienie zostało anulowane." },
-  { name: "Zakończone", description: "Zamówienie zostało zakończone." },
-];
+  "NEW",
+  "WAITING_FOR_PAYMENT",
+  "WAITING_FOR_CONFIRMATION",
+  "IN_PROGRESS",
+  "SHIPPED",
+  "DELIVERED",
+  "CANCELLED",
+  "DONE",
+] as const;
 
 function OrderStatusesInfo() {
+  const { t } = useTranslation("checkout");
   return (
     <Box
       component="section"
       aria-labelledby="order-statuses-heading"
       sx={(theme) => ({ ...panelSx(theme), p: { xs: 2.5, sm: 3 } })}>
       <Typography component="h2" id="order-statuses-heading" sx={{ ...sectionHeadingSx, mb: 0 }}>
-        Statusy zamówień
+        {t("statusInfo.title")}
       </Typography>
       <Typography sx={{ mt: 0.75, color: "text.secondary", fontSize: "0.9rem", lineHeight: 1.55, maxWidth: "60ch" }}>
-        Jak czytać etapy realizacji Twojego zamówienia.
+        {t("statusInfo.subtitle")}
       </Typography>
       <Box
         component="dl"
@@ -38,7 +37,7 @@ function OrderStatusesInfo() {
         }}>
         {statuses.map((status) => (
           <Box
-            key={status.name}
+            key={status}
             sx={{
               display: "grid",
               gridTemplateColumns: "auto 1fr",
@@ -54,12 +53,12 @@ function OrderStatusesInfo() {
             />
             <Box>
               <Typography component="dt" sx={{ fontWeight: 700, lineHeight: 1.35 }}>
-                {status.name}
+                {t(`statusInfo.items.${status}.name`)}
               </Typography>
               <Typography
                 component="dd"
                 sx={{ m: 0, mt: 0.25, color: "text.secondary", fontSize: "0.88rem", lineHeight: 1.5 }}>
-                {status.description}
+                {t(`statusInfo.items.${status}.description`)}
               </Typography>
             </Box>
           </Box>

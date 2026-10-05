@@ -1,4 +1,5 @@
 import { Box, TextField, Typography } from "@mui/material";
+import { useTranslation } from "react-i18next";
 import type { UseFormReturnType } from "@mantine/form";
 import type { Address } from "@/types/Address";
 import CustomerTypeRadios from "@/components/common/CustomerTypeRadios";
@@ -14,6 +15,7 @@ interface Props {
 const fieldGrid = { display: "grid", gap: 2 };
 
 export default function ShippingFormFields({ form, setCustomerType }: Props) {
+  const { t } = useTranslation("checkout");
   const shipping = form.values.shipping;
   const customerType = shipping.customer_type;
 
@@ -27,7 +29,7 @@ export default function ShippingFormFields({ form, setCustomerType }: Props) {
   return (
     <Box className="flex flex-col gap-4">
       <Typography component="h2" sx={{ m: 0, fontSize: "1.35rem", fontWeight: 800, letterSpacing: "-0.02em" }}>
-        Dane do wysyłki
+        {t("shipping.title")}
       </Typography>
 
       <CustomerTypeRadios customerType={customerType} setCustomerType={handleCustomerTypeChange} />
@@ -37,9 +39,9 @@ export default function ShippingFormFields({ form, setCustomerType }: Props) {
           <Box sx={{ ...fieldGrid, gridTemplateColumns: { xs: "1fr", sm: "1fr 1fr" } }}>
             <TextField
               fullWidth
-              label="Imię"
+              label={t("form.firstName")}
               required
-              placeholder="Jan"
+              placeholder={t("form.firstNamePlaceholder")}
               autoComplete="given-name"
               {...getShippingProps("first_name")}
               helperText={form.errors["shipping.first_name"]}
@@ -47,9 +49,9 @@ export default function ShippingFormFields({ form, setCustomerType }: Props) {
             />
             <TextField
               fullWidth
-              label="Nazwisko"
+              label={t("form.lastName")}
               required
-              placeholder="Kowalski"
+              placeholder={t("form.lastNamePlaceholder")}
               autoComplete="family-name"
               {...getShippingProps("last_name")}
               helperText={form.errors["shipping.last_name"]}
@@ -64,9 +66,9 @@ export default function ShippingFormFields({ form, setCustomerType }: Props) {
           <Box sx={{ ...fieldGrid, gridTemplateColumns: { xs: "1fr", sm: "1fr 1fr" } }}>
             <TextField
               fullWidth
-              label="Nazwa firmy"
+              label={t("form.companyName")}
               required
-              placeholder="Firma XYZ"
+              placeholder={t("form.companyNamePlaceholder")}
               autoComplete="organization"
               {...getShippingProps("company_name")}
               helperText={form.errors["shipping.company_name"]}
@@ -74,7 +76,7 @@ export default function ShippingFormFields({ form, setCustomerType }: Props) {
             />
             <TextField
               fullWidth
-              label="NIP"
+              label={t("form.nip")}
               required
               placeholder="1234567890"
               {...getShippingProps("nip")}
@@ -88,7 +90,7 @@ export default function ShippingFormFields({ form, setCustomerType }: Props) {
       <Box sx={{ ...fieldGrid, gridTemplateColumns: { xs: "1fr", sm: "1fr 1fr" } }}>
         <TextField
           fullWidth
-          label="Numer telefonu"
+          label={t("form.phone")}
           required
           type="tel"
           placeholder="+48123456789"
@@ -99,10 +101,10 @@ export default function ShippingFormFields({ form, setCustomerType }: Props) {
         />
         <TextField
           fullWidth
-          label="Adres e-mail"
+          label={t("form.email")}
           required
           type="email"
-          placeholder="jan@przyklad.pl"
+          placeholder={t("form.emailPlaceholder")}
           autoComplete="email"
           {...form.getInputProps("email")}
           helperText={form.errors.email}
@@ -113,9 +115,9 @@ export default function ShippingFormFields({ form, setCustomerType }: Props) {
       <Box sx={{ ...fieldGrid, gridTemplateColumns: { xs: "1fr", sm: "2fr 1fr 1fr" } }}>
         <TextField
           fullWidth
-          label="Ulica"
+          label={t("form.street")}
           required
-          placeholder="ul. Przykładowa"
+          placeholder={t("form.streetPlaceholder")}
           autoComplete="address-line1"
           {...getShippingProps("street")}
           helperText={form.errors["shipping.street"]}
@@ -123,7 +125,7 @@ export default function ShippingFormFields({ form, setCustomerType }: Props) {
         />
         <TextField
           fullWidth
-          label="Nr budynku"
+          label={t("form.buildingNumber")}
           required
           placeholder="1A"
           {...getShippingProps("building_number")}
@@ -132,7 +134,7 @@ export default function ShippingFormFields({ form, setCustomerType }: Props) {
         />
         <TextField
           fullWidth
-          label="Nr mieszkania"
+          label={t("form.flatNumber")}
           placeholder="14"
           {...getShippingProps("flat_number")}
           helperText={form.errors["shipping.flat_number"]}
@@ -143,7 +145,7 @@ export default function ShippingFormFields({ form, setCustomerType }: Props) {
       <Box sx={{ ...fieldGrid, gridTemplateColumns: { xs: "1fr", sm: "1fr 2fr" } }}>
         <TextField
           fullWidth
-          label="Kod pocztowy"
+          label={t("form.zip")}
           required
           placeholder="00-000"
           autoComplete="postal-code"
@@ -153,9 +155,9 @@ export default function ShippingFormFields({ form, setCustomerType }: Props) {
         />
         <TextField
           fullWidth
-          label="Miejscowość"
+          label={t("form.city")}
           required
-          placeholder="Warszawa"
+          placeholder={t("form.cityPlaceholder")}
           autoComplete="address-level2"
           {...getShippingProps("city")}
           helperText={form.errors["shipping.city"]}

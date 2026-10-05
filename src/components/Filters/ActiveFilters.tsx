@@ -1,12 +1,16 @@
 import { Box, Button, Chip } from "@mui/material";
+import { useTranslation } from "react-i18next";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import useProductFilters from "@/hooks/useProductFilters.ts";
 import { getActiveFilterChips } from "@/helpers/getActiveFilterChips.ts";
 import { accentText, tone } from "@/components/listingStyles.ts";
+import { useLocale } from "@/i18n/useLocale.ts";
 
 function ActiveFilters() {
   const { filters, setParams, resetFilters } = useProductFilters();
-  const chips = getActiveFilterChips(filters);
+  const { t } = useTranslation(["catalog", "common"]);
+  const locale = useLocale();
+  const chips = getActiveFilterChips(filters, { t, locale });
 
   if (chips.length === 0) return null;
 
@@ -40,7 +44,7 @@ function ActiveFilters() {
           textTransform: "none",
           "&:hover": { color: (t) => accentText(t), bgcolor: (t) => tone(t, 0.08) },
         }}>
-        Wyczyść wszystko
+        {t("filters.clearAll")}
       </Button>
     </Box>
   );

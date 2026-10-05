@@ -1,9 +1,13 @@
 import { Box, Button, Typography } from "@mui/material";
 import CheckRounded from "@mui/icons-material/CheckRounded";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import { useLocalePath } from "@/i18n/useLocale.ts";
 import { EASE, ctaButtonSx, panelSx, tone } from "@/components/listingStyles.ts";
 
 function OrderConfirm() {
+  const { t } = useTranslation("checkout");
+  const to = useLocalePath();
   return (
     <Box id="main-wrapper" className="flex flex-col items-center">
       <Box className="main-container" sx={{ bgcolor: "background.paper" }}>
@@ -53,15 +57,15 @@ function OrderConfirm() {
                 letterSpacing: "-0.03em",
                 textWrap: "balance",
               }}>
-              Dziękujemy za złożenie zamówienia!
+              {t("confirm.title")}
             </Typography>
 
             <Typography sx={{ mt: 1.5, color: "text.secondary", lineHeight: 1.6, maxWidth: "42ch" }}>
-              Otrzymasz potwierdzenie zamówienia na adres email.
+              {t("confirm.text")}
             </Typography>
 
-            <Button component={Link} to="/produkty" sx={{ ...ctaButtonSx, mt: 3 }}>
-              Wróć do zakupów
+            <Button component={Link} to={to("products")} sx={{ ...ctaButtonSx, mt: 3 }}>
+              {t("confirm.back")}
             </Button>
           </Box>
         </Box>

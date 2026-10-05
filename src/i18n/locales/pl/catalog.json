@@ -1,0 +1,151 @@
+{
+  "carousel": {
+    "label": "Dostawa i oferta",
+    "roleDescription": "karuzela",
+    "pick": "Wybierz zdjęcie",
+    "previous": "Poprzednie zdjęcie",
+    "next": "Następne zdjęcie",
+    "description": "Warzywa, owoce i produkty spożywcze prosto z gospodarstw. Dostawa na terenie Rzeszowa i okolic.",
+    "products": "Zobacz produkty",
+    "about": "O nas",
+    "slides": {
+      "delivery": "Codzienne dostawy",
+      "seasonal": "Produkty sezonowe z dostawą do domu",
+      "grocery": "Artykuły spożywcze w zasięgu ręki"
+    }
+  },
+  "home": {
+    "assurances": {
+      "delivery": "Codzienna dostawa w Rzeszowie i okolicach",
+      "organic": "Produkty z ekologicznych upraw",
+      "wholesale": "Ceny hurtowe przy większych zamówieniach"
+    },
+    "wholesale": {
+      "title": "Zamów hurtowo i oszczędź",
+      "text": "Przy większych zamówieniach obniżamy ceny. Skontaktuj się z nami, dobierzemy produkty do Twojego sklepu lub biura.",
+      "cta": "Napisz do nas"
+    }
+  },
+  "homeCategories": {
+    "title": "Wybierz, czego dziś potrzebujesz",
+    "subtitle": "Pięć kategorii, w których znajdziesz świeże produkty prosto od lokalnych dostawców.",
+    "all": "Wszystkie produkty",
+    "aria": "{{name}} — {{description}}",
+    "items": {
+      "owoce": {
+        "name": "Owoce",
+        "description": "Owoce sprzedajemy w cenie hurtowej"
+      },
+      "warzywa": {
+        "name": "Warzywa",
+        "description": "Oferujemy warzywa pochodzące z ekologicznych upraw"
+      },
+      "inne": {
+        "name": "Artykuły spożywcze",
+        "description": "W ofercie posiadamy również produkty greckie m.in. oliwy, miody, herbaty"
+      },
+      "sezonowe": {
+        "name": "Produkty sezonowe",
+        "description": "Susze, kasze, grochy czyli produkty, które warto mieć w swojej kuchni"
+      },
+      "worki": {
+        "name": "Opakowania zbiorcze",
+        "description": "Produkty pakowane w workach oraz skrzynkach w niższych cenach"
+      }
+    }
+  },
+  "about": {
+    "greeting": "Dzień dobry!",
+    "intro": "Zielony Koszyk to sklep internetowy ze świeżymi warzywami, owocami i produktami spożywczymi od lokalnych rolników i sprawdzonych dostawców. Obsługujemy klientów indywidualnych i firmy, a produkty z kraju i z zagranicy dowozimy na terenie Rzeszowa i okolic.",
+    "imageAlt": "Świeże warzywa z oferty Zielonego Koszyka",
+    "offer": {
+      "title": "Nasza oferta:",
+      "items": {
+        "fresh": "Świeże owoce i warzywa prosto od lokalnych rolników",
+        "exotic": "Produkty egzotyczne, gdy mają Państwo ochotę na coś nowego",
+        "greekPantry": "Przyprawy, oliwy z oliwek i suszone produkty, czyli greckie smaki w Państwa kuchni",
+        "greekSpecialities": "Specjalności kuchni greckiej"
+      }
+    },
+    "service": {
+      "title": "Jakość obsługi:",
+      "items": {
+        "care": "Opieka nad zamówieniem od pierwszego kontaktu do dostawy",
+        "schedule": "Terminy dostaw dopasowane do Państwa dnia",
+        "prices": "Dobre ceny i promocje",
+        "freeDelivery": "Darmowa dostawa przy większych zamówieniach"
+      }
+    },
+    "closing": "Zapraszamy do współpracy klientów indywidualnych oraz firmy z branży gastronomicznej, cateringowej i handlowej. Świeże warzywa i greckie smaki znajdą Państwo w Zielonym Koszyku.",
+    "cta": "Zobacz naszą ofertę",
+    "team": "Zespół Zielonego Koszyka"
+  },
+  "products": {
+    "title": "Produkty",
+    "subtitle": "Świeże warzywa, owoce i produkty spożywcze od lokalnych dostawców.",
+    "error": "Wystąpił błąd podczas pobierania produktów.",
+    "shown": "Wyświetlono {{shown}} z {{total}}",
+    "empty": {
+      "title": "Brak produktów",
+      "forQuery": "Nie znaleźliśmy nic dla frazy „{{query}}”.",
+      "noMatch": "Żaden produkt nie spełnia wybranych filtrów.",
+      "clearSearch": "Wyczyść wyszukiwanie"
+    }
+  },
+  "featured": {
+    "title": "Polecane produkty",
+    "error": "Wystąpił błąd podczas pobierania polecanych produktów"
+  },
+  "product": {
+    "details": "Szczegóły produktu",
+    "addToCart": "Do koszyka",
+    "addedToCart": "Produkt został dodany do koszyka",
+    "delivery": "Dostawa w Rzeszowie i okolicach.",
+    "stock": "Dostępnych: {{stock}}",
+    "backToTop": "Wróć na górę"
+  },
+  "quantity": {
+    "label": "Ilość",
+    "decrease": "Zmniejsz ilość",
+    "increase": "Zwiększ ilość"
+  },
+  "filters": {
+    "label": "Filtry produktów",
+    "title": "Filtry",
+    "close": "Zamknij filtry",
+    "showProducts": "Pokaż produkty",
+    "category": "Kategoria",
+    "clearCategory": "Wyczyść",
+    "priceRange": "Zakres cenowy",
+    "priceMin": "Cena minimalna",
+    "priceMax": "Cena maksymalna",
+    "resetPrice": "Resetuj",
+    "clearAll": "Wyczyść wszystko",
+    "openButton": "Filtry",
+    "openButtonActive": "Filtry ({{active}})",
+    "openButtonAria": "Filtry",
+    "openButtonAriaActive": "Filtry, aktywne filtry: {{active}}",
+    "searchPlaceholder": "Wyszukaj produkty",
+    "sortLabel": "Sortowanie",
+    "pageSize": "Na stronę",
+    "chips": {
+      "search": "Szukaj: „{{query}}”",
+      "category": "Kategoria: {{category}}",
+      "price": "Cena: {{range}}"
+    }
+  },
+  "sort": {
+    "priceAsc": "wg ceny rosnąco",
+    "priceDesc": "wg ceny malejąco",
+    "nameAsc": "wg nazwy A-Z",
+    "nameDesc": "wg nazwy Z-A"
+  },
+  "pagination": {
+    "page": "Przejdź do strony {{page}}",
+    "currentPage": "Strona {{page}}",
+    "next": "Następna strona",
+    "previous": "Poprzednia strona",
+    "first": "Pierwsza strona",
+    "last": "Ostatnia strona"
+  }
+}

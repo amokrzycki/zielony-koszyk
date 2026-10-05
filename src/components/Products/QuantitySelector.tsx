@@ -3,6 +3,7 @@ import RemoveIcon from "@mui/icons-material/Remove";
 import AddIcon from "@mui/icons-material/Add";
 import type { Theme } from "@mui/material/styles";
 import { useEffect, useRef } from "react";
+import { useTranslation } from "react-i18next";
 import { EASE, accentText, tone } from "@/components/listingStyles.ts";
 
 interface QuantitySelectorProps {
@@ -21,6 +22,7 @@ const stepButtonSx = (theme: Theme) => ({
 });
 
 function QuantitySelector({ quantity, setQuantity }: QuantitySelectorProps) {
+  const { t } = useTranslation("catalog");
   const inputRef = useRef<HTMLInputElement>(null);
   const prevQuantity = useRef(quantity);
 
@@ -66,7 +68,7 @@ function QuantitySelector({ quantity, setQuantity }: QuantitySelectorProps) {
         size={"small"}
         onClick={() => setQuantity(Math.max(1, quantity - 1))}
         disabled={quantity === 1}
-        aria-label={"Zmniejsz ilość"}
+        aria-label={t("quantity.decrease")}
         sx={stepButtonSx}>
         <RemoveIcon fontSize={"small"} />
       </IconButton>
@@ -77,7 +79,7 @@ function QuantitySelector({ quantity, setQuantity }: QuantitySelectorProps) {
         min={1}
         inputMode={"numeric"}
         value={quantity}
-        aria-label={"Ilość"}
+        aria-label={t("quantity.label")}
         onChange={(e) => {
           const value = parseInt(e.target.value, 10);
           setQuantity(Number.isNaN(value) ? 1 : Math.max(1, value));
@@ -107,7 +109,7 @@ function QuantitySelector({ quantity, setQuantity }: QuantitySelectorProps) {
       <IconButton
         size={"small"}
         onClick={() => setQuantity(quantity + 1)}
-        aria-label={"Zwiększ ilość"}
+        aria-label={t("quantity.increase")}
         sx={stepButtonSx}>
         <AddIcon fontSize={"small"} />
       </IconButton>
